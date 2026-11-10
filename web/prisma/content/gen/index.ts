@@ -6,7 +6,11 @@ import { ALL_CT } from "./ct";
 import { BANK_FAMILIES, BANKS } from "./banks";
 import { AI_EVS_FAMILIES } from "./ai_evs";
 import { R, type D, type Family } from "./util";
-import { PICTURE_FAMILIES, PICTURE_PLAN, PICTURES_PER_CHAPTER } from "./pictures";
+import { PICTURE_FAMILIES as PF1, PICTURE_PLAN as PP1, PICTURES_PER_CHAPTER } from "./pictures";
+import { MORE_PICTURE_FAMILIES, MORE_PICTURE_PLAN } from "./pictures2";
+
+export const PICTURE_FAMILIES: Record<string, Family> = { ...PF1, ...Object.fromEntries(MORE_PICTURE_FAMILIES.map((f) => [f.id, f])) };
+export const PICTURE_PLAN: Record<string, string[]> = { ...PP1, ...MORE_PICTURE_PLAN };
 
 export const TARGET = 40;
 const MIX: Record<D, number> = { 1: 14, 2: 16, 3: 10 };

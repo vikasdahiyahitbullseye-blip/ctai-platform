@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { generateBank } from "../../../prisma/content/gen";
-import { PICTURE_PLAN, PICTURES_PER_CHAPTER } from "../../../prisma/content/gen/pictures";
+import { generateBank, PICTURE_PLAN, PICTURE_FAMILIES } from "../../../prisma/content/gen";
+import { PICTURES_PER_CHAPTER } from "../../../prisma/content/gen/pictures";
+import { CURRICULUM } from "../constants";
+import { perimeter } from "../figures";
 import { balanceOptions } from "../../../prisma/content/balance";
 import { class3 } from "../../../prisma/content/class3";
 import { class4 } from "../../../prisma/content/class4";
@@ -33,6 +35,18 @@ describe("figure helpers", () => {
 });
 
 describe("picture questions", () => {
+  it("every chapter has a picture plan with known families", () => {
+    for (const [cls, parts] of Object.entries(CURRICULUM)) for (const [part, titles] of Object.entries(parts)) (titles as string[]).forEach((_, i) => {
+      const ids = PICTURE_PLAN[`${cls}-${part}-${i + 1}`];
+      expect(ids, `${cls}-${part}-${i + 1}`).toBeDefined();
+      for (const id of ids) expect(PICTURE_FAMILIES[id], id).toBeDefined();
+    });
+  });
+  it("perimeter counts outside edges", () => {
+    expect(perimeter([[0, 0]])).toBe(4);
+    expect(perimeter([[0, 0], [0, 1]])).toBe(6);
+    expect(perimeter([[0, 0], [0, 1], [1, 0], [1, 1]])).toBe(8);
+  });
   it("every planned chapter gets its picture questions", () => {
     for (const key of Object.keys(PICTURE_PLAN)) {
       const [c, part, ch] = key.split("-");
@@ -50,6 +64,24 @@ describe("picture questions", () => {
       const a = q.optionFigures[q.answer as number]!;
       if (q.family === "pic-mirror") expect(cellKey(cellsOf(a))).toBe(cellKey(flipH(f.n, cellsOf(f))));
       if (q.family === "pic-water") expect(cellKey(cellsOf(a))).toBe(cellKey(flipV(f.n, cellsOf(f))));
+    }
+  });
+  it("figure-based answers recompute from the figures", () => {
+    for (const q of pics) {
+      const f = q.figure as Fig | undefined;
+      if (!f) continue;
+      if (q.family === "pic-abacus" && /^What number does the abacus show\?/.test(q.stem) && f.kind === "abacus") expect(q.answer).toBe(Number(f.beads.join("")));
+      if (q.family === "pic-money" && /altogether/.test(q.stem) && f.kind === "money") expect(q.answer).toBe(f.items.reduce((a, b) => a + b, 0));
+      if (q.family === "pic-jug" && /How much water/.test(q.stem) && f.kind === "jug") expect(q.answer).toBe(f.level);
+      if (q.family === "pic-ruler" && f.kind === "ruler") expect(q.answer).toBe(f.length);
+      if (q.family === "pic-array" && /How many/.test(q.stem) && !/more rows/.test(q.stem) && f.kind === "icons") expect(q.answer).toBe(f.items.length);
+      if (q.family === "pic-perimeter" && f.kind === "pixels") expect(q.answer).toBe(/area/.test(q.stem) ? f.cells.length : perimeter(f.cells.map(([r, c]) => [r, c])));
+      if (q.family === "pic-binary" && f.kind === "binary") expect(q.answer).toBe(parseInt(f.bits.join(""), 2));
+      if (q.family === "pic-ai-accuracy" && f.kind === "icons" && /accuracy/.test(q.stem)) expect(q.answer).toBe((f.items.filter((i) => i.mark === "tick").length / f.items.length) * 100);
+      if (q.family === "pic-numline" || q.family === "pic-numline-int" || q.family === "pic-numline-dec") {
+        if (f.kind === "numberline" && /red arrow/.test(q.stem)) expect(q.answer).toBeCloseTo(f.marks![0].v, 9);
+      }
+      if (q.family === "pic-balance" && f.kind === "balance") expect((q.answer as number) * (/one\*\*/.test(q.stem) ? f.left.n : 1)).toBe(f.right.reduce((a, b) => a + b, 0));
     }
   });
   it("shortest-path answers match a fresh search", () => {

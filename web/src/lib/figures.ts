@@ -27,7 +27,23 @@ export type Fig =
   | { kind: "bars"; title: string; labels: string[]; values: number[]; step: number; showValues?: boolean; alt: string }
   | { kind: "pictograph"; title: string; labels: string[]; counts: number[]; icon: string; per: number; alt: string }
   | { kind: "clock"; h: number; m: number; mirror?: boolean; alt: string }
-  | { kind: "cubes"; heights: number[]; colour: Colour; alt: string };
+  | { kind: "cubes"; heights: number[]; colour: Colour; alt: string }
+  | { kind: "fraction"; shape: "circle" | "bar" | "grid"; parts: number; shaded: number; colour: Colour; rows?: number; alt: string }
+  | { kind: "abacus"; labels: string[]; beads: number[]; alt: string }
+  | { kind: "numberline"; min: number; max: number; step: number; labelEvery: number; decimals?: number; marks?: { v: number; label: string; colour: Colour }[]; jumps?: { from: number; size: number; count: number; colour: Colour; icon?: string }; alt: string }
+  | { kind: "ruler"; cm: number; start: number; length: number; colour: Colour; alt: string }
+  | { kind: "balance"; left: { icon: string; n: number }; right: number[]; unit: string; alt: string }
+  | { kind: "jug"; max: number; step: number; labelEvery: number; level: number; unit: string; alt: string }
+  | { kind: "money"; items: number[]; alt: string }
+  | { kind: "icons"; items: { icon: string; mark?: "tick" | "cross" }[]; cols: number; alt: string }
+  | { kind: "angle"; deg: number; colour: Colour; alt: string }
+  | { kind: "lines"; segs: [number, number, number, number][]; colour: Colour; alt: string } // coordinates in a 0–100 box
+  | { kind: "calendar"; month: string; start: number; days: number; marks: { d: number; colour: Colour }[]; alt: string } // start: 0 = Sunday
+  | { kind: "numgrid"; from: number; to: number; cols: number; marks: { v: number; colour: Colour }[]; alt: string }
+  | { kind: "matchsticks"; squares: number; alt: string }
+  | { kind: "areamodel"; height: number; widths: number[]; labels: string[]; hLabel: string; alt: string }
+  | { kind: "binary"; bits: number[]; alt: string } // most significant first; 1 = card face up
+  | { kind: "beads"; colours: Colour[]; alt: string };
 
 // ---------- pixel transforms ----------
 export const flipH = (n: number, cells: Cell[]): Cell[] => cells.map(([r, c, k]) => [r, n - 1 - c, k]);
@@ -52,6 +68,14 @@ export function shortestPath(rows: number, cols: number, blocked: Set<string>, f
     }
   }
   return -1;
+}
+
+/** Perimeter (in unit edges) of a set of grid cells. */
+export function perimeter(cells: [number, number][]): number {
+  const set = new Set(cells.map(([r, c]) => `${r},${c}`));
+  let p = 0;
+  for (const [r, c] of cells) for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (!set.has(`${r + dr},${c + dc}`)) p++;
+  return p;
 }
 
 export function parseFig(json: string | null | undefined): Fig | null {

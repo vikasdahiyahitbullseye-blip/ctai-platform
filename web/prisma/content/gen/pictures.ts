@@ -281,11 +281,35 @@ export const pictureSequence: Family = {
 };
 
 // ---------- Charts ----------
+type Theme = readonly [string, readonly string[]];
+// Topical chart themes for chapters where the generic ones would feel out of place.
+const TOPIC_CHARTS: Record<string, Theme[]> = {
+  water: [["Buckets of water used", ["Mon", "Tue", "Wed", "Thu", "Fri"]], ["Rainfall (mm)", ["Jun", "Jul", "Aug", "Sep", "Oct"]]],
+  weather: [["Rainfall (mm)", ["Jun", "Jul", "Aug", "Sep", "Oct"]], ["Sunny days", ["Jan", "Feb", "Mar", "Apr", "May"]]],
+  energy: [["Electricity units used", ["Mon", "Tue", "Wed", "Thu", "Fri"]], ["Solar lamps sold", ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]]],
+  waste: [["Waste collected (kg)", ["Plastic", "Paper", "Glass", "Food", "Metal"]], ["Bags of litter picked", ["Mon", "Tue", "Wed", "Thu", "Fri"]]],
+  plants: [["Plant height (cm)", ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]], ["Trees planted", ["Class 3", "Class 4", "Class 5", "Class 6", "Class 7"]]],
+  farm: [["Crops harvested (kg)", ["Wheat", "Rice", "Maize", "Pulses", "Millet"]], ["Litres of milk", ["Mon", "Tue", "Wed", "Thu", "Fri"]]],
+  ai: [["Photos in the training set", ["Cats", "Dogs", "Rabbits", "Birds", "Fish"]], ["Robots used in factories", ["2021", "2022", "2023", "2024", "2025"]]],
+  family: [["Family members", ["Asha", "Ravi", "Meena", "Kabir", "Zoya"]], ["Pets at home", ["Dog", "Cat", "Fish", "Parrot", "Rabbit"]]],
+};
+const CHART_TOPIC: Record<string, string> = { "3-EVS-1": "family", "3-EVS-2": "plants", "3-EVS-5": "water", "4-EVS-2": "plants", "4-EVS-4": "water", "4-EVS-6": "waste", "4-CT-7": "waste", "5-EVS-1": "farm", "5-EVS-2": "water", "5-EVS-4": "energy", "5-EVS-5": "weather", "5-EVS-6": "waste", "5-CT-6": "farm", "7-AI-2": "ai", "7-AI-3": "ai", "6-AI-2": "ai", "6-AI-3": "ai" };
+const PICTO_TOPIC: Record<string, readonly [string, readonly string[], string][]> = {
+  water: [["Buckets of water used", ["Mon", "Tue", "Wed", "Thu"], "💧"], ["Rainy days", ["Jun", "Jul", "Aug", "Sep"], "🌧️"]],
+  weather: [["Rainy days", ["Jun", "Jul", "Aug", "Sep"], "🌧️"], ["Sunny days", ["Jan", "Feb", "Mar", "Apr"], "☀️"]],
+  energy: [["Bulbs switched off to save power", ["Mon", "Tue", "Wed", "Thu"], "💡"], ["Solar panels fitted", ["Village A", "Village B", "Village C", "Village D"], "☀️"]],
+  farm: [["Litres of milk", ["Mon", "Tue", "Wed", "Thu"], "🥛"], ["Cows on each farm", ["Farm A", "Farm B", "Farm C", "Farm D"], "🐄"]],
+  family: [["Visits to Nani's house", ["Asha", "Ravi", "Meena", "Kabir"], "🏠"], ["Birthday cakes this year", ["Jan", "Feb", "Mar", "Apr"], "🎂"]],
+  food: [["Fruits eaten this week", ["Asha", "Ravi", "Meena", "Kabir"], "🍎"], ["Glasses of water drunk", ["Mon", "Tue", "Wed", "Thu"], "💧"]],
+};
+const PICTO_KEY: Record<string, string> = { "3-EVS-1": "family", "3-EVS-5": "water", "4-EVS-1": "food", "4-EVS-4": "water", "5-EVS-2": "water", "5-EVS-4": "energy", "5-EVS-5": "weather", "5-CT-6": "farm" };
+const chapterKey = (c: { cls: number; part: string; ch: number }) => `${c.cls}-${c.part}-${c.ch}`;
+
 const CHART_THEMES = [["Favourite fruit", ["Mango", "Apple", "Banana", "Guava", "Grapes"]], ["Pets at home", ["Dog", "Cat", "Fish", "Parrot", "Rabbit"]], ["Way to school", ["Walk", "Bus", "Cycle", "Car", "Auto"]], ["Books read", ["Asha", "Ravi", "Meena", "Kabir", "Zoya"]]] as const;
 export const barChart: Family = {
   id: "pic-bar-chart", ds: [1, 2, 3],
   make(c, d) {
-    const [title, labels0] = pick(c.r, CHART_THEMES);
+    const [title, labels0] = pick(c.r, (TOPIC_CHARTS[CHART_TOPIC[chapterKey(c)]] ?? CHART_THEMES) as readonly Theme[]);
     const n = d === 1 ? 4 : 5, step = pick(c.r, [2, 5]);
     const labels = labels0.slice(0, n);
     const values: number[] = [];
@@ -306,13 +330,13 @@ export const barChart: Family = {
 export const pictograph: Family = {
   id: "pic-pictograph", ds: [1, 2, 3],
   make(c, d) {
-    const theme = pick(c.r, [["Cycles in the school stand", ["Mon", "Tue", "Wed", "Thu"], "🚲"], ["Mangoes picked", ["Ravi", "Sita", "Arun", "Lata"], "🥭"], ["Trees planted", ["Class 3", "Class 4", "Class 5", "Class 6"], "🌳"], ["Ice creams sold", ["Mon", "Tue", "Wed", "Thu"], "🍦"]] as const);
+    const theme = pick(c.r, PICTO_TOPIC[PICTO_KEY[chapterKey(c)]] ?? [["Cycles in the school stand", ["Mon", "Tue", "Wed", "Thu"], "🚲"], ["Mangoes picked", ["Ravi", "Sita", "Arun", "Lata"], "🥭"], ["Trees planted", ["Class 3", "Class 4", "Class 5", "Class 6"], "🌳"], ["Ice creams sold", ["Mon", "Tue", "Wed", "Thu"], "🍦"]] as const);
     const per = d === 1 ? 2 : pick(c.r, [5, 10]);
     const counts = theme[1].map(() => int(c.r, 1, 6));
     if (new Set(counts).size < 3) return null;
     const fig: Fig = { kind: "pictograph", title: theme[0], labels: [...theme[1]], counts, icon: theme[2], per, alt: `Pictograph: ${theme[0]}` };
     const vals = counts.map((x) => x * per);
-    if (d < 3) { const i = int(c.r, 0, 3); return { d, skills: ["DATA", "ABSTRACT"], type: "NUMERIC", stem: `Look at the key. How many for **${theme[1][i]}**?`, figure: fig, answer: vals[i], solution: `${counts[i]} pictures × ${per} = ${vals[i]}.`, hint: "Each picture stands for more than one." }; }
+    if (d < 3) { const i = int(c.r, 0, 3); return { d, skills: ["DATA", "ABSTRACT"], type: "NUMERIC", stem: `Look at the key. How many for **${theme[1][i]}**?`, figure: fig, answer: vals[i], solution: `${counts[i]} picture${counts[i] === 1 ? "" : "s"} × ${per} = ${vals[i]}.`, hint: "Each picture stands for more than one." }; }
     const a = vals.indexOf(Math.max(...vals)), b = vals.indexOf(Math.min(...vals));
     return { d, skills: ["DATA", "DECOMPOSITION"], type: "NUMERIC", stem: `How many **more** for **${theme[1][a]}** than for **${theme[1][b]}**?`, figure: fig, answer: vals[a] - vals[b], solution: `${theme[1][a]}: ${counts[a]} × ${per} = ${vals[a]}; ${theme[1][b]}: ${counts[b]} × ${per} = ${vals[b]}. Difference ${vals[a] - vals[b]}.` };
   },
