@@ -96,6 +96,8 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
   - *Data and EVS:* bar graphs and pictographs with topic themes (rainfall, water, electricity, waste, farm), counting coloured shapes, sorting pictures (fruit/vegetables, animals, plants, transport, wet/dry waste) and odd one out.
   - *AI:* an AI's right/wrong answers (accuracy), and unbalanced training photos (which animal will it get wrong; how many photos to add for fairness).
 
+  Sample screenshots: [docs/screenshots/picture-questions-samples.png](docs/screenshots/picture-questions-samples.png) and [docs/screenshots/picture-questions-more-samples.png](docs/screenshots/picture-questions-more-samples.png).
+
   Pictures are stored as small JSON drawing specs (`src/lib/figures.ts`) and drawn as sharp SVG (`src/components/Figure.tsx`) with a bright palette on a white panel, so they look the same in light/dark mode and in print. Colours that look alike (red/pink, orange/yellow, green/teal) are never used together in one question, and only widely supported emoji are used. Answer options can themselves be pictures. Pictures show in practice, tests, homework, results, the question bank, worksheets and printed papers; the Word (.docx) export marks picture questions and points to the printable version.
 - Generated items are stored with `source = GENERATED` and their family id. They are published for the demo and shown with a "Generated" label; filter them in **Content studio → Questions → Generated only**.
 - Multiple-choice options are reordered when loaded so the correct answer's position is balanced.
