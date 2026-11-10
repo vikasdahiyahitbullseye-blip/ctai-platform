@@ -6,6 +6,8 @@ export const XP = {
   PRACTICE_ATTEMPT: 2,
   SET_COMPLETED: 20,
   TEST_PER_MARK: 2,
+  MILESTONE_APPROVED: 30,
+  SHOWCASE: 50,
   PUZZLE_SOLVED: 25,
 } as const;
 
@@ -67,6 +69,9 @@ export const BADGES: Record<string, { name: string; description: string; icon: s
   AI_EXPLORER: { name: "AI Explorer", description: "Proficient in AI Concepts", icon: "🤖" },
   COMEBACK: { name: "Comeback", description: "Improved by 20+ points on a retake", icon: "📈" },
   STREAK_7: { name: "On a Roll", description: "7-day activity streak", icon: "🔥" },
+  TEAM_PLAYER: { name: "Team Player", description: "Your project team's first milestone was approved", icon: "🤝" },
+  SHOWCASE: { name: "Showcase Star", description: "Your team's project was chosen for the showcase", icon: "🌟" },
+  HOMEWORK_HERO: { name: "Homework Hero", description: "Submitted 3 homework assignments", icon: "📝" },
 };
 
 export const SKILL_BADGE: Record<string, string> = {

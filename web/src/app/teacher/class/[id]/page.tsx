@@ -6,6 +6,9 @@ import { MASTERY_LABEL } from "@/lib/mastery";
 import { Card, PageHeader, Stat, Pill, LinkButton, MASTERY_TONE, Empty } from "@/components/ui";
 import { ChapterChart } from "@/components/Charts";
 import { toggleLeaderboard } from "@/app/actions/teacher";
+import { createChallenge } from "@/app/actions/gamify";
+import { prisma } from "@/lib/db";
+import { challengeProgress, houseStandings } from "@/lib/missions";
 
 const SHORT: Record<string, string> = { ABSTRACT: "Abstract", PATTERN: "Pattern", DECOMPOSITION: "Decomp.", ALGORITHMIC: "Algorithm", AI_CONCEPT: "AI", DATA: "Data", ETHICS: "Ethics" };
 
@@ -15,6 +18,9 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
   await requireSectionAccess(user.id, id);
   const a = await sectionAnalytics(id);
   const { section } = a;
+  const challenges = await prisma.classChallenge.findMany({ where: { sectionId: id }, orderBy: { endsAt: "desc" }, take: 3 });
+  const chProgress = await Promise.all(challenges.map((c) => challengeProgress(prisma, c)));
+  const houses = await houseStandings(prisma, user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -104,11 +110,31 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
             </table>
           ) : <Empty>No tests assigned yet.</Empty>}
         </Card>
-        <Card title="Gamification settings">
+        <Card title="Gamification">
           <p className="text-sm text-ink-2">Weekly leaderboard for this class is <strong>{section.leaderboard ? "on" : "off"}</strong>. {section.classLevel <= 5 && "For Classes 3–5 we recommend class team points instead of individual ranking."}</p>
           <form action={toggleLeaderboard.bind(null, section.id)} className="mt-4">
             <button className="rounded-xl border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-2">{section.leaderboard ? "Turn leaderboard off" : "Turn leaderboard on"}</button>
           </form>
+          <div className="mt-5 border-t border-line pt-4">
+            <div className="mb-2 text-sm font-semibold">Class challenges</div>
+            <ul className="mb-3 space-y-2 text-sm">
+              {challenges.map((c, i) => <li key={c.id}><div className="flex justify-between gap-2"><span>{c.title}</span><span className="tabular-nums text-muted">{chProgress[i]}/{c.target}</span></div><div className="mt-1 h-1.5 rounded-full bg-surface-2"><div className="h-full rounded-full bg-accent" style={{ width: `${Math.min(100, (chProgress[i] / c.target) * 100)}%` }} /></div></li>)}
+            </ul>
+            <form action={createChallenge.bind(null, section.id)} className="grid gap-2 text-sm">
+              <input name="title" required placeholder="e.g. 200 correct answers this week!" className="rounded-lg border border-line bg-surface px-2 py-1.5" />
+              <div className="grid grid-cols-2 gap-2">
+                <select name="metric" className="rounded-lg border border-line bg-surface px-2 py-1.5"><option value="CORRECT_ANSWERS">Correct answers</option><option value="PRACTICE_SETS">Practice sets</option><option value="PUZZLES">Puzzles solved</option></select>
+                <input name="target" type="number" min={1} defaultValue={200} className="rounded-lg border border-line bg-surface px-2 py-1.5" aria-label="Target" />
+                <input name="days" type="number" min={1} max={60} defaultValue={7} className="rounded-lg border border-line bg-surface px-2 py-1.5" aria-label="Days" />
+                <input name="rewardXp" type="number" min={0} max={200} defaultValue={30} className="rounded-lg border border-line bg-surface px-2 py-1.5" aria-label="Reward XP" />
+              </div>
+              <button className="rounded-xl bg-brand px-3 py-2 font-semibold text-white">Start challenge</button>
+            </form>
+          </div>
+          <div className="mt-5 border-t border-line pt-4">
+            <div className="mb-2 text-sm font-semibold">House cup (whole school)</div>
+            <ul className="space-y-1 text-sm">{houses.map((h) => <li key={h.id} className="flex justify-between"><span>{h.emoji} {h.name}</span><span className="tabular-nums" style={{ color: h.color }}>{h.points}</span></li>)}</ul>
+          </div>
         </Card>
       </div>
     </div>

@@ -1,6 +1,6 @@
 # Hitbullseye CT & AI — Product Specification
 
-Version 0.1 · November 2026 · Status: draft for review
+Version 0.2 · November 2026 · Status: draft for review
 
 This document specifies the complete Hitbullseye solution for the CBSE Computational Thinking and Artificial Intelligence (CT & AI) curriculum, Classes 3–8. It is the working spec for the platform being built in this repository.
 
@@ -259,3 +259,66 @@ Always show the evidence count, not just a level. Observation-journal ratings ar
 4. Hosting provider and budget.
 5. Brand name for the product.
 6. Whether to run a Hitbullseye CT & AI Olympiad as lead generation.
+
+---
+
+## 14. v0.2 additions (built)
+
+### 14.1 Who manages what
+
+| Role | Area | Manages |
+|---|---|---|
+| Hitbullseye super-admin | `/hq` | Schools (create, suspend), each school's first admin login, platform usage; approves content |
+| Hitbullseye content team | `/studio` | Questions (editor with live preview, CSV import, draft → review → published → retired, second-person approval), resources (lesson plans, worksheets, templates, files, links), project kits (milestones, teacher guides, rubrics), subject connections |
+| School admin | `/admin` | Class sections; teacher ↔ section mapping (CT / AI / Projects); teachers and admins; students (add, edit, move, house, deactivate); Excel/CSV bulk import with row-by-row validation; password resets; printable login slips; activity log |
+| Teacher | `/teacher` | Tests, homework, marking, projects, observation journal, class challenges, leaderboard |
+
+New staff get a temporary password and must change it at first sign-in. Students don't need an email.
+
+### 14.2 Projects (Classes 6–8: 2 × 20 h; Classes 3–5: optional)
+
+- **Kit:** driving question, subjects, skills, 4–6 milestones (Define → Collect → Explore → Create → Present → Reflect), with a student task, teacher guide and deliverable for each, plus a 4-level rubric.
+- **Flow:**
+  1. The teacher launches a kit for a section; teams are made automatically and can be edited.
+  2. Teams submit each milestone (text, link, photo or file).
+  3. The teacher approves the submission (+30 XP each) or sends it back with feedback.
+  4. The teacher scores the rubric; every student writes an individual reflection.
+  5. The best work goes into the class showcase.
+- **Seeded kits:**
+  - Class 3: My Morning Robot
+  - Class 5: Water Detectives
+  - Class 6: Weather Watchers
+  - Class 7: Nutri-Quest
+  - Class 8: Game On!
+- Themes follow CBSE's webinar examples and will be re-mapped when CBSE publishes its official list.
+
+### 14.3 Homework
+
+- An assignment combines auto-marked questions with up to 3 activities (written answer and/or photo upload).
+- Short-answer questions are teacher-marked.
+- The marking queue shows the student's work, the model answer, marks and feedback. The score updates and the student sees the feedback.
+
+### 14.4 Cross-subject connections
+
+- Every CT chapter is linked to its NCERT Maths chapter (the CBSE companion-book model).
+- Chapters also carry authored links to EVS, Science, Social Science, English, Art, PE, Computer Studies and daily life, each with a one-line "how" and an activity idea.
+- **Teachers:** curriculum map (chapters × skills × subjects), a chapter planner, and printable worksheets with answer keys.
+- **Students:** "Where else will you use this?" on each chapter page.
+- **EVS (TWAU) CT worksheets** for Classes 3–5, by theme. Theme names should be checked against the NCERT TWAU textbook in use.
+
+### 14.5 Gamification v2 and student design
+
+- **Design:** a separate playful theme ("Think Quest"), with rounded type, chunky buttons, a mascot ("Bitto"), confetti on correct answers, and mobile bottom navigation. Reduced-motion is respected.
+- **Adventure map:** chapters are islands in worlds (Nature Trail = EVS, Thinking Islands = CT, AI Galaxy). Each island earns 0–3 stars:
+
+  | Stars | Rule |
+  |---|---|
+  | 1 | ≥ 3 answers |
+  | 2 | ≥ 6 answers and ≥ 60% correct |
+  | 3 | ≥ 8 answers and ≥ 85% correct |
+
+- **Avatar:** choose an animal buddy and background; accessories unlock at levels 2–10. Unlocks are earned, never bought.
+- **Weekly missions:** practice sets, puzzles, correct answers, active days; rewards are claimed once a week.
+- **Houses:** Aryabhata, Ramanujan, Kalpana, Kalam. House points = members' XP this term.
+- **Class challenges:** set by the teacher; a shared progress bar and a reward XP claim.
+- **New badges:** Team Player, Showcase Star, Homework Hero.

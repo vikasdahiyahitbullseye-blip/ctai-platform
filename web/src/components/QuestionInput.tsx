@@ -60,6 +60,12 @@ export function QuestionInput({ q, value, onChange, disabled, big }: { q: Client
           />
         </label>
       )}
+      {q.type === "SHORT" && (
+        <label className="block">
+          <span className="text-sm text-muted">Write your answer — your teacher will mark it</span>
+          <textarea rows={4} value={typeof value === "string" ? value : ""} disabled={disabled} onChange={(e) => onChange(e.target.value)} className="mt-1 w-full rounded-xl border-2 border-line bg-surface px-4 py-3 outline-none focus:border-brand" />
+        </label>
+      )}
       {q.type === "ORDER" && <OrderInput q={q} value={value} onChange={onChange} disabled={disabled} />}
     </div>
   );

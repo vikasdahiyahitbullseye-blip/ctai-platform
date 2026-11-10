@@ -5,6 +5,7 @@ import { nextPracticeQuestion, practiceSetSize } from "@/lib/attempts";
 import { toClient } from "@/lib/questions";
 import { PracticePlayer } from "@/components/PracticePlayer";
 import { TestPlayer } from "@/components/TestPlayer";
+import { AssignmentPlayer } from "@/components/AssignmentPlayer";
 import { PageHeader } from "@/components/ui";
 
 export default async function PlayPage({ params }: { params: Promise<{ id: string }> }) {
@@ -12,7 +13,7 @@ export default async function PlayPage({ params }: { params: Promise<{ id: strin
   const user = await requireUser("STUDENT");
   const attempt = await prisma.attempt.findUnique({
     where: { id },
-    include: { responses: true, assessment: { include: { items: { include: { question: true }, orderBy: { position: "asc" } } } } },
+    include: { responses: true, taskResponses: { include: { file: true } }, assessment: { include: { items: { include: { question: true }, orderBy: { position: "asc" } }, tasks: { orderBy: { position: "asc" } } } } },
   });
   if (!attempt || attempt.userId !== user.id) notFound();
   if (attempt.submittedAt) redirect(`/student/result/${id}`);
@@ -39,6 +40,18 @@ export default async function PlayPage({ params }: { params: Promise<{ id: strin
   }
   const questions = attempt.assessment.items.map((it) => toClient(it.question, { marks: it.marks }));
   const saved = Object.fromEntries(attempt.responses.map((r) => [r.questionId, r.answer ? JSON.parse(r.answer) : null]));
+  if (kind === "ASSIGNMENT") {
+    const tasks = attempt.assessment.tasks.map((t) => {
+      const r = attempt.taskResponses.find((x) => x.taskId === t.id);
+      return { id: t.id, title: t.title, prompt: t.prompt, responseType: t.responseType, marks: t.marks, text: r?.text ?? "", file: r?.file ? { id: r.file.id, name: r.file.filename, isImage: r.file.mime.startsWith("image/") } : null };
+    });
+    return (
+      <div>
+        <PageHeader title={`📝 ${attempt.assessment.title}`} subtitle={attempt.assessment.instructions ?? undefined} />
+        <AssignmentPlayer attemptId={id} questions={questions} saved={saved} tasks={tasks} big={big} />
+      </div>
+    );
+  }
   const deadline = attempt.assessment.durationMin ? attempt.startedAt.getTime() + attempt.assessment.durationMin * 60000 : null;
   return (
     <div>

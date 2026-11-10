@@ -2,7 +2,7 @@ export type SeedQuestion = {
   ch: number; // chapter number within part
   part?: "CT" | "AI" | "EVS";
   skills: string[];
-  type: "MCQ" | "MULTI" | "TRUE_FALSE" | "NUMERIC" | "FILL_BLANK" | "ORDER";
+  type: "MCQ" | "MULTI" | "TRUE_FALSE" | "NUMERIC" | "FILL_BLANK" | "ORDER" | "SHORT";
   d: 1 | 2 | 3;
   stem: string;
   options?: string[];

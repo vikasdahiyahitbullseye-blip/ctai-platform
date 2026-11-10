@@ -58,6 +58,8 @@ export function formatAnswer(type: string, options: string[], key: AnswerValue):
       return Array.isArray(key) ? String(key[0]) : String(key);
     case "ORDER":
       return (key as number[]).map((i) => options[i]).join(" → ");
+    case "SHORT":
+      return Array.isArray(key) ? String(key[0]) : String(key);
     default:
       return String(key);
   }

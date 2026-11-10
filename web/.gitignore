@@ -45,3 +45,6 @@ prisma/*.db
 prisma/*.db-journal
 e2e/screenshots/
 !.env.example
+
+# uploaded files
+storage/

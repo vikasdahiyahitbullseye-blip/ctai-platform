@@ -10,6 +10,10 @@ export default async function TeacherLayout({ children }: { children: React.Reac
         { href: "/teacher", label: "My classes" },
         { href: "/teacher/generator", label: "Test generator" },
         { href: "/teacher/tests", label: "Tests" },
+        { href: "/teacher/assignments", label: "Homework" },
+        { href: "/teacher/projects", label: "Projects" },
+        { href: "/teacher/curriculum", label: "Curriculum map" },
+        { href: "/teacher/resources", label: "Resources" },
         { href: "/teacher/questions", label: "Question bank" },
       ]}
     >

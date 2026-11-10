@@ -25,7 +25,7 @@ export async function puzzleOfTheDay(classLevel: number, d = new Date()) {
 export async function assignedWork(userId: string, sectionId: string) {
   const assignments = await prisma.assessmentAssignment.findMany({
     where: { sectionId },
-    include: { assessment: { include: { items: true, attempts: { where: { userId } } } } },
+    include: { assessment: { include: { items: true, tasks: true, attempts: { where: { userId } } } } },
     orderBy: { createdAt: "desc" },
   });
   return assignments.map((a) => {
@@ -37,12 +37,14 @@ export async function assignedWork(userId: string, sectionId: string) {
       kind: a.assessment.kind,
       dueAt: a.dueAt,
       questions: a.assessment.items.length,
-      marks: a.assessment.items.reduce((s, i) => s + i.marks, 0),
+      marks: a.assessment.items.reduce((s, i) => s + i.marks, 0) + a.assessment.tasks.reduce((s, t) => s + t.marks, 0),
+      tasks: a.assessment.tasks.length,
       durationMin: a.assessment.durationMin,
       status,
       attemptId: attempt?.id,
       score: attempt?.score,
       maxScore: attempt?.maxScore,
+      needsMarking: attempt?.needsMarking ?? false,
     };
   });
 }

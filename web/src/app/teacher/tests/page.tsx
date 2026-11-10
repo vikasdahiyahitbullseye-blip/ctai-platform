@@ -6,7 +6,7 @@ import { Card, PageHeader, LinkButton, Pill, Empty } from "@/components/ui";
 export default async function TestsList() {
   const user = await requireUser("TEACHER", "ADMIN");
   const tests = await prisma.assessment.findMany({
-    where: { schoolId: user.schoolId, kind: { in: ["TEST", "ASSIGNMENT"] } },
+    where: { schoolId: user.schoolId, kind: "TEST" },
     include: { items: true, assignments: { include: { section: true } }, _count: { select: { attempts: { where: { submittedAt: { not: null } } } } } },
     orderBy: { createdAt: "desc" },
   });

@@ -25,9 +25,9 @@ export default async function TestsPage() {
             {work.map((w) => (
               <li key={w.id} className="flex flex-wrap items-center justify-between gap-3 py-4">
                 <div>
-                  <div className="flex items-center gap-2 font-semibold">{w.title} {STATUS[w.status as keyof typeof STATUS]}</div>
+                  <div className="flex flex-wrap items-center gap-2 font-semibold">{w.kind === "ASSIGNMENT" ? "📝" : "🧪"} {w.title} {STATUS[w.status as keyof typeof STATUS]}{w.needsMarking && <Pill tone="warn">Being marked</Pill>}</div>
                   <div className="mt-0.5 text-sm text-muted">
-                    {w.questions} questions · {w.marks} marks{w.durationMin ? ` · ${w.durationMin} min` : ""}
+                    {w.kind === "ASSIGNMENT" ? "Homework · " : "Test · "}{w.questions} questions{w.tasks ? ` + ${w.tasks} activit${w.tasks > 1 ? "ies" : "y"}` : ""} · {w.marks} marks{w.durationMin ? ` · ${w.durationMin} min` : ""}
                     {w.dueAt ? ` · due ${w.dueAt.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}
                   </div>
                 </div>

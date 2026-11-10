@@ -92,3 +92,24 @@ describe("generator", () => {
     expect(r.items.every((q) => q.chapterId === "c2")).toBe(true);
   });
 });
+
+import { normaliseQuestion } from "../questionInput";
+import { parseCsv } from "../csv";
+describe("studio question validation", () => {
+  const base = { classLevel: 6, part: "CT", chapterNumber: 1, difficulty: 2, skills: ["PATTERN"], stem: "What comes next?", solution: "Add two each time.", options: ["1", "2", "3"] };
+  it("parses answers per type", () => {
+    expect(normaliseQuestion({ ...base, type: "MCQ", answerRaw: "b" })).toMatchObject({ ok: true, data: { answer: 1 } });
+    expect(normaliseQuestion({ ...base, type: "MULTI", answerRaw: "a, c" })).toMatchObject({ ok: true, data: { answer: [0, 2] } });
+    expect(normaliseQuestion({ ...base, type: "ORDER", answerRaw: "" })).toMatchObject({ ok: true, data: { answer: [0, 1, 2] } });
+    expect(normaliseQuestion({ ...base, type: "NUMERIC", options: [], answerRaw: "1,200" })).toMatchObject({ ok: true, data: { answer: 1200 } });
+    expect(normaliseQuestion({ ...base, type: "FILL_BLANK", options: [], answerRaw: "pattern | patterns" })).toMatchObject({ ok: true, data: { answer: ["pattern", "patterns"] } });
+  });
+  it("rejects bad input", () => {
+    expect(normaliseQuestion({ ...base, type: "MCQ", answerRaw: "e" }).ok).toBe(false);
+    expect(normaliseQuestion({ ...base, type: "MCQ", answerRaw: "a", skills: [] }).ok).toBe(false);
+    expect(normaliseQuestion({ ...base, type: "MCQ", answerRaw: "a", solution: "short" }).ok).toBe(false);
+  });
+  it("parses quoted CSV", () => {
+    expect(parseCsv('a,b\n"x, y","he said ""hi"""\n')).toEqual([["a", "b"], ["x, y", 'he said "hi"']]);
+  });
+});

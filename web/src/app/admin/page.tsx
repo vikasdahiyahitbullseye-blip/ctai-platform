@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import { AppShell } from "@/components/AppShell";
+import { houseStandings } from "@/lib/missions";
 import { Card, PageHeader, Stat } from "@/components/ui";
 
 export default async function AdminHome() {
@@ -14,9 +14,10 @@ export default async function AdminHome() {
     prisma.question.count(),
     prisma.assessment.count({ where: { schoolId: user.schoolId, kind: "TEST" } }),
   ]);
+  const houses = await houseStandings(prisma, user.schoolId);
   const active = await Promise.all(sections.map((s) => prisma.attempt.groupBy({ by: ["userId"], where: { userId: { in: s.enrollments.map((e) => e.userId) }, submittedAt: { gte: weekAgo } } }).then((r) => r.length)));
   return (
-    <AppShell user={user} nav={[{ href: "/admin", label: "School overview" }]}>
+    <>
       <PageHeader title={user.school.name} subtitle={`Session ${user.school.session} · CT & AI usage`} />
       <div className="grid gap-4 sm:grid-cols-5">
         <Stat label="Students" value={students} />
@@ -39,8 +40,18 @@ export default async function AdminHome() {
             ))}
           </tbody>
         </table>
-        <p className="mt-4 text-xs text-muted">Bulk user import, class mapping and school-wide skill reports are planned for the MVP pilot phase (see docs/SPEC.md §12).</p>
       </Card>
-    </AppShell>
+      <Card title="House standings (this term)" className="mt-6">
+        <div className="grid gap-3 sm:grid-cols-4">
+          {houses.map((h, i) => (
+            <div key={h.id} className="rounded-2xl p-4 text-white" style={{ background: h.color }}>
+              <div className="text-sm opacity-90">#{i + 1} · {h.members} students</div>
+              <div className="text-lg font-bold">{h.emoji} {h.name}</div>
+              <div className="text-2xl font-bold tabular-nums">{h.points} pts</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </>
   );
 }

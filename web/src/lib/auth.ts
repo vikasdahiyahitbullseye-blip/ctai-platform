@@ -26,7 +26,10 @@ export async function getSessionUser() {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, secret());
-    return await prisma.user.findUnique({ where: { id: String(payload.uid) }, include: { school: true } });
+    const user = await prisma.user.findUnique({ where: { id: String(payload.uid) }, include: { school: true } });
+    // Deactivated users and schools lose access immediately.
+    if (!user || !user.active || !user.school.active) return null;
+    return user;
   } catch {
     return null;
   }
@@ -41,5 +44,16 @@ export async function requireUser(...roles: Role[]) {
 }
 
 export function homeFor(role: string) {
-  return role === "STUDENT" ? "/student" : role === "TEACHER" ? "/teacher" : "/admin";
+  switch (role) {
+    case "STUDENT": return "/student";
+    case "TEACHER": return "/teacher";
+    case "ADMIN": return "/admin";
+    case "CONTENT": return "/studio";
+    case "SUPERADMIN": return "/hq";
+    default: return "/login";
+  }
+}
+
+export async function audit(user: { id: string; schoolId: string }, action: string, detail?: string) {
+  await prisma.auditLog.create({ data: { schoolId: user.schoolId, actorId: user.id, action, detail } });
 }

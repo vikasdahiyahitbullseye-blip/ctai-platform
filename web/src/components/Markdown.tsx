@@ -11,7 +11,8 @@ function inline(text: string, key: string | number): React.ReactNode {
 }
 
 export function Markdown({ text, className = "" }: { text: string; className?: string }) {
-  const blocks = text.split(/\n\s*\n/);
+  // Headings always stand alone as a block.
+  const blocks = text.replace(/^(#{2,3} .*)$/gm, "\n$1\n").trim().split(/\n\s*\n/);
   return (
     <div className={`space-y-3 ${className}`}>
       {blocks.map((block, bi) => {
@@ -32,6 +33,17 @@ export function Markdown({ text, className = "" }: { text: string; className?: s
             </table>
           );
         }
+        if (lines.length === 1 && /^#{2,3}\s/.test(lines[0])) {
+          const t = lines[0].replace(/^#+\s/, "");
+          return lines[0].startsWith("###") ? <h4 key={bi} className="font-semibold">{inline(t, 0)}</h4> : <h3 key={bi} className="text-lg font-bold">{inline(t, 0)}</h3>;
+        }
+        if (lines.every((l) => /^\d+\.\s/.test(l.trim()))) {
+          return (
+            <ol key={bi} className="list-decimal space-y-1 pl-6">
+              {lines.map((l, i) => <li key={i}>{inline(l.trim().replace(/^\d+\.\s/, ""), i)}</li>)}
+            </ol>
+          );
+        }
         if (lines.every((l) => l.trim().startsWith("- "))) {
           return (
             <ul key={bi} className="list-disc space-y-1 pl-6">
@@ -43,7 +55,9 @@ export function Markdown({ text, className = "" }: { text: string; className?: s
         return (
           <div key={bi}>
             {lines.map((l, i) =>
-              l.trim().startsWith("- ") ? (
+              /^#{2,3}\s/.test(l) ? (
+                <h3 key={i} className="text-lg font-bold">{inline(l.replace(/^#+\s/, ""), i)}</h3>
+              ) : l.trim().startsWith("- ") ? (
                 <div key={i} className="flex gap-2 pl-2"><span aria-hidden>•</span><span>{inline(l.trim().slice(2), i)}</span></div>
               ) : (
                 <p key={i}>{inline(l, i)}</p>

@@ -6,7 +6,14 @@ import { rng, generatePaper } from "../src/lib/generator";
 import { saveAnswer, submitAttempt, nextPracticeQuestion } from "../src/lib/attempts";
 import { parseSkills } from "../src/lib/progress";
 import { class3 } from "./content/class3";
-import { class6 } from "./content/class6";
+import { class6, class6Short } from "./content/class6";
+import { evs3 } from "./content/evs3";
+import { CONNECTIONS } from "./content/connections";
+import { PROJECT_KITS } from "./content/projects";
+import { RESOURCES } from "./content/resources";
+import { DEFAULT_HOUSES } from "../src/lib/constants";
+import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
+import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 
 const db = new PrismaClient();
@@ -19,7 +26,7 @@ const LAST = ["Sharma", "Verma", "Iyer", "Khan", "Patel", "Reddy", "Singh", "Das
 
 async function main() {
   // Wipe in dependency order.
-  for (const m of ["observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "school"] as const) {
+  for (const m of ["missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "house", "school"] as const) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)[m].deleteMany();
   }
@@ -29,8 +36,13 @@ async function main() {
   for (const [cls, parts] of Object.entries(CURRICULUM)) {
     for (const [part, titles] of Object.entries(parts)) {
       for (const [i, title] of (titles as string[]).entries()) {
-        const c = await db.chapter.create({ data: { classLevel: Number(cls), part, number: i + 1, title, hours: part === "AI" ? 5 : null } });
-        chapterId[`${cls}-${part}-${i + 1}`] = c.id;
+        const key = `${cls}-${part}-${i + 1}`;
+        const conn = CONNECTIONS[key];
+        const c = await db.chapter.create({ data: { classLevel: Number(cls), part, number: i + 1, title, hours: part === "AI" ? 5 : null, focus: conn?.focus } });
+        chapterId[key] = c.id;
+        const links = [...(conn?.links ?? [])];
+        if (part === "CT") links.unshift({ subject: "MATHS", topic: `NCERT Mathematics — "${title}"`, how: "This CT chapter is the companion to the Maths chapter of the same name: teach the Maths concept, then use these thinking questions in the same period." });
+        for (const l of links) await db.subjectLink.create({ data: { chapterId: c.id, ...l } });
       }
     }
   }
@@ -42,7 +54,7 @@ async function main() {
       const part = q.part ?? "CT";
       const key = `${cls}-${part}-${q.ch}`;
       counters[key] = (counters[key] ?? 0) + 1;
-      const code = `C${cls}-${part}-${String(q.ch).padStart(2, "0")}-${q.skills[0].slice(0, 3)}-${String(counters[key]).padStart(4, "0")}`;
+      const code = `C${cls}-${part}-${q.type === "SHORT" ? "S" : ""}${String(q.ch).padStart(2, "0")}-${q.skills[0].slice(0, 3)}-${String(counters[key]).padStart(4, "0")}`;
       await db.question.create({
         data: {
           code,
@@ -64,13 +76,22 @@ async function main() {
     }
   };
   await addQuestions(3, class3);
-  await addQuestions(6, class6);
+  await addQuestions(6, [...class6, ...class6Short]);
+  await addQuestions(3, evs3);
 
   // School and people
   const hash = await bcrypt.hash("demo123", 10);
-  const school = await db.school.create({ data: { name: "Demo Public School", city: "New Delhi" } });
+  const hq = await db.school.create({ data: { name: "Hitbullseye (HQ)", city: "New Delhi", isHq: true, code: "HQ" } });
+  await db.user.create({ data: { schoolId: hq.id, role: "SUPERADMIN", name: "Hitbullseye Super Admin", username: "superadmin", passwordHash: await bcrypt.hash("demo123", 10) } });
+  const contentUser = await db.user.create({ data: { schoolId: hq.id, role: "CONTENT", name: "Content Team (Demo)", username: "content", passwordHash: await bcrypt.hash("demo123", 10) } });
+  await db.question.updateMany({ data: { authorId: contentUser.id } });
+
+  const school = await db.school.create({ data: { name: "Demo Public School", city: "New Delhi", code: "DPS-DEL" } });
+  const houses = [];
+  for (const h of DEFAULT_HOUSES) houses.push(await db.house.create({ data: { schoolId: school.id, ...h } }));
   const admin = await db.user.create({ data: { schoolId: school.id, role: "ADMIN", name: "Principal (Demo)", username: "admin", passwordHash: hash } });
   const teacher = await db.user.create({ data: { schoolId: school.id, role: "TEACHER", name: "Ms. Anjali Mehra", username: "teacher", passwordHash: hash } });
+  const computerTeacher = await db.user.create({ data: { schoolId: school.id, role: "TEACHER", name: "Mr. Rohan Iyer", username: "rohan", passwordHash: hash } });
   void admin;
 
   const sections = {
@@ -82,6 +103,7 @@ async function main() {
       { userId: teacher.id, sectionId: sections["3A"].id, subject: "CT" },
       { userId: teacher.id, sectionId: sections["6A"].id, subject: "CT" },
       { userId: teacher.id, sectionId: sections["6A"].id, subject: "AI" },
+      { userId: computerTeacher.id, sectionId: sections["6A"].id, subject: "AI" },
     ],
   });
 
@@ -103,6 +125,8 @@ async function main() {
           username: demo ? `student${sec.classLevel}` : `${sec.classLevel}${sec.section.toLowerCase()}${String(i + 1).padStart(2, "0")}`,
           rollNo: String(i + 1),
           passwordHash: hash,
+          houseId: houses[i % houses.length].id,
+          avatar: JSON.stringify({ animal: demo ? (sec.classLevel === 3 ? "fox" : "owl") : ANIMALS[Math.floor(rand() * ANIMALS.length)].id, bg: BACKGROUNDS[Math.floor(rand() * BACKGROUNDS.length)].id, accessory: null }),
         },
       });
       await db.enrollment.create({ data: { userId: u.id, sectionId: sec.id } });
@@ -113,7 +137,7 @@ async function main() {
   }
 
   const chaptersWithQs = async (cls: number) =>
-    (await db.chapter.findMany({ where: { classLevel: cls, questions: { some: { isPuzzle: false } } }, select: { id: true } })).map((c) => c.id);
+    (await db.chapter.findMany({ where: { classLevel: cls, part: { not: "EVS" }, questions: { some: { isPuzzle: false } } }, select: { id: true } })).map((c) => c.id);
   const chMap = { 3: await chaptersWithQs(3), 6: await chaptersWithQs(6) } as Record<number, string[]>;
 
   const answerFor = (q: { type: string; answer: string; options: string }, correct: boolean) => {
@@ -173,7 +197,7 @@ async function main() {
 
   // Teacher-made tests via the generator.
   const makeTest = async (cls: number, sectionId: string, title: string, chapters: string[], count: number, daysAgo: number, dueInDays: number, completion: number) => {
-    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
+    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, type: { not: "SHORT" }, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
     const blueprint = { chapterIds: chapters, count, difficultyMix: { 1: 40, 2: 40, 3: 20 } as const, seed: daysAgo + 7 };
     const gen = generatePaper(pool, blueprint);
     const created = new Date(now - daysAgo * DAY);
@@ -210,9 +234,88 @@ async function main() {
     await db.observation.create({ data: { studentId: s.id, observerId: teacher.id, skill: pick(["PATTERN", "DECOMPOSITION", "ALGORITHMIC", "ABSTRACT"]), rating: 1 + Math.floor(rand() * 4), note: pick(notes), createdAt: new Date(now - Math.floor(rand() * 10) * DAY) } });
   }
 
+  // Resources
+  for (const r of RESOURCES) {
+    await db.resource.create({ data: { title: r.title, kind: r.kind, audience: r.audience, classLevel: r.classLevel, chapterId: r.ch ? chapterId[r.ch] : null, description: r.description, body: r.body } });
+  }
+
+  // Project kits
+  const kitIds: Record<string, string> = {};
+  for (const k of PROJECT_KITS) {
+    const kit = await db.projectKit.create({
+      data: {
+        code: k.code, classLevel: k.classLevel, title: k.title, tagline: k.tagline, emoji: k.emoji, drivingQuestion: k.drivingQuestion, overview: k.overview,
+        subjects: k.subjects.join(","), skills: k.skills.join(","), hours: k.hours, finalProduct: k.finalProduct,
+        milestones: { create: k.milestones.map((m, i) => ({ position: i + 1, phase: m.phase, title: m.title, sessions: m.sessions, studentTask: m.studentTask, teacherGuide: m.teacherGuide, deliverable: m.deliverable, evidence: m.evidence ?? "ANY" })) },
+        criteria: { create: k.rubric.map((c, i) => ({ position: i + 1, name: c.name, levels: JSON.stringify(c.levels) })) },
+      },
+    });
+    kitIds[k.code] = kit.id;
+  }
+
+  // An active Weather Watchers project in 6-A, two weeks in.
+  const run = await db.projectRun.create({ data: { kitId: kitIds["P6-WEATHER"], sectionId: sections["6A"].id, teacherId: computerTeacher.id, startedAt: new Date(now - 14 * DAY), dueAt: new Date(now + 40 * DAY) } });
+  const s6 = students.filter((x) => x.cls === 6);
+  const teamNames = ["Cloud Chasers", "Monsoon Mappers", "Sunny Side", "Storm Trackers"];
+  const ms = await db.projectMilestone.findMany({ where: { kitId: kitIds["P6-WEATHER"] }, orderBy: { position: "asc" } });
+  for (let t = 0; t < 4; t++) {
+    const members = s6.filter((_, i) => i % 4 === t);
+    const team = await db.projectTeam.create({ data: { runId: run.id, name: teamNames[t], members: { create: members.map((m) => ({ userId: m.id })) } } });
+    const lead = members[0].id;
+    await db.milestoneSubmission.create({ data: { teamId: team.id, milestoneId: ms[0].id, submittedById: lead, text: ["States: Kerala, Rajasthan, Delhi, Assam. Questions: Which is wettest? Which has the biggest day–night temperature difference? Does the coast keep temperatures steady?", "We chose Tamil Nadu, Punjab, Meghalaya and Gujarat. Roles: Diya records, Kabir checks, Meera charts, Arjun presents.", "Kerala, Himachal Pradesh, Bihar and Maharashtra. We want to know if hill states are colder every day.", "Goa, Delhi, Odisha, Rajasthan. Question: does rain follow a pattern across the week?"][t], status: "APPROVED", feedback: "Good contrasting choice of states. Make sure your questions can be answered with the data you collect.", submittedAt: new Date(now - 12 * DAY), reviewedAt: new Date(now - 11 * DAY) } });
+    if (t < 3) await db.milestoneSubmission.create({ data: { teamId: team.id, milestoneId: ms[1].id, submittedById: lead, text: "Week 1 data recorded for all four states (see table). Source: newspaper weather page and IMD website. Missing one day for Assam — will fill from the website.", status: t === 2 ? "RETURNED" : "SUBMITTED", feedback: t === 2 ? "Two days are missing rainfall values. Please complete and resubmit." : null, submittedAt: new Date(now - 2 * DAY), reviewedAt: t === 2 ? new Date(now - DAY) : null } });
+  }
+  // A finished Class 3 mini project with scores and a showcase.
+  const run3 = await db.projectRun.create({ data: { kitId: kitIds["P3-ROUTINE"], sectionId: sections["3A"].id, teacherId: teacher.id, startedAt: new Date(now - 20 * DAY), dueAt: new Date(now - 6 * DAY), status: "COMPLETED" } });
+  const s3 = students.filter((x) => x.cls === 3);
+  const ms3 = await db.projectMilestone.findMany({ where: { kitId: kitIds["P3-ROUTINE"] }, orderBy: { position: "asc" } });
+  const crit3 = await db.rubricCriterion.findMany({ where: { kitId: kitIds["P3-ROUTINE"] } });
+  for (let t = 0; t < 3; t++) {
+    const members = s3.filter((_, i) => i % 3 === t);
+    const team = await db.projectTeam.create({ data: { runId: run3.id, name: ["Robo Rockets", "Step Stars", "Bug Busters"][t], showcase: t === 0, members: { create: members.map((m) => ({ userId: m.id })) } } });
+    for (const m of ms3) {
+      await db.milestoneSubmission.create({ data: { teamId: team.id, milestoneId: m.id, submittedById: members[0].id, text: m.phase === "PRESENT" ? "Our robot put on shoes before socks! We moved 'wear socks' before 'wear shoes'." : m.phase === "REFLECT" ? "Robots can't guess. Every step must be said clearly and in order." : "1. Wake up 2. Brush teeth 3. Bath 4. Wear uniform 5. Wear socks 6. Wear shoes 7. Eat breakfast 8. Pack bag 9. Go to bus", status: "APPROVED", feedback: "Lovely work!", submittedAt: new Date(now - 10 * DAY), reviewedAt: new Date(now - 8 * DAY) } });
+    }
+    for (const c of crit3) await db.rubricScore.create({ data: { teamId: team.id, criterionId: c.id, level: Math.min(4, 2 + ((t + c.position) % 3)) } });
+    for (const m of members.slice(0, 2)) await db.projectReflection.create({ data: { teamId: team.id, userId: m.id, learned: "Instructions must be in the right order.", challenge: "We forgot small steps like opening the tap.", nextTime: "Test with a friend sooner." } });
+  }
+
+  // Homework with an activity task (teacher-marked) for 3-A and 6-A.
+  const makeHomework = async (cls: number, sectionId: string, title: string, qFilter: object, task: { title: string; prompt: string }, daysAgo: number, dueIn: number) => {
+    const qs = await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, ...qFilter }, take: 4, orderBy: { code: "asc" } });
+    const hw = await db.assessment.create({
+      data: {
+        kind: "ASSIGNMENT", title, classLevel: cls, schoolId: school.id, createdById: teacher.id, createdAt: new Date(now - daysAgo * DAY),
+        instructions: "Answer the questions, then do the activity at home and describe what you found.",
+        items: { create: qs.map((q, i) => ({ questionId: q.id, position: i + 1, marks: q.marks })) },
+        tasks: { create: [{ position: 1, title: task.title, prompt: task.prompt, responseType: "ANY", marks: 4 }] },
+      },
+      include: { items: { include: { question: true } }, tasks: true },
+    });
+    await db.assessmentAssignment.create({ data: { assessmentId: hw.id, sectionId, dueAt: new Date(now + dueIn * DAY), createdAt: new Date(now - daysAgo * DAY) } });
+    for (const s of students.filter((x) => x.cls === cls && !x.demo)) {
+      if (rand() > 0.6) continue;
+      const at = new Date(now - (daysAgo - 1) * DAY);
+      const attempt = await db.attempt.create({ data: { userId: s.id, assessmentId: hw.id, startedAt: at } });
+      for (const it of hw.items) await saveAnswer(db, attempt.id, it.questionId, answerFor(it.question, rand() < pCorrect(s.ability, it.question.difficulty)), { at });
+      await saveTaskResponse(db, attempt.id, hw.tasks[0].id, { text: pick(task.title.includes("water") ? ["Bath 20 L, brushing 2 L (tap off!), cooking 10 L. Total 32 L. Brushing with tap off saved the most.", "My family used 3 buckets for baths. We can use 1 mug for brushing.", "We found a leaking tap in the kitchen and told my father to fix it."] : ["Smart speaker (NLP), phone face unlock (computer vision), YouTube suggestions (recommendations).", "Google Maps traffic, spam filter in email, voice typing on phone.", "Photo app that groups faces, Alexa, auto-correct on keyboard."]) });
+      await submitAttempt(db, attempt.id, new Date(at.getTime() + 3600000));
+      if (rand() < 0.4) {
+        const fresh = await db.attempt.findUniqueOrThrow({ where: { id: attempt.id }, include: { taskResponses: true } });
+        await markWork(db, attempt.id, { responses: [], tasks: fresh.taskResponses.map((t) => ({ id: t.id, marks: 2 + Math.floor(rand() * 3), feedback: "Good observations — try to add numbers next time." })) });
+      }
+    }
+  };
+  await makeHomework(3, sections["3A"].id, "Homework: Every drop counts", { chapter: { part: "EVS", number: 5 } }, { title: "My water diary", prompt: "Keep a **water diary** for one day at home. How many buckets or mugs did your family use for bathing, brushing and cooking? Which activity used the most water? Write or upload a photo of your diary." }, 3, 3);
+  await makeHomework(6, sections["6A"].id, "Homework: AI around my home", { chapter: { part: "AI", number: 1 } }, { title: "AI spotter", prompt: "Find **three** things at home or in your family's phones that use AI. For each one, write what it does and which AI domain it belongs to (Computer Vision, NLP or Data Science)." }, 4, 2);
+
+  // Class challenges
+  await db.classChallenge.create({ data: { sectionId: sections["3A"].id, title: "Brain Builders Week: 300 correct answers as a class!", metric: "CORRECT_ANSWERS", target: 300, rewardXp: 30, startsAt: new Date(now - 4 * DAY), endsAt: new Date(now + 3 * DAY), createdById: teacher.id } });
+  await db.classChallenge.create({ data: { sectionId: sections["6A"].id, title: "Puzzle Marathon: 40 puzzles solved", metric: "PUZZLES", target: 40, rewardXp: 40, startsAt: new Date(now - 6 * DAY), endsAt: new Date(now + 8 * DAY), createdById: teacher.id } });
+
   const counts = await Promise.all([db.question.count(), db.attempt.count(), db.response.count(), db.userBadge.count()]);
   console.log(`Seeded: ${counts[0]} questions, ${counts[1]} attempts, ${counts[2]} responses, ${counts[3]} badges.`);
-  console.log("Logins (password demo123): teacher, student3, student6, admin");
+  console.log("Logins (password demo123): teacher, rohan, student3, student6, admin, content, superadmin");
 }
 
 main().finally(() => db.$disconnect());

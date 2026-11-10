@@ -53,16 +53,21 @@ export async function saveAnswer(
   return instant ? { correct, solution: q.solution, answer: JSON.parse(q.answer) } : { saved: true };
 }
 
-/** Grades all responses and closes the attempt. */
+/** Grades all responses and closes the attempt. Written answers and activity tasks are left for the teacher. */
 export async function submitAttempt(db: PrismaClient, attemptId: string, at = new Date()) {
   const attempt = await db.attempt.findUniqueOrThrow({
     where: { id: attemptId },
-    include: { assessment: { include: { items: { include: { question: true } } } }, responses: { include: { question: true } } },
+    include: {
+      assessment: { include: { items: { include: { question: true } }, tasks: true } },
+      responses: { include: { question: true } },
+      taskResponses: true,
+    },
   });
   if (attempt.submittedAt) return { newBadges: [] as string[], score: attempt.score ?? 0, maxScore: attempt.maxScore ?? 0 };
 
   let score = 0;
   let maxScore = 0;
+  let needsMarking = false;
   if (attempt.assessment.kind === "PRACTICE") {
     for (const r of attempt.responses) {
       maxScore += r.question.marks;
@@ -73,13 +78,22 @@ export async function submitAttempt(db: PrismaClient, attemptId: string, at = ne
       maxScore += item.marks;
       const r = attempt.responses.find((x) => x.questionId === item.questionId);
       if (!r) continue;
+      if (item.question.type === "SHORT") {
+        if (r.answer && JSON.parse(r.answer)) needsMarking = true;
+        continue;
+      }
       const correct = isCorrect(item.question.type, JSON.parse(item.question.answer), r.answer ? JSON.parse(r.answer) : null);
       const marks = correct ? item.marks : 0;
       score += marks;
       await db.response.update({ where: { id: r.id }, data: { correct, marks } });
     }
+    for (const t of attempt.assessment.tasks) {
+      maxScore += t.marks;
+      const tr = attempt.taskResponses.find((x) => x.taskId === t.id);
+      if (tr && (tr.text?.trim() || tr.fileId)) needsMarking = true;
+    }
   }
-  await db.attempt.update({ where: { id: attemptId }, data: { submittedAt: at, score, maxScore } });
+  await db.attempt.update({ where: { id: attemptId }, data: { submittedAt: at, score, maxScore, needsMarking } });
 
   if (attempt.assessment.kind === "PRACTICE" && attempt.responses.length) await addXp(db, attempt.userId, XP.SET_COMPLETED, "Practice set completed", at);
   if (attempt.assessment.kind === "TEST" || attempt.assessment.kind === "ASSIGNMENT") await addXp(db, attempt.userId, Math.round(score * XP.TEST_PER_MARK), `Completed: ${attempt.assessment.title}`, at);
@@ -88,11 +102,62 @@ export async function submitAttempt(db: PrismaClient, attemptId: string, at = ne
   return { newBadges, score, maxScore };
 }
 
+/** Saves a student's response to an activity task (text and/or uploaded file). */
+export async function saveTaskResponse(db: PrismaClient, attemptId: string, taskId: string, data: { text?: string | null; fileId?: string | null }) {
+  const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId } });
+  if (attempt.submittedAt) throw new Error("Already submitted");
+  const task = await db.assignmentTask.findFirst({ where: { id: taskId, assessmentId: attempt.assessmentId } });
+  if (!task) throw new Error("Task not in this assignment");
+  const patch = { ...(data.text !== undefined ? { text: data.text } : {}), ...(data.fileId !== undefined ? { fileId: data.fileId } : {}) };
+  return db.taskResponse.upsert({ where: { attemptId_taskId: { attemptId, taskId } }, create: { attemptId, taskId, ...patch }, update: patch });
+}
+
+/**
+ * Teacher marking of written answers and tasks. Recomputes the attempt score and clears needsMarking when everything is marked.
+ * Extra XP for marked work is awarded at 2 XP per mark.
+ */
+export async function markWork(
+  db: PrismaClient,
+  attemptId: string,
+  marks: { responses: { id: string; marks: number; feedback?: string }[]; tasks: { id: string; marks: number; feedback?: string }[] },
+  at = new Date(),
+) {
+  const attempt = await db.attempt.findUniqueOrThrow({
+    where: { id: attemptId },
+    include: { assessment: { include: { items: true, tasks: true } }, responses: { include: { question: true } }, taskResponses: true },
+  });
+  let added = 0;
+  for (const m of marks.responses) {
+    const r = attempt.responses.find((x) => x.id === m.id);
+    if (!r || r.question.type !== "SHORT") continue;
+    const item = attempt.assessment.items.find((i) => i.questionId === r.questionId);
+    const v = Math.max(0, Math.min(item?.marks ?? r.question.marks, m.marks));
+    added += v - (r.markedAt ? r.marks : 0);
+    await db.response.update({ where: { id: r.id }, data: { marks: v, correct: v > 0, feedback: m.feedback ?? null, markedAt: at } });
+  }
+  for (const m of marks.tasks) {
+    const tr = attempt.taskResponses.find((x) => x.id === m.id);
+    if (!tr) continue;
+    const task = attempt.assessment.tasks.find((t) => t.id === tr.taskId)!;
+    const v = Math.max(0, Math.min(task.marks, m.marks));
+    added += v - (tr.marks ?? 0);
+    await db.taskResponse.update({ where: { id: tr.id }, data: { marks: v, feedback: m.feedback ?? null, markedAt: at } });
+  }
+  const fresh = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { responses: { include: { question: true } }, taskResponses: true } });
+  const unmarked =
+    fresh.responses.some((r) => r.question.type === "SHORT" && r.answer && JSON.parse(r.answer) && !r.markedAt) ||
+    fresh.taskResponses.some((t) => (t.text?.trim() || t.fileId) && !t.markedAt);
+  const score = fresh.responses.reduce((s, r) => s + r.marks, 0) + fresh.taskResponses.reduce((s, t) => s + (t.marks ?? 0), 0);
+  await db.attempt.update({ where: { id: attemptId }, data: { score, needsMarking: unmarked } });
+  if (added > 0) await addXp(db, attempt.userId, Math.round(added * XP.TEST_PER_MARK), `Marked: ${attempt.assessment.title}`, at);
+  return { score, needsMarking: unmarked };
+}
+
 /** Number of questions this practice set will actually have (8, or fewer if the pool is small). */
 export async function practiceSetSize(db: PrismaClient, attemptId: string) {
   const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { assessment: true } });
   const bp = JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint;
-  const n = await db.question.count({ where: { chapterId: { in: bp.chapterIds }, isPuzzle: false, status: "PUBLISHED", ...(bp.skill ? { skills: { contains: bp.skill } } : {}) } });
+  const n = await db.question.count({ where: { chapterId: { in: bp.chapterIds }, isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" }, ...(bp.skill ? { skills: { contains: bp.skill } } : {}) } });
   return Math.min(PRACTICE_LENGTH, n);
 }
 
@@ -125,6 +190,7 @@ export async function nextPracticeQuestion(db: PrismaClient, attemptId: string, 
       chapterId: { in: bp.chapterIds },
       isPuzzle: false,
       status: "PUBLISHED",
+      type: { not: "SHORT" },
       ...(bp.skill ? { skills: { contains: bp.skill } } : {}),
     },
   });

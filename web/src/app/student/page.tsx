@@ -3,131 +3,168 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { studentSummary, masteryFor, skillName } from "@/lib/progress";
 import { studentSection, puzzleOfTheDay, assignedWork } from "@/lib/student";
+import { missionProgress, challengeProgress, houseStandings } from "@/lib/missions";
+import { adventure } from "@/lib/adventure";
 import { dashboardSkills } from "@/lib/constants";
-import { MASTERY_LABEL } from "@/lib/mastery";
-import { Card, Pill, btn, MASTERY_TONE, Empty } from "@/components/ui";
-import { startPuzzle, startPractice, startAssigned } from "@/app/actions/student";
+import { parseAvatar } from "@/lib/avatar";
 import { Markdown } from "@/components/Markdown";
+import { Mascot, SpeechBubble, AvatarBadge } from "@/components/kid";
+import { Empty } from "@/components/ui";
+import { startPuzzle, startPractice, startAssigned } from "@/app/actions/student";
+import { claimMissionAction, claimChallenge } from "@/app/actions/gamify";
+
+const GREETINGS = ["Ready for today's brain workout?", "Every puzzle makes your brain stronger!", "Let's find some patterns today!", "Mistakes help us learn — have a go!"];
 
 export default async function StudentHome() {
   const user = await requireUser("STUDENT");
   const section = await studentSection(user.id);
-  if (!section) return <Empty>You are not enrolled in a class yet. Please ask your teacher.</Empty>;
-  const [summary, puzzle, work] = await Promise.all([studentSummary(prisma, user.id), puzzleOfTheDay(section.classLevel), assignedWork(user.id, section.id)]);
+  if (!section) return <Empty>You are not in a class yet. Please ask your teacher.</Empty>;
+  const [summary, puzzle, work, missions, challenges, houses, adv] = await Promise.all([
+    studentSummary(prisma, user.id),
+    puzzleOfTheDay(section.classLevel),
+    assignedWork(user.id, section.id),
+    missionProgress(prisma, user.id),
+    prisma.classChallenge.findMany({ where: { sectionId: section.id, endsAt: { gte: new Date() } }, orderBy: { endsAt: "asc" }, take: 1 }),
+    houseStandings(prisma, user.schoolId),
+    adventure(prisma, user.id, section.classLevel),
+  ]);
   const skills = dashboardSkills(section.classLevel);
   const mastery = (await masteryFor(prisma, [user.id], skills))[user.id];
+  const weakest = skills.map((s) => ({ s, m: mastery[s] })).sort((a, b) => (a.m.score ?? 50) - (b.m.score ?? 50))[0];
   const puzzleAttempt = puzzle && (await prisma.attempt.findFirst({ where: { userId: user.id, assessmentId: puzzle.assessment.id }, include: { responses: true } }));
   const due = work.filter((w) => w.status === "DUE" || w.status === "IN_PROGRESS");
-  const weakest = skills
-    .map((s) => ({ s, m: mastery[s] }))
-    .sort((a, b) => (a.m.score ?? 50) - (b.m.score ?? 50))[0];
+  const ch = challenges[0];
+  const chProgress = ch ? await challengeProgress(prisma, ch) : 0;
+  const chClaimed = ch ? !!(await prisma.missionClaim.findUnique({ where: { userId_mission_weekKey: { userId: user.id, mission: `CH_${ch.id}`, weekKey: "challenge" } } })) : false;
+  const myHouse = houses.find((h) => h.id === user.houseId);
+  const avatar = parseAvatar(user.avatar);
+  const greeting = GREETINGS[new Date().getDate() % GREETINGS.length];
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-[#6a4bff] p-6 text-white shadow-md">
-        <div className="flex flex-wrap items-center justify-between gap-6">
-          <div>
-            <p className="text-sm/6 opacity-80">Class {section.classLevel}-{section.section}</p>
-            <h1 className="text-2xl font-bold">Hi {user.name.split(" ")[0]}! 👋</h1>
-            <p className="mt-1 opacity-90">Level {summary.level} · {summary.rank}</p>
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#6c4dff] via-[#8b5cf6] to-[#ff5e8a] p-6 text-white shadow-lg">
+        <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10" aria-hidden />
+        <div className="absolute -bottom-16 right-24 h-40 w-40 rounded-full bg-white/10" aria-hidden />
+        <div className="relative flex flex-wrap items-center gap-5">
+          <AvatarBadge avatar={avatar} size={88} />
+          <div className="min-w-48 flex-1">
+            <p className="text-sm font-bold opacity-90">Class {section.classLevel}-{section.section}{myHouse && ` · ${myHouse.emoji} ${myHouse.name} House`}</p>
+            <h1 className="text-3xl font-extrabold sm:text-4xl">Hi {user.name.split(" ")[0]}!</h1>
+            <p className="font-bold opacity-95">Level {summary.level} {summary.rank}</p>
+            <div className="mt-3 max-w-md">
+              <div className="mb-1 flex justify-between text-xs font-bold"><span>⭐ {summary.xp} XP</span><span>{summary.toNext} XP to Level {summary.level + 1}</span></div>
+              <div className="h-4 overflow-hidden rounded-full bg-white/25"><div className="h-full rounded-full bg-gradient-to-r from-[#ffd43b] to-[#ff8a1f]" style={{ width: `${(summary.intoLevel / summary.levelSpan) * 100}%` }} /></div>
+            </div>
           </div>
           <div className="flex gap-3">
-            <div className="rounded-2xl bg-white/15 px-4 py-3 text-center">
-              <div className="text-2xl font-bold tabular-nums">🔥 {summary.streak}</div>
-              <div className="text-xs opacity-80">day streak</div>
-            </div>
-            <div className="rounded-2xl bg-white/15 px-4 py-3 text-center">
-              <div className="text-2xl font-bold tabular-nums">⭐ {summary.xp}</div>
-              <div className="text-xs opacity-80">total XP</div>
-            </div>
-            <div className="rounded-2xl bg-white/15 px-4 py-3 text-center">
-              <div className="text-2xl font-bold tabular-nums">🏅 {summary.badges.length}</div>
-              <div className="text-xs opacity-80">badges</div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5">
-          <div className="mb-1 flex justify-between text-xs opacity-90">
-            <span>Level {summary.level}</span>
-            <span>{summary.toNext} XP to level {summary.level + 1}</span>
-          </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white/25">
-            <div className="h-full rounded-full bg-accent" style={{ width: `${(summary.intoLevel / summary.levelSpan) * 100}%` }} />
+            <div className="rounded-2xl bg-white/20 px-4 py-3 text-center"><div className="text-3xl font-extrabold">🔥 {summary.streak}</div><div className="text-xs font-bold">day streak</div></div>
+            <div className="rounded-2xl bg-white/20 px-4 py-3 text-center"><div className="text-3xl font-extrabold">🏅 {summary.badges.length}</div><div className="text-xs font-bold">badges</div></div>
           </div>
         </div>
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card title="🧩 Puzzle of the Day" className="lg:col-span-2">
+      <div className="flex items-start gap-3"><Mascot size={64} /><SpeechBubble>{greeting} {due.length ? `You have ${due.length} thing${due.length > 1 ? "s" : ""} to do.` : "Nothing due — try the Puzzle of the Day!"}</SpeechBubble></div>
+
+      <div className="grid gap-6 lg:grid-cols-[3fr_2fr]">
+        {/* Puzzle */}
+        <section className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
+          <h2 className="text-2xl font-extrabold">🧩 Puzzle of the Day</h2>
           {puzzle ? (
-            <div className="space-y-4">
-              <div className="rounded-xl bg-surface-2 p-4"><Markdown text={puzzle.question.stem} /></div>
-              {puzzleAttempt?.submittedAt ? (
-                <div className="flex flex-wrap items-center gap-3">
-                  {puzzleAttempt.responses[0]?.correct ? <Pill tone="good">Solved today! +25 XP</Pill> : <Pill tone="warn">Attempted — see the solution</Pill>}
-                  <Link className={btn.secondary} href={`/student/result/${puzzleAttempt.id}`}>See solution</Link>
-                </div>
-              ) : (
-                <form action={startPuzzle}><button className={btn.primary}>Solve it (+25 XP)</button></form>
-              )}
-            </div>
-          ) : <Empty>No puzzle today.</Empty>}
-        </Card>
-
-        <Card title="Quick practice">
-          <p className="text-sm text-muted">Your next focus area:</p>
-          <p className="mt-1 text-lg font-semibold">{skillName(weakest.s)}</p>
-          <form action={startPractice} className="mt-4">
-            <input type="hidden" name="skill" value={weakest.s} />
-            <button className={`${btn.primary} w-full`}>Practise 8 questions</button>
-          </form>
-          <Link href="/student/practice" className={`${btn.ghost} mt-2 w-full`}>Choose a chapter</Link>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card title="Due for you" action={<Link href="/student/tests" className="text-sm font-medium text-brand">All tests</Link>}>
-          {due.length ? (
-            <ul className="divide-y divide-line">
-              {due.map((w) => (
-                <li key={w.id} className="flex items-center justify-between gap-3 py-3">
-                  <div>
-                    <div className="font-medium">{w.title}</div>
-                    <div className="text-xs text-muted">{w.questions} questions · {w.marks} marks{w.dueAt ? ` · due ${w.dueAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}` : ""}</div>
+            <>
+              <div className="mt-3 rounded-2xl bg-surface-2 p-4 text-lg"><Markdown text={puzzle.question.stem} /></div>
+              <div className="mt-4">
+                {puzzleAttempt?.submittedAt ? (
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className={`rounded-full px-4 py-2 font-extrabold ${puzzleAttempt.responses[0]?.correct ? "bg-good-soft text-good" : "bg-warn-soft text-warn"}`}>{puzzleAttempt.responses[0]?.correct ? "Solved! +25 XP 🎉" : "Nice try! See how to solve it"}</span>
+                    <Link className="kbtn kbtn-ghost" href={`/student/result/${puzzleAttempt.id}`}>See solution</Link>
                   </div>
-                  <form action={startAssigned.bind(null, w.id)}>
-                    <button className={btn.primary}>{w.status === "IN_PROGRESS" ? "Continue" : "Start"}</button>
-                  </form>
-                </li>
-              ))}
-            </ul>
-          ) : <Empty>Nothing due. Great job! 🎉</Empty>}
-        </Card>
+                ) : <form action={startPuzzle}><button className="kbtn kbtn-accent text-lg">Solve it! +25 XP</button></form>}
+              </div>
+            </>
+          ) : <p className="mt-2 text-muted">No puzzle today.</p>}
+        </section>
 
-        <Card title="My thinking skills" action={<Link href="/student/progress" className="text-sm font-medium text-brand">Details</Link>}>
-          <ul className="space-y-3">
-            {skills.map((s) => (
-              <li key={s} className="flex items-center justify-between gap-3">
-                <span className="text-sm font-medium">{skillName(s)}</span>
-                <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${MASTERY_TONE[mastery[s].level]}`}>{MASTERY_LABEL[mastery[s].level]}</span>
+        {/* Missions */}
+        <section className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
+          <h2 className="text-2xl font-extrabold">🎯 This week&apos;s missions</h2>
+          <ul className="mt-3 space-y-3">
+            {missions.missions.map((m) => (
+              <li key={m.code} className="flex items-center gap-3">
+                <span className="text-2xl" aria-hidden>{m.icon}</span>
+                <div className="flex-1">
+                  <div className="flex justify-between text-sm font-bold"><span>{m.title}</span><span className="tabular-nums text-muted">{m.progress}/{m.target}</span></div>
+                  <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-surface-2"><div className={`h-full rounded-full ${m.done ? "bg-good" : "bg-brand"}`} style={{ width: `${(m.progress / m.target) * 100}%` }} /></div>
+                </div>
+                {m.claimed ? <span className="text-xs font-extrabold text-good">✓ +{m.xp}</span> : m.done ? <form action={claimMissionAction.bind(null, m.code)}><button className="kbtn kbtn-accent px-3 py-1.5 text-xs">Claim +{m.xp}</button></form> : <span className="text-xs font-bold text-muted">+{m.xp}</span>}
               </li>
             ))}
           </ul>
-        </Card>
+        </section>
       </div>
 
-      {summary.badges.length > 0 && (
-        <Card title="Latest badges" action={<Link href="/student/rewards" className="text-sm font-medium text-brand">All rewards</Link>}>
-          <div className="flex flex-wrap gap-3">
-            {summary.badges.slice(0, 5).map((b) => (
-              <div key={b.code} className="flex items-center gap-2 rounded-xl bg-accent-soft px-3 py-2">
-                <span className="text-xl" aria-hidden>{b.icon}</span>
-                <span className="text-sm font-semibold">{b.name}</span>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Due work */}
+        <section className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
+          <div className="flex items-center justify-between"><h2 className="text-2xl font-extrabold">📝 To do</h2><Link href="/student/tests" className="text-sm font-bold text-brand">See all</Link></div>
+          {due.length ? (
+            <ul className="mt-3 space-y-3">
+              {due.map((w) => (
+                <li key={w.id} className="flex items-center justify-between gap-3 rounded-2xl bg-surface-2 p-3">
+                  <div>
+                    <div className="font-extrabold">{w.kind === "ASSIGNMENT" ? "📝" : "🧪"} {w.title}</div>
+                    <div className="text-xs font-semibold text-muted">{w.kind === "ASSIGNMENT" ? "Homework" : "Test"} · {w.marks} marks{w.dueAt ? ` · due ${w.dueAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}` : ""}</div>
+                  </div>
+                  <form action={startAssigned.bind(null, w.id)}><button className="kbtn px-4 py-2 text-sm">{w.status === "IN_PROGRESS" ? "Continue" : "Start"}</button></form>
+                </li>
+              ))}
+            </ul>
+          ) : <p className="mt-3 font-semibold text-muted">All done! 🎉</p>}
+        </section>
+
+        {/* Adventure */}
+        <section className="rounded-[2rem] border-2 border-line bg-gradient-to-br from-[#dff7ee] to-[#e6f0ff] p-6 shadow-sm dark:from-[#10302a] dark:to-[#121c3d]">
+          <div className="flex items-center justify-between"><h2 className="text-2xl font-extrabold">🗺️ My adventure</h2><span className="font-extrabold">⭐ {adv.totalStars}/{adv.maxStars}</span></div>
+          {adv.next ? (
+            <div className="mt-3">
+              <p className="text-sm font-semibold text-ink-2">Next island:</p>
+              <p className="text-xl font-extrabold">{adv.next.part === "AI" ? "🤖 " : adv.next.part === "EVS" ? "🌿 " : "🏝️ "}{adv.next.title}</p>
+              <p className="text-sm text-muted">{"⭐".repeat(adv.next.stars)}{"☆".repeat(3 - adv.next.stars)}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <form action={startPractice}><input type="hidden" name="chapterId" value={adv.next.id} /><button className="kbtn">Play this island</button></form>
+                <Link href="/student/map" className="kbtn kbtn-ghost">Open map</Link>
               </div>
+            </div>
+          ) : <p className="mt-3 font-semibold">You have collected every star! 🌟</p>}
+          <p className="mt-4 text-sm font-semibold text-ink-2">Focus skill: <strong>{skillName(weakest.s)}</strong></p>
+          <form action={startPractice} className="mt-2"><input type="hidden" name="skill" value={weakest.s} /><button className="text-sm font-extrabold text-brand underline">Practise {skillName(weakest.s)} →</button></form>
+        </section>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        {ch && (
+          <section className="rounded-[2rem] border-2 border-accent bg-accent-soft p-6 shadow-sm">
+            <h2 className="text-xl font-extrabold">🏁 Class challenge</h2>
+            <p className="mt-1 font-bold">{ch.title}</p>
+            <div className="mt-3 h-5 overflow-hidden rounded-full bg-surface"><div className="h-full rounded-full bg-gradient-to-r from-accent to-[#ff4d8d]" style={{ width: `${Math.min(100, (chProgress / ch.target) * 100)}%` }} /></div>
+            <div className="mt-1 flex justify-between text-sm font-bold"><span>{chProgress} / {ch.target}</span><span>ends {ch.endsAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span></div>
+            {chProgress >= ch.target && (chClaimed ? <p className="mt-2 font-extrabold text-good">✓ Reward collected!</p> : <form action={claimChallenge.bind(null, ch.id)} className="mt-3"><button className="kbtn kbtn-accent">Goal reached! Claim +{ch.rewardXp} XP</button></form>)}
+          </section>
+        )}
+        <section className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
+          <h2 className="text-xl font-extrabold">🏰 House cup</h2>
+          <ol className="mt-3 space-y-2">
+            {houses.map((h, i) => (
+              <li key={h.id} className={`flex items-center gap-3 rounded-2xl px-3 py-2 ${h.id === user.houseId ? "ring-2 ring-brand" : ""}`} style={{ background: `${h.color}22` }}>
+                <span className="w-6 text-center font-extrabold">{i + 1}</span>
+                <span className="text-2xl" aria-hidden>{h.emoji}</span>
+                <span className="flex-1 font-extrabold">{h.name}{h.id === user.houseId && " (you)"}</span>
+                <span className="font-extrabold tabular-nums" style={{ color: h.color }}>{h.points}</span>
+              </li>
             ))}
-          </div>
-        </Card>
-      )}
+          </ol>
+        </section>
+      </div>
     </div>
   );
 }

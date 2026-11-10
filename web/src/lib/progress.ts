@@ -54,7 +54,7 @@ export async function addXp(db: PrismaClient, userId: string, amount: number, re
   await db.xpEvent.create({ data: { userId, amount, reason, ...(at ? { createdAt: at } : {}) } });
 }
 
-async function award(db: PrismaClient, userId: string, badge: string, at?: Date): Promise<string | null> {
+export async function award(db: PrismaClient, userId: string, badge: string, at?: Date): Promise<string | null> {
   const exists = await db.userBadge.findUnique({ where: { userId_badge: { userId, badge } } });
   if (exists) return null;
   await db.userBadge.create({ data: { userId, badge, ...(at ? { awardedAt: at } : {}) } });
@@ -93,6 +93,9 @@ export async function evaluateBadges(db: PrismaClient, userId: string, attemptId
     const lvl = m[userId][skill].level;
     if (lvl === "PROFICIENT" || lvl === "ADVANCED") push(await award(db, userId, badge, at));
   }
+
+  const homework = await db.attempt.count({ where: { userId, submittedAt: { not: null }, assessment: { kind: "ASSIGNMENT" } } });
+  if (homework >= 3) push(await award(db, userId, "HOMEWORK_HERO", at));
 
   const events = await db.xpEvent.findMany({ where: { userId }, select: { createdAt: true } });
   if (computeStreak(events.map((e) => e.createdAt), at ?? new Date()) >= 7) push(await award(db, userId, "STREAK_7", at));
