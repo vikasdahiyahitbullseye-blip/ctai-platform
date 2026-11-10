@@ -38,6 +38,8 @@ class Doc:
         self.c.setSubject("Feedback from teachers on content, design and classroom use")
         self.page = 1
         self.y = TOP
+        self.name = "Teacher Feedback Survey"  # shown in the running head and footer
+        self.split_room = None  # if set, a table may split across pages when at least this much room is left
         self.fields = 0
 
     # ---------- page furniture ----------
@@ -45,7 +47,7 @@ class Doc:
         c = self.c
         c.setStrokeColor(LINE); c.setLineWidth(0.6); c.line(M, 38, W - M, 38)
         c.setFont("Inter-Regular", 7.5); c.setFillColor(MUTED)
-        c.drawString(M, 26, "Hitbullseye CT & AI  ·  Teacher Feedback Survey")
+        c.drawString(M, 26, f"Hitbullseye CT & AI  ·  {self.name}")
         c.drawRightString(W - M, 26, f"Page {self.page}")
 
     def running_head(self):
@@ -53,7 +55,7 @@ class Doc:
         c.setFillColor(BRAND); c.rect(0, H - 10, W, 10, stroke=0, fill=1)
         c.setFillColor(ACCENT); c.rect(0, H - 10, 90, 10, stroke=0, fill=1)
         c.setFont("Inter-SemiBold", 8); c.setFillColor(MUTED)
-        c.drawRightString(W - M, H - 30, "Teacher Feedback Survey")
+        c.drawRightString(W - M, H - 30, self.name)
 
     def new_page(self):
         self.footer()
@@ -119,6 +121,9 @@ class Doc:
     def section(self, letter, title, intro=None, keep=110):
         """Section heading; `keep` = height of the first block, kept on the same page as the heading."""
         intro_h = len(simpleSplit(intro, "Inter-Regular", 8.8, CW)) * 12.5 + 4 if intro else 0
+        room = self.y - BOTTOM
+        if self.split_room and room >= self.split_room + 56 + intro_h:
+            keep = min(keep, 120)  # plenty of room: start here and let the table split
         self.need(14 + 42 + intro_h + min(keep, TOP - BOTTOM - 80))
         self.y -= 14
         c = self.c
@@ -231,7 +236,7 @@ class Doc:
 
         row_h = [max(22, len(simpleSplit(t, "Inter-Regular", 8.8, sw - 30)) * 11.5 + 9) for _, t in rows]
         total = hh + sum(row_h) + 6
-        if total < TOP - BOTTOM:
+        if total < TOP - BOTTOM and not (self.split_room and self.y - BOTTOM >= self.split_room):
             self.need(total)  # keep a table that fits on one page in one piece
         header()
         for i, (code, text) in enumerate(rows):
