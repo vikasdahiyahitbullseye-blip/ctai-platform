@@ -84,6 +84,12 @@ describe("picture questions", () => {
       if (q.family === "pic-balance" && f.kind === "balance") expect((q.answer as number) * (/one\*\*/.test(q.stem) ? f.left.n : 1)).toBe(f.right.reduce((a, b) => a + b, 0));
     }
   });
+  it("plants odd-one-out uses only flowers and trees", () => {
+    const flowersAndTrees = new Set(["🌻", "🌷", "🌹", "🌼", "🌺", "🌳", "🌴", "🌲"]);
+    const items = pics.filter((q) => q.family === "pic-odd-icon:plants");
+    expect(items.length).toBeGreaterThan(0);
+    for (const q of items) for (const f of q.optionFigures!) expect(flowersAndTrees.has((f as Extract<Fig, { kind: "icons" }>).items[0].icon)).toBe(true);
+  });
   it("shortest-path answers match a fresh search", () => {
     for (const q of pics.filter((x) => x.family === "pic-grid-shortest")) {
       const f = q.figure as Extract<Fig, { kind: "gridmap" }>;

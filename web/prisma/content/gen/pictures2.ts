@@ -239,7 +239,7 @@ const G = (name: string, noun: string, icons: [string, string][]): Group => ({ n
 const TOPICS: Record<string, Group[]> = {
   food: [G("fruit", "fruits", [["🍎", "apple"], ["🍌", "banana"], ["🍇", "grapes"], ["🍊", "orange"], ["🍓", "strawberry"], ["🍍", "pineapple"], ["🥭", "mango"], ["🍉", "watermelon"]]), G("vegetable", "vegetables", [["🥕", "carrot"], ["🥦", "broccoli"], ["🌽", "corn"], ["🍆", "brinjal"], ["🥔", "potato"], ["🧅", "onion"], ["🥒", "cucumber"]]), G("food from animals", "foods from animals", [["🥛", "milk"], ["🥚", "egg"], ["🧀", "cheese"], ["🍯", "honey"]])],
   animals: [G("bird", "birds", [["🐦", "sparrow"], ["🦜", "parrot"], ["🦆", "duck"], ["🦉", "owl"], ["🦚", "peacock"], ["🐓", "rooster"]]), G("water animal", "water animals", [["🐟", "fish"], ["🐠", "tropical fish"], ["🐙", "octopus"], ["🐬", "dolphin"], ["🦀", "crab"], ["🐳", "whale"]]), G("four-legged animal", "four-legged animals", [["🐄", "cow"], ["🐐", "goat"], ["🐘", "elephant"], ["🐕", "dog"], ["🐈", "cat"], ["🐎", "horse"], ["🦁", "lion"], ["🐅", "tiger"]])],
-  plants: [G("flower", "flowers", [["🌻", "sunflower"], ["🌷", "tulip"], ["🌹", "rose"], ["🌼", "daisy"], ["🌺", "hibiscus"]]), G("tree", "trees", [["🌳", "tree"], ["🌴", "palm tree"], ["🌲", "pine tree"]]), G("fruit", "fruits", [["🍎", "apple"], ["🍌", "banana"], ["🥭", "mango"], ["🍊", "orange"]])],
+  plants: [G("flower", "flowers", [["🌻", "sunflower"], ["🌷", "tulip"], ["🌹", "rose"], ["🌼", "daisy"], ["🌺", "hibiscus"]]), G("tree", "trees", [["🌳", "leafy tree"], ["🌴", "palm tree"], ["🌲", "pine tree"]]), G("fruit", "fruits", [["🍎", "apple"], ["🍌", "banana"], ["🥭", "mango"], ["🍊", "orange"]])],
   transport: [G("land vehicle", "land vehicles", [["🚗", "car"], ["🚌", "bus"], ["🚲", "bicycle"], ["🛺", "auto"], ["🚂", "train"], ["🚜", "tractor"], ["🏍️", "motorbike"]]), G("water vehicle", "water vehicles", [["🚢", "ship"], ["⛵", "sailboat"], ["🛶", "canoe"], ["🚤", "speedboat"]]), G("air vehicle", "air vehicles", [["✈️", "aeroplane"], ["🚁", "helicopter"], ["🛩️", "small plane"], ["🪂", "parachute"]])],
   waste: [G("wet (food) waste", "pieces of wet waste", [["🍌", "banana peel"], ["🍉", "watermelon rind"], ["🥚", "egg shell"], ["🍎", "apple core"], ["🥬", "vegetable peels"]]), G("dry waste that can be recycled", "pieces of recyclable dry waste", [["📰", "newspaper"], ["🥫", "tin can"], ["🧴", "plastic bottle"], ["📦", "cardboard box"], ["🍾", "glass bottle"]])],
 };
@@ -271,7 +271,8 @@ export function oddIcon(topic: string): Family {
   return {
     id: `pic-odd-icon:${topic}`, ds: [1, 2],
     make(c, d) {
-      const groups = TOPICS[topic];
+      // Plants: flowers vs trees only (fruits also come from plants, so "fruit" as the odd one out is arguable).
+      const groups = topic === "plants" ? TOPICS.plants.filter((g) => g.name === "flower" || g.name === "tree") : TOPICS[topic];
       const [gi, go] = sample(c.r, range(groups.length), 2);
       const same = sample(c.r, groups[gi].icons, 3), odd = pick(c.r, groups[go].icons);
       if (groups[gi].icons.some(([i]) => i === odd[0])) return null;
