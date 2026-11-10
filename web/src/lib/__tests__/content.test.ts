@@ -6,6 +6,8 @@ import { class4 } from "../../../prisma/content/class4";
 import { class5 } from "../../../prisma/content/class5";
 import { class7 } from "../../../prisma/content/class7";
 import { class8 } from "../../../prisma/content/class8";
+import { class3more } from "../../../prisma/content/class3more";
+import { class6more } from "../../../prisma/content/class6more";
 import { PROJECT_KITS } from "../../../prisma/content/projects";
 import { CONNECTIONS } from "../../../prisma/content/connections";
 import { isCorrect } from "../scoring";
@@ -13,7 +15,7 @@ import { balanceOptions } from "../../../prisma/content/balance";
 import { SKILLS, CURRICULUM } from "../constants";
 
 describe("seed content integrity", () => {
-  for (const [cls, list] of [[3, [...class3, ...evs3]], [4, class4], [5, class5], [6, [...class6, ...class6Short]], [7, class7], [8, class8]] as const) {
+  for (const [cls, list] of [[3, [...class3, ...evs3, ...class3more]], [4, class4], [5, class5], [6, [...class6, ...class6Short, ...class6more]], [7, class7], [8, class8]] as const) {
     it(`class ${cls}: every item is well-formed and its key grades as correct`, () => {
       for (const q of list) {
         const part = q.part ?? "CT";
@@ -32,31 +34,33 @@ describe("seed content integrity", () => {
   }
 
   it("no duplicate question stems within a class", () => {
-    for (const list of [[...class3, ...evs3], class4, class5, [...class6, ...class6Short], class7, class8]) {
+    for (const list of [[...class3, ...evs3, ...class3more], class4, class5, [...class6, ...class6Short, ...class6more], class7, class8]) {
       const stems = list.map((q) => q.stem.trim());
       const dupes = stems.filter((s, i) => stems.indexOf(s) !== i);
       expect(dupes).toEqual([]);
     }
   });
-  it("every CT/AI chapter of Classes 4, 5, 7, 8 has at least 8 practice items and each class has 5 puzzles", () => {
-    for (const [cls, list] of [[4, class4], [5, class5], [7, class7], [8, class8]] as const) {
-      for (const part of ["CT", "AI"] as const) {
-        (CURRICULUM[cls][part] ?? []).forEach((_, i) => {
-          const n = list.filter((q) => (q.part ?? "CT") === part && q.ch === i + 1 && !q.puzzle).length;
-          expect(n, `class ${cls} ${part} ch ${i + 1}`).toBeGreaterThanOrEqual(8);
+  it("every chapter of every class is covered (CT ≥ 8, AI ≥ 10, EVS ≥ 4 practice items; 5 puzzles per class)", () => {
+    const byClass = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 } as const;
+    const min = { CT: 8, AI: 10, EVS: 4 } as const;
+    for (const [cls, list] of Object.entries(byClass)) {
+      for (const part of ["CT", "AI", "EVS"] as const) {
+        (CURRICULUM[Number(cls)][part] ?? []).forEach((_, i) => {
+          const n = list.filter((q) => (q.part ?? "CT") === part && q.ch === i + 1 && !q.puzzle && q.type !== "SHORT").length;
+          expect(n, `class ${cls} ${part} ch ${i + 1}`).toBeGreaterThanOrEqual(min[part]);
         });
       }
-      expect(list.filter((q) => q.puzzle).length).toBe(5);
+      expect(list.filter((q) => q.puzzle).length, `class ${cls} puzzles`).toBe(5);
     }
   });
   it("difficulty and option counts are sensible", () => {
-    for (const list of [class4, class5, class7, class8]) for (const q of list) {
+    for (const list of [class4, class5, class7, class8, class3more, class6more]) for (const q of list) {
       if (["MCQ", "MULTI"].includes(q.type)) expect(q.options!.length, q.stem).toBeGreaterThanOrEqual(3);
       if (q.type === "MULTI") expect((q.answer as number[]).length, q.stem).toBeGreaterThanOrEqual(1);
     }
   });
   it("balancing keeps answers correct and spreads the correct option across positions", () => {
-    const all = [...class3, ...evs3, ...class4, ...class5, ...class6, ...class6Short, ...class7, ...class8];
+    const all = [...class3, ...evs3, ...class3more, ...class4, ...class5, ...class6, ...class6Short, ...class6more, ...class7, ...class8];
     const counts = [0, 0, 0, 0, 0];
     let mcq = 0;
     for (const raw of all) {

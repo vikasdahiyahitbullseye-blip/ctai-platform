@@ -20,7 +20,7 @@ export function isCorrect(type: string, key: AnswerValue, given: AnswerValue): b
     case "TRUE_FALSE":
       return String(given) === String(key);
     case "NUMERIC": {
-      const g = typeof given === "number" ? given : parseFloat(String(given).replace(/,/g, ""));
+      const g = typeof given === "number" ? given : parseFloat(String(given).replace(/,/g, "").replace(/[\u2212\u2013\u2014]/g, "-").replace(/\s+/g, ""));
       return Number.isFinite(g) && Math.abs(g - Number(key)) < 1e-9;
     }
     case "FILL_BLANK": {

@@ -12,6 +12,8 @@ import { class4 } from "./content/class4";
 import { class5 } from "./content/class5";
 import { class7 } from "./content/class7";
 import { class8 } from "./content/class8";
+import { class3more } from "./content/class3more";
+import { class6more } from "./content/class6more";
 import { CONNECTIONS } from "./content/connections";
 import { PROJECT_KITS } from "./content/projects";
 import { RESOURCES } from "./content/resources";
@@ -84,6 +86,8 @@ async function main() {
   await addQuestions(3, class3);
   await addQuestions(6, [...class6, ...class6Short]);
   await addQuestions(3, evs3);
+  await addQuestions(3, class3more);
+  await addQuestions(6, class6more);
   await addQuestions(4, class4);
   await addQuestions(5, class5);
   await addQuestions(7, class7);

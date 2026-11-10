@@ -12,6 +12,8 @@ describe("scoring", () => {
     expect(isCorrect("MULTI", [0, 2], [0])).toBe(false);
     expect(isCorrect("TRUE_FALSE", true, "true")).toBe(true);
     expect(isCorrect("NUMERIC", 1200, "1,200")).toBe(true);
+    expect(isCorrect("NUMERIC", -3, "\u22123")).toBe(true);
+    expect(isCorrect("NUMERIC", -3, "- 3")).toBe(true);
     expect(isCorrect("FILL_BLANK", ["Pattern", "patterns"], "  PATTERNS ")).toBe(true);
     expect(isCorrect("ORDER", [2, 0, 1], [2, 0, 1])).toBe(true);
     expect(isCorrect("ORDER", [2, 0, 1], [0, 2, 1])).toBe(false);

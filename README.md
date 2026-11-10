@@ -53,7 +53,7 @@ See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admi
 
 **Admin:** school overview (sections, teachers, weekly activity), now with full management (see v0.2).
 
-**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks) plus EVS themes for Classes 3–5; 596 original questions: Classes 4, 5, 7, 8 cover every chapter (≥ 8 per CT chapter, 10 per AI chapter, 4 per EVS theme, 5 puzzles each); Classes 3 and 6 cover selected chapters; 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
+**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks) plus EVS themes for Classes 3–5; 781 original questions covering every chapter of Classes 3–8; 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
 
 ## Code map
 
@@ -76,11 +76,12 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 | Class | Questions | Coverage |
 |---|---|---|
-| 3 | 45 | 3 of 14 CT chapters, 2 of 6 EVS themes |
+| 3 | 149 | All 14 CT chapters, all 6 EVS themes |
 | 4 | 141 | All 14 CT chapters, all 6 EVS themes |
 | 5 | 149 | All 15 CT chapters, all 6 EVS themes |
-| 6 | 51 | 2 of 10 CT chapters, 3 of 4 AI chapters |
+| 6 | 132 | All 10 CT chapters, all 4 AI chapters, plus 2 teacher-marked short answers |
 | 7 | 109 | All 8 CT chapters, all 4 AI chapters |
 | 8 | 101 | All 7 CT chapters, all 4 AI chapters |
+| **Total** | **781** | Every chapter has ≥ 8 CT, ≥ 10 AI or ≥ 4 EVS practice items; 5 Puzzles of the Day per class |
 
-All items are original and written to the CBSE grade-wise learning outcomes. Multiple-choice options are reordered when they are loaded, so the correct answer's position is balanced. Before release, each item still needs a subject-expert review in the content studio.
+All items are original and written to the CBSE grade-wise learning outcomes. Multiple-choice options are reordered when they are loaded, so the correct answer's position is balanced. Before release, each item still needs a subject-expert review in the content studio. The Year-1 target is about 40 items per chapter.
