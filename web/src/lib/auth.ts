@@ -1,0 +1,45 @@
+import "server-only";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { SignJWT, jwtVerify } from "jose";
+import { prisma } from "./db";
+import type { Role } from "./constants";
+
+const COOKIE = "ctai_session";
+const secret = () => new TextEncoder().encode(process.env.SESSION_SECRET ?? "dev-only-change-me-0123456789abcdef0123456789");
+
+export async function createSession(userId: string, role: string) {
+  const token = await new SignJWT({ uid: userId, role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("12h")
+    .sign(secret());
+  (await cookies()).set(COOKIE, token, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 12 * 3600 });
+}
+
+export async function destroySession() {
+  (await cookies()).delete(COOKIE);
+}
+
+export async function getSessionUser() {
+  const token = (await cookies()).get(COOKIE)?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, secret());
+    return await prisma.user.findUnique({ where: { id: String(payload.uid) }, include: { school: true } });
+  } catch {
+    return null;
+  }
+}
+
+/** Use at the top of every page and server action. Redirects to /login when unauthorised. */
+export async function requireUser(...roles: Role[]) {
+  const user = await getSessionUser();
+  if (!user) redirect("/login");
+  if (roles.length && !roles.includes(user.role as Role)) redirect(homeFor(user.role));
+  return user;
+}
+
+export function homeFor(role: string) {
+  return role === "STUDENT" ? "/student" : role === "TEACHER" ? "/teacher" : "/admin";
+}

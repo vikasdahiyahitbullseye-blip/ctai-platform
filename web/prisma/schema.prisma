@@ -1,0 +1,211 @@
+// Hitbullseye CT & AI platform — data model (see docs/SPEC.md §11)
+// SQLite for local development; switch provider to "postgresql" for production.
+// Enum-like fields are plain strings (validated in code) so the schema stays portable.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id        String         @id @default(cuid())
+  name      String
+  city      String?
+  session   String         @default("2026-27")
+  createdAt DateTime       @default(now())
+  users     User[]
+  sections  ClassSection[]
+}
+
+model User {
+  id           String         @id @default(cuid())
+  schoolId     String
+  school       School         @relation(fields: [schoolId], references: [id])
+  role         String // STUDENT | TEACHER | ADMIN
+  name         String
+  username     String         @unique
+  passwordHash String
+  rollNo       String?
+  createdAt    DateTime       @default(now())
+  enrollments  Enrollment[]
+  teaching     TeacherAssignment[]
+  attempts     Attempt[]
+  xpEvents     XpEvent[]
+  badges       UserBadge[]
+  createdAssessments Assessment[] @relation("createdBy")
+  observationsAbout  Observation[] @relation("observedStudent")
+  observationsBy     Observation[] @relation("observer")
+}
+
+model ClassSection {
+  id          String              @id @default(cuid())
+  schoolId    String
+  school      School              @relation(fields: [schoolId], references: [id])
+  classLevel  Int
+  section     String
+  leaderboard Boolean             @default(true)
+  enrollments Enrollment[]
+  teachers    TeacherAssignment[]
+  assignments AssessmentAssignment[]
+
+  @@unique([schoolId, classLevel, section])
+}
+
+model Enrollment {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  sectionId String
+  section   ClassSection @relation(fields: [sectionId], references: [id])
+
+  @@unique([userId, sectionId])
+}
+
+model TeacherAssignment {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  sectionId String
+  section   ClassSection @relation(fields: [sectionId], references: [id])
+  subject   String       @default("CT") // CT | AI
+
+  @@unique([userId, sectionId, subject])
+}
+
+model Chapter {
+  id         String     @id @default(cuid())
+  classLevel Int
+  part       String // CT | AI | EVS
+  number     Int
+  title      String
+  hours      Int?
+  questions  Question[]
+
+  @@unique([classLevel, part, number])
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  classLevel  Int
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id])
+  skills      String // comma-separated skill codes
+  type        String // MCQ | MULTI | TRUE_FALSE | NUMERIC | FILL_BLANK | ORDER
+  difficulty  Int // 1 easy, 2 medium, 3 hard
+  stem        String
+  options     String   @default("[]") // JSON string[]
+  answer      String // JSON: index | index[] | string | number | string[] (order)
+  solution    String
+  hint        String?
+  marks       Int      @default(1)
+  timeSec     Int      @default(60)
+  isPuzzle    Boolean  @default(false)
+  status      String   @default("PUBLISHED")
+  createdAt   DateTime @default(now())
+  items       AssessmentItem[]
+  responses   Response[]
+}
+
+model Assessment {
+  id           String   @id @default(cuid())
+  schoolId     String?
+  kind         String // PRACTICE | ASSIGNMENT | TEST | PUZZLE
+  title        String
+  classLevel   Int
+  instructions String?
+  durationMin  Int?
+  blueprint    String? // JSON of generator settings
+  createdById  String?
+  createdBy    User?    @relation("createdBy", fields: [createdById], references: [id])
+  createdAt    DateTime @default(now())
+  items        AssessmentItem[]
+  assignments  AssessmentAssignment[]
+  attempts     Attempt[]
+}
+
+model AssessmentItem {
+  id           String     @id @default(cuid())
+  assessmentId String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  questionId   String
+  question     Question   @relation(fields: [questionId], references: [id])
+  position     Int
+  section      String     @default("A")
+  marks        Int        @default(1)
+}
+
+model AssessmentAssignment {
+  id           String       @id @default(cuid())
+  assessmentId String
+  assessment   Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  sectionId    String
+  section      ClassSection @relation(fields: [sectionId], references: [id])
+  dueAt        DateTime?
+  showAnswers  String       @default("AFTER_SUBMIT") // AFTER_SUBMIT | AFTER_DUE
+  createdAt    DateTime     @default(now())
+}
+
+model Attempt {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  assessmentId String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  startedAt    DateTime   @default(now())
+  submittedAt  DateTime?
+  score        Float?
+  maxScore     Float?
+  responses    Response[]
+}
+
+model Response {
+  id         String   @id @default(cuid())
+  attemptId  String
+  attempt    Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  answer     String? // JSON
+  correct    Boolean?
+  marks      Float    @default(0)
+  usedHint   Boolean  @default(false)
+  timeSec    Int?
+  createdAt  DateTime @default(now())
+
+  @@unique([attemptId, questionId])
+}
+
+model XpEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now())
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  badge     String
+  awardedAt DateTime @default(now())
+
+  @@unique([userId, badge])
+}
+
+model Observation {
+  id         String   @id @default(cuid())
+  studentId  String
+  student    User     @relation("observedStudent", fields: [studentId], references: [id])
+  observerId String
+  observer   User     @relation("observer", fields: [observerId], references: [id])
+  skill      String
+  rating     Int // 1-4
+  note       String?
+  createdAt  DateTime @default(now())
+}
