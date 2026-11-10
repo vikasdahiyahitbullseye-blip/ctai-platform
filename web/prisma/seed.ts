@@ -22,6 +22,7 @@ import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
 import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
+import { generateBank } from "./content/gen";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -56,13 +57,13 @@ async function main() {
 
   // Question bank
   const counters: Record<string, number> = {};
-  const addQuestions = async (cls: number, list: SeedQuestion[]) => {
+  const addQuestions = async (cls: number, list: SeedQuestion[], source = "AUTHORED") => {
     for (const raw of list) {
       const q = balanceOptions(raw);
       const part = q.part ?? "CT";
       const key = `${cls}-${part}-${q.ch}`;
       counters[key] = (counters[key] ?? 0) + 1;
-      const code = `C${cls}-${part}-${q.type === "SHORT" ? "S" : ""}${String(q.ch).padStart(2, "0")}-${q.skills[0].slice(0, 3)}-${String(counters[key]).padStart(4, "0")}`;
+      const code = `C${cls}-${part}-${source === "GENERATED" ? "G" : ""}${q.type === "SHORT" ? "S" : ""}${String(q.ch).padStart(2, "0")}-${q.skills[0].slice(0, 3)}-${String(counters[key]).padStart(4, "0")}`;
       await db.question.create({
         data: {
           code,
@@ -79,6 +80,8 @@ async function main() {
           marks: q.d === 3 ? 2 : 1,
           timeSec: 45 + q.d * 30,
           isPuzzle: !!q.puzzle,
+          source,
+          family: q.family ?? null,
         },
       });
     }
@@ -92,6 +95,11 @@ async function main() {
   await addQuestions(5, class5);
   await addQuestions(7, class7);
   await addQuestions(8, class8);
+
+  // Top every chapter up to 40 practice items with question families (flagged as GENERATED for review).
+  const authored: Record<number, SeedQuestion[]> = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
+  const generated = generateBank(authored);
+  for (const [cls, list] of Object.entries(generated)) await addQuestions(Number(cls), list, "GENERATED");
 
   // School and people
   const hash = await bcrypt.hash("demo123", 10);

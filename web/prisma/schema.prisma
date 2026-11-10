@@ -143,6 +143,8 @@ model Question {
   marks       Int      @default(1)
   timeSec     Int      @default(60)
   isPuzzle    Boolean  @default(false)
+  source      String   @default("AUTHORED") // AUTHORED | GENERATED (from a question family)
+  family      String? // family id for generated items
   status      String   @default("PUBLISHED") // DRAFT | IN_REVIEW | PUBLISHED | RETIRED
   authorId    String?
   reviewNote  String?

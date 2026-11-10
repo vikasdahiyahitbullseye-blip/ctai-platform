@@ -10,4 +10,5 @@ export type SeedQuestion = {
   solution: string;
   hint?: string;
   puzzle?: boolean;
+  family?: string; // set on generated items
 };

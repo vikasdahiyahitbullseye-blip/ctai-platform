@@ -8,7 +8,8 @@ const TARGET_PER_CHAPTER = 40;
 
 export default async function StudioHome() {
   await requireUser("CONTENT", "SUPERADMIN");
-  const [byStatus, byClass, review] = await Promise.all([
+  const [bySource, byStatus, byClass, review] = await Promise.all([
+    prisma.question.groupBy({ by: ["source"], _count: true }),
     prisma.question.groupBy({ by: ["status"], _count: true }),
     prisma.question.groupBy({ by: ["classLevel"], where: { status: "PUBLISHED", isPuzzle: false }, _count: true }),
     prisma.question.findMany({ where: { status: "IN_REVIEW" }, include: { chapter: true }, orderBy: { updatedAt: "asc" }, take: 20 }),
@@ -23,6 +24,13 @@ export default async function StudioHome() {
         <Stat label="Drafts" value={count("DRAFT")} />
         <Stat label="Retired" value={count("RETIRED")} />
       </div>
+      <Card title="Where the questions come from">
+        <p className="text-sm text-ink-2">
+          <strong>{bySource.find((b) => b.source === "AUTHORED")?._count ?? 0}</strong> written individually ·{" "}
+          <strong>{bySource.find((b) => b.source === "GENERATED")?._count ?? 0}</strong> generated from question families (computed answers, published for the demo and flagged for review).{" "}
+          <Link href="/studio/questions?source=GENERATED" className="font-semibold text-brand">Review generated questions →</Link>
+        </p>
+      </Card>
       <Card title="Review queue" action={<span className="text-xs text-muted">Questions need a second person&apos;s approval</span>}>
         {review.length ? (
           <ul className="divide-y divide-line text-sm">

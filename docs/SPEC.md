@@ -322,3 +322,16 @@ New staff get a temporary password and must change it at first sign-in. Students
 - **Houses:** Aryabhata, Ramanujan, Kalpana, Kalam. House points = members' XP this term.
 - **Class challenges:** set by the teacher; a shared progress bar and a reward XP claim.
 - **New badges:** Team Player, Showcase Star, Homework Hero.
+
+## 15. Question bank at scale (v0.3)
+
+- **Target reached:** at least 40 practice items per chapter, for all 98 chapters (3,952 items).
+- **How the bank is made:**
+  - Individually written items set the standard and cover each chapter's core ideas.
+  - **Question families** add depth: each family is one reviewed question design with varied numbers and settings, and its answer and solution are computed.
+  - **Situation banks** (hand-written real-life cases with known categories) power the AI and EVS families.
+- **Governance:**
+  - Generated items carry `source = GENERATED` and a `family` id.
+  - Reviewers can approve or retire a whole family by reviewing a sample.
+  - Families can be edited centrally, and the bank re-generated.
+- **Next:** let the content team author families in the studio (template + parameters + solution) without code.

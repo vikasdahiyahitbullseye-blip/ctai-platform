@@ -53,7 +53,7 @@ See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admi
 
 **Admin:** school overview (sections, teachers, weekly activity), now with full management (see v0.2).
 
-**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks) plus EVS themes for Classes 3–5; 781 original questions covering every chapter of Classes 3–8; 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
+**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks) plus EVS themes for Classes 3–5; 3,952 questions — at least 40 per chapter for every chapter of Classes 3–8 (782 written individually, 3,171 generated from question families); 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
 
 ## Code map
 
@@ -74,14 +74,21 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 ## Question bank status
 
-| Class | Questions | Coverage |
-|---|---|---|
-| 3 | 149 | All 14 CT chapters, all 6 EVS themes |
-| 4 | 141 | All 14 CT chapters, all 6 EVS themes |
-| 5 | 149 | All 15 CT chapters, all 6 EVS themes |
-| 6 | 132 | All 10 CT chapters, all 4 AI chapters, plus 2 teacher-marked short answers |
-| 7 | 109 | All 8 CT chapters, all 4 AI chapters |
-| 8 | 101 | All 7 CT chapters, all 4 AI chapters |
-| **Total** | **781** | Every chapter has ≥ 8 CT, ≥ 10 AI or ≥ 4 EVS practice items; 5 Puzzles of the Day per class |
+**3,952 questions; every one of the 98 chapters (CT, AI and EVS, Classes 3–8) has at least 40 practice items.**
 
-All items are original and written to the CBSE grade-wise learning outcomes. Multiple-choice options are reordered when they are loaded, so the correct answer's position is balanced. Before release, each item still needs a subject-expert review in the content studio. The Year-1 target is about 40 items per chapter.
+| Class | Written individually | Generated from families | Total |
+|---|---|---|---|
+| 3 | 149 | 656 | 805 |
+| 4 | 141 | 664 | 805 |
+| 5 | 149 | 696 | 845 |
+| 6 | 132 | 435 | 567 |
+| 7 | 109 | 376 | 485 |
+| 8 | 101 | 344 | 445 |
+
+- **Written individually** (`prisma/content/class*.ts`): original items with worked solutions, aligned to CBSE grade-wise learning outcomes.
+- **Generated** (`prisma/content/gen/`): 160+ *question families*. Each family is a hand-designed question idea whose numbers, names and settings vary. The code works out the answer and step-by-step solution, so every key is correct by construction. AI and EVS questions come from banks of hand-written real-life situations (e.g. "A traffic camera reads number plates" → Computer Vision). `prisma/content/gen/index.ts` (`PLAN`) maps families to chapters and tops every chapter up to 40 with a 35/40/25 easy/medium/hard mix. Generation is deterministic.
+- Generated items are stored with `source = GENERATED` and their family id. They are published for the demo and shown with a "Generated" label; filter them in **Content studio → Questions → Generated only**.
+- Multiple-choice options are reordered when loaded so the correct answer's position is balanced.
+- Tests (`src/lib/__tests__/`) check every chapter reaches 40 and every answer key is valid. They also check for duplicates, broken text, the difficulty mix and answer balance, recompute answers for several families, and confirm the bank is the same every time it is generated.
+
+**Before release:** subject experts should review the bank in the content studio, both written and generated questions.

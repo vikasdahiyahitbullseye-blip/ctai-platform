@@ -6,12 +6,13 @@ import { Card, PageHeader, Pill, LinkButton, btn, Empty } from "@/components/ui"
 
 const STATUS_TONE: Record<string, "good" | "warn" | "default" | "bad"> = { PUBLISHED: "good", IN_REVIEW: "warn", DRAFT: "default", RETIRED: "bad" };
 
-export default async function StudioQuestions({ searchParams }: { searchParams: Promise<{ cls?: string; status?: string; q?: string; part?: string }> }) {
+export default async function StudioQuestions({ searchParams }: { searchParams: Promise<{ cls?: string; status?: string; q?: string; part?: string; source?: string }> }) {
   await requireUser("CONTENT", "SUPERADMIN");
   const sp = await searchParams;
   const where = {
     ...(sp.cls ? { classLevel: Number(sp.cls) } : {}),
     ...(sp.status ? { status: sp.status } : {}),
+    ...(sp.source ? { source: sp.source } : {}),
     ...(sp.part ? { chapter: { part: sp.part } } : {}),
     ...(sp.q ? { OR: [{ stem: { contains: sp.q } }, { code: { contains: sp.q } }] } : {}),
   };
@@ -25,6 +26,7 @@ export default async function StudioQuestions({ searchParams }: { searchParams: 
           <select name="cls" defaultValue={sp.cls ?? ""} className={sel}><option value="">All classes</option>{[3, 4, 5, 6, 7, 8].map((c) => <option key={c} value={c}>Class {c}</option>)}</select>
           <select name="part" defaultValue={sp.part ?? ""} className={sel}><option value="">All parts</option><option value="CT">CT</option><option value="AI">AI</option><option value="EVS">EVS</option></select>
           <select name="status" defaultValue={sp.status ?? ""} className={sel}><option value="">Any status</option>{["DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED"].map((s) => <option key={s}>{s}</option>)}</select>
+          <select name="source" defaultValue={sp.source ?? ""} className={sel}><option value="">Authored + generated</option><option value="AUTHORED">Authored only</option><option value="GENERATED">Generated only</option></select>
           <input name="q" defaultValue={sp.q ?? ""} placeholder="Search text or code" className={sel} />
           <button className={btn.secondary}>Filter</button>
         </form>
@@ -42,7 +44,7 @@ export default async function StudioQuestions({ searchParams }: { searchParams: 
                     <td className="text-xs">{q.classLevel} · {q.chapter.part} {q.chapter.number}</td>
                     <td className="text-xs">{QUESTION_TYPES[q.type as keyof typeof QUESTION_TYPES]}</td>
                     <td className="text-xs">{DIFFICULTY[q.difficulty as 1 | 2 | 3]}</td>
-                    <td><Pill tone={STATUS_TONE[q.status]}>{q.status.replace("_", " ")}</Pill>{q.isPuzzle && <Pill tone="brand">Puzzle</Pill>}</td>
+                    <td><Pill tone={STATUS_TONE[q.status]}>{q.status.replace("_", " ")}</Pill>{q.isPuzzle && <Pill tone="brand">Puzzle</Pill>}{q.source === "GENERATED" && <Pill tone="warn">Generated</Pill>}</td>
                   </tr>
                 ))}
               </tbody>
