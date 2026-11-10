@@ -15,7 +15,7 @@ const stamp = Date.now() % 100000;
 async function session(username, password = "demo123") {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 } });
   const page = await ctx.newPage();
-  page.on("pageerror", (e) => errors.push(`${username}: ${e.message}`));
+  page.on("pageerror", (e) => errors.push(`${username} at ${page.url()}: ${e.message}`));
   page.on("dialog", (d) => d.accept());
   await page.goto(`${BASE}/login`);
   await page.fill('input[name="username"]', username);
@@ -197,6 +197,53 @@ let teamUrl;
   await shot(page, "v2-10-student-chapter-links");
   log("student6: avatar + chapter connections ok");
   await ctx.close();
+}
+
+// ---------- Question approval: reviewer approves, rejects; super-admin creates a reviewer ----------
+{
+  const { page, ctx } = await session("reviewer");
+  check(page.url().endsWith("/review"), "reviewer should land on /review");
+  const awaiting = async () => Number(await page.getAttribute("[data-awaiting]", "data-awaiting"));
+  const before = await awaiting();
+  check(before > 3000, `expected thousands awaiting approval, got ${before}`);
+  await page.goto(`${BASE}/review?cls=5&source=GENERATED`);
+  await shot(page, "v2-11-review-queue");
+  const ticks = page.locator('input[name="ids"]');
+  const shown = await ticks.count();
+  check(shown === 20, `expected 20 in the queue, got ${shown}`);
+  await ticks.nth(0).uncheck(); // leave one out
+  await Promise.all([page.waitForLoadState("networkidle"), page.click('button:has-text("Approve ticked questions")')]);
+  await page.goto(`${BASE}/review`);
+  const after = await awaiting();
+  check(before - after === 19, `approving 19 should drop the queue by 19 (was ${before}, now ${after})`);
+  // Reject one with a reason
+  await page.goto(`${BASE}/review?cls=3`);
+  const first = page.locator("ol > li").first();
+  const code = (await first.locator("code").first().textContent()).trim();
+  await first.locator('input[placeholder^="Reason"]').fill("Picture is unclear");
+  await Promise.all([page.waitForLoadState("networkidle"), first.locator('button:has-text("Reject")').click()]);
+  await page.goto(`${BASE}/review?state=REJECTED`);
+  await page.waitForSelector(`text=${code}`);
+  check(await page.locator("text=Reason: Picture is unclear").count() > 0, "reject reason should show");
+  log(`reviewer: approved 19, rejected ${code}`);
+  for (const p of ["/studio", "/hq", "/admin", "/teacher"]) {
+    await page.goto(BASE + p);
+    check(page.url().endsWith("/review"), `reviewer reached ${p}`);
+  }
+  await ctx.close();
+
+  const sa = await session("superadmin");
+  await sa.page.goto(`${BASE}/hq`);
+  await sa.page.waitForSelector("text=awaiting approval");
+  await sa.page.goto(`${BASE}/hq/staff`);
+  await sa.page.fill('input[name="name"]', "Priya Reviewer");
+  await sa.page.click('button:has-text("Create login")');
+  await sa.page.waitForSelector("text=Priya Reviewer >> nth=0");
+  check(await sa.page.locator("td:has-text('Question reviewer')").count() >= 2, "new reviewer should be listed");
+  await shot(sa.page, "v2-12-staff-accounts");
+  await sa.page.goto(`${BASE}/teacher/questions`);
+  log("super-admin: approval banner + new reviewer login ok");
+  await sa.ctx.close();
 }
 
 // ---------- Access control ----------

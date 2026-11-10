@@ -33,3 +33,28 @@ export async function toggleSchool(schoolId: string) {
   await audit(user, s.active ? "SCHOOL_SUSPENDED" : "SCHOOL_REACTIVATED", s.name);
   revalidatePath("/hq");
 }
+
+/** Creates a Hitbullseye staff login (question reviewer or content team) with a temporary password. */
+export async function createStaff(_: unknown, form: FormData) {
+  const user = await requireUser("SUPERADMIN");
+  const p = z.object({
+    name: z.string().trim().min(3, "Name is required"),
+    role: z.enum(["REVIEWER", "CONTENT"], { message: "Choose a role" }),
+  }).safeParse(Object.fromEntries(form));
+  if (!p.success) return { error: p.error.issues[0].message };
+  const username = await staffUsername(p.data.name);
+  const password = tempPassword();
+  await prisma.user.create({ data: { schoolId: user.schoolId, role: p.data.role, name: p.data.name, username, passwordHash: await hashPassword(password), mustChangePassword: true } });
+  await audit(user, "STAFF_CREATED", `${p.data.name} (${p.data.role})`);
+  revalidatePath("/hq/staff");
+  return { ok: true, credentials: [{ name: p.data.name, username, password, className: p.data.role === "REVIEWER" ? "Question reviewer" : "Content team" }] };
+}
+
+export async function toggleStaff(userId: string) {
+  const user = await requireUser("SUPERADMIN");
+  const u = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  if (u.id === user.id || u.schoolId !== user.schoolId || u.role === "SUPERADMIN") return;
+  await prisma.user.update({ where: { id: userId }, data: { active: !u.active } });
+  await audit(user, u.active ? "STAFF_DEACTIVATED" : "STAFF_REACTIVATED", u.username);
+  revalidatePath("/hq/staff");
+}

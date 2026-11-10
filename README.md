@@ -7,17 +7,50 @@ Practice, assessment, gamification and analytics for the CBSE Computational Thin
 
 ## Run locally
 
-Requires Node.js 20+.
+### 1. Install the tools (once)
+
+- **Node.js 20 or newer** (the "LTS" version) from https://nodejs.org. Check in a terminal: `node -v`.
+- **Git** from https://git-scm.com (or download the code as a ZIP from GitHub and unzip it).
+
+On Windows, use **PowerShell** or **Command Prompt** for the commands below.
+
+### 2. Get the code and set it up (once)
 
 ```bash
-cd web
+git clone https://github.com/vikasdahiyahitbullseye-blip/ctai-platform
+cd ctai-platform/web
 npm install
-cp .env.example .env
-npm run db:setup     # creates the database and loads curriculum, questions and a demo school
-npm run dev          # http://localhost:3000
 ```
 
-Demo logins (password `demo123`):
+Copy the settings file. On Windows:
+
+```bash
+copy .env.example .env
+```
+
+On Mac or Linux:
+
+```bash
+cp .env.example .env
+```
+
+Create the database and load the curriculum, all questions and a demo school (takes 1–2 minutes):
+
+```bash
+npm run db:setup
+```
+
+### 3. Start it (every time)
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000 and sign in with a demo login below. Stop it with `Ctrl + C`.
+
+The first page you open after starting can take 10–20 seconds while it compiles; later pages are quick. For a faster, production-like run: `npm run build`, then `npm start`.
+
+### Demo logins (password `demo123`)
 
 | Username | Role |
 |---|---|
@@ -25,10 +58,28 @@ Demo logins (password `demo123`):
 | `teacher` | Teacher for Classes 3-A to 8-A |
 | `rohan` | Computer teacher for AI in 6-A, 7-A, 8-A (runs the Weather Watchers project) |
 | `admin` | School admin |
-| `content` | Hitbullseye content team |
-| `superadmin` | Hitbullseye super-admin |
+| `content` | Hitbullseye content team (writes and edits questions) |
+| `reviewer` | Hitbullseye question reviewer (approves questions) |
+| `superadmin` | Hitbullseye super-admin (all schools, approvals, staff accounts) |
 
-`npm run seed` reloads the demo data (it replaces everything in the database).
+`npm run seed` reloads the demo data. **It replaces everything in the database**, including any approvals you have made.
+
+### If something goes wrong
+
+- `npm install` fails with `ECONNRESET`, `ETIMEDOUT` or `EPERM`: check your internet connection, close editors or terminals that have the folder open, delete the `node_modules` folder and run `npm install` again. On office networks a proxy or antivirus can block downloads.
+- `Port 3000 is in use`: another copy is running. Close it, or run `npm run dev -- -p 3001` and open http://localhost:3001.
+- Errors about the database or Prisma: run `npm run db:setup` again.
+
+## Approving questions
+
+Every question has an approval state: **Awaiting approval**, **Approved** or **Rejected**.
+
+- Hand-written questions start **Approved**. Generated questions (including all picture questions) start **Awaiting approval**. They can still be used in practice, tests and homework while they wait, and teachers see a "Not yet reviewed" label on them in the question bank.
+- Sign in as `reviewer` (or `superadmin`) and open **Approve questions** (`/review`). Filter by class, chapter, type, and generated or written. Each question is shown in full: the pictures, options, answer and worked solution.
+- All questions on the page start ticked. Untick any you are unsure of, then press **Approve ticked questions**. The next 20 appear. You can also approve one at a time.
+- **Reject** needs a short reason (e.g. "picture unclear"). A rejected question is removed from use, and the reason shows to the content team. **Restore** puts it back in use and back in the queue; **Undo approval** sends an approved question back to the queue.
+- If the content team edits a question, it goes back to **Awaiting approval**, because changed content needs a fresh check.
+- The super-admin can create more reviewer logins under **HQ → Staff accounts**, see how many questions each person approved, and deactivate logins. Every approval and rejection is recorded in the audit log.
 
 ## Checks
 
@@ -99,8 +150,8 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
   Sample screenshots: [docs/screenshots/picture-questions-samples.png](docs/screenshots/picture-questions-samples.png) and [docs/screenshots/picture-questions-more-samples.png](docs/screenshots/picture-questions-more-samples.png).
 
   Pictures are stored as small JSON drawing specs (`src/lib/figures.ts`) and drawn as sharp SVG (`src/components/Figure.tsx`) with a bright palette on a white panel, so they look the same in light/dark mode and in print. Colours that look alike (red/pink, orange/yellow, green/teal) are never used together in one question, and only widely supported emoji are used. Answer options can themselves be pictures. Pictures show in practice, tests, homework, results, the question bank, worksheets and printed papers; the Word (.docx) export marks picture questions and points to the printable version.
-- Generated items are stored with `source = GENERATED` and their family id. They are published for the demo and shown with a "Generated" label; filter them in **Content studio → Questions → Generated only**.
+- Generated items are stored with `source = GENERATED` and their family id. They are usable straight away, labelled "Generated", and wait in the approval queue (see **Approving questions**).
 - Multiple-choice options are reordered when loaded so the correct answer's position is balanced.
 - Tests (`src/lib/__tests__/`) check every chapter reaches 40 and every answer key is valid. They also check for duplicates, broken text, the difficulty mix and answer balance, recompute answers for several families, and confirm the bank is the same every time it is generated.
 
-**Before release:** subject experts should review the bank in the content studio, both written and generated questions.
+**Before release:** subject experts should work through the approval queue (`/review`) for the generated questions.

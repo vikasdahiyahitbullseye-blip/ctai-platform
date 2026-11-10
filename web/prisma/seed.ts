@@ -83,6 +83,9 @@ async function main() {
           figure: q.figure ? JSON.stringify(q.figure) : null,
           optionFigures: q.optionFigures ? JSON.stringify(q.optionFigures) : null,
           source,
+          // Hand-written questions are signed off; generated ones wait for a reviewer (still usable meanwhile).
+          approval: source === "GENERATED" ? "UNREVIEWED" : "APPROVED",
+          approvedAt: source === "GENERATED" ? null : new Date(),
           family: q.family ?? null,
         },
       });
@@ -107,6 +110,7 @@ async function main() {
   const hash = await bcrypt.hash("demo123", 10);
   const hq = await db.school.create({ data: { name: "Hitbullseye (HQ)", city: "New Delhi", isHq: true, code: "HQ" } });
   await db.user.create({ data: { schoolId: hq.id, role: "SUPERADMIN", name: "Hitbullseye Super Admin", username: "superadmin", passwordHash: await bcrypt.hash("demo123", 10) } });
+  await db.user.create({ data: { schoolId: hq.id, role: "REVIEWER", name: "Question Reviewer (Demo)", username: "reviewer", passwordHash: await bcrypt.hash("demo123", 10) } });
   const contentUser = await db.user.create({ data: { schoolId: hq.id, role: "CONTENT", name: "Content Team (Demo)", username: "content", passwordHash: await bcrypt.hash("demo123", 10) } });
   await db.question.updateMany({ data: { authorId: contentUser.id } });
 

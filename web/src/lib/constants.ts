@@ -33,7 +33,7 @@ export type QuestionType = keyof typeof QUESTION_TYPES;
 
 export const DIFFICULTY = { 1: "Easy", 2: "Medium", 3: "Hard" } as const;
 
-export const ROLES = ["STUDENT", "TEACHER", "ADMIN", "CONTENT", "SUPERADMIN"] as const;
+export const ROLES = ["STUDENT", "TEACHER", "ADMIN", "CONTENT", "REVIEWER", "SUPERADMIN"] as const;
 export type Role = (typeof ROLES)[number];
 
 /** CBSE handbook chapter structure, 2026-27 (docs/SPEC.md §2). */

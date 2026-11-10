@@ -15,7 +15,7 @@ const browser = await chromium.launch();
 async function session(username) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1, acceptDownloads: true });
   const page = await ctx.newPage();
-  page.on("pageerror", (e) => errors.push(`${username} pageerror: ${e.message}`));
+  page.on("pageerror", (e) => errors.push(`${username} pageerror at ${page.url()}: ${e.message}`));
   page.on("console", (m) => m.type() === "error" && errors.push(`${username} console: ${m.text()}`));
   await page.goto(`${BASE}/login`);
   await page.fill('input[name="username"]', username);

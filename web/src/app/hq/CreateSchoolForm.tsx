@@ -18,7 +18,7 @@ export function CreateSchoolForm() {
       </div>
       <p className="mt-2 text-xs text-muted">Creates the school with four houses and a school admin login. The admin then adds classes, teachers and students.</p>
       {state?.error && <p className="mt-2 text-sm text-bad">{state.error}</p>}
-      {state?.credentials && <Credentials items={state.credentials} />}
+      {state?.credentials && <Credentials items={state.credentials} groupLabel="School" />}
     </form>
   );
 }

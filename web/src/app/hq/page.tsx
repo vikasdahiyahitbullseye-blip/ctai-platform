@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import { Card, PageHeader, Stat, Pill } from "@/components/ui";
+import { Card, PageHeader, Stat, Pill, btn } from "@/components/ui";
 import { CreateSchoolForm } from "./CreateSchoolForm";
 import { toggleSchool } from "@/app/actions/hq";
 
@@ -18,6 +19,7 @@ export default async function HqHome() {
     })),
   );
   const qByStatus = await prisma.question.groupBy({ by: ["status"], _count: true });
+  const awaiting = await prisma.question.count({ where: { status: "PUBLISHED", approval: "UNREVIEWED" } });
   const total = (k: keyof (typeof rows)[number]) => rows.reduce((a, r) => a + (r[k] as number), 0);
   return (
     <div className="space-y-6">
@@ -29,6 +31,12 @@ export default async function HqHome() {
         <Stat label="Active students (7 days)" value={total("active")} />
         <Stat label="Published questions" value={qByStatus.find((q) => q.status === "PUBLISHED")?._count ?? 0} sub={`${qByStatus.filter((q) => q.status !== "PUBLISHED").reduce((a, q) => a + q._count, 0)} in draft/review`} />
       </div>
+      {awaiting > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-warn-soft p-4 text-sm">
+          <span><strong>{awaiting}</strong> live questions are awaiting approval (students can already use them).</span>
+          <Link href="/review" className={btn.primary}>Review and approve →</Link>
+        </div>
+      )}
       <Card title="Add a school"><CreateSchoolForm /></Card>
       <Card title="Schools">
         <div className="overflow-x-auto">

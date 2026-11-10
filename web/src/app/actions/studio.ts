@@ -58,7 +58,7 @@ export async function saveQuestion(id: string | null, _: unknown, form: FormData
     // Picture options must stay parallel to the text options; drop them if the option count changed.
     const figs = old.optionFigures ? (JSON.parse(old.optionFigures) as unknown[]) : null;
     const keepFigs = !!figs && figs.length === d.options.length && (d.type === "MCQ" || d.type === "MULTI");
-    await prisma.question.update({ where: { id }, data: { ...data, ...(figs && !keepFigs ? { optionFigures: null } : {}), status, version: { increment: 1 }, reviewNote: null } });
+    await prisma.question.update({ where: { id }, data: { ...data, ...(figs && !keepFigs ? { optionFigures: null } : {}), status, version: { increment: 1 }, reviewNote: null, approval: "UNREVIEWED", approvedById: null, approvedAt: null } }); // changed content needs fresh approval
     await audit(user, "QUESTION_UPDATED", old.code);
   } else {
     const code = await nextCode(d.classLevel, d.part, d.chapterNumber, d.skills[0], d.type);
@@ -76,7 +76,7 @@ export async function reviewQuestion(id: string, decision: "approve" | "reject" 
   const q = await prisma.question.findUniqueOrThrow({ where: { id } });
   if (decision === "approve") {
     if (q.authorId === user.id && user.role !== "SUPERADMIN") throw new Error("Another reviewer must approve your question.");
-    await prisma.question.update({ where: { id }, data: { status: "PUBLISHED", reviewNote: null } });
+    await prisma.question.update({ where: { id }, data: { status: "PUBLISHED", reviewNote: null, ...(user.role === "SUPERADMIN" ? { approval: "APPROVED", approvedById: user.id, approvedAt: new Date() } : {}) } });
   } else if (decision === "reject") {
     await prisma.question.update({ where: { id }, data: { status: "DRAFT", reviewNote: String(form?.get("note") ?? "") || "Changes requested" } });
   } else if (decision === "retire") {

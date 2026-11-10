@@ -49,6 +49,7 @@ export function homeFor(role: string) {
     case "TEACHER": return "/teacher";
     case "ADMIN": return "/admin";
     case "CONTENT": return "/studio";
+    case "REVIEWER": return "/review";
     case "SUPERADMIN": return "/hq";
     default: return "/login";
   }

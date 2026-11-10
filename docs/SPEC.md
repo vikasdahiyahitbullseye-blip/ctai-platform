@@ -332,6 +332,7 @@ New staff get a temporary password and must change it at first sign-in. Students
   - **Situation banks** (hand-written real-life cases with known categories) power the AI and EVS families.
 - **Governance:**
   - Generated items carry `source = GENERATED` and a `family` id.
+  - Approval: `Question.approval` = UNREVIEWED | APPROVED | REJECTED, with `approvedById` and `approvedAt`. Written items are seeded APPROVED, generated ones UNREVIEWED (still usable). The REVIEWER role (and SUPERADMIN) approves in `/review`, in bulk or one by one; rejecting retires the question with a reason. Editing a question resets it to UNREVIEWED. HQ → Staff accounts creates reviewer and content logins.
   - Picture questions: `Question.figure` (JSON drawing spec) and `Question.optionFigures` (specs parallel to options) are rendered as SVG by the app; specs never contain markup. Kinds: pixel grid (with mirror / water / symmetry line), grid map, shapes, sequence, arrow, dots, bar chart, pictograph, clock (optionally mirrored), cube towers, fraction (circle/bar/grid), abacus, number line (marks and jumps), ruler, balance, jug, money, emoji icons (with ✓/✗ marks), angle, lines, calendar, number grid, matchsticks, area model, binary cards, beads. Every chapter carries 8 picture questions.
   - Reviewers can approve or retire a whole family by reviewing a sample.
   - Families can be edited centrally, and the bank re-generated.

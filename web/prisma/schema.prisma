@@ -150,6 +150,9 @@ model Question {
   status      String   @default("PUBLISHED") // DRAFT | IN_REVIEW | PUBLISHED | RETIRED
   authorId    String?
   reviewNote  String?
+  approval    String   @default("UNREVIEWED") // UNREVIEWED | APPROVED | REJECTED (quality sign-off by a reviewer or super-admin)
+  approvedById String?
+  approvedAt  DateTime?
   version     Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt

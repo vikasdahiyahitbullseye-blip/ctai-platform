@@ -17,6 +17,8 @@ export default function LoginPage() {
             <li><code className="font-mono">student3</code> — Class 3 student</li>
             <li><code className="font-mono">student6</code> — Class 6 student</li>
             <li><code className="font-mono">admin</code> — school admin</li>
+            <li><code className="font-mono">reviewer</code> — approves questions</li>
+            <li><code className="font-mono">superadmin</code> — Hitbullseye HQ (all schools, approvals)</li>
           </ul>
         </div>
       </div>

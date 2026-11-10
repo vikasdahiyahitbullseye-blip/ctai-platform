@@ -69,7 +69,7 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
               <li key={q.id} className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
                 <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
                   <code className="font-mono text-muted">{q.code}</code>
-                  {q.isPuzzle && <Pill tone="warn">Puzzle of the Day</Pill>}{q.source === "GENERATED" && <Pill>Generated</Pill>}
+                  {q.isPuzzle && <Pill tone="warn">Puzzle of the Day</Pill>}{q.source === "GENERATED" && <Pill>Generated</Pill>}{q.approval === "APPROVED" ? <Pill tone="good">✓ Approved</Pill> : <Pill>Not yet reviewed</Pill>}
                   <Pill tone="brand">{q.chapter.part === "AI" ? "AI " : ""}Ch {q.chapter.number}: {q.chapter.title}</Pill>
                   <Pill>{DIFFICULTY[q.difficulty as 1 | 2 | 3]}</Pill>
                   <Pill>{QUESTION_TYPES[q.type as keyof typeof QUESTION_TYPES]}</Pill>

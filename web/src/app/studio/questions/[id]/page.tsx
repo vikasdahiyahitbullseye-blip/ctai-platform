@@ -5,6 +5,7 @@ import { answerToRaw } from "@/lib/questionInput";
 import { PageHeader, Pill, btn } from "@/components/ui";
 import { QuestionEditor } from "../QuestionEditor";
 import { StemFigure, OptionList } from "@/components/QuestionFigures";
+import { approveOne, reopenOne } from "@/app/actions/review";
 import { reviewQuestion } from "@/app/actions/studio";
 
 export default async function EditQuestion({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ saved?: string }> }) {
@@ -19,7 +20,14 @@ export default async function EditQuestion({ params, searchParams }: { params: P
   return (
     <div className="space-y-4">
       <PageHeader title={<span className="font-mono">{q.code}</span>} subtitle={`Version ${q.version} · by ${author?.name ?? "—"} · used in ${q._count.responses} answers`} action={<Pill tone={q.status === "PUBLISHED" ? "good" : q.status === "IN_REVIEW" ? "warn" : q.status === "RETIRED" ? "bad" : "default"}>{q.status.replace("_", " ")}</Pill>} />
-      {saved && <div className="rounded-xl bg-good-soft p-3 text-sm text-good">Saved.</div>}
+      {saved && <div className="rounded-xl bg-good-soft p-3 text-sm text-good">Saved.{q.approval === "UNREVIEWED" && q.status === "PUBLISHED" ? " Changed questions need approval again." : ""}</div>}
+      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface p-4 text-sm">
+        <span className="mr-2 font-semibold">Approval:</span>
+        {q.approval === "APPROVED" ? <Pill tone="good">✓ Approved{q.approvedAt ? ` on ${q.approvedAt.toLocaleDateString("en-IN")}` : ""}</Pill> : q.approval === "REJECTED" ? <Pill tone="bad">Rejected</Pill> : <Pill tone="warn">Awaiting approval</Pill>}
+        {user.role === "SUPERADMIN" && q.status === "PUBLISHED" && q.approval !== "APPROVED" && <form action={approveOne.bind(null, id)}><button className={btn.primary}>✓ Approve</button></form>}
+        {user.role === "SUPERADMIN" && q.approval !== "UNREVIEWED" && <form action={reopenOne.bind(null, id)}><button className={btn.ghost}>↺ {q.approval === "REJECTED" ? "Restore" : "Undo approval"}</button></form>}
+        {user.role !== "SUPERADMIN" && <span className="text-muted">Approved by a reviewer or the super-admin.</span>}
+      </div>
       {q.reviewNote && <div className="rounded-xl bg-warn-soft p-3 text-sm text-warn">Reviewer note: {q.reviewNote}</div>}
       <div className="flex flex-wrap items-end gap-2 rounded-2xl border border-line bg-surface p-4">
         <span className="mr-2 text-sm font-semibold">Review:</span>

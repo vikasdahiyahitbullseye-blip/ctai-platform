@@ -13,7 +13,7 @@ export default async function StudioLayout({ children }: { children: React.React
         { href: "/studio/resources", label: "Resources" },
         { href: "/studio/projects", label: "Project kits" },
         { href: "/studio/connections", label: "Subject links" },
-        ...(user.role === "SUPERADMIN" ? [{ href: "/hq", label: "HQ" }] : []),
+        ...(user.role === "SUPERADMIN" ? [{ href: "/review", label: "Approve questions" }, { href: "/hq", label: "HQ" }] : []),
       ]}
     >
       {children}
