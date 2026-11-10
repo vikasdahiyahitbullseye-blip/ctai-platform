@@ -8,6 +8,10 @@ import { parseSkills } from "../src/lib/progress";
 import { class3 } from "./content/class3";
 import { class6, class6Short } from "./content/class6";
 import { evs3 } from "./content/evs3";
+import { class4 } from "./content/class4";
+import { class5 } from "./content/class5";
+import { class7 } from "./content/class7";
+import { class8 } from "./content/class8";
 import { CONNECTIONS } from "./content/connections";
 import { PROJECT_KITS } from "./content/projects";
 import { RESOURCES } from "./content/resources";
@@ -15,6 +19,7 @@ import { DEFAULT_HOUSES } from "../src/lib/constants";
 import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
 import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
+import { balanceOptions } from "./content/balance";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -50,7 +55,8 @@ async function main() {
   // Question bank
   const counters: Record<string, number> = {};
   const addQuestions = async (cls: number, list: SeedQuestion[]) => {
-    for (const q of list) {
+    for (const raw of list) {
+      const q = balanceOptions(raw);
       const part = q.part ?? "CT";
       const key = `${cls}-${part}-${q.ch}`;
       counters[key] = (counters[key] ?? 0) + 1;
@@ -78,6 +84,10 @@ async function main() {
   await addQuestions(3, class3);
   await addQuestions(6, [...class6, ...class6Short]);
   await addQuestions(3, evs3);
+  await addQuestions(4, class4);
+  await addQuestions(5, class5);
+  await addQuestions(7, class7);
+  await addQuestions(8, class8);
 
   // School and people
   const hash = await bcrypt.hash("demo123", 10);
@@ -97,6 +107,10 @@ async function main() {
   const sections = {
     "3A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 3, section: "A", leaderboard: false } }),
     "6A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 6, section: "A" } }),
+    "4A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 4, section: "A", leaderboard: false } }),
+    "5A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 5, section: "A", leaderboard: false } }),
+    "7A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 7, section: "A" } }),
+    "8A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 8, section: "A" } }),
   };
   await db.teacherAssignment.createMany({
     data: [
@@ -104,13 +118,19 @@ async function main() {
       { userId: teacher.id, sectionId: sections["6A"].id, subject: "CT" },
       { userId: teacher.id, sectionId: sections["6A"].id, subject: "AI" },
       { userId: computerTeacher.id, sectionId: sections["6A"].id, subject: "AI" },
+      { userId: teacher.id, sectionId: sections["4A"].id, subject: "CT" },
+      { userId: teacher.id, sectionId: sections["5A"].id, subject: "CT" },
+      { userId: teacher.id, sectionId: sections["7A"].id, subject: "CT" },
+      { userId: teacher.id, sectionId: sections["8A"].id, subject: "CT" },
+      { userId: computerTeacher.id, sectionId: sections["7A"].id, subject: "AI" },
+      { userId: computerTeacher.id, sectionId: sections["8A"].id, subject: "AI" },
     ],
   });
 
   const now = Date.now();
   const students: { id: string; cls: number; ability: number; demo: boolean }[] = [];
   const used = new Set<string>();
-  for (const [key, size] of [["3A", 14], ["6A", 16]] as const) {
+  for (const [key, size] of [["3A", 14], ["6A", 16], ["4A", 8], ["5A", 8], ["7A", 8], ["8A", 8]] as const) {
     const sec = sections[key];
     for (let i = 0; i < size; i++) {
       let name = "";
@@ -121,12 +141,12 @@ async function main() {
         data: {
           schoolId: school.id,
           role: "STUDENT",
-          name: demo ? (sec.classLevel === 3 ? "Aarav Sharma" : "Diya Verma") : name,
+          name: demo ? ({ 3: "Aarav Sharma", 4: "Kabir Iyer", 5: "Meera Nair", 6: "Diya Verma", 7: "Arjun Khan", 8: "Saanvi Rao" } as Record<number, string>)[sec.classLevel] : name,
           username: demo ? `student${sec.classLevel}` : `${sec.classLevel}${sec.section.toLowerCase()}${String(i + 1).padStart(2, "0")}`,
           rollNo: String(i + 1),
           passwordHash: hash,
           houseId: houses[i % houses.length].id,
-          avatar: JSON.stringify({ animal: demo ? (sec.classLevel === 3 ? "fox" : "owl") : ANIMALS[Math.floor(rand() * ANIMALS.length)].id, bg: BACKGROUNDS[Math.floor(rand() * BACKGROUNDS.length)].id, accessory: null }),
+          avatar: JSON.stringify({ animal: demo ? ({ 3: "fox", 4: "tiger", 5: "peacock", 6: "owl", 7: "dolphin", 8: "robot" } as Record<number, string>)[sec.classLevel] : ANIMALS[Math.floor(rand() * ANIMALS.length)].id, bg: BACKGROUNDS[Math.floor(rand() * BACKGROUNDS.length)].id, accessory: null }),
         },
       });
       await db.enrollment.create({ data: { userId: u.id, sectionId: sec.id } });
@@ -138,7 +158,8 @@ async function main() {
 
   const chaptersWithQs = async (cls: number) =>
     (await db.chapter.findMany({ where: { classLevel: cls, part: { not: "EVS" }, questions: { some: { isPuzzle: false } } }, select: { id: true } })).map((c) => c.id);
-  const chMap = { 3: await chaptersWithQs(3), 6: await chaptersWithQs(6) } as Record<number, string[]>;
+  const chMap: Record<number, string[]> = {};
+  for (const c of [3, 4, 5, 6, 7, 8]) chMap[c] = await chaptersWithQs(c);
 
   const answerFor = (q: { type: string; answer: string; options: string }, correct: boolean) => {
     const key = JSON.parse(q.answer);
@@ -315,7 +336,7 @@ async function main() {
 
   const counts = await Promise.all([db.question.count(), db.attempt.count(), db.response.count(), db.userBadge.count()]);
   console.log(`Seeded: ${counts[0]} questions, ${counts[1]} attempts, ${counts[2]} responses, ${counts[3]} badges.`);
-  console.log("Logins (password demo123): teacher, rohan, student3, student6, admin, content, superadmin");
+  console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, content, superadmin");
 }
 
 main().finally(() => db.$disconnect());

@@ -14,7 +14,7 @@ export type EditorInitial = {
 };
 
 const ANSWER_HELP: Record<string, string> = {
-  MCQ: "Letter of the correct option, e.g. b",
+  MCQ: "Letter of the correct option, e.g. b. Vary which letter is correct across questions",
   MULTI: "Letters of all correct options, e.g. a,c",
   TRUE_FALSE: "true or false",
   NUMERIC: "The number, e.g. 36",
