@@ -2,6 +2,7 @@
 import type { ClientQuestion } from "@/lib/questions";
 import type { AnswerValue } from "@/lib/scoring";
 import { Markdown } from "./Markdown";
+import { Figure } from "./Figure";
 
 const letter = (n: number) => String.fromCharCode(97 + n);
 
@@ -12,12 +13,13 @@ export function QuestionInput({ q, value, onChange, disabled, big }: { q: Client
   return (
     <div className="space-y-5">
       <Markdown text={q.stem} className={big ? "text-xl leading-relaxed" : "text-lg leading-relaxed"} />
+      {q.figure && <div className="overflow-x-auto"><Figure fig={q.figure} /></div>}
       {q.type === "MCQ" && (
         <div className="grid gap-2 sm:grid-cols-2" role="radiogroup">
           {q.options.map((o, idx) => (
             <button key={o.i} type="button" role="radio" aria-checked={value === o.i} disabled={disabled} onClick={() => onChange(o.i)} className={`${optBase} ${value === o.i ? sel : unsel}`}>
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-2 text-sm font-bold">{letter(idx)}</span>
-              <span>{o.text}</span>
+              {o.figure ? <Figure fig={o.figure} size="sm" /> : <span>{o.text}</span>}
             </button>
           ))}
         </div>
@@ -31,7 +33,7 @@ export function QuestionInput({ q, value, onChange, disabled, big }: { q: Client
             return (
               <button key={o.i} type="button" role="checkbox" aria-checked={on} disabled={disabled} onClick={() => onChange(on ? arr.filter((x) => x !== o.i) : [...arr, o.i])} className={`${optBase} ${on ? sel : unsel}`}>
                 <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 ${on ? "border-brand bg-brand text-white" : "border-line"}`}>{on ? "✓" : ""}</span>
-                <span>{o.text}</span>
+                {o.figure ? <Figure fig={o.figure} size="sm" /> : <span>{o.text}</span>}
               </button>
             );
           })}

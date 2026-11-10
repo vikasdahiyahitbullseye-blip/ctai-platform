@@ -137,6 +137,8 @@ model Question {
   difficulty  Int // 1 easy, 2 medium, 3 hard
   stem        String
   options     String   @default("[]") // JSON string[]
+  figure      String? // JSON picture spec (src/lib/figures.ts)
+  optionFigures String? // JSON (spec|null)[] parallel to options, for picture answers
   answer      String // JSON: index | index[] | string | number | string[] (order)
   solution    String
   hint        String?

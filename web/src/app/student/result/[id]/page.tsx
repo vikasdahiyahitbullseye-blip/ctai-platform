@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth";
 import { formatAnswer } from "@/lib/scoring";
 import { BADGES } from "@/lib/gamification";
 import { Markdown } from "@/components/Markdown";
+import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { Card, PageHeader, Pill, btn } from "@/components/ui";
 import { Confetti, Mascot } from "@/components/kid";
 
@@ -84,11 +85,8 @@ export default async function ResultPage({ params, searchParams }: { params: Pro
                     <span className="ml-auto text-xs text-muted">{r?.marks ?? 0}/{marks}</span>
                   </div>
                   <Markdown text={q.stem} />
-                  {opts.length > 0 && q.type !== "ORDER" && (
-                    <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
-                      {opts.map((o, k) => <li key={k}>({String.fromCharCode(97 + k)}) {o}</li>)}
-                    </ul>
-                  )}
+                  <StemFigure json={q.figure} />
+                  {q.type !== "ORDER" && <OptionList options={opts} figuresJson={q.optionFigures} />}
                   <div className="mt-3 grid gap-1 text-sm">
                     <div>Your answer: <strong>{describe(q.type, opts, r?.answer ?? null)}</strong></div>
                     {q.type === "SHORT" ? (r?.markedAt ? <div>Model answer: <span className="text-ink-2">{formatAnswer(q.type, opts, JSON.parse(q.answer))}</span></div> : null) : !r?.correct && <div>Correct answer: <strong className="text-good">{formatAnswer(q.type, opts, JSON.parse(q.answer))}</strong></div>}

@@ -6,6 +6,7 @@ import { formatAnswer } from "@/lib/scoring";
 import { skillName, parseSkills } from "@/lib/progress";
 import { DIFFICULTY, QUESTION_TYPES } from "@/lib/constants";
 import { Markdown } from "@/components/Markdown";
+import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { Card, PageHeader, Pill, Stat, btn, Empty } from "@/components/ui";
 import { DistributionChart } from "@/components/Charts";
 import { swapItem, removeItem, assignTest } from "@/app/actions/teacher";
@@ -160,7 +161,8 @@ export default async function TestDetail({ params, searchParams }: { params: Pro
                   <span className="ml-auto text-muted">{it.marks} mark{it.marks > 1 ? "s" : ""} · {q.code}</span>
                 </div>
                 <Markdown text={q.stem} />
-                {opts.length > 0 && <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">{opts.map((o, k) => <li key={k}>({String.fromCharCode(97 + k)}) {o}</li>)}</ul>}
+                <StemFigure json={q.figure} />
+                <OptionList options={opts} figuresJson={q.optionFigures} />
                 <details className="mt-3 text-sm">
                   <summary className="cursor-pointer font-medium text-brand">Answer: {formatAnswer(q.type, opts, JSON.parse(q.answer))}</summary>
                   <div className="mt-2 text-ink-2"><Markdown text={q.solution} /></div>

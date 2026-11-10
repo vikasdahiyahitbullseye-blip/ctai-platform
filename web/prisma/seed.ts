@@ -80,6 +80,8 @@ async function main() {
           marks: q.d === 3 ? 2 : 1,
           timeSec: 45 + q.d * 30,
           isPuzzle: !!q.puzzle,
+          figure: q.figure ? JSON.stringify(q.figure) : null,
+          optionFigures: q.optionFigures ? JSON.stringify(q.optionFigures) : null,
           source,
           family: q.family ?? null,
         },

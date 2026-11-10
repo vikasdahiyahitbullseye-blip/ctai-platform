@@ -21,7 +21,8 @@ export function balanceOptions(q: SeedQuestion): SeedQuestion {
   if (last >= 0) order.push(last);
   // order[newPos] = oldIndex
   const options = order.map((old) => q.options![old]);
+  const optionFigures = q.optionFigures ? order.map((old) => q.optionFigures![old]) : undefined;
   const newIndex = (old: number) => order.indexOf(old);
   const answer = q.type === "MCQ" ? newIndex(Number(q.answer)) : (q.answer as number[]).map(newIndex).sort((a, b) => a - b);
-  return { ...q, options, answer };
+  return { ...q, options, answer, ...(optionFigures ? { optionFigures } : {}) };
 }

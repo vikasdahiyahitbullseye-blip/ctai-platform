@@ -1,3 +1,5 @@
+import type { Fig } from "../../src/lib/figures";
+
 export type SeedQuestion = {
   ch: number; // chapter number within part
   part?: "CT" | "AI" | "EVS";
@@ -11,4 +13,6 @@ export type SeedQuestion = {
   hint?: string;
   puzzle?: boolean;
   family?: string; // set on generated items
+  figure?: Fig;
+  optionFigures?: (Fig | null)[];
 };

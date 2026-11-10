@@ -29,6 +29,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     ...items.flatMap((it) => [
       new Paragraph({ children: [new TextRun({ text: `Q${it.no}. `, bold: true }), new TextRun({ text: `[${it.marks} mark${it.marks > 1 ? "s" : ""}]`, italics: true })], spacing: { before: 200 } }),
       ...lines(it.stem),
+      ...(it.figure || it.optionFigures?.some(Boolean) ? [new Paragraph({ children: [new TextRun({ text: "[Picture question: the picture is in the printable version (Print / PDF) of this paper.]", italics: true, color: "B45309" })] })] : []),
       ...(instructionFor(it.type) ? [new Paragraph({ children: [new TextRun({ text: instructionFor(it.type)!, italics: true })] })] : []),
       ...(it.type === "ORDER"
         ? [new Paragraph({ children: [new TextRun(it.options.join("   |   "))] })]

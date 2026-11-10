@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { formatAnswer } from "@/lib/scoring";
 import { PART_LABEL } from "@/lib/constants";
 import { Markdown } from "@/components/Markdown";
+import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { PrintButton } from "../../../tests/[id]/print/PrintButton";
 
 export default async function Worksheet({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ key?: string }> }) {
@@ -32,7 +33,9 @@ export default async function Worksheet({ params, searchParams }: { params: Prom
                 <span className="font-bold">{i + 1}.</span>
                 <div className={`flex-1 ${big ? "text-[15px]" : "text-sm"}`}>
                   <Markdown text={q.stem} />
-                  {opts.length > 0 && q.type !== "ORDER" && <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1">{opts.map((o, k) => <div key={k}>({String.fromCharCode(97 + k)}) {o}</div>)}</div>}
+                  <StemFigure json={q.figure} />
+                  {q.optionFigures && <OptionList options={opts} figuresJson={q.optionFigures} />}
+                  {opts.length > 0 && q.type !== "ORDER" && !q.optionFigures && <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1">{opts.map((o, k) => <div key={k}>({String.fromCharCode(97 + k)}) {o}</div>)}</div>}
                   {q.type === "ORDER" && <div className="mt-2 flex flex-wrap gap-2">{[...opts].reverse().map((o) => <span key={o} className="rounded border border-black/40 px-2 py-0.5">{o}</span>)}</div>}
                   {!isKey && ["NUMERIC", "FILL_BLANK", "ORDER"].includes(q.type) && <div className="mt-3 border-b border-dotted border-black/60 pb-4">Answer:</div>}
                   {isKey && <div className="mt-2 rounded border border-black/20 p-2 text-[13px]"><strong>Answer:</strong> {formatAnswer(q.type, opts, JSON.parse(q.answer))}<div className="mt-1 text-black/80">{q.solution}</div></div>}

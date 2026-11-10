@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { requireTestAccess } from "@/lib/teacher";
 import { buildPaper, instructionFor, VERSION_NAMES } from "@/lib/paper";
 import { Markdown } from "@/components/Markdown";
+import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { PrintButton } from "./PrintButton";
 
 export default async function PrintView({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ v?: string; key?: string }> }) {
@@ -50,8 +51,10 @@ export default async function PrintView({ params, searchParams }: { params: Prom
                   <span className="font-bold">{it.no}.</span>
                   <div className={`flex-1 ${big ? "text-[15px]" : "text-sm"}`}>
                     <Markdown text={it.stem} />
+                    <StemFigure fig={it.figure} />
                     {instructionFor(it.type) && !isKey && <p className="mt-1 italic">{instructionFor(it.type)}</p>}
-                    {it.options.length > 0 && it.type !== "ORDER" && (
+                    {it.optionFigures?.some(Boolean) && <OptionList options={it.options} figures={it.optionFigures} />}
+                    {it.options.length > 0 && it.type !== "ORDER" && !it.optionFigures?.some(Boolean) && (
                       <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1">
                         {it.options.map((o, k) => <div key={k}>({String.fromCharCode(97 + k)}) {o}</div>)}
                       </div>

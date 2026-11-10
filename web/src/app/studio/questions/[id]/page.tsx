@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { answerToRaw } from "@/lib/questionInput";
 import { PageHeader, Pill, btn } from "@/components/ui";
 import { QuestionEditor } from "../QuestionEditor";
+import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { reviewQuestion } from "@/app/actions/studio";
 
 export default async function EditQuestion({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ saved?: string }> }) {
@@ -33,6 +34,14 @@ export default async function EditQuestion({ params, searchParams }: { params: P
         {q.status === "PUBLISHED" && <form action={reviewQuestion.bind(null, id, "retire")}><button className={btn.secondary}>Retire (remove from use)</button></form>}
         {q.status === "RETIRED" && <form action={reviewQuestion.bind(null, id, "restore")}><button className={btn.secondary}>Restore as draft</button></form>}
       </div>
+      {(q.figure || q.optionFigures) && (
+        <div className="rounded-2xl border border-line bg-surface p-4 text-sm">
+          <div className="font-semibold">🖼️ Picture question</div>
+          <p className="text-muted">The pictures are drawn from a generated picture spec. You can edit the wording, solution and hint below; keep the options in the same order so they still match their pictures.</p>
+          <StemFigure json={q.figure} />
+          <OptionList options={JSON.parse(q.options)} figuresJson={q.optionFigures} />
+        </div>
+      )}
       <QuestionEditor
         id={id}
         chapters={chapters}

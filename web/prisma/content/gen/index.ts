@@ -6,6 +6,7 @@ import { ALL_CT } from "./ct";
 import { BANK_FAMILIES, BANKS } from "./banks";
 import { AI_EVS_FAMILIES } from "./ai_evs";
 import { R, type D, type Family } from "./util";
+import { PICTURE_FAMILIES, PICTURE_PLAN, PICTURES_PER_CHAPTER } from "./pictures";
 
 export const TARGET = 40;
 const MIX: Record<D, number> = { 1: 14, 2: 16, 3: 10 };
@@ -137,7 +138,7 @@ export function generateBank(existing: Record<number, SeedQuestion[]>): Record<n
   for (const [clsS, parts] of Object.entries(CURRICULUM)) {
     const cls = Number(clsS);
     const have = existing[cls] ?? [];
-    const keyOf = (q: { stem: string; options?: string[] }) => `${q.stem.trim()}|${[...(q.options ?? [])].sort().join("|")}`;
+    const keyOf = (q: { stem: string; options?: string[]; figure?: unknown; optionFigures?: unknown }) => `${q.stem.trim()}|${[...(q.options ?? [])].sort().join("|")}|${q.figure ? JSON.stringify(q.figure) : ""}|${q.optionFigures ? JSON.stringify(q.optionFigures) : ""}`;
     const stems = new Set(have.map(keyOf));
     out[cls] = [];
     for (const [part, titles] of Object.entries(parts) as [("CT" | "AI" | "EVS"), string[]][]) {
@@ -178,6 +179,32 @@ export function generateBank(existing: Record<number, SeedQuestion[]>): Record<n
           }
         }
       });
+    }
+    // Picture questions (grids, mirror images, charts…) on top of the 40 in chapters where they fit.
+    for (const [key, ids] of Object.entries(PICTURE_PLAN)) {
+      const [c0, part, chS] = key.split("-");
+      if (Number(c0) !== cls) continue;
+      const ch = Number(chS);
+      const title = (parts as Record<string, string[]>)[part]?.[ch - 1];
+      if (!title) continue;
+      const fams = ids.map((id) => PICTURE_FAMILIES[id]).filter(Boolean);
+      const r = R(hash(`pic:${key}`));
+      const ctx = { cls, part: part as "CT" | "AI" | "EVS", ch, title, r };
+      const levels: D[] = cls <= 4 ? [1, 1, 2, 2, 2, 3, 1, 2] : cls <= 6 ? [1, 2, 2, 3, 2, 3, 2, 3] : [2, 2, 3, 3, 2, 3, 3, 2];
+      let made = 0, tries = 0, turn = 0;
+      while (made < PICTURES_PER_CHAPTER && tries++ < 400) {
+        const f = fams[turn++ % fams.length];
+        const want = levels[made % levels.length];
+        const d = f.ds.includes(want) ? want : f.ds.reduce((a, b) => (Math.abs(b - want) < Math.abs(a - want) ? b : a));
+        const item = f.make(ctx, d);
+        if (!item) continue;
+        const k = keyOf(item);
+        if (stems.has(k)) continue;
+        if (item.type === "MCQ" && (item.options?.length ?? 0) < 3) continue;
+        stems.add(k);
+        out[cls].push({ ...item, ch, part: part as "CT" | "AI" | "EVS", family: f.id });
+        made++;
+      }
     }
   }
   return out;

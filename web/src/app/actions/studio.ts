@@ -55,7 +55,10 @@ export async function saveQuestion(id: string | null, _: unknown, form: FormData
   if (id) {
     const old = await prisma.question.findUniqueOrThrow({ where: { id } });
     const status = intent === "submit" ? "IN_REVIEW" : old.status === "PUBLISHED" ? "PUBLISHED" : "DRAFT";
-    await prisma.question.update({ where: { id }, data: { ...data, status, version: { increment: 1 }, reviewNote: null } });
+    // Picture options must stay parallel to the text options; drop them if the option count changed.
+    const figs = old.optionFigures ? (JSON.parse(old.optionFigures) as unknown[]) : null;
+    const keepFigs = !!figs && figs.length === d.options.length && (d.type === "MCQ" || d.type === "MULTI");
+    await prisma.question.update({ where: { id }, data: { ...data, ...(figs && !keepFigs ? { optionFigures: null } : {}), status, version: { increment: 1 }, reviewNote: null } });
     await audit(user, "QUESTION_UPDATED", old.code);
   } else {
     const code = await nextCode(d.classLevel, d.part, d.chapterNumber, d.skills[0], d.type);

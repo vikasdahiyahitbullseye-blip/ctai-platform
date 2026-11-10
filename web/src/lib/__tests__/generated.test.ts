@@ -45,7 +45,7 @@ describe("generated question bank", () => {
 
   it("no duplicate questions within a class", () => {
     for (const [cls, list] of Object.entries(gen)) {
-      const keys = [...authored[Number(cls) as 3], ...list].map((q) => `${q.stem}|${[...(q.options ?? [])].sort().join("|")}`);
+      const keys = [...authored[Number(cls) as 3], ...list].map((q) => `${q.stem}|${[...(q.options ?? [])].sort().join("|")}|${JSON.stringify(q.figure ?? null)}|${JSON.stringify(q.optionFigures ?? null)}`);
       expect(new Set(keys).size, `class ${cls}`).toBe(keys.length);
     }
   });

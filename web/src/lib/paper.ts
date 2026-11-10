@@ -2,6 +2,7 @@
 import { prisma } from "./db";
 import { rng, shuffle, versionOrder } from "./generator";
 import { formatAnswer } from "./scoring";
+import { parseFig, parseFigs, type Fig } from "./figures";
 
 export type PaperItem = {
   no: number;
@@ -12,6 +13,8 @@ export type PaperItem = {
   options: string[]; // in printed order
   answerText: string; // in terms of printed order
   solution: string;
+  figure: Fig | null;
+  optionFigures: (Fig | null)[] | null; // in printed order
 };
 
 export const VERSION_NAMES = ["A", "B", "C"];
@@ -39,10 +42,11 @@ export async function buildPaper(testId: string, version: number) {
       // Print ORDER items in a fixed scrambled order; answer key lists the correct sequence by text.
       perm = shuffle(perm, rng(version * 7 + n + 11));
       if (perm.every((p, i) => p === key[i])) perm.reverse();
-      return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options: perm.map((p) => original[p]), answerText: formatAnswer("ORDER", original, key), solution: q.solution };
+      return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options: perm.map((p) => original[p]), answerText: formatAnswer("ORDER", original, key), solution: q.solution, figure: parseFig(q.figure), optionFigures: null };
     }
     const options = perm.map((p) => original[p]);
-    return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options, answerText: formatAnswer(q.type, options, key), solution: q.solution };
+    const figs = parseFigs(q.optionFigures);
+    return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options, answerText: formatAnswer(q.type, options, key), solution: q.solution, figure: parseFig(q.figure), optionFigures: figs ? perm.map((p) => figs[p] ?? null) : null };
   });
   return {
     test,
