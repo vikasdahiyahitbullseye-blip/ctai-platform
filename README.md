@@ -70,6 +70,38 @@ The first page you open after starting can take 10–20 seconds while it compile
 - `Port 3000 is in use`: another copy is running. Close it, or run `npm run dev -- -p 3001` and open http://localhost:3001.
 - Errors about the database or Prisma: run `npm run db:setup` again.
 
+## Year plan and content library
+
+**Teaching time (CBSE CT & AI Curriculum 2026-27, §3.4 and §10.2), in 40-minute periods:**
+
+| Classes | CBSE hours a year | In the period plan | Outside the timetable |
+|---|---|---|---|
+| 3–5 | 50 (inside Maths and EVS/TWAU) | 50 h = **75 periods** | — |
+| 6–8 | 100 = 40 CT + 20 AI + 40 projects | 60 h = **90 periods** (60 CT, 30 AI) | 40 h: two 20-hour projects |
+
+- **Chapter-wise periods:** CBSE sets 5 hours for each AI chapter (7–8 periods) but no hours for individual CT chapters. CT chapters therefore share the CT time equally, and EVS (TWAU) themes get 60% of a CT chapter. 5 periods are kept for getting started, 2 revision periods and 2 term exams. The content team can change any chapter's periods in **Content studio → Teaching plan**, which rebuilds that class's plan and library. Uploaded videos and teachers' ticked periods are kept.
+- **Period-by-period plan** (`src/lib/plan.ts`, stored as `Lesson` rows): every period has a type (Introduce, Explore, Practise, Hands-on activity, Chapter check, Revision, Term exam), a month and week, a learning objective, a 40-minute lesson flow (warm-up, main part, wrap-up), the resources to use and the homework to set. Term 1 runs April–September and Term 2 October–February; June is the summer break.
+- **Teachers** open **Year plan**: pick a class section, tick periods as taught, see whether they are on track for the week, open each lesson plan, and print the whole plan.
+
+**Content library per class** (built by `src/lib/library.ts` from the question bank and `prisma/content/library/modules*.ts`):
+
+| Asset | Target per class | Built | How |
+|---|---|---|---|
+| Chapter learning modules | 12–15 | 11–21 (one per chapter) | Goals, hook, key ideas, key words, a common mistake, a worked example, Try-it questions (with pictures), an activity and an at-home task. Written for all 98 chapters. |
+| Practice questions | 600 | 612–1,008 | Written + generated questions, including picture questions. |
+| Chapter tests | 12–15 | 11–21 (one per chapter) | 10–12 questions, 25–30 min. |
+| Worksheets | 40 | 40 | Practice, Picture puzzles, Challenge, Warm-up and Mixed, spread over chapters by teaching time. |
+| Assignments | 24 | 24 | 6 questions + a task (at-home task, reflection journal or "teach it back"). |
+| Monthly assessments | 8 | 8 | April, May, July, August, October, November, December, January; each covers the chapters taught that month. |
+| Term examination papers | 2 | 2 | Sections A and B; 25–30 questions. |
+| Full-length practice papers | 4 | 4 | Two before each term exam, with no questions repeated from the term paper. |
+| Projects / activity kits | 12 | 12–22 | A one-period activity kit for every chapter, plus the multi-week projects. |
+| Concept videos | 20 | 20 scripts | A storyboard with scenes, timings, on-screen text and narration for each video. The content team adds the recording (YouTube link, video link or a small upload of up to 8 MB) in **Content studio → Resources** (filter: *Concept video*, *No link or file yet*). Students see a video once it has a recording. |
+
+Teachers open **Library** to browse by class, print any paper (sets A/B/C, answer key, Word), or press **Use with my class**. That makes the teacher's own copy, which they can edit, and assigns it (tests online; worksheets and assignments as homework). Students find each chapter's module and recorded videos under **Learn** on the chapter page.
+
+Classes 7 and 8 get a little more generated practice per chapter (43 and 48) so every class reaches 600+.
+
 ## Approving questions
 
 Every question has an approval state: **Awaiting approval**, **Approved** or **Rejected**.

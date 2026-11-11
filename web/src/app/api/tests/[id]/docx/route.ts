@@ -9,10 +9,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const user = await getSessionUser();
   if (!user || (user.role !== "TEACHER" && user.role !== "ADMIN")) return new NextResponse("Unauthorised", { status: 401 });
   const t = await prisma.assessment.findUnique({ where: { id } });
-  if (!t || t.schoolId !== user.schoolId) return new NextResponse("Not found", { status: 404 });
+  if (!t || !(t.libType || t.schoolId === user.schoolId)) return new NextResponse("Not found", { status: 404 });
 
   const version = Math.min(2, Math.max(0, Number(new URL(req.url).searchParams.get("v") ?? 0) || 0));
-  const { test, school, items, totalMarks } = await buildPaper(id, version);
+  const built = await buildPaper(id, version);
+  const { test, items, totalMarks } = built;
+  const school = built.school ?? (await prisma.school.findUnique({ where: { id: user.schoolId } }));
   const lines = (text: string) => plain(text).split("\n").filter((l) => l.trim()).map((l) => new Paragraph({ children: [new TextRun(l.replace(/^\s*-\s+/, "• "))], spacing: { after: 60 } }));
 
   const header = (title: string) => [

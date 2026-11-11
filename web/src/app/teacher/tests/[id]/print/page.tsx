@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth";
-import { requireTestAccess } from "@/lib/teacher";
+import { requirePaperAccess } from "@/lib/teacher";
+import { prisma } from "@/lib/db";
 import { buildPaper, instructionFor, VERSION_NAMES } from "@/lib/paper";
 import { Markdown } from "@/components/Markdown";
 import { StemFigure, OptionList } from "@/components/QuestionFigures";
@@ -9,10 +10,12 @@ export default async function PrintView({ params, searchParams }: { params: Prom
   const { id } = await params;
   const sp = await searchParams;
   const user = await requireUser("TEACHER", "ADMIN");
-  await requireTestAccess(user, id);
+  await requirePaperAccess(user, id);
   const version = Math.min(2, Math.max(0, Number(sp.v ?? 0) || 0));
   const isKey = sp.key === "1";
-  const { test, school, items, totalMarks, sections } = await buildPaper(id, version);
+  const paper = await buildPaper(id, version);
+  const { test, items, totalMarks, sections } = paper;
+  const school = paper.school ?? (await prisma.school.findUnique({ where: { id: user.schoolId } }));
   const big = test.classLevel <= 5;
 
   return (

@@ -23,6 +23,7 @@ import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
 import { generateBank } from "./content/gen";
+import { buildClassLibrary } from "../src/lib/library";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -34,7 +35,7 @@ const LAST = ["Sharma", "Verma", "Iyer", "Khan", "Patel", "Reddy", "Singh", "Das
 
 async function main() {
   // Wipe in dependency order.
-  for (const m of ["missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "house", "school"] as const) {
+  for (const m of ["lessonLog", "lesson", "missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "house", "school"] as const) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)[m].deleteMany();
   }
@@ -352,9 +353,21 @@ async function main() {
   await db.classChallenge.create({ data: { sectionId: sections["3A"].id, title: "Brain Builders Week: 300 correct answers as a class!", metric: "CORRECT_ANSWERS", target: 300, rewardXp: 30, startsAt: new Date(now - 4 * DAY), endsAt: new Date(now + 3 * DAY), createdById: teacher.id } });
   await db.classChallenge.create({ data: { sectionId: sections["6A"].id, title: "Puzzle Marathon: 40 puzzles solved", metric: "PUZZLES", target: 40, rewardXp: 40, startsAt: new Date(now - 6 * DAY), endsAt: new Date(now + 8 * DAY), createdById: teacher.id } });
 
+  // Content library and yearly period plan for every class (src/lib/library.ts).
+  for (const cls of [3, 4, 5, 6, 7, 8]) {
+    const r = await buildClassLibrary(db, cls);
+    console.log(`Class ${cls}: ${r.periods} periods, ${r.modules} modules, ${r.videos} video scripts, ${r.chapterTests} chapter tests, ${r.worksheets} worksheets, ${r.assignments} assignments, ${r.monthly} monthly, ${r.term} term papers, ${r.mocks} practice papers, ${r.kits} activity kits`);
+  }
+  // Demo progress: 3-A and 6-A have taught the first periods of the year.
+  for (const [key, n] of [["3A", 14], ["6A", 18]] as const) {
+    const sec = sections[key];
+    const lessons = await db.lesson.findMany({ where: { classLevel: sec.classLevel, number: { lte: n } } });
+    await db.lessonLog.createMany({ data: lessons.map((l) => ({ lessonId: l.id, sectionId: sec.id, teacherId: teacher.id, doneOn: new Date(now - (n - l.number + 1) * 2 * DAY) })) });
+  }
+
   const counts = await Promise.all([db.question.count(), db.attempt.count(), db.response.count(), db.userBadge.count()]);
   console.log(`Seeded: ${counts[0]} questions, ${counts[1]} attempts, ${counts[2]} responses, ${counts[3]} badges.`);
-  console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, content, superadmin");
+  console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, content, reviewer, superadmin");
 }
 
 main().finally(() => db.$disconnect());

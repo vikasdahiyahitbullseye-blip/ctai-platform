@@ -21,6 +21,13 @@ export async function requireSectionAccess(userId: string, sectionId: string) {
   return ok.section;
 }
 
+/** Read access for printing: the school's own tests/homework, or any Hitbullseye library paper. */
+export async function requirePaperAccess(user: { id: string; schoolId: string }, assessmentId: string) {
+  const a = await prisma.assessment.findUnique({ where: { id: assessmentId } });
+  if (!a || !(a.libType || (a.schoolId === user.schoolId && (a.kind === "TEST" || a.kind === "ASSIGNMENT")))) notFound();
+  return a;
+}
+
 export async function requireTestAccess(user: { id: string; schoolId: string }, assessmentId: string) {
   const a = await prisma.assessment.findUnique({ where: { id: assessmentId } });
   if (!a || a.schoolId !== user.schoolId || (a.kind !== "TEST" && a.kind !== "ASSIGNMENT")) notFound();

@@ -8,6 +8,8 @@ export default async function TeacherLayout({ children }: { children: React.Reac
       user={user}
       nav={[
         { href: "/teacher", label: "My classes" },
+        { href: "/teacher/plan", label: "Year plan" },
+        { href: "/teacher/library", label: "Library" },
         { href: "/teacher/generator", label: "Test generator" },
         { href: "/teacher/tests", label: "Tests" },
         { href: "/teacher/assignments", label: "Homework" },

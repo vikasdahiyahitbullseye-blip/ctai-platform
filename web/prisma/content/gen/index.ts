@@ -13,7 +13,10 @@ export const PICTURE_FAMILIES: Record<string, Family> = { ...PF1, ...Object.from
 export const PICTURE_PLAN: Record<string, string[]> = { ...PP1, ...MORE_PICTURE_PLAN };
 
 export const TARGET = 40;
-const MIX: Record<D, number> = { 1: 14, 2: 16, 3: 10 };
+/** Classes 7 and 8 have fewer chapters, so they get more practice items per chapter to reach 600+ per class. */
+export const TARGET_BY_CLASS: Record<number, number> = { 7: 43, 8: 48 };
+export const targetFor = (cls: number) => TARGET_BY_CLASS[cls] ?? TARGET;
+const mixFor = (t: number): Record<D, number> => { const e = Math.round(t * 0.35), m = Math.round(t * 0.4); return { 1: e, 2: m, 3: t - e - m }; };
 
 const FAM: Record<string, Family> = { ...ALL_CT, ...BANK_FAMILIES, ...AI_EVS_FAMILIES };
 const bankIds = new Set(BANKS.map((b) => b.id));
@@ -152,7 +155,8 @@ export function generateBank(existing: Record<number, SeedQuestion[]>): Record<n
         const fams = expand(PLAN[key] ?? []).map((id) => FAM[id]).filter(Boolean);
         if (!fams.length) return;
         const mine = have.filter((q) => (q.part ?? "CT") === part && q.ch === ch && !q.puzzle && q.type !== "SHORT");
-        let need = TARGET - mine.length;
+        const MIX = mixFor(targetFor(cls));
+        let need = targetFor(cls) - mine.length;
         if (need <= 0) return;
         const want: Record<D, number> = { 1: 0, 2: 0, 3: 0 };
         for (const d of [1, 2, 3] as D[]) want[d] = Math.max(0, MIX[d] - mine.filter((q) => q.d === d).length);

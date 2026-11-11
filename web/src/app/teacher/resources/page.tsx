@@ -8,7 +8,7 @@ export default async function TeacherResources({ searchParams }: { searchParams:
   const user = await requireUser("TEACHER", "ADMIN");
   const { open } = await searchParams;
   const levels = [...new Set((await teacherSections(user.id)).map((s) => s.section.classLevel))];
-  const items = await prisma.resource.findMany({ where: { status: "PUBLISHED", audience: { in: ["TEACHER", "BOTH"] }, OR: [{ classLevel: null }, { classLevel: { in: levels } }] }, include: { chapter: true, file: true }, orderBy: [{ classLevel: "asc" }, { title: "asc" }] });
+  const items = await prisma.resource.findMany({ where: { status: "PUBLISHED", kind: { notIn: ["MODULE", "VIDEO"] }, audience: { in: ["TEACHER", "BOTH"] }, OR: [{ classLevel: null }, { classLevel: { in: levels } }] }, include: { chapter: true, file: true }, orderBy: [{ classLevel: "asc" }, { title: "asc" }] });
   return (
     <div className="space-y-6">
       <PageHeader title="Teaching resources" subtitle="Lesson plans, activity cards, templates and guides for your classes." />

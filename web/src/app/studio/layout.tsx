@@ -10,6 +10,7 @@ export default async function StudioLayout({ children }: { children: React.React
         { href: "/studio", label: "Studio home" },
         { href: "/studio/questions", label: "Questions" },
         { href: "/studio/import", label: "Import" },
+        { href: "/studio/plan", label: "Teaching plan" },
         { href: "/studio/resources", label: "Resources" },
         { href: "/studio/projects", label: "Project kits" },
         { href: "/studio/connections", label: "Subject links" },

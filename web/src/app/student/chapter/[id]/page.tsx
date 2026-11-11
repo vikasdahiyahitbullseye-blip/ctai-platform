@@ -16,6 +16,7 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
   const section = await studentSection(user.id);
   const ch = await prisma.chapter.findUnique({ where: { id }, include: { links: { where: { subject: { not: "MATHS" } } }, resources: { where: { status: "PUBLISHED", audience: { in: ["STUDENT", "BOTH"] } } } } });
   if (!ch || ch.classLevel !== section?.classLevel) notFound();
+  const learn = ch.resources.filter((r) => r.kind === "MODULE" || (r.kind === "VIDEO" && (r.url || r.fileId))).sort((a, b) => (a.kind === "MODULE" ? -1 : 1) - (b.kind === "MODULE" ? -1 : 1) || (a.position ?? 0) - (b.position ?? 0));
   const rs = await prisma.response.findMany({ where: { attempt: { userId: user.id }, correct: { not: null }, question: { chapterId: id } }, select: { correct: true } });
   const stars = starsFor(rs.length, rs.filter((r) => r.correct).length);
   return (
@@ -29,6 +30,20 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
         <form action={startPractice} className="mt-4"><input type="hidden" name="chapterId" value={ch.id} /><button className="kbtn kbtn-accent text-lg">▶ Play 8 questions</button></form>
         <p className="mt-2 text-sm opacity-90">{rs.length ? `You've answered ${rs.length} questions here.` : "You haven't visited this island yet."}</p>
       </section>
+      {learn.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-2xl font-extrabold">📚 Learn</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {learn.map((r) => (
+              <Link key={r.id} href={`/student/learn/${r.id}`} className="rounded-2xl border-2 border-line bg-surface p-4 font-bold hover:border-brand">
+                <span className="text-2xl" aria-hidden>{r.kind === "MODULE" ? "📘" : "🎬"}</span>
+                <span className="mt-1 block">{r.kind === "MODULE" ? "Learning module" : r.title.split(":")[0]}</span>
+                <span className="block text-xs font-semibold text-muted">{r.kind === "MODULE" ? "Ideas, examples and Try-it questions" : "Watch and learn"}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       {ch.links.length > 0 && (
         <section>
           <div className="mb-3 flex items-start gap-3"><Mascot size={52} mood="think" /><SpeechBubble>Did you know? The thinking you do here also helps in other subjects!</SpeechBubble></div>
@@ -36,7 +51,7 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
           <SubjectLinks links={ch.links} kid />
         </section>
       )}
-      {ch.resources.map((r) => (
+      {ch.resources.filter((r) => r.kind !== "MODULE" && r.kind !== "VIDEO").map((r) => (
         <section key={r.id} className="rounded-[2rem] border-2 border-line bg-surface p-6">
           <h2 className="text-xl font-extrabold">📄 {r.title}</h2>
           {r.body && <div className="mt-3"><Markdown text={r.body} /></div>}

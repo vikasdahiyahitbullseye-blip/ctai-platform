@@ -17,7 +17,7 @@ export default async function KitPage({ params }: { params: Promise<{ id: string
   const input = "mt-1 w-full rounded-xl border border-line bg-surface px-3 py-2 text-sm";
   return (
     <div className="space-y-6">
-      <PageHeader title={<span>{kit.emoji} {kit.title}</span>} subtitle={`Class ${kit.classLevel} · ${kit.hours} hours · ${kit.milestones.length} milestones`} />
+      <PageHeader title={<span>{kit.emoji} {kit.title}</span>} subtitle={kit.kind === "ACTIVITY" ? `Class ${kit.classLevel} · activity kit · 1 period (40 min) · ${kit.milestones.length} steps` : `Class ${kit.classLevel} · ${kit.hours} hours · ${kit.milestones.length} milestones`} />
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card title="About this project">
           <p className="text-lg font-semibold text-brand-ink">“{kit.drivingQuestion}”</p>
@@ -41,7 +41,7 @@ export default async function KitPage({ params }: { params: Promise<{ id: string
         <ol className="space-y-4">
           {kit.milestones.map((m) => (
             <li key={m.id} className="rounded-2xl border border-line p-4">
-              <div className="flex flex-wrap items-center gap-2"><span className="text-xl" aria-hidden>{PHASES[m.phase]?.emoji}</span><strong>{m.position}. {m.title}</strong><span className="text-xs text-muted">{PHASES[m.phase]?.label} · {m.sessions} session{m.sessions > 1 ? "s" : ""}</span></div>
+              <div className="flex flex-wrap items-center gap-2"><span className="text-xl" aria-hidden>{PHASES[m.phase]?.emoji}</span><strong>{m.position}. {m.title}</strong><span className="text-xs text-muted">{PHASES[m.phase]?.label} · {kit.kind === "ACTIVITY" ? `about ${Math.round(35 / Math.max(1, kit.milestones.length))} min` : `${m.sessions} session${m.sessions > 1 ? "s" : ""}`}</span></div>
               <div className="mt-2 grid gap-3 text-sm md:grid-cols-2">
                 <div><div className="text-xs font-semibold uppercase text-muted">Students do</div><Markdown text={m.studentTask} /></div>
                 <div className="rounded-xl bg-surface-2 p-3"><div className="text-xs font-semibold uppercase text-muted">Teacher guide</div><Markdown text={m.teacherGuide} /></div>

@@ -246,6 +246,43 @@ let teamUrl;
   await sa.ctx.close();
 }
 
+// ---------- Year plan and content library ----------
+{
+  const { page, ctx } = await session("teacher");
+  await page.goto(`${BASE}/teacher/plan`);
+  await page.waitForSelector("text=Periods taught");
+  check(await page.locator('li[id^="p"]').count() === 75, "Class 3 plan should have 75 periods");
+  const untaught = page.locator('button[aria-label$="as taught"]');
+  const before = await untaught.count();
+  await untaught.first().click();
+  await page.waitForFunction((n) => document.querySelectorAll('button[aria-label$="as taught"]').length === n - 1, before);
+  await shot(page, "v2-13-year-plan");
+  await page.goto(`${BASE}/teacher/plan?cls=8`);
+  check(await page.locator('li[id^="p"]').count() === 90, "Class 8 plan should have 90 periods");
+  await page.goto(`${BASE}/teacher/library?cls=6`);
+  for (const t of ["Worksheets", "Assignments", "Monthly assessments", "Full-length practice papers"]) check(await page.locator(`text=${t}`).count() > 0, `library shows ${t}`);
+  await shot(page, "v2-14-library");
+  await page.evaluate(() => document.querySelectorAll("details").forEach((d) => (d.open = true)));
+  await page.locator("a:has-text('Term 1 examination')").first().click();
+  await page.waitForSelector("text=Assign online");
+  await Promise.all([page.waitForURL(/\/teacher\/tests\//), page.click("button:has-text('Assign online')")]);
+  log("library: term paper copied and assigned to 6-A");
+  await page.goto(`${BASE}/teacher/library?cls=3`);
+  const mod = await page.locator("a:has-text('📘 Module')").first().getAttribute("href");
+  await page.goto(BASE + mod);
+  await page.waitForSelector("text=Worked example");
+  await ctx.close();
+
+  const { page: st, ctx: sctx } = await session("student3");
+  await st.goto(`${BASE}/student/map`);
+  await st.goto(BASE + (await st.locator("a[href^='/student/chapter/']").first().getAttribute("href")));
+  await st.locator("a:has-text('Learning module')").click();
+  await st.waitForSelector("text=Try it");
+  check(await st.locator("text=Script and storyboard").count() === 0, "students must not see video scripts");
+  log("student: learning module ok");
+  await sctx.close();
+}
+
 // ---------- Access control ----------
 {
   const { page, ctx } = await session("student3");

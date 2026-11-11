@@ -13,7 +13,7 @@ export default async function TeacherProjects() {
   const levels = [...new Set(sections.map((s) => s.section.classLevel))];
   const [runs, kits] = await Promise.all([
     prisma.projectRun.findMany({ where: { sectionId: { in: sectionIds } }, include: { kit: { include: { milestones: true } }, section: true, teams: { include: { submissions: true } } }, orderBy: { startedAt: "desc" } }),
-    prisma.projectKit.findMany({ where: { published: true, classLevel: { in: levels } }, orderBy: [{ classLevel: "asc" }] }),
+    prisma.projectKit.findMany({ where: { published: true, kind: "PROJECT", classLevel: { in: levels } }, orderBy: [{ classLevel: "asc" }] }),
   ]);
   return (
     <div className="space-y-6">

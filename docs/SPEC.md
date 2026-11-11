@@ -337,3 +337,11 @@ New staff get a temporary password and must change it at first sign-in. Students
   - Reviewers can approve or retire a whole family by reviewing a sample.
   - Families can be edited centrally, and the bank re-generated.
 - **Next:** let the content team author families in the studio (template + parameters + solution) without code.
+
+## 16. Year plan and content library (v0.3)
+
+- Time: Classes 3–5 get 50 h = 75 periods of 40 min. Classes 6–8 get 60 h = 90 periods in class (40 h CT + 20 h AI; 40 h projects outside the timetable). Chapter periods are stored on `Chapter.periods`, with defaults from `src/lib/plan.ts`; content staff can edit them (Studio → Teaching plan).
+- Plan: `Lesson` (one row per period: kind, month, week, term, objective, flow, refs, homework) and `LessonLog` (a section's taught periods).
+- Library: `Assessment.libType` ∈ CHAPTER_TEST | WORKSHEET | ASSIGNMENT | MONTHLY | TERM | MOCK (kind LIBRARY, schoolId null, unique `code`); teachers' copies keep `sourceId`. `Resource.kind` MODULE (markdown + `meta` question ids) and VIDEO (script in `body`, scenes in `meta`; recording via `url` or `fileId`). Activity kits are `ProjectKit` rows with kind ACTIVITY.
+- Targets per class: modules and chapter tests (one per chapter), 600+ practice questions, 40 worksheets, 24 assignments, 8 monthly assessments, 2 term papers, 4 full-length practice papers, 12+ projects/activity kits, 20 concept videos.
+
