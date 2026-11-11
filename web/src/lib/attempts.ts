@@ -5,6 +5,9 @@ import { XP } from "./gamification";
 import { addXp, evaluateBadges } from "./progress";
 
 export const PRACTICE_LENGTH = 8;
+/** A CBSE book-questions round covers all of the chapter's CBSE questions (up to this many). */
+export const CBSE_ROUND_MAX = 40;
+const roundLength = (bp: PracticeBlueprint) => (bp.source === "CBSE" ? CBSE_ROUND_MAX : PRACTICE_LENGTH);
 
 export type PracticeBlueprint = { chapterIds: string[]; skill?: string; source?: "CBSE" };
 
@@ -158,7 +161,7 @@ export async function practiceSetSize(db: PrismaClient, attemptId: string) {
   const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { assessment: true } });
   const bp = JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint;
   const n = await db.question.count({ where: { chapterId: { in: bp.chapterIds }, isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" }, ...(bp.skill ? { skills: { contains: bp.skill } } : {}), ...(bp.source ? { source: bp.source } : {}) } });
-  return Math.min(PRACTICE_LENGTH, n);
+  return Math.min(roundLength(bp), n);
 }
 
 /**
@@ -170,7 +173,7 @@ export async function nextPracticeQuestion(db: PrismaClient, attemptId: string, 
     where: { id: attemptId },
     include: { assessment: true, responses: { include: { question: true }, orderBy: { createdAt: "asc" } } },
   });
-  if (attempt.responses.length >= PRACTICE_LENGTH) return null;
+  if (attempt.responses.length >= roundLength(JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint)) return null;
   const bp = JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint;
 
   let target = 1;
