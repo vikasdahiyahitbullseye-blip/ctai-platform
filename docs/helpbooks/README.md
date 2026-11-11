@@ -1,6 +1,6 @@
-# Help books with "Learn it" theory (Classes 3–5)
+# Help books with "Learn it" theory (Classes 3–8)
 
-The Classes 3–5 help books get a 1–2 page "Learn it" theory section before every chapter. The theory text is in
+The Classes 3–8 help books get a 1–2 page "Learn it" theory section before every chapter. The theory text is in
 `web/prisma/content/theory/` (the same content the platform shows in modules and class slides). The original help-book PDFs are not stored in this repository.
 
 ## Rebuild the books
@@ -22,4 +22,4 @@ The Classes 3–5 help books get a 1–2 page "Learn it" theory section before e
    ```
 
    The script finds each chapter's first page, inserts that chapter's theory pages before it, renumbers every page in the book's footer style, and adds a "New in this edition" badge to the cover.
-   Use the same command for classes 4 and 5 with their books.
+   Use the same command for classes 4 to 8 with their books.

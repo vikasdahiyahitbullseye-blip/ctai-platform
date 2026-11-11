@@ -1,4 +1,4 @@
-"""Builds a help-book edition with "Learn it" theory pages.
+"""Builds a help-book edition (Classes 3–8) with "Learn it" theory pages.
 
 Inserts each chapter's theory PDF (made by web/scripts/theory-pages.ts) before that chapter's first page,
 renumbers every page in the book's own footer style, adds the footer to the new pages, and puts a small
@@ -24,11 +24,10 @@ pdfmetrics.registerFont(TTFont("InterR", font_reg))
 pdfmetrics.registerFont(TTFont("InterB", font_bold))
 
 # Footer geometry measured from the original books (Inter Regular 6 pt).
-STYLE = {
-    3: {"footer_x": 36.84, "top": 820.5, "num_right": 559.15, "color": (80, 88, 100), "badge_top": 690},
-    4: {"footer_x": 33.75, "top": 816.0, "num_right": 561.74, "color": (71, 85, 105), "badge_top": 640},
-    5: {"footer_x": 33.75, "top": 816.0, "num_right": 561.74, "color": (71, 85, 105), "badge_top": 640},
-}[cls]
+# Classes 4–8 share one layout.
+CLASS3 = {"footer_x": 36.84, "top": 820.5, "num_right": 559.15, "color": (80, 88, 100), "badge_top": 690}
+LATER = {"footer_x": 33.75, "top": 816.0, "num_right": 561.74, "color": (71, 85, 105), "badge_top": 640}
+STYLE = CLASS3 if cls == 3 else LATER
 FOOTER = f"Computational Thinking · Help Book · Class {cls}"
 
 

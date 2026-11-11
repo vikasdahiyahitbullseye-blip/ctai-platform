@@ -347,7 +347,7 @@ New staff get a temporary password and must change it at first sign-in. Students
 
 - Class slides: `src/lib/slides.ts` builds a .pptx per chapter on demand (`/api/slides/[chapterId]`) from the module, the plan and the bank.
 
-## 17. Learn it theory (Classes 3–5)
+## 17. Learn it theory (Classes 3–8)
 
 - Content: `prisma/content/theory/` (`THEORY`, keyed `<class>-CT-<chapter>`). Each chapter has an intro, 3–5 concepts (text, points, optional figure/table, worked example, remember note) and a thinking tip. Figures use the platform's `Fig` specs, including `lettergrid` and `venn`.
-- Shown in the learning module (`TheoryView`, CT chapters of Classes 3–5), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).
+- Shown in the learning module (`TheoryView`, CT chapters of Classes 3–8; the AI chapters and EVS themes have none), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).

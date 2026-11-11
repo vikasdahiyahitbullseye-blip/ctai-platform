@@ -1,4 +1,4 @@
-// "Learn it": the theory behind a chapter's questions (Classes 3–5), the same content as the help books.
+// "Learn it": the theory behind a chapter's questions (Classes 3–8, CT chapters), the same content as the help books.
 import { THEORY } from "../../prisma/content/theory";
 import { Markdown } from "./Markdown";
 import { Figure } from "./Figure";

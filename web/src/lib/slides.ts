@@ -228,7 +228,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     const s = content("Introduce", "Key words");
     s.addTable(mod.terms.map(([t, d]) => [{ text: t, options: { bold: true, color: C.dark, fill: { color: C.tint } } }, { text: d }]), { x: M, y: 1.7, w: W - 2 * M, colW: [4, W - 2 * M - 4], fontFace: FONT, fontSize: fs.body, color: C.body, border: { type: "solid", pt: 0.75, color: C.line }, valign: "middle", rowH: 0.8 });
   }
-  // "Learn it" theory (Classes 3–5): one slide per concept, the same content as the help books.
+  // "Learn it" theory (Classes 3–8): one slide per concept, the same content as the help books.
   const theory = THEORY[key];
   if (theory) {
     for (const [i, c] of theory.concepts.entries()) {
@@ -257,8 +257,14 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
       s.addText(body, { x: M, y: 1.6, w: tw, h: textH, fontFace: FONT, color: C.body, valign: "top", paraSpaceAfter: 6 });
       if (c.table) {
         const ty = 1.6 + textH + 0.1, room = (c.remember ? H - 1.6 : H - 0.7) - ty;
-        const rowH = Math.min(0.5, room / c.table.length), tsize = Math.max(12, Math.min(small ? 20 : 18, Math.floor(rowH * 72 * 0.55)));
-        s.addTable(c.table.map((r, ri) => r.map((t) => ({ text: plain(t), options: ri === 0 ? { bold: true, color: C.dark, fill: { color: C.tint } } : {} }))), { x: M, y: ty, w: Math.min(tw, 2.6 * c.table[0].length), fontFace: FONT, fontSize: tsize, color: C.body, border: { type: "solid", pt: 0.75, color: C.line }, valign: "middle", rowH, margin: 2 });
+        // Column widths follow the longest text in each column; the font shrinks until the wrapped rows fit the room.
+        const cols = c.table[0].length, tableW = Math.min(tw, 3.4 * cols);
+        // A column is at least as wide as its longest word (times 1.6), so words are not broken.
+        const longest = c.table[0].map((_, j) => Math.max(...c.table!.map((r) => Math.max(plain(r[j] ?? "").length, 1.6 * Math.max(...plain(r[j] ?? "").split(/\s+/).map((w) => w.length)))), 4));
+        const colW = longest.map((l) => (tableW * l) / longest.reduce((a, b) => a + b, 0));
+        const heightAt = (z: number) => c.table!.reduce((a, r) => a + Math.max(...r.map((t, j) => Math.ceil((plain(t).length * z * 0.46) / 72 / Math.max(0.3, colW[j] - 0.08)))) * z * 1.25 / 72 + 0.06, 0);
+        const tsize = [small ? 20 : 18, 16, 14, 13, 12, 11, 10].find((z) => heightAt(z) <= room) ?? 10;
+        s.addTable(c.table.map((r, ri) => r.map((t) => ({ text: plain(t), options: ri === 0 ? { bold: true, color: C.dark, fill: { color: C.tint } } : {} }))), { x: M, y: ty, w: tableW, colW, fontFace: FONT, fontSize: tsize, color: C.body, border: { type: "solid", pt: 0.75, color: C.line }, valign: "middle", margin: 2 });
       }
       if (c.remember) s.addText([{ text: "⭐ Remember: ", options: { bold: true } }, ...runs(c.remember)], { x: M, y: H - 1.45, w: W - 2 * M, h: 0.75, fontFace: FONT, fontSize: textHeight(c.remember, fs.body - 10, W - 2 * M) < 0.75 ? fs.body - 10 : 16, color: C.ink, fill: { color: "FFF4E5" }, shape: pptx.ShapeType.roundRect, rectRadius: 0.12, margin: 8, valign: "middle" });
       if (c.example) {

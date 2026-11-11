@@ -1,4 +1,4 @@
-// "Learn it" theory for the Classes 3–5 help books: the concepts each chapter's questions practise.
+// "Learn it" theory for the Classes 3–8 help books: the concepts each chapter's questions practise.
 // Used in the help-book PDFs (docs/helpbooks), the chapter learning modules and the class slides.
 import type { Fig } from "../../../src/lib/figures";
 

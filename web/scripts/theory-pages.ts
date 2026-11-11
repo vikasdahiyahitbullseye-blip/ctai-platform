@@ -1,4 +1,4 @@
-// Renders the "Learn it" theory pages for the Classes 3–5 help books, one PDF per chapter, in the books' style.
+// Renders the "Learn it" theory pages for the Classes 3–8 help books, one PDF per chapter, in the books' style.
 // Usage: NODE_PATH=$(npm root -g) npx tsx scripts/theory-pages.ts <outDir> [class...]
 // The PDFs are merged into the help books by docs/helpbooks/merge_helpbook.py.
 import fs from "node:fs";

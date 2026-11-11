@@ -278,6 +278,10 @@ let teamUrl;
   await page.waitForSelector("text=Worked example");
   check(await page.locator("#learn-it").count() === 1 && (await page.locator("text=Thinking tip").count()) > 0, "Class 3 module should show the Learn it theory");
   log("module: Learn it theory shown");
+  await page.goto(`${BASE}/teacher/library?cls=6`);
+  await page.goto(BASE + (await page.locator("a:has-text('📘 Module')").first().getAttribute("href")));
+  check(await page.locator("#learn-it").count() === 1, `Class 6 module should show the Learn it theory (${page.url()})`);
+  log("module: Class 6 Learn it theory shown");
   await ctx.close();
 
   const { page: st, ctx: sctx } = await session("student3");
