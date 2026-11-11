@@ -62,7 +62,7 @@ function shapePath(shape: string, cx: number, cy: number, s: number, colour: str
   }
 }
 
-function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } {
+export function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } {
   switch (fig.kind) {
     case "pixels": {
       const cs = 30, pad = 8, n = fig.n;
@@ -153,7 +153,7 @@ function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } {
       const rows = Math.ceil(fig.count / per);
       return {
         w: 90, h: 90,
-        body: <g>{Array.from({ length: fig.count }, (_, i) => shapePath(fig.shape, 18 + (i % per) * (54 / Math.max(1, per - 1)) + (per === 2 ? 9 : 0), 18 + Math.floor(i / per) * (54 / Math.max(1, rows - 1 || 1)) + (rows === 1 ? 27 : 0), 10, col))}</g>,
+        body: <g>{Array.from({ length: fig.count }, (_, i) => <g key={i}>{shapePath(fig.shape, 18 + (i % per) * (54 / Math.max(1, per - 1)) + (per === 2 ? 9 : 0), 18 + Math.floor(i / per) * (54 / Math.max(1, rows - 1 || 1)) + (rows === 1 ? 27 : 0), 10, col)}</g>)}</g>,
       };
     }
     case "bars": {
@@ -205,7 +205,7 @@ function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } {
                 {Array.from({ length: fig.counts[i] }, (_, k) => <text key={k} x={labW + k * iconW + 14} y={top + i * rowH + 27} fontSize={22} textAnchor="middle">{fig.icon}</text>)}
               </g>
             ))}
-            <text x={12} y={h - 10} fontSize={13} fontWeight={800} fill="#7c3aed">Key: {fig.icon} = {fig.per}</text>
+            <g><text x={12} y={h - 10} fontSize={13} fontWeight={800} fill="#7c3aed">Key:</text><text x={58} y={h - 9} fontSize={16} textAnchor="middle">{fig.icon}</text><text x={70} y={h - 10} fontSize={13} fontWeight={800} fill="#7c3aed">= {fig.per}</text></g>
           </g>
         ),
       };

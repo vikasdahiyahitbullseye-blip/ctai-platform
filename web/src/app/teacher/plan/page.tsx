@@ -109,8 +109,9 @@ export default async function YearPlan({ searchParams }: { searchParams: Promise
                         {log && <span className="text-xs text-good">taught {log.doneOn.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>}
                       </div>
                       <p className="mt-0.5 text-sm text-ink-2">🎯 {l.objective}</p>
-                      {(refs.length > 0 || hw.length > 0) && (
+                      {(refs.length > 0 || hw.length > 0 || l.kind === "INTRODUCE") && (
                         <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                          {l.kind === "INTRODUCE" && l.chapterId && <a href={`/api/slides/${l.chapterId}`} className="text-brand hover:underline">📊 Class slides</a>}
                           {refs.map((r, i) => <Link key={i} href={refHref(r)} className="text-brand hover:underline">{REF_ICON[r.type]} {r.label}</Link>)}
                           {hw.map((r, i) => <Link key={`h${i}`} href={refHref(r)} className="text-ink-2 hover:underline">🏠 Homework: {r.label}</Link>)}
                         </div>

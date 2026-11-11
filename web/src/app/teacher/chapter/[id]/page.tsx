@@ -26,6 +26,7 @@ export default async function ChapterPlanner({ params }: { params: Promise<{ id:
         <Card title="Use it in class">
           <p className="mb-3 text-sm">{ch.questions.length} published questions · Easy {diff[0]} · Medium {diff[1]} · Hard {diff[2]}</p>
           <div className="flex flex-wrap gap-2">
+            <a href={`/api/slides/${ch.id}`} className={btn.primary}>📊 Class slides (.pptx)</a>
             <Link href={`/teacher/chapter/${ch.id}/worksheet`} target="_blank" className={btn.secondary}>🖨 Printable worksheet</Link>
             <Link href={`/teacher/chapter/${ch.id}/worksheet?key=1`} target="_blank" className={btn.secondary}>Worksheet answer key</Link>
             <Link href={`/teacher/assignments/new?chapter=${ch.id}`} className={btn.secondary}>📝 Set as homework</Link>

@@ -60,7 +60,8 @@ export default async function Library({ searchParams }: { searchParams: Promise<
         ))}
       </div>
 
-      <Card title="📘 Learning modules and 🎬 concept videos">
+      <Card title="📘 Learning modules, 📊 class slides and 🎬 concept videos">
+        <p className="-mt-2 mb-3 text-xs text-muted">Slides download as PowerPoint (.pptx) and open in Google Slides too. Each deck follows the chapter&apos;s periods, with answers after every question and the lesson plan in the speaker notes.</p>
         {PARTS.filter((p) => chapters.some((c) => c.part === p)).map((part) => (
           <div key={part} className="mb-4">
             <div className="mb-1 text-sm font-semibold text-muted">{PART_LABEL[part]}</div>
@@ -73,6 +74,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
                   <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 text-sm">
                     <span className="min-w-[14rem] flex-1 font-medium">{c.number}. {c.title}</span>
                     {mod && <Link href={`/learn/${mod.id}`} className="text-brand">📘 Module</Link>}
+                    <a href={`/api/slides/${c.id}`} className="text-brand">📊 Slides</a>
                     {vids.map((v, i) => <Link key={v.id} href={`/learn/${v.id}`} className="text-brand">🎬 Video {i + 1} {v.url || v.fileId ? <Pill tone="good">ready</Pill> : <Pill>script</Pill>}</Link>)}
                     {kit && <Link href={`/teacher/projects/kit/${kit.id}`} className="text-brand">{kit.emoji} {kit.title}</Link>}
                     <Link href={`/teacher/chapter/${c.id}`} className="text-muted hover:underline">Chapter page →</Link>

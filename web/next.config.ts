@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Generated on the server only (slide decks, picture rendering).
+  serverExternalPackages: ["pptxgenjs", "sharp"],
 };
 
 export default nextConfig;
