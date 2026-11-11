@@ -100,6 +100,12 @@ The first page you open after starting can take 10–20 seconds while it compile
 
 **Class slides:** every chapter (98 decks) has a PowerPoint deck (.pptx, which also opens in Google Slides and Keynote). Teachers download it from the Library, the chapter page or the chapter's Introduce period in the Year plan. A deck follows the chapter's periods: title, lesson map, Introduce (goals, think-about-it, key ideas, key words, worked example, Try it), Explore, Hands-on activity (steps and rubric), Practise (picture questions included), Check (I can… checklist, chapter test, at-home task). Every question is followed by an answer slide, and the speaker notes carry the 40-minute lesson plan. Decks are built on demand from the module, the plan and the question bank (`src/lib/slides.ts`), so edits to content show up in the next download. Pictures are exported as images with colour emoji (`src/lib/figureImage.ts`, emoji images from Noto Color Emoji, Apache 2.0) so they look the same on every computer.
 
+**Learn it theory (Classes 3–5):** every CT chapter of Classes 3–5 (43 chapters, 162 concepts) has a short theory section that explains the ideas its questions practise, with pictures, worked examples, "Remember" notes and a thinking tip. The content is in `web/prisma/content/theory/` and appears in three places:
+
+- the chapter's learning module (teachers and students, under "Learn it · before the questions");
+- the chapter's class slides (one slide per idea, one per worked example, and the thinking tip, in the Introduce section);
+- the help books: new PDF editions with 1–2 "Learn it" pages before every chapter. See `docs/helpbooks/README.md` to rebuild them.
+
 Teachers open **Library** to browse by class, print any paper (sets A/B/C, answer key, Word), or press **Use with my class**. That makes the teacher's own copy, which they can edit, and assigns it (tests online; worksheets and assignments as homework). Students find each chapter's module and recorded videos under **Learn** on the chapter page.
 
 Classes 7 and 8 get a little more generated practice per chapter (43 and 48) so every class reaches 600+.

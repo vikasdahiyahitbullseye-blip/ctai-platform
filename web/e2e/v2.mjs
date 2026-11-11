@@ -276,6 +276,8 @@ let teamUrl;
   const mod = await page.locator("a:has-text('📘 Module')").first().getAttribute("href");
   await page.goto(BASE + mod);
   await page.waitForSelector("text=Worked example");
+  check(await page.locator("#learn-it").count() === 1 && (await page.locator("text=Thinking tip").count()) > 0, "Class 3 module should show the Learn it theory");
+  log("module: Learn it theory shown");
   await ctx.close();
 
   const { page: st, ctx: sctx } = await session("student3");
@@ -283,6 +285,13 @@ let teamUrl;
   await st.goto(BASE + (await st.locator("a[href^='/student/chapter/']").first().getAttribute("href")));
   await st.locator("a:has-text('Learning module')").click();
   await st.waitForSelector("text=Try it");
+  // Theory comes from the CT help books, so it shows on CT chapters (not on the EVS themes).
+  check(await st.locator("#learn-it").count() === 0, "EVS module has no help-book theory");
+  await st.goto(`${BASE}/student/map`);
+  await st.goto(BASE + (await st.locator("a[href^='/student/chapter/']:has-text('Toy Joy')").first().getAttribute("href")));
+  await st.locator("a:has-text('Learning module')").click();
+  await st.waitForSelector("#learn-it");
+  log("student: Learn it theory on a CT chapter");
   check(await st.locator("text=Script and storyboard").count() === 0, "students must not see video scripts");
   log("student: learning module ok");
   await sctx.close();

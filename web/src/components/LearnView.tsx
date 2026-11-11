@@ -6,8 +6,9 @@ import { prisma } from "@/lib/db";
 import { formatAnswer } from "@/lib/scoring";
 import { Markdown } from "./Markdown";
 import { StemFigure, OptionList } from "./QuestionFigures";
+import { TheoryView, hasTheory } from "./TheoryView";
 
-type Res = { id: string; kind: string; title: string; description: string | null; body: string | null; url: string | null; fileId: string | null; meta: string | null };
+type Res = { id: string; kind: string; title: string; description: string | null; body: string | null; url: string | null; fileId: string | null; meta: string | null; chapterId?: string | null };
 
 export function youTubeId(url: string) {
   const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
@@ -51,9 +52,12 @@ export async function LearnView({ r, forStudent }: { r: Res; forStudent: boolean
   const example = qs.find((q) => q.id === meta.exampleId);
   const tries = (meta.tryIds ?? []).map((id) => qs.find((q) => q.id === id)).filter(Boolean) as typeof qs;
   const [before, after] = (r.body ?? "").split(/\n(?=## Activity:)/);
+  const ch = r.chapterId ? await prisma.chapter.findUnique({ where: { id: r.chapterId }, select: { classLevel: true, part: true, number: true } }) : null;
+  const theoryKey = ch ? `${ch.classLevel}-${ch.part}-${ch.number}` : "";
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-line bg-surface p-5"><Markdown text={before} /></div>
+      {hasTheory(theoryKey) && <TheoryView theoryKey={theoryKey} />}
       {example && (
         <div className="rounded-2xl border border-line bg-surface p-5">
           <h3 className="text-lg font-bold">Worked example</h3>

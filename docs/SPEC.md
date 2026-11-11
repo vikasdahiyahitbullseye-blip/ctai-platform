@@ -345,3 +345,9 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Library: `Assessment.libType` ∈ CHAPTER_TEST | WORKSHEET | ASSIGNMENT | MONTHLY | TERM | MOCK (kind LIBRARY, schoolId null, unique `code`); teachers' copies keep `sourceId`. `Resource.kind` MODULE (markdown + `meta` question ids) and VIDEO (script in `body`, scenes in `meta`; recording via `url` or `fileId`). Activity kits are `ProjectKit` rows with kind ACTIVITY.
 - Targets per class: modules and chapter tests (one per chapter), 600+ practice questions, 40 worksheets, 24 assignments, 8 monthly assessments, 2 term papers, 4 full-length practice papers, 12+ projects/activity kits, 20 concept videos.
 
+- Class slides: `src/lib/slides.ts` builds a .pptx per chapter on demand (`/api/slides/[chapterId]`) from the module, the plan and the bank.
+
+## 17. Learn it theory (Classes 3–5)
+
+- Content: `prisma/content/theory/` (`THEORY`, keyed `<class>-CT-<chapter>`). Each chapter has an intro, 3–5 concepts (text, points, optional figure/table, worked example, remember note) and a thinking tip. Figures use the platform's `Fig` specs, including `lettergrid` and `venn`.
+- Shown in the learning module (`TheoryView`, CT chapters of Classes 3–5), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).

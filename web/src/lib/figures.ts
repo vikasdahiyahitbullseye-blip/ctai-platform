@@ -43,7 +43,9 @@ export type Fig =
   | { kind: "matchsticks"; squares: number; alt: string }
   | { kind: "areamodel"; height: number; widths: number[]; labels: string[]; hLabel: string; alt: string }
   | { kind: "binary"; bits: number[]; alt: string } // most significant first; 1 = card face up
-  | { kind: "beads"; colours: Colour[]; alt: string };
+  | { kind: "beads"; colours: Colour[]; alt: string }
+  | { kind: "lettergrid"; rows: string[]; colour: Colour; alt: string } // one character per cell, "." = no cell (cube nets, letter grids)
+  | { kind: "venn"; left: string; right: string; a: string; both: string; b: string; outside?: string; alt: string };
 
 // ---------- pixel transforms ----------
 export const flipH = (n: number, cells: Cell[]): Cell[] => cells.map(([r, c, k]) => [r, n - 1 - c, k]);

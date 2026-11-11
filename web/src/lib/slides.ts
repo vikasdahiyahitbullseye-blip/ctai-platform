@@ -3,6 +3,7 @@
 import PptxGenJS from "pptxgenjs";
 import type { PrismaClient, Question } from "@prisma/client";
 import { MODULES } from "../../prisma/content/library";
+import { THEORY } from "../../prisma/content/theory";
 import { formatAnswer } from "./scoring";
 import { parseFig, parseFigs, type Fig } from "./figures";
 import { figurePng } from "./figureImage";
@@ -226,6 +227,48 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
   {
     const s = content("Introduce", "Key words");
     s.addTable(mod.terms.map(([t, d]) => [{ text: t, options: { bold: true, color: C.dark, fill: { color: C.tint } } }, { text: d }]), { x: M, y: 1.7, w: W - 2 * M, colW: [4, W - 2 * M - 4], fontFace: FONT, fontSize: fs.body, color: C.body, border: { type: "solid", pt: 0.75, color: C.line }, valign: "middle", rowH: 0.8 });
+  }
+  // "Learn it" theory (Classes 3–5): one slide per concept, the same content as the help books.
+  const theory = THEORY[key];
+  if (theory) {
+    for (const [i, c] of theory.concepts.entries()) {
+      const s = content(`Learn it · idea ${i + 1} of ${theory.concepts.length}`, plain(c.title), [plain(c.text), ...(c.points ?? []).map((p) => `• ${plain(p)}`), c.remember ? `Remember: ${plain(c.remember)}` : ""].filter(Boolean).join("\n"));
+      let figW = 0;
+      if (c.fig) {
+        const img = await figurePng(c.fig);
+        const sc = Math.min(5 / (img.w / 96), 4.2 / (img.h / 96), 2.2);
+        const w = (img.w / 96) * sc, h = (img.h / 96) * sc;
+        figW = w + 0.3;
+        s.addImage({ data: img.data, x: W - M - w, y: 1.7, w, h });
+      }
+      const tw = W - 2 * M - figW;
+      const h = c.table ? 2.3 : c.remember ? 4.0 : 4.9;
+      const all = [c.text, ...(c.points ?? [])].join("\n");
+      const size = [fs.body - 4, fs.body - 8, fs.body - 12, 16].find((z) => textHeight(all, z, tw) + (c.points ? 0.3 : 0) <= h) ?? 16;
+      const body: Run[] = runs(c.text, { fontSize: size });
+      body[body.length - 1].options = { ...body[body.length - 1].options, breakLine: true };
+      for (const p of c.points ?? []) {
+        // A typed bullet: pptxgenjs drops or splits list bullets on points that mix bold and plain runs.
+        const r = runs(`•  ${p}`, { fontSize: size - 2 });
+        r[r.length - 1].options = { ...r[r.length - 1].options, breakLine: true };
+        body.push(...r);
+      }
+      const textH = c.table ? Math.min(h, textHeight(all, size, tw) + (c.points ? 0.3 : 0) + 0.1) : h;
+      s.addText(body, { x: M, y: 1.6, w: tw, h: textH, fontFace: FONT, color: C.body, valign: "top", paraSpaceAfter: 6 });
+      if (c.table) {
+        const ty = 1.6 + textH + 0.1, room = (c.remember ? H - 1.6 : H - 0.7) - ty;
+        const rowH = Math.min(0.5, room / c.table.length), tsize = Math.max(12, Math.min(small ? 20 : 18, Math.floor(rowH * 72 * 0.55)));
+        s.addTable(c.table.map((r, ri) => r.map((t) => ({ text: plain(t), options: ri === 0 ? { bold: true, color: C.dark, fill: { color: C.tint } } : {} }))), { x: M, y: ty, w: Math.min(tw, 2.6 * c.table[0].length), fontFace: FONT, fontSize: tsize, color: C.body, border: { type: "solid", pt: 0.75, color: C.line }, valign: "middle", rowH, margin: 2 });
+      }
+      if (c.remember) s.addText([{ text: "⭐ Remember: ", options: { bold: true } }, ...runs(c.remember)], { x: M, y: H - 1.45, w: W - 2 * M, h: 0.75, fontFace: FONT, fontSize: textHeight(c.remember, fs.body - 10, W - 2 * M) < 0.75 ? fs.body - 10 : 16, color: C.ink, fill: { color: "FFF4E5" }, shape: pptx.ShapeType.roundRect, rectRadius: 0.12, margin: 8, valign: "middle" });
+      if (c.example) {
+        const e = content("Learn it · worked example", plain(c.example.q), `Answer: ${plain(c.example.answer)}`);
+        e.addText(c.example.steps.map((st, j) => ({ text: `${j + 1}.  ${plain(st)}`, options: { breakLine: true, paraSpaceAfter: 8 } })), { x: M + 0.1, y: 1.75, w: W - 2 * M - 0.2, h: 3.9, fontFace: FONT, fontSize: textHeight(c.example.steps.join("\n"), fs.body - 4, W - 2 * M) < 3.6 ? fs.body - 4 : fs.body - 10, color: C.body, valign: "top" });
+        e.addText(`✓  ${plain(c.example.answer)}`, { x: M, y: H - 1.55, w: W - 2 * M, h: 0.8, fontFace: FONT, fontSize: fs.body - 4, bold: true, color: C.good, fill: { color: C.goodSoft }, shape: pptx.ShapeType.roundRect, rectRadius: 0.12, margin: 10, valign: "middle" });
+      }
+    }
+    const tip = content("Learn it", "💡  Thinking tip");
+    tip.addText(plain(theory.tip), { x: M + 0.3, y: 1.8, w: W - 2 * M - 0.6, h: 3.6, fontFace: FONT, fontSize: small ? 30 : 26, color: C.white, fill: { color: C.brand }, shape: pptx.ShapeType.roundRect, rectRadius: 0.2, margin: 24, valign: "middle", align: "center" });
   }
   if (example) await questionSlides(example, "Worked example");
   if (tries[0]) await questionSlides(tries[0], "Try it 1");

@@ -647,6 +647,42 @@ function drawMore(fig: More): { w: number; h: number; body: React.ReactNode } {
         ),
       };
     }
+    case "lettergrid": {
+      const cs = 44, cols = Math.max(...fig.rows.map((r) => [...r].length));
+      const col = PALETTE[fig.colour];
+      return {
+        w: cols * cs + 12, h: fig.rows.length * cs + 12,
+        body: (
+          <g>
+            {fig.rows.flatMap((row, r) => [...row].map((ch, c) => ch === "." ? null : (
+              <g key={`${r}-${c}`}>
+                <rect x={6 + c * cs} y={6 + r * cs} width={cs} height={cs} fill={ch === " " ? "#fff" : `${col}33`} stroke={shade(col, 0.6)} strokeWidth={2} />
+                {ch !== " " && <text x={6 + c * cs + cs / 2} y={6 + r * cs + cs / 2 + 7} fontSize={20} fontWeight={800} textAnchor="middle" fill={INK}>{ch}</text>}
+              </g>
+            )))}
+          </g>
+        ),
+      };
+    }
+    case "venn": {
+      const w = 360, h = 210;
+      return {
+        w, h,
+        body: (
+          <g>
+            <rect x={2} y={2} width={w - 4} height={h - 4} rx={12} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={2} />
+            <circle cx={135} cy={110} r={78} fill="#3b82f6" fillOpacity={0.22} stroke="#2563eb" strokeWidth={3} />
+            <circle cx={225} cy={110} r={78} fill="#f97316" fillOpacity={0.22} stroke="#ea580c" strokeWidth={3} />
+            <text x={110} y={24} fontSize={14} fontWeight={800} textAnchor="middle" fill="#1d4ed8">{fig.left}</text>
+            <text x={250} y={24} fontSize={14} fontWeight={800} textAnchor="middle" fill="#c2410c">{fig.right}</text>
+            <text x={100} y={117} fontSize={20} fontWeight={800} textAnchor="middle" fill={INK}>{fig.a}</text>
+            <text x={180} y={117} fontSize={20} fontWeight={800} textAnchor="middle" fill={INK}>{fig.both}</text>
+            <text x={260} y={117} fontSize={20} fontWeight={800} textAnchor="middle" fill={INK}>{fig.b}</text>
+            {fig.outside && <text x={w - 14} y={h - 14} fontSize={13} fontWeight={700} textAnchor="end" fill="#475569">{fig.outside}</text>}
+          </g>
+        ),
+      };
+    }
     case "beads": {
       const r = 15, gap = 4, n = fig.colours.length;
       const perRow = 14, rows = Math.ceil(n / perRow);
