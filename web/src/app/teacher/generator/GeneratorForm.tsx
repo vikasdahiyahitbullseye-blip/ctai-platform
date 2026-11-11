@@ -53,6 +53,13 @@ export function GeneratorForm({ sections, chapters, defaultSection }: { sections
               <span className="text-sm font-medium">Duration (minutes, 0 = untimed)</span>
               <input name="durationMin" type="number" min={0} max={240} defaultValue={30} className={input} />
             </label>
+            <label className="block text-sm font-medium">Questions from
+              <select name="source" defaultValue="ALL" className={input}>
+                <option value="ALL">Our bank + CBSE handbook</option>
+                <option value="OURS">Our question bank only</option>
+                <option value="CBSE">CBSE handbook exercises only</option>
+              </select>
+            </label>
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Instructions</span>
               <textarea name="instructions" rows={2} defaultValue="Read each question carefully. Use rough paper to show your thinking." className={input} />

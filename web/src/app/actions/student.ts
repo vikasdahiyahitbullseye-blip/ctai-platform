@@ -21,11 +21,13 @@ export async function startPractice(form: FormData) {
   if (!section) throw new Error("Not enrolled");
   const chapterId = String(form.get("chapterId") ?? "");
   const skill = String(form.get("skill") ?? "") || undefined;
+  const source = form.get("source") === "CBSE" ? ("CBSE" as const) : undefined;
   const chapters = chapterId
     ? [chapterId]
     : (await prisma.chapter.findMany({ where: { classLevel: section.classLevel }, select: { id: true } })).map((c) => c.id);
-  const title = chapterId ? (await prisma.chapter.findUnique({ where: { id: chapterId } }))?.title ?? "Practice" : `Skill practice`;
-  const a = await prisma.assessment.create({ data: { kind: "PRACTICE", title, classLevel: section.classLevel, blueprint: JSON.stringify({ chapterIds: chapters, skill }) } });
+  const chTitle = chapterId ? (await prisma.chapter.findUnique({ where: { id: chapterId } }))?.title ?? "Practice" : "Skill practice";
+  const title = source ? `CBSE exercises: ${chTitle}` : chTitle;
+  const a = await prisma.assessment.create({ data: { kind: "PRACTICE", title, classLevel: section.classLevel, blueprint: JSON.stringify({ chapterIds: chapters, skill, source }) } });
   const attempt = await prisma.attempt.create({ data: { userId: user.id, assessmentId: a.id } });
   redirect(`/student/play/${attempt.id}`);
 }

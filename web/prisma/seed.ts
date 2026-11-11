@@ -23,6 +23,7 @@ import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
 import { generateBank } from "./content/gen";
 import { buildClassLibrary } from "../src/lib/library";
+import { cbseQuestions } from "./content/cbse";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -233,7 +234,7 @@ async function main() {
 
   // Teacher-made tests via the generator.
   const makeTest = async (cls: number, sectionId: string, title: string, chapters: string[], count: number, daysAgo: number, dueInDays: number, completion: number) => {
-    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, type: { not: "SHORT" }, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
+    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, type: { not: "SHORT" }, source: { not: "CBSE" }, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
     const blueprint = { chapterIds: chapters, count, difficultyMix: { 1: 40, 2: 40, 3: 20 } as const, seed: daysAgo + 7 };
     const gen = generatePaper(pool, blueprint);
     const created = new Date(now - daysAgo * DAY);
@@ -364,6 +365,24 @@ async function main() {
   const counts = await Promise.all([db.question.count(), db.attempt.count(), db.response.count(), db.userBadge.count()]);
   console.log(`Seeded: ${counts[0]} questions, ${counts[1]} attempts, ${counts[2]} responses, ${counts[3]} badges.`);
   console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, content, reviewer, superadmin");
+
+  // CBSE handbook questions (answers and solutions from CBSE's Teacher Handbooks). Added last so the demo activity above
+  // stays the same. They wait for a reviewer to check the transcription, but are usable meanwhile.
+  const cbse = cbseQuestions();
+  const missing = new Set<string>();
+  for (const q of cbse) {
+    const ch = chapterId[q.chapterKey];
+    if (!ch) { missing.add(q.chapterKey); continue; }
+    await db.question.create({
+      data: {
+        code: q.code, classLevel: q.classLevel, chapterId: ch, skills: q.skills.join(","), type: q.type, difficulty: q.difficulty,
+        stem: q.stem, options: JSON.stringify(q.options), answer: JSON.stringify(q.answer), solution: q.solution,
+        marks: q.type === "SHORT" ? 2 : 1, timeSec: q.type === "SHORT" ? 180 : 90, figure: q.figure ? JSON.stringify(q.figure) : null,
+        source: "CBSE", sourceRef: q.sourceRef, approval: "UNREVIEWED",
+      },
+    });
+  }
+  console.log(`CBSE handbook questions: ${cbse.filter((q) => chapterId[q.chapterKey]).length}${missing.size ? ` (no chapter for ${[...missing].join(", ")})` : ""}`);
 }
 
 main().finally(() => db.$disconnect());

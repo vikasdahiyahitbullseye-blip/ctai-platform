@@ -8,7 +8,7 @@ import { Markdown } from "@/components/Markdown";
 import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { Card, PageHeader, Pill, btn, Empty } from "@/components/ui";
 
-type SP = { cls?: string; ch?: string; skill?: string; type?: string; d?: string; q?: string };
+type SP = { cls?: string; ch?: string; skill?: string; type?: string; d?: string; q?: string; source?: string };
 
 export default async function QuestionBank({ searchParams }: { searchParams: Promise<SP> }) {
   await requireUser("TEACHER", "ADMIN");
@@ -22,6 +22,7 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
     ...(sp.type ? { type: sp.type } : {}),
     ...(sp.d ? { difficulty: Number(sp.d) } : {}),
     ...(sp.q ? { stem: { contains: sp.q } } : {}),
+    ...(sp.source === "CBSE" ? { source: "CBSE" } : sp.source === "OURS" ? { source: { not: "CBSE" } } : {}),
   };
   const [questions, total] = await Promise.all([
     prisma.question.findMany({ where, include: { chapter: true, _count: { select: { responses: true } }, responses: { select: { correct: true }, where: { correct: { not: null } } } }, orderBy: { code: "asc" }, take: 100 }),
@@ -52,6 +53,9 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
           <label className="text-xs text-muted">Difficulty<br />
             <select name="d" defaultValue={sp.d ?? ""} className={sel}><option value="">Any</option>{Object.entries(DIFFICULTY).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
           </label>
+          <label className="text-xs text-muted">From<br />
+            <select name="source" defaultValue={sp.source ?? ""} className={sel}><option value="">All questions</option><option value="OURS">Our question bank</option><option value="CBSE">CBSE handbook</option></select>
+          </label>
           <label className="text-xs text-muted">Search<br />
             <input name="q" defaultValue={sp.q ?? ""} placeholder="Words in question" className={sel} />
           </label>
@@ -69,13 +73,14 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
               <li key={q.id} className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
                 <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
                   <code className="font-mono text-muted">{q.code}</code>
-                  {q.isPuzzle && <Pill tone="warn">Puzzle of the Day</Pill>}{q.source === "GENERATED" && <Pill>Generated</Pill>}{q.approval === "APPROVED" ? <Pill tone="good">✓ Approved</Pill> : <Pill>Not yet reviewed</Pill>}
+                  {q.isPuzzle && <Pill tone="warn">Puzzle of the Day</Pill>}{q.source === "GENERATED" && <Pill>Generated</Pill>}{q.source === "CBSE" && <Pill tone="good">📗 CBSE handbook</Pill>}{q.approval === "APPROVED" ? <Pill tone="good">✓ Approved</Pill> : <Pill>Not yet reviewed</Pill>}
                   <Pill tone="brand">{q.chapter.part === "AI" ? "AI " : ""}Ch {q.chapter.number}: {q.chapter.title}</Pill>
                   <Pill>{DIFFICULTY[q.difficulty as 1 | 2 | 3]}</Pill>
                   <Pill>{QUESTION_TYPES[q.type as keyof typeof QUESTION_TYPES]}</Pill>
                   {parseSkills(q.skills).map((s) => <Pill key={s}>{skillName(s)}</Pill>)}
                   <span className="ml-auto text-muted">{p !== null ? `${p}% correct · ${n} answers` : "Not yet used"}</span>
                 </div>
+                {q.sourceRef && <p className="mb-1 text-xs text-muted">{q.sourceRef}</p>}
                 <Markdown text={q.stem} />
                 <StemFigure json={q.figure} />
                 <OptionList options={opts} figuresJson={q.optionFigures} />

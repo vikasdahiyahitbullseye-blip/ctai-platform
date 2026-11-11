@@ -19,6 +19,7 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
   const learn = ch.resources.filter((r) => r.kind === "MODULE" || (r.kind === "VIDEO" && (r.url || r.fileId))).sort((a, b) => (a.kind === "MODULE" ? -1 : 1) - (b.kind === "MODULE" ? -1 : 1) || (a.position ?? 0) - (b.position ?? 0));
   const rs = await prisma.response.findMany({ where: { attempt: { userId: user.id }, correct: { not: null }, question: { chapterId: id } }, select: { correct: true } });
   const stars = starsFor(rs.length, rs.filter((r) => r.correct).length);
+  const cbseCount = await prisma.question.count({ where: { chapterId: id, source: "CBSE", status: "PUBLISHED", type: { not: "SHORT" } } });
   return (
     <div className="space-y-6">
       <Link href="/student/map" className="text-sm font-bold text-brand">← Back to map</Link>
@@ -27,7 +28,10 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
         <h1 className="text-3xl font-extrabold">{ch.title}</h1>
         <div className="mt-1 text-2xl">{"⭐".repeat(stars)}<span className="opacity-40">{"⭐".repeat(3 - stars)}</span></div>
         {ch.focus && <p className="mt-2 max-w-2xl font-semibold opacity-95">{ch.focus}</p>}
-        <form action={startPractice} className="mt-4"><input type="hidden" name="chapterId" value={ch.id} /><button className="kbtn kbtn-accent text-lg">▶ Play 8 questions</button></form>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <form action={startPractice}><input type="hidden" name="chapterId" value={ch.id} /><button className="kbtn kbtn-accent text-lg">▶ Play 8 questions</button></form>
+          {cbseCount > 0 && <form action={startPractice}><input type="hidden" name="chapterId" value={ch.id} /><input type="hidden" name="source" value="CBSE" /><button className="kbtn text-lg">📗 CBSE book questions ({cbseCount})</button></form>}
+        </div>
         <p className="mt-2 text-sm opacity-90">{rs.length ? `You've answered ${rs.length} questions here.` : "You haven't visited this island yet."}</p>
       </section>
       {learn.length > 0 && (

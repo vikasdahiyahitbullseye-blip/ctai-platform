@@ -101,6 +101,18 @@ The first page you open after starting can take 10–20 seconds while it compile
 
 **Class slides:** every chapter (98 decks) has a PowerPoint deck (.pptx, which also opens in Google Slides and Keynote). Teachers download it from the Library, the chapter page or the chapter's Introduce period in the Year plan. A deck follows the chapter's periods: title, lesson map, Introduce (goals, think-about-it, key ideas, key words, worked example, Try it), Explore, Hands-on activity (steps and rubric), Practise (picture questions included), Check (I can… checklist, chapter test, at-home task). Every question is followed by an answer slide, and the speaker notes carry the 40-minute lesson plan. Decks are built on demand from the module, the plan and the question bank (`src/lib/slides.ts`), so edits to content show up in the next download. **Editing a deck:** the super-admin opens **HQ → Class slides**, downloads a chapter's deck, edits it in PowerPoint (or Google Slides, saved as .pptx) and uploads it. Teachers then download the edited deck everywhere the slides are linked. **Go back to the generated deck** removes the edited version. An edited deck does not pick up later content changes, and `npm run seed` removes edited decks. Pictures are exported as images with colour emoji (`src/lib/figureImage.ts`, emoji images from Noto Color Emoji, Apache 2.0) so they look the same on every computer.
 
+**CBSE handbook questions (Classes 3–8):** 1,024 questions from the CBSE CT & AI Student Handbooks (2026-27), with CBSE's answers and solutions from the Teacher Handbooks:
+- **CT chapters:** every answered question, including activity questions and the Thinking Spot (769 questions). Figures are cropped from the books and stored in `web/public/cbse`.
+- **AI chapters (Classes 6–8):** each chapter's Exercise (255 items): multiple choice, fill in the blanks, true or false, classify/identify tables (as multiple choice), and short answers (marked by the teacher, with CBSE's model answer).
+
+They are stored with `source = CBSE` and a `sourceRef` such as "CBSE CT & AI Student Handbook, Class 6 (2026-27) · CT Chapter 5 · Question 3". They show up in four places:
+- **Students:** each chapter page has a "CBSE book questions" button that practises them in book order, starting with the ones not yet answered correctly.
+- **Teachers:** each chapter page has a CBSE exercises card (print the questions, or an answer key with CBSE's solutions). The question bank and the review queue can be filtered to CBSE questions.
+- **Test generator:** choose "Our bank + CBSE handbook", "Our question bank only" or "CBSE handbook exercises only".
+- **Unchanged:** the library, class slides and demo tests keep using our own bank.
+
+All CBSE questions start as "not yet reviewed" so a reviewer can check the automated transcription. The data is in `web/prisma/content/cbse/` (`ct.json` for CT; `ai6.ts`, `ai7.ts`, `ai8.ts` for AI). The CBSE handbooks themselves are not in the repository.
+
 **Learn it theory (Classes 3–8):** every CT chapter of Classes 3–8 (68 chapters, 270 concepts) has a short theory section that explains the ideas its questions practise, with pictures, worked examples, "Remember" notes and a thinking tip. The content is in `web/prisma/content/theory/` and appears in three places:
 
 - the chapter's learning module (teachers and students, under "Learn it · before the questions");

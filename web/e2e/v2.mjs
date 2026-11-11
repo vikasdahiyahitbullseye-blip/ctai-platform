@@ -298,6 +298,12 @@ let teamUrl;
   await st.locator("a:has-text('Learning module')").click();
   await st.waitForSelector("#learn-it");
   log("student: Learn it theory on a CT chapter");
+  // CBSE handbook questions: practised from the chapter page, in book order.
+  await st.goBack();
+  await Promise.all([st.waitForURL(/\/student\/play\//), st.click("button:has-text('CBSE book questions')")]);
+  await st.waitForSelector("text=CBSE exercises");
+  await st.waitForSelector('[role="radiogroup"], input[type="text"]');
+  log("student: CBSE book questions practice");
   check(await st.locator("text=Script and storyboard").count() === 0, "students must not see video scripts");
   log("student: learning module ok");
   await sctx.close();
@@ -355,6 +361,17 @@ let teamUrl;
   check(bad.status() === 403, "teachers cannot change slides");
   await t.ctx.close(); await sa.ctx.close();
   log("slides: super-admin upload, teacher download, revert ok");
+}
+
+// ---------- CBSE handbook questions in the bank ----------
+{
+  const { page, ctx } = await session("teacher");
+  await page.goto(`${BASE}/teacher/questions?cls=6&source=CBSE`);
+  check(await page.locator("text=📗 CBSE handbook").count() > 10, "question bank filters CBSE handbook questions");
+  check(await page.locator("text=/CBSE CT & AI Student Handbook, Class 6/").count() > 0, "CBSE questions show their source");
+  check(await page.locator('img[src^="/cbse/"]').count() > 0, "CBSE figures are shown");
+  await ctx.close();
+  log("teacher: CBSE handbook questions in the bank");
 }
 
 // ---------- Individual performance only (no houses) ----------

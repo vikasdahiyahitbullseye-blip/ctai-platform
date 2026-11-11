@@ -6,7 +6,7 @@ import { addXp, evaluateBadges } from "./progress";
 
 export const PRACTICE_LENGTH = 8;
 
-export type PracticeBlueprint = { chapterIds: string[]; skill?: string };
+export type PracticeBlueprint = { chapterIds: string[]; skill?: string; source?: "CBSE" };
 
 /** Records (or replaces) an answer. Practice and puzzle answers are graded immediately; tests at submit. */
 export async function saveAnswer(
@@ -157,7 +157,7 @@ export async function markWork(
 export async function practiceSetSize(db: PrismaClient, attemptId: string) {
   const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { assessment: true } });
   const bp = JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint;
-  const n = await db.question.count({ where: { chapterId: { in: bp.chapterIds }, isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" }, ...(bp.skill ? { skills: { contains: bp.skill } } : {}) } });
+  const n = await db.question.count({ where: { chapterId: { in: bp.chapterIds }, isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" }, ...(bp.skill ? { skills: { contains: bp.skill } } : {}), ...(bp.source ? { source: bp.source } : {}) } });
   return Math.min(PRACTICE_LENGTH, n);
 }
 
@@ -192,10 +192,14 @@ export async function nextPracticeQuestion(db: PrismaClient, attemptId: string, 
       status: "PUBLISHED",
       type: { not: "SHORT" },
       ...(bp.skill ? { skills: { contains: bp.skill } } : {}),
+      ...(bp.source ? { source: bp.source } : {}),
     },
   });
   const candidates = pool.filter((q) => !answeredHere.has(q.id));
   if (!candidates.length) return null;
+  // CBSE handbook exercises are worked through in book order.
+  // CBSE handbook exercises: book order, starting with ones the student has not yet got right.
+  if (bp.source === "CBSE") return candidates.sort((a, b) => Number(masteredIds.has(a.id)) - Number(masteredIds.has(b.id)) || a.code.localeCompare(b.code))[0];
   const score = (q: (typeof candidates)[number]) => Math.abs(q.difficulty - target) * 10 + (masteredIds.has(q.id) ? 5 : 0) + rand();
   candidates.sort((a, b) => score(a) - score(b));
   return candidates[0];

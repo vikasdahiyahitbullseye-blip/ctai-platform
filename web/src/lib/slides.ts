@@ -65,7 +65,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     db.projectKit.findFirst({ where: { chapterKey: key, kind: "ACTIVITY" }, include: { criteria: { orderBy: { position: "asc" } } } }),
     db.assessment.findFirst({ where: { chapterId, libType: "CHAPTER_TEST" }, include: { _count: { select: { items: true } } } }),
     db.assessment.count({ where: { chapterId, libType: "WORKSHEET" } }),
-    db.question.findMany({ where: { chapterId, status: "PUBLISHED", isPuzzle: false, type: { not: "SHORT" } } }),
+    db.question.findMany({ where: { chapterId, status: "PUBLISHED", isPuzzle: false, type: { not: "SHORT" }, source: { not: "CBSE" } } }),
   ]);
   const meta = modRes?.meta ? (JSON.parse(modRes.meta) as { exampleId?: string; tryIds?: string[] }) : {};
   const byId = new Map(pool.map((q) => [q.id, q]));

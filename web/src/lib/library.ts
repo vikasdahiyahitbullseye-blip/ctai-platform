@@ -97,7 +97,7 @@ export async function buildClassLibrary(db: PrismaClient, cls: number) {
   const periods = Object.fromEntries(chapters.map((c) => [c.key, c.periods]));
   const slots = schedule(cls, chapters, periods);
 
-  const qs = await db.question.findMany({ where: { classLevel: cls, status: "PUBLISHED", isPuzzle: false, type: { not: "SHORT" } }, select: { id: true, chapterId: true, skills: true, type: true, difficulty: true, marks: true, stem: true, solution: true, figure: true, optionFigures: true, source: true } });
+  const qs = await db.question.findMany({ where: { classLevel: cls, status: "PUBLISHED", isPuzzle: false, type: { not: "SHORT" }, source: { not: "CBSE" } }, select: { id: true, chapterId: true, skills: true, type: true, difficulty: true, marks: true, stem: true, solution: true, figure: true, optionFigures: true, source: true } });
   const pool: (PoolItem & { stem: string; solution: string; pic: boolean; authored: boolean })[] = qs.map((q) => ({ id: q.id, chapterId: q.chapterId, skills: q.skills.split(","), type: q.type, difficulty: q.difficulty, marks: q.marks, stem: q.stem, solution: q.solution, pic: !!(q.figure || q.optionFigures), authored: q.source !== "GENERATED" }));
   const inCh = (id: string) => pool.filter((q) => q.chapterId === id);
   const small = cls <= 5;

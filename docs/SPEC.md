@@ -359,3 +359,10 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Videos without a recording are hidden everywhere else (library, chapter pages, year plan, print plan, learn pages); teachers and students see only recorded videos, without scripts.
 - Year-plan periods are labelled by chapter (`periodLabels` in `src/lib/plan.ts`): "Chapter 1-1", "Chapter 1-2", …; "AI Chapter n-k" / "EVS Chapter n-k"; "Getting started", "Term n revision", "Term n exam". `Lesson.number` stays as the internal order.
 - Edited class slides: the super-admin uploads a .pptx per chapter in HQ → Class slides (`POST /api/slides/[chapterId]`, op upload/revert, max 100 MB, zip signature checked). It is stored as an internal `Resource` (kind SLIDES, status INTERNAL, code `DECK-<class>-<part>-<chapter>`), hidden from resource lists. `GET /api/slides/[chapterId]` serves the edited deck when there is one, else builds the deck; `?generated=1` always builds it.
+
+## 19. CBSE handbook questions
+
+- `Question.source = "CBSE"` with `sourceRef` (book, class, chapter, question). Codes: `CBSE-<class>-CT-<chapter>-<n>` and `CBSE-<class>-AI-<chapter>-<n>`.
+- CT: extracted from the CBSE Teacher Handbooks (question, options, CBSE answer and solution); figures cropped from the pages as WebP in `public/cbse` and shown with the `image` figure kind. AI (Classes 6–8): end-of-chapter Exercises transcribed with CBSE's solutions; tables become multiple-choice rows; short answers are teacher-marked with CBSE's model answer.
+- Students: chapter page "CBSE book questions" practice (book order, not-yet-correct first). Teachers: chapter card (print, answer key), question-bank and review filters, and a "Questions from" choice in the test generator. Library, slides and demo tests exclude CBSE questions.
+- All CBSE questions start UNREVIEWED for a reviewer to check the transcription.

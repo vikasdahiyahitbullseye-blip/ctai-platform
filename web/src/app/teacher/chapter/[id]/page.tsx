@@ -10,21 +10,33 @@ import { formatHours, KIND_LABEL, periodLabels, type LessonKind } from "@/lib/pl
 export default async function ChapterPlanner({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   await requireUser("TEACHER", "ADMIN");
-  const ch = await prisma.chapter.findUnique({ where: { id }, include: { links: true, resources: { where: { status: "PUBLISHED", NOT: { kind: "VIDEO", url: null, fileId: null } }, include: { file: true } }, questions: { where: { status: "PUBLISHED" }, select: { difficulty: true, isPuzzle: true, type: true } } } });
+  const ch = await prisma.chapter.findUnique({ where: { id }, include: { links: true, resources: { where: { status: "PUBLISHED", NOT: { kind: "VIDEO", url: null, fileId: null } }, include: { file: true } }, questions: { where: { status: "PUBLISHED" }, select: { difficulty: true, isPuzzle: true, type: true, source: true } } } });
   if (!ch) notFound();
   const [lessons, sets] = await Promise.all([
     prisma.lesson.findMany({ where: { chapterId: id }, include: { chapter: true }, orderBy: { number: "asc" } }),
     prisma.assessment.findMany({ where: { chapterId: id, libType: { not: null } }, orderBy: { libOrder: "asc" }, select: { id: true, title: true } }),
   ]);
-  const diff = [1, 2, 3].map((d) => ch.questions.filter((q) => q.difficulty === d && !q.isPuzzle).length);
+  const own = ch.questions.filter((q) => q.source !== "CBSE");
+  const cbseCount = ch.questions.length - own.length;
+  const diff = [1, 2, 3].map((d) => own.filter((q) => q.difficulty === d && !q.isPuzzle).length);
   return (
     <div className="space-y-6">
       <PageHeader title={`${ch.number}. ${ch.title}`} subtitle={`Class ${ch.classLevel} · ${PART_LABEL[ch.part]}${ch.periods ? ` · ${ch.periods} periods (${formatHours(ch.periods)})` : ""}`} action={<Link href={`/teacher/curriculum?cls=${ch.classLevel}`} className={btn.secondary}>Curriculum map</Link>} />
       {ch.focus && <Card title="Focus"><p>{ch.focus}</p>{ch.part === "CT" && <p className="mt-2 text-sm text-muted">Teach the NCERT Maths concept first, then use the CT questions in the same period (CBSE companion-book approach). Let students think before discussing — the process matters more than the answer.</p>}</Card>}
+      {cbseCount > 0 && (
+        <Card title="📗 CBSE handbook exercises">
+          <p className="text-sm text-ink-2">{cbseCount} questions from the CBSE CT &amp; AI Student Handbook for this chapter, with CBSE&apos;s answers and solutions from the Teacher Handbook. Students can practise them on the chapter page; you can print them or add them to tests.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href={`/teacher/chapter/${ch.id}/worksheet?source=CBSE`} target="_blank" className={btn.secondary}>🖨 Print CBSE exercises</Link>
+            <Link href={`/teacher/chapter/${ch.id}/worksheet?source=CBSE&key=1`} target="_blank" className={btn.secondary}>Answer key with solutions</Link>
+            <Link href={`/teacher/questions?cls=${ch.classLevel}&ch=${ch.id}&source=CBSE`} className={btn.ghost}>Browse them</Link>
+          </div>
+        </Card>
+      )}
       <Card title="Where this thinking shows up in other subjects"><SubjectLinks links={ch.links} /></Card>
       <div className="grid gap-6 lg:grid-cols-2">
         <Card title="Use it in class">
-          <p className="mb-3 text-sm">{ch.questions.length} published questions · Easy {diff[0]} · Medium {diff[1]} · Hard {diff[2]}</p>
+          <p className="mb-3 text-sm">{own.length} published questions · Easy {diff[0]} · Medium {diff[1]} · Hard {diff[2]}{cbseCount > 0 && ` · plus ${cbseCount} CBSE handbook exercises`}</p>
           <div className="flex flex-wrap gap-2">
             <a href={`/api/slides/${ch.id}`} className={btn.primary}>📊 Class slides (.pptx)</a>
             <Link href={`/teacher/chapter/${ch.id}/worksheet`} target="_blank" className={btn.secondary}>🖨 Printable worksheet</Link>

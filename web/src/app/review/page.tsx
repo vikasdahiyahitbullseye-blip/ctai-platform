@@ -80,7 +80,7 @@ export default async function ReviewQueue({ searchParams }: { searchParams: Prom
           <select name="state" defaultValue={state} className={sel}>{Object.entries(STATE_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
           <select name="cls" defaultValue={sp.cls ?? ""} className={sel}><option value="">All classes</option>{[3, 4, 5, 6, 7, 8].map((c) => <option key={c} value={c}>Class {c}</option>)}</select>
           {cls && <select name="ch" defaultValue={sp.ch ?? ""} className={sel}><option value="">All chapters</option>{chapters.map((ch) => <option key={ch.id} value={ch.id}>{ch.part} {ch.number}: {ch.title}</option>)}</select>}
-          <select name="source" defaultValue={source} className={sel}><option value="">Generated + written</option><option value="GENERATED">Generated only</option><option value="AUTHORED">Written only</option></select>
+          <select name="source" defaultValue={source} className={sel}><option value="">Generated + written</option><option value="GENERATED">Generated only</option><option value="AUTHORED">Written only</option><option value="CBSE">CBSE handbook only</option></select>
           <select name="type" defaultValue={sp.type ?? ""} className={sel}><option value="">All types</option>{Object.entries(QUESTION_TYPES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
           <button className={btn.secondary}>Show</button>
         </form>
@@ -107,7 +107,7 @@ export default async function ReviewQueue({ searchParams }: { searchParams: Prom
                     <Pill tone="brand">Class {q.classLevel} · {q.chapter.part} {q.chapter.number}: {q.chapter.title}</Pill>
                     <Pill>{DIFFICULTY[q.difficulty as 1 | 2 | 3]}</Pill>
                     <Pill>{QUESTION_TYPES[q.type as keyof typeof QUESTION_TYPES]}</Pill>
-                    {q.source === "GENERATED" && <Pill tone="warn">Generated{q.family ? ` · ${q.family}` : ""}</Pill>}
+                    {q.source === "GENERATED" && <Pill tone="warn">Generated{q.family ? ` · ${q.family}` : ""}</Pill>}{q.source === "CBSE" && <Pill tone="good">📗 CBSE handbook{q.sourceRef ? ` · ${q.sourceRef.replace(/^CBSE CT & AI Student Handbook, /, "")}` : ""}</Pill>}
                     {(q.figure || q.optionFigures) && <Pill>🖼️ Picture</Pill>}
                     {user.role === "SUPERADMIN" && <Link href={`/studio/questions/${q.id}`} className="ml-auto text-brand">Edit in studio</Link>}
                   </div>

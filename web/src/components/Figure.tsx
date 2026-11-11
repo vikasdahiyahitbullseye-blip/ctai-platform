@@ -13,6 +13,16 @@ function shade(hex: string, f: number) {
 
 export function Figure({ fig, size = "md" }: { fig: Fig; size?: "sm" | "md" }) {
   const maxW = size === "sm" ? 150 : undefined;
+  if (fig.kind === "image") {
+    // CBSE handbook figures: crops made at 150 dpi, shown at print size (96/150).
+    const w = Math.round(fig.w * 0.64);
+    return (
+      <div className="inline-block max-w-full rounded-2xl border-2 border-slate-200 bg-white p-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/cbse/${fig.src}`} alt={fig.alt} width={size === "sm" ? Math.min(150, w) : w} height={Math.round(fig.h * 0.64 * (size === "sm" ? Math.min(150, w) / w : 1))} loading="lazy" style={{ maxWidth: "100%", height: "auto", display: "block" }} />
+      </div>
+    );
+  }
   if (fig.kind === "sequence") {
     const wide = fig.frames.some((f) => f?.kind === "matchsticks");
     return (
@@ -64,6 +74,10 @@ function shapePath(shape: string, cx: number, cy: number, s: number, colour: str
 
 export function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } {
   switch (fig.kind) {
+    case "image": {
+      const w = Math.round(fig.w * 0.64), h = Math.round(fig.h * 0.64);
+      return { w, h, body: <image href={`/cbse/${fig.src}`} x={0} y={0} width={w} height={h} /> };
+    }
     case "pixels": {
       const cs = 30, pad = 8, n = fig.n;
       const gw = n * cs;
@@ -263,7 +277,7 @@ export function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } 
 export const colourName = (c: Colour) => c;
 
 // ---------- More picture kinds (numbers, measuring, money, sorting, geometry, data) ----------
-type More = Exclude<Fig, { kind: "pixels" | "gridmap" | "shapes" | "sequence" | "arrow" | "dots" | "bars" | "pictograph" | "clock" | "cubes" }>;
+type More = Exclude<Fig, { kind: "pixels" | "gridmap" | "shapes" | "sequence" | "arrow" | "dots" | "bars" | "pictograph" | "clock" | "cubes" | "image" }>;
 
 const fmtNum = (v: number, d = 0) => (d ? v.toFixed(d) : String(Math.round(v))).replace("-", "−");
 const NOTE: Record<number, [string, string]> = { 10: ["#fdba74", "#9a3412"], 20: ["#bef264", "#3f6212"], 50: ["#5eead4", "#115e59"], 100: ["#c4b5fd", "#4c1d95"], 200: ["#fcd34d", "#92400e"], 500: ["#d6d3d1", "#44403c"] };

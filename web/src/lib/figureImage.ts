@@ -5,6 +5,8 @@ import React from "react";
 import sharp from "sharp";
 import { draw } from "@/components/Figure";
 import type { Fig } from "./figures";
+import fs from "node:fs";
+import path from "node:path";
 import EMOJI from "./emojiImages.json";
 
 const EMOJI_MAP = EMOJI as Record<string, string>;
@@ -32,6 +34,13 @@ function toMarkup(node: React.ReactNode): string {
 }
 
 function body(fig: Fig): { w: number; h: number; markup: string } {
+  if (fig.kind === "image") {
+    // Embed the picture file so the SVG/PNG works outside the browser (slides, documents).
+    const w = Math.round(fig.w * 0.64), h = Math.round(fig.h * 0.64);
+    const file = path.join(process.cwd(), "public", "cbse", path.basename(fig.src));
+    const data = fs.existsSync(file) ? fs.readFileSync(file).toString("base64") : "";
+    return { w, h, markup: `<image href="data:image/webp;base64,${data}" x="0" y="0" width="${w}" height="${h}"/>` };
+  }
   if (fig.kind === "sequence") {
     const wide = fig.frames.some((f) => f?.kind === "matchsticks");
     const fw = wide ? 160 : 96, fh = 96, gap = 10, pad = 10;

@@ -39,6 +39,7 @@ const GenSchema = z.object({
   hard: z.coerce.number().min(0).max(100),
   durationMin: z.coerce.number().int().min(0).max(240),
   instructions: z.string().max(1000).optional(),
+  source: z.enum(["ALL", "OURS", "CBSE"]).default("ALL"),
 });
 
 export async function generateTest(_: unknown, form: FormData) {
@@ -56,13 +57,14 @@ export async function generateTest(_: unknown, form: FormData) {
     hard: form.get("hard"),
     durationMin: form.get("durationMin"),
     instructions: form.get("instructions") || undefined,
+    source: form.get("source") || undefined,
   });
   if (!parsed.success) return { error: parsed.error.issues.map((i) => i.message).join(" ") };
   const d = parsed.data;
   if (d.easy + d.medium + d.hard <= 0) return { error: "Difficulty mix must add up to more than 0%." };
   if (d.sectionId) await requireSectionAccess(user.id, d.sectionId);
 
-  const pool = (await prisma.question.findMany({ where: { classLevel: d.classLevel, isPuzzle: false, status: "PUBLISHED", chapterId: { in: d.chapterIds } } }))
+  const pool = (await prisma.question.findMany({ where: { classLevel: d.classLevel, isPuzzle: false, status: "PUBLISHED", chapterId: { in: d.chapterIds }, ...(d.source === "CBSE" ? { source: "CBSE" } : d.source === "OURS" ? { source: { not: "CBSE" } } : {}) } }))
     .map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
 
   // Avoid questions this section already saw in recent tests (last 60 days).

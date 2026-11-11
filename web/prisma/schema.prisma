@@ -135,8 +135,9 @@ model Question {
   marks       Int      @default(1)
   timeSec     Int      @default(60)
   isPuzzle    Boolean  @default(false)
-  source      String   @default("AUTHORED") // AUTHORED | GENERATED (from a question family)
+  source      String   @default("AUTHORED") // AUTHORED | GENERATED (from a question family) | CBSE (CBSE handbook exercise)
   family      String? // family id for generated items
+  sourceRef   String? // where an external question comes from, e.g. "CBSE CT & AI Student Handbook, Class 6 (2026-27) · CT Chapter 5 · Question 3"
   status      String   @default("PUBLISHED") // DRAFT | IN_REVIEW | PUBLISHED | RETIRED
   authorId    String?
   reviewNote  String?
