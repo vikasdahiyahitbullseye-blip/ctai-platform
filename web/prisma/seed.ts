@@ -17,7 +17,6 @@ import { class6more } from "./content/class6more";
 import { CONNECTIONS } from "./content/connections";
 import { PROJECT_KITS } from "./content/projects";
 import { RESOURCES } from "./content/resources";
-import { DEFAULT_HOUSES } from "../src/lib/constants";
 import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
 import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
@@ -35,7 +34,7 @@ const LAST = ["Sharma", "Verma", "Iyer", "Khan", "Patel", "Reddy", "Singh", "Das
 
 async function main() {
   // Wipe in dependency order.
-  for (const m of ["lessonLog", "lesson", "missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "house", "school"] as const) {
+  for (const m of ["lessonLog", "lesson", "missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "school"] as const) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)[m].deleteMany();
   }
@@ -116,8 +115,6 @@ async function main() {
   await db.question.updateMany({ data: { authorId: contentUser.id } });
 
   const school = await db.school.create({ data: { name: "Demo Public School", city: "New Delhi", code: "DPS-DEL" } });
-  const houses = [];
-  for (const h of DEFAULT_HOUSES) houses.push(await db.house.create({ data: { schoolId: school.id, ...h } }));
   const admin = await db.user.create({ data: { schoolId: school.id, role: "ADMIN", name: "Principal (Demo)", username: "admin", passwordHash: hash } });
   const teacher = await db.user.create({ data: { schoolId: school.id, role: "TEACHER", name: "Ms. Anjali Mehra", username: "teacher", passwordHash: hash } });
   const computerTeacher = await db.user.create({ data: { schoolId: school.id, role: "TEACHER", name: "Mr. Rohan Iyer", username: "rohan", passwordHash: hash } });
@@ -164,7 +161,6 @@ async function main() {
           username: demo ? `student${sec.classLevel}` : `${sec.classLevel}${sec.section.toLowerCase()}${String(i + 1).padStart(2, "0")}`,
           rollNo: String(i + 1),
           passwordHash: hash,
-          houseId: houses[i % houses.length].id,
           avatar: JSON.stringify({ animal: demo ? ({ 3: "fox", 4: "tiger", 5: "peacock", 6: "owl", 7: "dolphin", 8: "robot" } as Record<number, string>)[sec.classLevel] : ANIMALS[Math.floor(rand() * ANIMALS.length)].id, bg: BACKGROUNDS[Math.floor(rand() * BACKGROUNDS.length)].id, accessory: null }),
         },
       });

@@ -7,7 +7,7 @@ import { THEORY } from "../../prisma/content/theory";
 import { formatAnswer } from "./scoring";
 import { parseFig, parseFigs, type Fig } from "./figures";
 import { figurePng } from "./figureImage";
-import { KIND_LABEL, formatHours, type LessonKind } from "./plan";
+import { KIND_LABEL, formatHours, periodLabels, type LessonKind } from "./plan";
 import { PART_LABEL } from "./constants";
 
 const W = 13.333, H = 7.5, M = 0.6;
@@ -60,7 +60,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
   const small = ch.classLevel <= 5;
   const fs = { title: small ? 40 : 36, body: small ? 32 : 28, q: small ? 30 : 26, opt: small ? 28 : 24, note: 14 };
   const [lessons, modRes, kit, test, worksheets, pool] = await Promise.all([
-    db.lesson.findMany({ where: { chapterId }, orderBy: { number: "asc" } }),
+    db.lesson.findMany({ where: { chapterId }, include: { chapter: true }, orderBy: { number: "asc" } }),
     db.resource.findFirst({ where: { chapterId, kind: "MODULE" } }),
     db.projectKit.findFirst({ where: { chapterKey: key, kind: "ACTIVITY" }, include: { criteria: { orderBy: { position: "asc" } } } }),
     db.assessment.findFirst({ where: { chapterId, libType: "CHAPTER_TEST" }, include: { _count: { select: { items: true } } } }),
@@ -92,6 +92,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     ],
     slideNumber: { x: W - 1.1, y: H - 0.45, w: 0.6, h: 0.3, fontFace: FONT, fontSize: 11, color: C.muted, align: "right" },
   });
+  const plabel = periodLabels(lessons);
   const notesOf = (kind: string) => plain(lessons.find((l) => l.kind === kind)?.flow ?? "").replace(/\n\n/g, "\n");
 
   const content = (kicker: string, title: string, notes?: string) => {
@@ -122,8 +123,8 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     const s = content("For the teacher", "How this chapter is taught");
     s.addTable(
       [[{ text: "Period", options: { bold: true, color: C.white, fill: { color: C.brand } } }, { text: "Type", options: { bold: true, color: C.white, fill: { color: C.brand } } }, { text: "Month", options: { bold: true, color: C.white, fill: { color: C.brand } } }, { text: "Learning objective", options: { bold: true, color: C.white, fill: { color: C.brand } } }],
-        ...lessons.map((l, i) => [String(l.number), KIND_LABEL[l.kind as LessonKind], `${l.month} · wk ${l.week}`, l.objective].map((t) => ({ text: t, options: { fill: { color: i % 2 ? C.white : C.tint2 } } })))],
-      { x: M, y: 1.6, w: W - 2 * M, colW: [1.1, 2.2, 2.0, W - 2 * M - 5.3], fontFace: FONT, fontSize: 14, color: C.body, border: { type: "solid", pt: 0.5, color: C.line }, valign: "middle" },
+        ...lessons.map((l, i) => [plabel.get(l.id)!, KIND_LABEL[l.kind as LessonKind], `${l.month} · wk ${l.week}`, l.objective].map((t) => ({ text: t, options: { fill: { color: i % 2 ? C.white : C.tint2 } } })))],
+      { x: M, y: 1.6, w: W - 2 * M, colW: [2.0, 1.9, 1.9, W - 2 * M - 5.8], fontFace: FONT, fontSize: 14, color: C.body, border: { type: "solid", pt: 0.5, color: C.line }, valign: "middle" },
     );
     s.addNotes("Tick each period as taught in the Year plan on the platform. Worksheets, assignments and the chapter test are in the Library.");
   }
@@ -134,7 +135,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     s.background = { color: C.tint };
     s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 0.35, h: H, fill: { color: C.brand }, line: { color: C.brand } });
     s.addText(KIND_EMOJI[kind] ?? "📘", { x: M + 0.2, y: 1.5, w: 1.6, h: 1.6, fontSize: 64, align: "center", valign: "middle" });
-    s.addText(l ? `PERIOD ${l.number} · ${l.month.toUpperCase()}` : "IF TIME ALLOWS", { x: 2.6, y: 1.6, w: 9, h: 0.45, fontFace: FONT, fontSize: 16, bold: true, color: C.accent, charSpacing: 2 });
+    s.addText(l ? `${plabel.get(l.id)!.toUpperCase()} · ${l.month.toUpperCase()}` : "IF TIME ALLOWS", { x: 2.6, y: 1.6, w: 9, h: 0.45, fontFace: FONT, fontSize: 16, bold: true, color: C.accent, charSpacing: 2 });
     s.addText(KIND_LABEL[kind], { x: 2.6, y: 2.05, w: 9.5, h: 1.0, fontFace: FONT, fontSize: 44, bold: true, color: C.dark });
     s.addText(`🎯 ${l?.objective ?? extra ?? ""}`, { x: 2.6, y: 3.2, w: 9.5, h: 1.2, fontFace: FONT, fontSize: 22, color: C.body, valign: "top" });
     s.addNotes(l ? `Lesson plan (40 min)\n${notesOf(kind)}` : "Use these slides in a neighbouring period if time allows.");

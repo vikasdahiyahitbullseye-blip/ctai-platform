@@ -8,13 +8,13 @@ import { AvatarBuilder } from "./AvatarBuilder";
 export default async function MePage() {
   const user = await requireUser("STUDENT");
   const s = await studentSummary(prisma, user.id);
-  const house = user.houseId ? await prisma.house.findUnique({ where: { id: user.houseId } }) : null;
+  const badges = s.badges.length;
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-extrabold">🙂 Me</h1>
       <AvatarBuilder initial={parseAvatar(user.avatar)} level={s.level} animals={ANIMALS} backgrounds={BACKGROUNDS} accessories={ACCESSORIES} />
       <section className="grid gap-4 sm:grid-cols-4">
-        {[["Level", `${s.level}`, s.rank], ["Total XP", `⭐ ${s.xp}`, `${s.toNext} to next level`], ["Streak", `🔥 ${s.streak}`, "days in a row"], ["House", house ? `${house.emoji} ${house.name}` : "—", "your team"]].map(([l, v, sub]) => (
+        {[["Level", `${s.level}`, s.rank], ["Total XP", `⭐ ${s.xp}`, `${s.toNext} to next level`], ["Streak", `🔥 ${s.streak}`, "days in a row"], ["Badges", `🏅 ${badges}`, "earned so far"]].map(([l, v, sub]) => (
           <div key={l} className="rounded-3xl border-2 border-line bg-surface p-4"><div className="text-xs font-bold uppercase text-muted">{l}</div><div className="text-2xl font-extrabold">{v}</div><div className="text-xs font-semibold text-muted">{sub}</div></div>
         ))}
       </section>

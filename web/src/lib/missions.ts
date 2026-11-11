@@ -56,14 +56,26 @@ export async function challengeProgress(db: PrismaClient, ch: { sectionId: strin
   return db.response.count({ where: { correct: true, createdAt: range, attempt: { userId: { in: members } } } });
 }
 
-/** House points: XP earned by members this term (last 90 days). */
-export async function houseStandings(db: PrismaClient, schoolId: string) {
-  const houses = await db.house.findMany({ where: { schoolId }, include: { members: { select: { id: true } } } });
+/** One student's own week: XP this week and last week, questions answered and how many were right. */
+export async function myWeek(db: PrismaClient, userId: string) {
+  const now = Date.now(), weekAgo = new Date(now - 7 * 86400000), twoWeeksAgo = new Date(now - 14 * 86400000);
+  const [xp, xpLast, answered, correct] = await Promise.all([
+    db.xpEvent.aggregate({ where: { userId, createdAt: { gte: weekAgo } }, _sum: { amount: true } }),
+    db.xpEvent.aggregate({ where: { userId, createdAt: { gte: twoWeeksAgo, lt: weekAgo } }, _sum: { amount: true } }),
+    db.response.count({ where: { createdAt: { gte: weekAgo }, correct: { not: null }, attempt: { userId } } }),
+    db.response.count({ where: { createdAt: { gte: weekAgo }, correct: true, attempt: { userId } } }),
+  ]);
+  return { xp: xp._sum.amount ?? 0, xpLast: xpLast._sum.amount ?? 0, answered, correct, accuracy: answered ? Math.round((correct / answered) * 100) : null };
+}
+
+/** The school's top students by XP this term (last 90 days). */
+export async function topStudents(db: PrismaClient, schoolId: string, take = 10) {
   const since = new Date(Date.now() - 90 * 86400000);
-  const out = [];
-  for (const h of houses) {
-    const agg = await db.xpEvent.aggregate({ where: { userId: { in: h.members.map((m) => m.id) }, createdAt: { gte: since } }, _sum: { amount: true } });
-    out.push({ id: h.id, name: h.name, emoji: h.emoji, color: h.color, members: h.members.length, points: agg._sum.amount ?? 0 });
-  }
-  return out.sort((a, b) => b.points - a.points);
+  const sums = await db.xpEvent.groupBy({ by: ["userId"], where: { createdAt: { gte: since }, user: { schoolId, role: "STUDENT" } }, _sum: { amount: true }, orderBy: { _sum: { amount: "desc" } }, take });
+  const users = await db.user.findMany({ where: { id: { in: sums.map((s) => s.userId) } }, include: { enrollments: { include: { section: true } } } });
+  return sums.map((s) => {
+    const u = users.find((x) => x.id === s.userId)!;
+    const sec = u.enrollments[0]?.section;
+    return { id: u.id, name: u.name, cls: sec ? `${sec.classLevel}-${sec.section}` : "", xp: s._sum.amount ?? 0 };
+  });
 }

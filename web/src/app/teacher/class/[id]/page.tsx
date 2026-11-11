@@ -8,7 +8,7 @@ import { ChapterChart } from "@/components/Charts";
 import { toggleLeaderboard } from "@/app/actions/teacher";
 import { createChallenge } from "@/app/actions/gamify";
 import { prisma } from "@/lib/db";
-import { challengeProgress, houseStandings } from "@/lib/missions";
+import { challengeProgress } from "@/lib/missions";
 
 const SHORT: Record<string, string> = { ABSTRACT: "Abstract", PATTERN: "Pattern", DECOMPOSITION: "Decomp.", ALGORITHMIC: "Algorithm", AI_CONCEPT: "AI", DATA: "Data", ETHICS: "Ethics" };
 
@@ -20,7 +20,6 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
   const { section } = a;
   const challenges = await prisma.classChallenge.findMany({ where: { sectionId: id }, orderBy: { endsAt: "desc" }, take: 3 });
   const chProgress = await Promise.all(challenges.map((c) => challengeProgress(prisma, c)));
-  const houses = await houseStandings(prisma, user.schoolId);
 
   return (
     <div className="space-y-6">
@@ -130,10 +129,6 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
               </div>
               <button className="rounded-xl bg-brand px-3 py-2 font-semibold text-white">Start challenge</button>
             </form>
-          </div>
-          <div className="mt-5 border-t border-line pt-4">
-            <div className="mb-2 text-sm font-semibold">House cup (whole school)</div>
-            <ul className="space-y-1 text-sm">{houses.map((h) => <li key={h.id} className="flex justify-between"><span>{h.emoji} {h.name}</span><span className="tabular-nums" style={{ color: h.color }}>{h.points}</span></li>)}</ul>
           </div>
         </Card>
       </div>

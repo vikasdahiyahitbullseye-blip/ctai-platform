@@ -34,15 +34,14 @@ export function AddTeacherForm({ schoolName }: { schoolName: string }) {
   );
 }
 
-export function AddStudentForm({ sections, houses, schoolName }: { sections: { id: string; label: string }[]; houses: { id: string; name: string }[]; schoolName: string }) {
+export function AddStudentForm({ sections, schoolName }: { sections: { id: string; label: string }[]; schoolName: string }) {
   const [state, action, pending] = useActionState(addStudent, undefined);
   return (
     <form action={action}>
-      <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] sm:items-end">
+      <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-end">
         <label className="text-sm font-medium">Student name<input name="name" required className={input} /></label>
         <label className="text-sm font-medium">Class<select name="sectionId" className={input}>{sections.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</select></label>
         <label className="text-sm font-medium">Roll no.<input name="rollNo" className={input} /></label>
-        <label className="text-sm font-medium">House<select name="houseId" className={input}><option value="">—</option>{houses.map((h) => <option key={h.id} value={h.id}>{h.name}</option>)}</select></label>
         <button className={btn.primary} disabled={pending}>Add</button>
       </div>
       {state?.error && <p className="mt-2 text-sm text-bad">{state.error}</p>}
@@ -76,7 +75,7 @@ export function ImportWizard({ schoolName }: { schoolName: string }) {
           <input type="file" name="file" accept=".csv,text/csv" className="mt-1 block text-sm" />
         </label>
         <label className="block text-sm font-medium">…or paste rows here
-          <textarea name="csv" rows={6} className={`${input} font-mono`} placeholder={"name,class,section,roll,house\nAarav Gupta,3,A,15,Kalam\nIsha Rao,6,A,17,"} />
+          <textarea name="csv" rows={6} className={`${input} font-mono`} placeholder={"name,class,section,roll\nAarav Gupta,3,A,15\nIsha Rao,6,A,17"} />
         </label>
         <button className={btn.secondary} disabled={pending}>{pending ? "Checking…" : "Check file"}</button>
       </form>
@@ -90,8 +89,8 @@ export function ImportWizard({ schoolName }: { schoolName: string }) {
           {result?.error && <p className="mb-2 text-sm text-bad">{result.error}</p>}
           <div className="max-h-80 overflow-auto">
             <table className="w-full text-sm">
-              <thead><tr className="text-left text-xs text-muted"><th className="py-1">Line</th><th>Name</th><th>Class</th><th>Roll</th><th>House</th><th>Check</th></tr></thead>
-              <tbody>{rows.map((r) => <tr key={r.line} className={`border-t border-line ${r.errors.length ? "bg-bad-soft" : ""}`}><td className="py-1">{r.line}</td><td>{r.name}</td><td>{r.className}</td><td>{r.rollNo}</td><td>{r.house || "auto"}</td><td className="text-xs">{r.errors.length ? r.errors.join("; ") : "✓"}</td></tr>)}</tbody>
+              <thead><tr className="text-left text-xs text-muted"><th className="py-1">Line</th><th>Name</th><th>Class</th><th>Roll</th><th>Check</th></tr></thead>
+              <tbody>{rows.map((r) => <tr key={r.line} className={`border-t border-line ${r.errors.length ? "bg-bad-soft" : ""}`}><td className="py-1">{r.line}</td><td>{r.name}</td><td>{r.className}</td><td>{r.rollNo}</td><td className="text-xs">{r.errors.length ? r.errors.join("; ") : "✓"}</td></tr>)}</tbody>
             </table>
           </div>
         </div>

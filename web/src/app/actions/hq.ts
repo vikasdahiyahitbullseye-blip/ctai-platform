@@ -4,7 +4,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireUser, audit } from "@/lib/auth";
 import { tempPassword, hashPassword, staffUsername } from "@/lib/accounts";
-import { DEFAULT_HOUSES } from "@/lib/constants";
 
 export async function createSchool(_: unknown, form: FormData) {
   const user = await requireUser("SUPERADMIN");
@@ -16,7 +15,7 @@ export async function createSchool(_: unknown, form: FormData) {
   }).safeParse(Object.fromEntries(form));
   if (!p.success) return { error: p.error.issues[0].message };
   if (await prisma.school.findUnique({ where: { code: p.data.code } })) return { error: "That school code is already used." };
-  const school = await prisma.school.create({ data: { name: p.data.name, city: p.data.city, code: p.data.code, houses: { create: DEFAULT_HOUSES } } });
+  const school = await prisma.school.create({ data: { name: p.data.name, city: p.data.city, code: p.data.code } });
   const username = await staffUsername(p.data.adminName);
   const password = tempPassword();
   await prisma.user.create({ data: { schoolId: school.id, role: "ADMIN", name: p.data.adminName, username, passwordHash: await hashPassword(password), mustChangePassword: true } });

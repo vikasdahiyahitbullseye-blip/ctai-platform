@@ -5,15 +5,15 @@ import { requireUser } from "@/lib/auth";
 import { PART_LABEL } from "@/lib/constants";
 import { Card, PageHeader, btn, Pill, Empty } from "@/components/ui";
 import { SubjectLinks } from "@/components/SubjectLinks";
-import { formatHours, KIND_LABEL, type LessonKind } from "@/lib/plan";
+import { formatHours, KIND_LABEL, periodLabels, type LessonKind } from "@/lib/plan";
 
 export default async function ChapterPlanner({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   await requireUser("TEACHER", "ADMIN");
-  const ch = await prisma.chapter.findUnique({ where: { id }, include: { links: true, resources: { where: { status: "PUBLISHED" }, include: { file: true } }, questions: { where: { status: "PUBLISHED" }, select: { difficulty: true, isPuzzle: true, type: true } } } });
+  const ch = await prisma.chapter.findUnique({ where: { id }, include: { links: true, resources: { where: { status: "PUBLISHED", NOT: { kind: "VIDEO", url: null, fileId: null } }, include: { file: true } }, questions: { where: { status: "PUBLISHED" }, select: { difficulty: true, isPuzzle: true, type: true } } } });
   if (!ch) notFound();
   const [lessons, sets] = await Promise.all([
-    prisma.lesson.findMany({ where: { chapterId: id }, orderBy: { number: "asc" } }),
+    prisma.lesson.findMany({ where: { chapterId: id }, include: { chapter: true }, orderBy: { number: "asc" } }),
     prisma.assessment.findMany({ where: { chapterId: id, libType: { not: null } }, orderBy: { libOrder: "asc" }, select: { id: true, title: true } }),
   ]);
   const diff = [1, 2, 3].map((d) => ch.questions.filter((q) => q.difficulty === d && !q.isPuzzle).length);
@@ -42,7 +42,7 @@ export default async function ChapterPlanner({ params }: { params: Promise<{ id:
       </div>
       {lessons.length > 0 && (
         <Card title="In the year plan" action={<Link href={`/teacher/plan?cls=${ch.classLevel}&open=${lessons[0].number}#p${lessons[0].number}`} className="text-sm text-brand">Open the year plan →</Link>}>
-          <ol className="space-y-1 text-sm">{lessons.map((l) => <li key={l.id}><span className="font-mono text-xs text-muted">#{l.number} · {l.month} wk {l.week}</span> · <strong>{KIND_LABEL[l.kind as LessonKind]}</strong> · {l.objective}</li>)}</ol>
+          <ol className="space-y-1 text-sm">{lessons.map((l) => <li key={l.id}><span className="text-xs font-semibold text-muted">{periodLabels(lessons).get(l.id)} · {l.month} wk {l.week}</span> · <strong>{KIND_LABEL[l.kind as LessonKind]}</strong> · {l.objective}</li>)}</ol>
         </Card>
       )}
       {sets.length > 0 && (

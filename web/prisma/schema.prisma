@@ -22,18 +22,7 @@ model School {
   createdAt DateTime       @default(now())
   users     User[]
   sections  ClassSection[]
-  houses    House[]
   audit     AuditLog[]
-}
-
-model House {
-  id       String @id @default(cuid())
-  schoolId String
-  school   School @relation(fields: [schoolId], references: [id])
-  name     String
-  color    String
-  emoji    String
-  members  User[]
 }
 
 model AuditLog {
@@ -58,8 +47,6 @@ model User {
   active       Boolean        @default(true)
   mustChangePassword Boolean  @default(false)
   avatar       String         @default("{}") // JSON {animal, bg, accessory}
-  houseId      String?
-  house        House?         @relation(fields: [houseId], references: [id])
   createdAt    DateTime       @default(now())
   files        StoredFile[]
   teamMemberships ProjectTeamMember[]
@@ -537,4 +524,11 @@ model LessonLog {
   note      String?
 
   @@unique([lessonId, sectionId])
+}
+
+/// Platform-wide settings chosen by the super-admin (JSON values), e.g. which roles may upload concept videos.
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }

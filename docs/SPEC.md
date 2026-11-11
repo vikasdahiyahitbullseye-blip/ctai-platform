@@ -140,7 +140,7 @@ That is roughly 560–700 items per class (about 3,800 total).
 - **Assigned work and tests:** list with status (due, in progress, submitted, marked); test player with timer, question palette, flag for review, autosave, submit confirmation; results page (score, per-question review with solutions, unless the teacher hides them until the due date).
 - **Progress:** skill radar (4 CT strands plus AI strands), chapter completion, history.
 - **Rewards:** badges earned / locked, level, class leaderboard (if enabled).
-- **Classes 3–5 mode:** larger type, fewer words, one question per screen, no individual leaderboard (house/class points instead), read-aloud planned.
+- **Classes 3–5 mode:** larger type, fewer words, one question per screen, no leaderboard by default; each student sees their own week (XP, questions answered, accuracy), read-aloud planned.
 
 ## 7. Teacher experience
 
@@ -174,7 +174,7 @@ Principle: reward **effort and growth**, not only rank. Child-safe: no public ex
 | Streak | Consecutive days with ≥1 completed activity; weekends do not break a streak (school-calendar friendly). |
 | Badges | First Steps (first practice), Sharp Eye (10 PR correct), Pattern Pro / Decomposer / Algorithm Ace / Big Picture (skill mastery Proficient), Puzzle Streak 5, Perfect Score, Comeback (improvement ≥ 20 pts on a retest), Helping Hand (teacher-awarded). |
 | Puzzle of the Day | One per class-level per day from a curated pool; same puzzle for everyone; solution unlocks after attempt. |
-| Leaderboard | Section-level, weekly XP, opt-in by teacher; shows top 10 plus own rank. Off for Classes 3–5 by default (class/house points instead). |
+| Leaderboard | Section-level, weekly XP, opt-in by teacher; shows top 10 plus own rank. Off for Classes 3–5 by default (students see only their own XP). No houses or team points. |
 | Class challenge | Teacher sets a target (e.g. 500 correct answers this week); class progress bar. |
 
 ## 9. Analytics
@@ -270,7 +270,7 @@ Always show the evidence count, not just a level. Observation-journal ratings ar
 |---|---|---|
 | Hitbullseye super-admin | `/hq` | Schools (create, suspend), each school's first admin login, platform usage; approves content |
 | Hitbullseye content team | `/studio` | Questions (editor with live preview, CSV import, draft → review → published → retired, second-person approval), resources (lesson plans, worksheets, templates, files, links), project kits (milestones, teacher guides, rubrics), subject connections |
-| School admin | `/admin` | Class sections; teacher ↔ section mapping (CT / AI / Projects); teachers and admins; students (add, edit, move, house, deactivate); Excel/CSV bulk import with row-by-row validation; password resets; printable login slips; activity log |
+| School admin | `/admin` | Class sections; teacher ↔ section mapping (CT / AI / Projects); teachers and admins; students (add, edit, move, deactivate); Excel/CSV bulk import with row-by-row validation; password resets; printable login slips; activity log |
 | Teacher | `/teacher` | Tests, homework, marking, projects, observation journal, class challenges, leaderboard |
 
 New staff get a temporary password and must change it at first sign-in. Students don't need an email.
@@ -319,7 +319,7 @@ New staff get a temporary password and must change it at first sign-in. Students
 
 - **Avatar:** choose an animal buddy and background; accessories unlock at levels 2–10. Unlocks are earned, never bought.
 - **Weekly missions:** practice sets, puzzles, correct answers, active days; rewards are claimed once a week.
-- **Houses:** Aryabhata, Ramanujan, Kalpana, Kalam. House points = members' XP this term.
+- **Individual performance only:** no houses or team points. Students see their own week (XP vs last week, questions answered, accuracy); admins see the top students by XP this term.
 - **Class challenges:** set by the teacher; a shared progress bar and a reward XP claim.
 - **New badges:** Team Player, Showcase Star, Homework Hero.
 
@@ -351,3 +351,10 @@ New staff get a temporary password and must change it at first sign-in. Students
 
 - Content: `prisma/content/theory/` (`THEORY`, keyed `<class>-CT-<chapter>`). Each chapter has an intro, 3–5 concepts (text, points, optional figure/table, worked example, remember note) and a thinking tip. Figures use the platform's `Fig` specs, including `lettergrid` and `venn`.
 - Shown in the learning module (`TheoryView`, CT chapters of Classes 3–8; the AI chapters and EVS themes have none), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).
+
+## 18. Concept-video uploads and period names
+
+- `Setting` (key/value) holds platform settings. `videoUploadRoles` lists the roles allowed to upload concept videos; it is empty by default, so uploading is off and the upload page does not exist for anyone. The super-admin changes it in HQ → Settings.
+- Allowed roles get `/videos` (all classes): add a YouTube or video link, upload an MP4/WebM file (`POST /api/videos/[id]`, up to `VIDEO_MAX_MB`, default 200), or remove a recording. Video links/files cannot be set from Content studio unless the role is allowed.
+- Videos without a recording are hidden everywhere else (library, chapter pages, year plan, print plan, learn pages); teachers and students see only recorded videos, without scripts.
+- Year-plan periods are labelled by chapter (`periodLabels` in `src/lib/plan.ts`): "Chapter 1-1", "Chapter 1-2", …; "AI Chapter n-k" / "EVS Chapter n-k"; "Getting started", "Term n revision", "Term n exam". `Lesson.number` stays as the internal order.

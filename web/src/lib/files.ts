@@ -27,3 +27,18 @@ export async function saveUpload(file: File | null | undefined, ownerId: string)
   await writeFile(path.join(STORAGE_DIR, name), Buffer.from(await file.arrayBuffer()));
   return prisma.storedFile.create({ data: { ownerId, filename: file.name.slice(0, 120) || `upload${ext}`, mime: file.type, size: file.size, path: name } });
 }
+
+export const MAX_VIDEO = Number(process.env.VIDEO_MAX_MB ?? 200) * 1024 * 1024;
+const VIDEO_TYPES: Record<string, string> = { "video/mp4": ".mp4", "video/webm": ".webm" };
+
+/** Saves an uploaded concept-video file (MP4 or WebM). */
+export async function saveVideoUpload(file: File, ownerId: string) {
+  if (file.size === 0) throw new Error("The file is empty.");
+  if (file.size > MAX_VIDEO) throw new Error(`The video is larger than ${Math.round(MAX_VIDEO / 1024 / 1024)} MB. Upload it to YouTube (unlisted) and paste the link instead.`);
+  const ext = VIDEO_TYPES[file.type];
+  if (!ext) throw new Error("Please upload an MP4 or WebM video.");
+  await mkdir(STORAGE_DIR, { recursive: true });
+  const name = `${randomUUID()}${ext}`;
+  await writeFile(path.join(STORAGE_DIR, name), Buffer.from(await file.arrayBuffer()));
+  return prisma.storedFile.create({ data: { ownerId, filename: file.name.slice(0, 120) || `video${ext}`, mime: file.type, size: file.size, path: name } });
+}

@@ -124,19 +124,22 @@ export async function saveResource(id: string | null, _: unknown, form: FormData
   if (title.length < 3) return { error: "Title is required." };
   const classLevel = Number(form.get("classLevel")) || null;
   const chapterId = String(form.get("chapterId") ?? "") || null;
+  const kind = String(form.get("kind") ?? "WORKSHEET");
+  // Video recordings are added only on the Concept videos page (roles allowed by the super-admin).
+  const isVideo = kind === "VIDEO";
   let fileId: string | undefined;
-  try {
+  if (!isVideo) try {
     const f = await saveUpload(form.get("file") as File | null, user.id);
     if (f) fileId = f.id;
   } catch (e) {
     return { error: (e as Error).message };
   }
   const data = {
-    title, kind: String(form.get("kind") ?? "WORKSHEET"), audience: String(form.get("audience") ?? "TEACHER"), classLevel, chapterId,
-    description: String(form.get("description") ?? "") || null, body: String(form.get("body") ?? "") || null, url: String(form.get("url") ?? "") || null,
+    title, kind, audience: String(form.get("audience") ?? "TEACHER"), classLevel, chapterId,
+    description: String(form.get("description") ?? "") || null, body: String(form.get("body") ?? "") || null, ...(isVideo ? {} : { url: String(form.get("url") ?? "") || null }),
     status: form.get("published") === "on" ? "PUBLISHED" : "DRAFT", ...(fileId ? { fileId } : {}),
   };
-  if (data.url && !/^https:\/\//.test(data.url)) return { error: "Links must start with https://" };
+  if ("url" in data && data.url && !/^https:\/\//.test(data.url)) return { error: "Links must start with https://" };
   const r = id ? await prisma.resource.update({ where: { id }, data }) : await prisma.resource.create({ data });
   await audit(user, id ? "RESOURCE_UPDATED" : "RESOURCE_CREATED", title);
   revalidatePath("/studio/resources");

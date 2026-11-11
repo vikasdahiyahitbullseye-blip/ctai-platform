@@ -81,6 +81,7 @@ The first page you open after starting can take 10–20 seconds while it compile
 
 - **Chapter-wise periods:** CBSE sets 5 hours for each AI chapter (7–8 periods) but no hours for individual CT chapters. CT chapters therefore share the CT time equally, and EVS (TWAU) themes get 60% of a CT chapter. 5 periods are kept for getting started, 2 revision periods and 2 term exams. The content team can change any chapter's periods in **Content studio → Teaching plan**, which rebuilds that class's plan and library. Uploaded videos and teachers' ticked periods are kept.
 - **Period-by-period plan** (`src/lib/plan.ts`, stored as `Lesson` rows): every period has a type (Introduce, Explore, Practise, Hands-on activity, Chapter check, Revision, Term exam), a month and week, a learning objective, a 40-minute lesson flow (warm-up, main part, wrap-up), the resources to use and the homework to set. Term 1 runs April–September and Term 2 October–February; June is the summer break.
+- **Period names:** periods are named by chapter, not numbered through the year: *Chapter 1-1* is the first period of Chapter 1, *Chapter 1-2* the second (AI and EVS chapters: *AI Chapter 1-1*, *EVS Chapter 1-1*). The other periods are *Getting started*, *Term 1 revision* and *Term 1 exam*.
 - **Teachers** open **Year plan**: pick a class section, tick periods as taught, see whether they are on track for the week, open each lesson plan, and print the whole plan.
 
 **Content library per class** (built by `src/lib/library.ts` from the question bank and `prisma/content/library/modules*.ts`):
@@ -96,7 +97,7 @@ The first page you open after starting can take 10–20 seconds while it compile
 | Term examination papers | 2 | 2 | Sections A and B; 25–30 questions. |
 | Full-length practice papers | 4 | 4 | Two before each term exam, with no questions repeated from the term paper. |
 | Projects / activity kits | 12 | 12–22 | A one-period activity kit for every chapter, plus the multi-week projects. |
-| Concept videos | 20 | 20 scripts | A storyboard with scenes, timings, on-screen text and narration for each video. The content team adds the recording (YouTube link, video link or a small upload of up to 8 MB) in **Content studio → Resources** (filter: *Concept video*, *No link or file yet*). Students see a video once it has a recording. |
+| Concept videos | 20 | 20 scripts | A storyboard with scenes, timings, on-screen text and narration for each video. Uploading is off until the super-admin allows a role in **HQ → Settings** (content team, reviewers, school admins, teachers or super-admins). People in an allowed role get a **Concept videos** page to add a YouTube link, a video link or an MP4/WebM file (up to 200 MB, `VIDEO_MAX_MB`). Nobody else sees the upload page or the scripts, and teachers and students see a video only once it has a recording. |
 
 **Class slides:** every chapter (98 decks) has a PowerPoint deck (.pptx, which also opens in Google Slides and Keynote). Teachers download it from the Library, the chapter page or the chapter's Introduce period in the Year plan. A deck follows the chapter's periods: title, lesson map, Introduce (goals, think-about-it, key ideas, key words, worked example, Try it), Explore, Hands-on activity (steps and rubric), Practise (picture questions included), Check (I can… checklist, chapter test, at-home task). Every question is followed by an answer slide, and the speaker notes carry the 40-minute lesson plan. Decks are built on demand from the module, the plan and the question bank (`src/lib/slides.ts`), so edits to content show up in the next download. Pictures are exported as images with colour emoji (`src/lib/figureImage.ts`, emoji images from Noto Color Emoji, Apache 2.0) so they look the same on every computer.
 
@@ -134,7 +135,7 @@ node e2e/v2.mjs http://localhost:3000      # admin, content review, homework mar
 
 ## What's in v0.2
 
-See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admin, projects, homework with teacher marking, cross-subject connections, and the new student design (adventure map, avatars, missions, houses, class challenges).
+See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admin, projects, homework with teacher marking, cross-subject connections, and the new student design (adventure map, avatars, missions, class challenges).
 
 ## What was in v0.1
 

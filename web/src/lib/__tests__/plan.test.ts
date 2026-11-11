@@ -60,3 +60,18 @@ describe("yearly plan", () => {
     }
   });
 });
+
+describe("periodLabels", () => {
+  it("names periods by chapter and position, and the others by kind", async () => {
+    const { periodLabels } = await import("../plan");
+    const ch1 = { number: 1, part: "CT" }, ai2 = { number: 2, part: "AI" };
+    const m = periodLabels([
+      { id: "o", number: 1, kind: "ORIENTATION", term: 1, chapterId: null },
+      { id: "a", number: 2, kind: "INTRODUCE", term: 1, chapterId: "c1", chapter: ch1 },
+      { id: "b", number: 3, kind: "EXPLORE", term: 1, chapterId: "c1", chapter: ch1 },
+      { id: "c", number: 4, kind: "INTRODUCE", term: 1, chapterId: "a2", chapter: ai2 },
+      { id: "e", number: 5, kind: "TERM_EXAM", term: 1, chapterId: null },
+    ]);
+    expect([...m.values()]).toEqual(["Getting started", "Chapter 1-1", "Chapter 1-2", "AI Chapter 2-1", "Term 1 exam"]);
+  });
+});

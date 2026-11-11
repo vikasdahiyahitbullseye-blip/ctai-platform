@@ -4,13 +4,14 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { studentSection } from "@/lib/student";
 import { LearnView } from "@/components/LearnView";
+import { isRecorded } from "@/lib/videos";
 
 export default async function StudentLearn({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await requireUser("STUDENT");
   const section = await studentSection(user.id);
   const r = await prisma.resource.findUnique({ where: { id }, include: { chapter: true } });
-  if (!r || !["MODULE", "VIDEO"].includes(r.kind) || r.classLevel !== section?.classLevel || r.status !== "PUBLISHED") notFound();
+  if (!r || !["MODULE", "VIDEO"].includes(r.kind) || r.classLevel !== section?.classLevel || r.status !== "PUBLISHED" || (r.kind === "VIDEO" && !isRecorded(r))) notFound();
   return (
     <div className="space-y-5">
       {r.chapter && <Link href={`/student/chapter/${r.chapter.id}`} className="text-sm font-bold text-brand">← Back to {r.chapter.title}</Link>}

@@ -14,7 +14,6 @@ export default async function RewardsPage() {
   const weekStart = new Date(Date.now() - 7 * 86400000);
   const board = await leaderboard(section.id, weekStart);
   const me = board.find((b) => b.userId === user.id);
-  const classTotal = board.reduce((s, b) => s + b.xp, 0);
 
   return (
     <div className="space-y-6">
@@ -51,10 +50,9 @@ export default async function RewardsPage() {
           {me && me.rank > 10 && <p className="mt-3 text-sm">You are #{me.rank} with {me.xp} XP this week. Keep going!</p>}
         </Card>
       ) : (
-        <Card title={`Class ${section.classLevel}-${section.section} team points`}>
-          <p className="text-sm text-ink-2">Everyone in your class earns points together. This week your class has earned:</p>
-          <p className="mt-2 text-4xl font-bold tabular-nums text-brand">⭐ {classTotal} XP</p>
-          <p className="mt-2 text-sm text-muted">You added {me?.xp ?? 0} XP this week.</p>
+        <Card title="Your XP this week">
+          <p className="text-4xl font-bold tabular-nums text-brand">⭐ {me?.xp ?? 0} XP</p>
+          <p className="mt-2 text-sm text-muted">Earned in the last 7 days. Keep practising to beat your own score!</p>
         </Card>
       )}
     </div>

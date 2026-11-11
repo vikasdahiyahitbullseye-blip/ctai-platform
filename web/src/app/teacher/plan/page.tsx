@@ -2,12 +2,13 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { teacherSections } from "@/lib/teacher";
-import { budget, formatHours, KIND_LABEL, CALENDAR, RESERVED_PERIODS, type LessonKind } from "@/lib/plan";
+import { budget, formatHours, KIND_LABEL, CALENDAR, RESERVED_PERIODS, periodLabels, type LessonKind } from "@/lib/plan";
 import { PART_LABEL } from "@/lib/constants";
 import { Card, PageHeader, Pill, Progress, Stat, btn } from "@/components/ui";
 import { Markdown } from "@/components/Markdown";
 import { toggleLesson } from "@/app/actions/library";
 import { refHref, REF_ICON, type Ref } from "@/lib/libraryLinks";
+import { unrecordedVideoIds } from "@/lib/videos";
 
 const KIND_TONE: Record<string, "default" | "brand" | "good" | "warn" | "bad"> = { INTRODUCE: "brand", EXPLORE: "brand", PRACTISE: "default", ACTIVITY: "good", CHECK: "warn", REVISION: "warn", TERM_EXAM: "bad", ORIENTATION: "good" };
 
@@ -36,6 +37,9 @@ export default async function YearPlan({ searchParams }: { searchParams: Promise
     section ? prisma.lessonLog.findMany({ where: { sectionId: section.id } }) : Promise.resolve([]),
   ]);
   const done = new Map(logs.map((l) => [l.lessonId, l]));
+  const label = periodLabels(lessons);
+  const hidden = await unrecordedVideoIds(cls);
+  const visible = (json: string) => (JSON.parse(json) as Ref[]).filter((r) => !(r.type === "VIDEO" && hidden.has(r.id)));
   const b = budget(cls);
   const week = currentWeek(new Date());
   const expected = lessons.filter((l) => l.week <= week).length;
@@ -62,7 +66,7 @@ export default async function YearPlan({ searchParams }: { searchParams: Promise
           <Stat label="Periods taught" value={`${taught} / ${lessons.length}`} />
           <Stat label="Expected by this week" value={Math.min(expected, lessons.length)} sub={`Week ${Math.min(week, 34)} of 34`} />
           <Stat label="Status" value={taught >= expected ? "On track" : `${expected - taught} behind`} tone={taught >= expected ? "good" : "warn"} />
-          <Stat label="Next period" value={next ? `#${next.number}` : "Done"} sub={next?.title} />
+          <Stat label="Next period" value={next ? label.get(next.id)! : "Done"} sub={next?.title} />
         </div>
       )}
       {section && <Progress value={taught} max={lessons.length} label="Periods taught" />}
@@ -90,20 +94,20 @@ export default async function YearPlan({ searchParams }: { searchParams: Promise
         <Card key={month} title={`${month} · Term ${lessons.find((l) => l.month === month)!.term}`}>
           <ol className="divide-y divide-line">
             {lessons.filter((l) => l.month === month).map((l) => {
-              const refs = JSON.parse(l.refs) as Ref[];
-              const hw = JSON.parse(l.homework) as Ref[];
+              const refs = visible(l.refs);
+              const hw = visible(l.homework);
               const log = done.get(l.id);
               return (
                 <li key={l.id} id={`p${l.number}`} className={`py-3 ${log ? "opacity-70" : ""}`}>
                   <div className="flex flex-wrap items-start gap-3">
                     {section ? (
                       <form action={toggleLesson.bind(null, l.id, section.id)}>
-                        <button aria-label={log ? `Mark period ${l.number} as not taught` : `Mark period ${l.number} as taught`} className={`flex h-7 w-7 items-center justify-center rounded-lg border-2 text-sm ${log ? "border-good bg-good text-white" : "border-line bg-surface"}`}>{log ? "✓" : ""}</button>
+                        <button aria-label={log ? `Mark ${label.get(l.id)} as not taught` : `Mark ${label.get(l.id)} as taught`} className={`flex h-7 w-7 items-center justify-center rounded-lg border-2 text-sm ${log ? "border-good bg-good text-white" : "border-line bg-surface"}`}>{log ? "✓" : ""}</button>
                       </form>
                     ) : <span className="w-7" />}
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs text-muted">#{l.number} · wk {l.week}</span>
+                        <span className="text-xs font-semibold text-muted">{label.get(l.id)} · wk {l.week}</span>
                         <Pill tone={KIND_TONE[l.kind]}>{KIND_LABEL[l.kind as LessonKind]}</Pill>
                         <span className="font-semibold">{l.title}</span>
                         {log && <span className="text-xs text-good">taught {log.doneOn.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>}

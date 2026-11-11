@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { requireUser } from "@/lib/auth";
+import { canUploadVideos } from "@/lib/videos";
 
 export default async function TeacherLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser("TEACHER", "ADMIN");
@@ -17,6 +18,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
         { href: "/teacher/curriculum", label: "Curriculum map" },
         { href: "/teacher/resources", label: "Resources" },
         { href: "/teacher/questions", label: "Question bank" },
+        ...((await canUploadVideos(user)) ? [{ href: "/videos", label: "Concept videos" }] : []),
       ]}
     >
       {children}

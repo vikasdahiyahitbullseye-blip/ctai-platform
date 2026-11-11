@@ -87,10 +87,9 @@ export async function addStudent(_: unknown, form: FormData): Promise<Result> {
   if (name.length < 2) return { error: "Please enter the student's name." };
   const section = await ownSection(user.schoolId, String(form.get("sectionId")));
   const rollNo = String(form.get("rollNo") ?? "").trim() || null;
-  const houseId = String(form.get("houseId") ?? "") || null;
   const username = await studentUsername(name, section.classLevel, section.section, rollNo);
   const password = tempPassword();
-  const s = await prisma.user.create({ data: { schoolId: user.schoolId, role: "STUDENT", name, username, rollNo, houseId, passwordHash: await hashPassword(password) } });
+  const s = await prisma.user.create({ data: { schoolId: user.schoolId, role: "STUDENT", name, username, rollNo, passwordHash: await hashPassword(password) } });
   await prisma.enrollment.create({ data: { userId: s.id, sectionId: section.id } });
   await audit(user, "STUDENT_CREATED", `${name} → ${section.classLevel}-${section.section}`);
   revalidatePath("/admin/students");
@@ -101,10 +100,9 @@ export async function updateStudent(studentId: string, form: FormData) {
   const user = await admin();
   const s = await ownUser(user.schoolId, studentId);
   const sectionId = String(form.get("sectionId") ?? "");
-  const houseId = String(form.get("houseId") ?? "") || null;
   const name = String(form.get("name") ?? s.name).trim() || s.name;
   const rollNo = String(form.get("rollNo") ?? "").trim() || null;
-  await prisma.user.update({ where: { id: s.id }, data: { name, rollNo, houseId } });
+  await prisma.user.update({ where: { id: s.id }, data: { name, rollNo } });
   if (sectionId) {
     await ownSection(user.schoolId, sectionId);
     await prisma.enrollment.deleteMany({ where: { userId: s.id } });
@@ -134,9 +132,9 @@ export async function resetPassword(userId: string): Promise<Result> {
 }
 
 // ---------- Bulk import ----------
-export type ImportRow = { line: number; name: string; className: string; rollNo: string; house: string; errors: string[] };
+export type ImportRow = { line: number; name: string; className: string; rollNo: string; errors: string[] };
 
-/** Validates a students CSV (columns: name, class, section, roll, house). Returns a preview; nothing is saved. */
+/** Validates a students CSV (columns: name, class, section, roll; other columns are ignored). Returns a preview; nothing is saved. */
 export async function previewImport(_: unknown, form: FormData): Promise<{ rows?: ImportRow[]; error?: string; csv?: string }> {
   const user = await admin();
   let csv = String(form.get("csv") ?? "");
@@ -146,10 +144,9 @@ export async function previewImport(_: unknown, form: FormData): Promise<{ rows?
     csv = await file.text();
   }
   const rows = parseCsvObjects(csv);
-  if (!rows.length) return { error: "No rows found. The first row must be the header: name,class,section,roll,house" };
+  if (!rows.length) return { error: "No rows found. The first row must be the header: name,class,section,roll" };
   if (rows.length > 1000) return { error: "Please import at most 1,000 students at a time." };
   const sections = await prisma.classSection.findMany({ where: { schoolId: user.schoolId } });
-  const houses = await prisma.house.findMany({ where: { schoolId: user.schoolId } });
   const seen = new Set<string>();
   const out: ImportRow[] = rows.map((r, i) => {
     const errors: string[] = [];
@@ -158,11 +155,10 @@ export async function previewImport(_: unknown, form: FormData): Promise<{ rows?
     const sec = (r.section ?? "").toUpperCase();
     if (name.length < 2) errors.push("Name missing");
     if (!sections.some((s) => s.classLevel === cls && s.section === sec)) errors.push(`Class ${r.class || "?"}-${sec || "?"} does not exist — create it first`);
-    if (r.house && !houses.some((h) => h.name.toLowerCase() === r.house.toLowerCase())) errors.push(`Unknown house "${r.house}"`);
     const key = `${name.toLowerCase()}|${cls}|${sec}|${r.roll}`;
     if (seen.has(key)) errors.push("Duplicate row");
     seen.add(key);
-    return { line: i + 2, name, className: `${cls}-${sec}`, rollNo: r.roll ?? "", house: r.house ?? "", errors };
+    return { line: i + 2, name, className: `${cls}-${sec}`, rollNo: r.roll ?? "", errors };
   });
   return { rows: out, csv };
 }
@@ -174,15 +170,13 @@ export async function commitImport(csv: string): Promise<Result> {
   const p = await previewImport(undefined, fd);
   if (!p.rows || p.rows.some((r) => r.errors.length)) return { error: "Fix the errors in the file before importing." };
   const sections = await prisma.classSection.findMany({ where: { schoolId: user.schoolId } });
-  const houses = await prisma.house.findMany({ where: { schoolId: user.schoolId } });
   const credentials: NonNullable<Result["credentials"]> = [];
-  for (const [i, r] of p.rows.entries()) {
+  for (const r of p.rows) {
     const [cls, sec] = r.className.split("-");
     const section = sections.find((s) => s.classLevel === Number(cls) && s.section === sec)!;
-    const house = r.house ? houses.find((h) => h.name.toLowerCase() === r.house.toLowerCase()) : houses[i % Math.max(1, houses.length)];
     const username = await studentUsername(r.name, section.classLevel, section.section, r.rollNo || null);
     const password = tempPassword();
-    const s = await prisma.user.create({ data: { schoolId: user.schoolId, role: "STUDENT", name: r.name, username, rollNo: r.rollNo || null, houseId: house?.id, passwordHash: await hashPassword(password) } });
+    const s = await prisma.user.create({ data: { schoolId: user.schoolId, role: "STUDENT", name: r.name, username, rollNo: r.rollNo || null, passwordHash: await hashPassword(password) } });
     await prisma.enrollment.create({ data: { userId: s.id, sectionId: section.id } });
     credentials.push({ name: r.name, username, password, className: r.className });
   }

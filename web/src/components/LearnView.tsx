@@ -1,7 +1,6 @@
 // Shows a learning module or a concept video to a teacher or a student.
 // Modules: written content + a worked example + "Try it" questions from the bank (with pictures).
-// Videos: the recording when one has been added (YouTube link, video URL or uploaded file); otherwise the
-// script and storyboard for teachers, and a "coming soon" note for students.
+// Videos: the recording (YouTube link, video URL or uploaded file). Scripts are on the Concept videos page.
 import { prisma } from "@/lib/db";
 import { formatAnswer } from "@/lib/scoring";
 import { Markdown } from "./Markdown";
@@ -24,27 +23,9 @@ function Player({ r }: { r: Res }) {
   return null;
 }
 
-export async function LearnView({ r, forStudent }: { r: Res; forStudent: boolean }) {
-  if (r.kind === "VIDEO") {
-    const ready = !!(r.url || r.fileId);
-    return (
-      <div className="space-y-4">
-        {ready ? <Player r={r} /> : (
-          <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-line bg-surface-2 p-6 text-center">
-            <span className="text-4xl" aria-hidden>🎬</span>
-            <span className="font-semibold">{forStudent ? "This video is coming soon." : "Not recorded yet"}</span>
-            {!forStudent && <span className="max-w-md text-sm text-muted">The script below is ready to record. The content team adds the recording in Content studio → Resources (a YouTube link, a video link or an upload).</span>}
-          </div>
-        )}
-        {!forStudent && r.body && (
-          <details open={!ready} className="rounded-2xl border border-line bg-surface p-4">
-            <summary className="cursor-pointer font-semibold">Script and storyboard</summary>
-            <div className="mt-3"><Markdown text={r.body} /></div>
-          </details>
-        )}
-      </div>
-    );
-  }
+export async function LearnView({ r }: { r: Res; forStudent: boolean }) {
+  // Only recorded videos reach this view (unrecorded ones are hidden from teachers and students).
+  if (r.kind === "VIDEO") return <Player r={r} />;
 
   const meta = r.meta ? (JSON.parse(r.meta) as { exampleId?: string; tryIds?: string[] }) : {};
   const ids = [meta.exampleId, ...(meta.tryIds ?? [])].filter(Boolean) as string[];

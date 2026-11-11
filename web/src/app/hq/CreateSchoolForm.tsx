@@ -16,7 +16,7 @@ export function CreateSchoolForm() {
         <label className="text-sm font-medium">School admin&apos;s name<input name="adminName" required className={input} /></label>
         <button className={btn.primary} disabled={pending}>Create school</button>
       </div>
-      <p className="mt-2 text-xs text-muted">Creates the school with four houses and a school admin login. The admin then adds classes, teachers and students.</p>
+      <p className="mt-2 text-xs text-muted">Creates the school and a school admin login. The admin then adds classes, teachers and students.</p>
       {state?.error && <p className="mt-2 text-sm text-bad">{state.error}</p>}
       {state?.credentials && <Credentials items={state.credentials} groupLabel="School" />}
     </form>

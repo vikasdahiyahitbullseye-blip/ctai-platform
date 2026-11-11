@@ -139,3 +139,21 @@ export const KIND_LABEL: Record<LessonKind, string> = {
   ORIENTATION: "Getting started", INTRODUCE: "Introduce", EXPLORE: "Explore", PRACTISE: "Practise", ACTIVITY: "Hands-on activity",
   CHECK: "Chapter check", REVISION: "Revision", TERM_EXAM: "Term exam",
 };
+
+type LabelLesson = { id: string; number: number; kind: string; term: number; chapterId: string | null; chapter?: { number: number; part: string } | null };
+/**
+ * Teacher-facing names for periods: "Chapter 1-2" is the 2nd period of Chapter 1 (AI and EVS chapters get an
+ * "AI " / "EVS " prefix so they do not clash with CT chapters). Periods outside chapters are named by what they are.
+ */
+export function periodLabels(lessons: LabelLesson[]): Map<string, string> {
+  const seen = new Map<string, number>();
+  const out = new Map<string, string>();
+  for (const l of [...lessons].sort((a, b) => a.number - b.number)) {
+    if (l.chapterId && l.chapter) {
+      const k = (seen.get(l.chapterId) ?? 0) + 1;
+      seen.set(l.chapterId, k);
+      out.set(l.id, `${l.chapter.part === "CT" ? "" : `${l.chapter.part} `}Chapter ${l.chapter.number}-${k}`);
+    } else out.set(l.id, l.kind === "ORIENTATION" ? "Getting started" : l.kind === "REVISION" ? `Term ${l.term} revision` : l.kind === "TERM_EXAM" ? `Term ${l.term} exam` : KIND_LABEL[l.kind as LessonKind] ?? "Period");
+  }
+  return out;
+}

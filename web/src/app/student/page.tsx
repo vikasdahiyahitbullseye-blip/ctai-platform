@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { studentSummary, masteryFor, skillName } from "@/lib/progress";
 import { studentSection, puzzleOfTheDay, assignedWork } from "@/lib/student";
-import { missionProgress, challengeProgress, houseStandings } from "@/lib/missions";
+import { missionProgress, challengeProgress, myWeek } from "@/lib/missions";
 import { adventure } from "@/lib/adventure";
 import { dashboardSkills } from "@/lib/constants";
 import { parseAvatar } from "@/lib/avatar";
@@ -19,13 +19,13 @@ export default async function StudentHome() {
   const user = await requireUser("STUDENT");
   const section = await studentSection(user.id);
   if (!section) return <Empty>You are not in a class yet. Please ask your teacher.</Empty>;
-  const [summary, puzzle, work, missions, challenges, houses, adv] = await Promise.all([
+  const [summary, puzzle, work, missions, challenges, week, adv] = await Promise.all([
     studentSummary(prisma, user.id),
     puzzleOfTheDay(section.classLevel),
     assignedWork(user.id, section.id),
     missionProgress(prisma, user.id),
     prisma.classChallenge.findMany({ where: { sectionId: section.id, endsAt: { gte: new Date() } }, orderBy: { endsAt: "asc" }, take: 1 }),
-    houseStandings(prisma, user.schoolId),
+    myWeek(prisma, user.id),
     adventure(prisma, user.id, section.classLevel),
   ]);
   const skills = dashboardSkills(section.classLevel);
@@ -36,7 +36,6 @@ export default async function StudentHome() {
   const ch = challenges[0];
   const chProgress = ch ? await challengeProgress(prisma, ch) : 0;
   const chClaimed = ch ? !!(await prisma.missionClaim.findUnique({ where: { userId_mission_weekKey: { userId: user.id, mission: `CH_${ch.id}`, weekKey: "challenge" } } })) : false;
-  const myHouse = houses.find((h) => h.id === user.houseId);
   const avatar = parseAvatar(user.avatar);
   const greeting = GREETINGS[new Date().getDate() % GREETINGS.length];
 
@@ -49,7 +48,7 @@ export default async function StudentHome() {
         <div className="relative flex flex-wrap items-center gap-5">
           <AvatarBadge avatar={avatar} size={88} />
           <div className="min-w-48 flex-1">
-            <p className="text-sm font-bold opacity-90">Class {section.classLevel}-{section.section}{myHouse && ` · ${myHouse.emoji} ${myHouse.name} House`}</p>
+            <p className="text-sm font-bold opacity-90">Class {section.classLevel}-{section.section}</p>
             <h1 className="text-3xl font-extrabold sm:text-4xl">Hi {user.name.split(" ")[0]}!</h1>
             <p className="font-bold opacity-95">Level {summary.level} {summary.rank}</p>
             <div className="mt-3 max-w-md">
@@ -152,17 +151,13 @@ export default async function StudentHome() {
           </section>
         )}
         <section className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
-          <h2 className="text-xl font-extrabold">🏰 House cup</h2>
-          <ol className="mt-3 space-y-2">
-            {houses.map((h, i) => (
-              <li key={h.id} className={`flex items-center gap-3 rounded-2xl px-3 py-2 ${h.id === user.houseId ? "ring-2 ring-brand" : ""}`} style={{ background: `${h.color}22` }}>
-                <span className="w-6 text-center font-extrabold">{i + 1}</span>
-                <span className="text-2xl" aria-hidden>{h.emoji}</span>
-                <span className="flex-1 font-extrabold">{h.name}{h.id === user.houseId && " (you)"}</span>
-                <span className="font-extrabold tabular-nums" style={{ color: h.color }}>{h.points}</span>
-              </li>
-            ))}
-          </ol>
+          <h2 className="text-xl font-extrabold">📈 My week</h2>
+          <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+            <div className="rounded-2xl bg-brand-soft p-3"><div className="text-2xl font-extrabold tabular-nums">⭐ {week.xp}</div><div className="text-xs font-bold text-muted">XP this week</div></div>
+            <div className="rounded-2xl bg-accent-soft p-3"><div className="text-2xl font-extrabold tabular-nums">{week.answered}</div><div className="text-xs font-bold text-muted">questions answered</div></div>
+            <div className="rounded-2xl bg-good-soft p-3"><div className="text-2xl font-extrabold tabular-nums">{week.accuracy === null ? "–" : `${week.accuracy}%`}</div><div className="text-xs font-bold text-muted">answers right</div></div>
+          </div>
+          <p className="mt-3 text-sm font-bold text-ink-2">{week.xp > week.xpLast ? `🚀 That is ${week.xp - week.xpLast} XP more than last week. Great work!` : week.xpLast > 0 ? `Last week you earned ${week.xpLast} XP. Can you beat it?` : "Every question you try earns XP. Have a go!"}</p>
         </section>
       </div>
     </div>

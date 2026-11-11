@@ -44,11 +44,11 @@ let newStudent;
   log("admin: teacher mapped");
   // Bulk import
   await page.goto(`${BASE}/admin/import`);
-  await page.fill('textarea[name="csv"]', `name,class,section,roll,house\nTest Kid ${stamp},4,B,1,Kalam\nSecond Kid,4,B,2,\nBad Row,9,Z,3,`);
+  await page.fill('textarea[name="csv"]', `name,class,section,roll\nTest Kid ${stamp},4,B,1\nSecond Kid,4,B,2\nBad Row,9,Z,3`);
   await page.click('button:has-text("Check file")');
   await page.waitForSelector("text=with errors");
   check(await page.locator("text=does not exist").count() > 0, "import should flag bad class");
-  await page.fill('textarea[name="csv"]', `name,class,section,roll,house\nTest Kid ${stamp},4,B,1,Kalam\nSecond Kid,4,B,2,`);
+  await page.fill('textarea[name="csv"]', `name,class,section,roll\nTest Kid ${stamp},4,B,1\nSecond Kid,4,B,2`);
   await page.click('button:has-text("Check file")');
   await page.waitForSelector("text=no errors");
   await page.click('button:has-text("Create 2 student accounts")');
@@ -252,6 +252,8 @@ let teamUrl;
   await page.goto(`${BASE}/teacher/plan`);
   await page.waitForSelector("text=Periods taught");
   check(await page.locator('li[id^="p"]').count() === 75, "Class 3 plan should have 75 periods");
+  check(await page.locator("text=Chapter 1-1").count() > 0 && (await page.locator("text=Getting started").count()) > 0, "periods are named by chapter (Chapter 1-1)");
+  check(await page.locator("text=/#\\d+ · wk/").count() === 0, "no period numbers in the plan");
   const untaught = page.locator('button[aria-label$="as taught"]');
   const before = await untaught.count();
   await untaught.first().click();
@@ -299,6 +301,45 @@ let teamUrl;
   check(await st.locator("text=Script and storyboard").count() === 0, "students must not see video scripts");
   log("student: learning module ok");
   await sctx.close();
+}
+
+// ---------- Concept videos: upload only when the super-admin allows a role ----------
+{
+  const t = await session("teacher");
+  await t.page.goto(`${BASE}/teacher/library?cls=3`);
+  check(await t.page.locator("a:has-text('🎬 Video')").count() === 0, "unrecorded videos are hidden in the library");
+  check(await t.page.locator("a[href='/videos']").count() === 0, "no upload page link before the super-admin allows it");
+  const vres = await t.page.goto(`${BASE}/videos`);
+  check(vres.status() === 404, "upload page does not exist for teachers by default");
+  const sa = await session("superadmin");
+  await sa.page.goto(`${BASE}/hq/settings`);
+  await sa.page.check('input[name="roles"][value="TEACHER"]');
+  await Promise.all([sa.page.waitForURL(/saved=1/), sa.page.click("button:has-text('Save')")]);
+  log("superadmin: teachers may upload concept videos");
+  await t.page.goto(`${BASE}/videos?cls=3`);
+  await t.page.waitForSelector("text=Not recorded");
+  const form = t.page.locator("form:has(input[name='url'])").first();
+  await form.locator("input[name='url']").fill("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  await Promise.all([t.page.waitForURL(/done=/), form.locator("button:has-text('Save link')").click()]);
+  check(await t.page.locator("text=Recording saved").count() === 1, "teacher saved a video link");
+  await t.page.goto(`${BASE}/teacher/library?cls=3`);
+  check(await t.page.locator("a:has-text('🎬 Video')").count() === 1, "the recorded video now shows in the library");
+  await sa.page.goto(`${BASE}/hq/settings`);
+  await sa.page.uncheck('input[name="roles"][value="TEACHER"]');
+  await Promise.all([sa.page.waitForURL(/saved=1/), sa.page.click("button:has-text('Save')")]);
+  check((await t.page.goto(`${BASE}/videos`)).status() === 404, "upload page disappears when the permission is removed");
+  await t.ctx.close(); await sa.ctx.close();
+  log("videos: upload permission and visibility ok");
+}
+
+// ---------- Individual performance only (no houses) ----------
+{
+  const { page, ctx } = await session("student3");
+  await page.goto(`${BASE}/student`);
+  check(await page.locator("text=My week").count() === 1, "student home shows My week");
+  check(await page.locator("text=House cup").count() === 0, "no house cup on the student home");
+  await ctx.close();
+  log("student: individual performance, no houses");
 }
 
 // ---------- Access control ----------

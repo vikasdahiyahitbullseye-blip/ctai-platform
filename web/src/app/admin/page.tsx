@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import { houseStandings } from "@/lib/missions";
+import { topStudents } from "@/lib/missions";
 import { Card, PageHeader, Stat } from "@/components/ui";
 
 export default async function AdminHome() {
@@ -14,7 +14,7 @@ export default async function AdminHome() {
     prisma.question.count(),
     prisma.assessment.count({ where: { schoolId: user.schoolId, kind: "TEST" } }),
   ]);
-  const houses = await houseStandings(prisma, user.schoolId);
+  const top = await topStudents(prisma, user.schoolId);
   const active = await Promise.all(sections.map((s) => prisma.attempt.groupBy({ by: ["userId"], where: { userId: { in: s.enrollments.map((e) => e.userId) }, submittedAt: { gte: weekAgo } } }).then((r) => r.length)));
   return (
     <>
@@ -41,16 +41,12 @@ export default async function AdminHome() {
           </tbody>
         </table>
       </Card>
-      <Card title="House standings (this term)" className="mt-6">
-        <div className="grid gap-3 sm:grid-cols-4">
-          {houses.map((h, i) => (
-            <div key={h.id} className="rounded-2xl p-4 text-white" style={{ background: h.color }}>
-              <div className="text-sm opacity-90">#{i + 1} · {h.members} students</div>
-              <div className="text-lg font-bold">{h.emoji} {h.name}</div>
-              <div className="text-2xl font-bold tabular-nums">{h.points} pts</div>
-            </div>
-          ))}
-        </div>
+      <Card title="Top students (XP this term)" className="mt-6">
+        {top.length ? (
+          <ol className="divide-y divide-line text-sm">
+            {top.map((t, i) => <li key={t.id} className="flex items-center gap-3 py-2"><span className="w-6 text-center font-bold tabular-nums">{i + 1}</span><span className="flex-1 font-medium">{t.name}</span><span className="text-muted">Class {t.cls}</span><span className="w-20 text-right tabular-nums">{t.xp} XP</span></li>)}
+          </ol>
+        ) : <p className="text-sm text-muted">No activity yet this term.</p>}
       </Card>
     </>
   );

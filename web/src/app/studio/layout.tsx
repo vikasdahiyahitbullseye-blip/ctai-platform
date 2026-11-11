@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { requireUser } from "@/lib/auth";
+import { canUploadVideos } from "@/lib/videos";
 
 export default async function StudioLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser("CONTENT", "SUPERADMIN");
@@ -14,6 +15,7 @@ export default async function StudioLayout({ children }: { children: React.React
         { href: "/studio/resources", label: "Resources" },
         { href: "/studio/projects", label: "Project kits" },
         { href: "/studio/connections", label: "Subject links" },
+        ...((await canUploadVideos(user)) ? [{ href: "/videos", label: "Concept videos" }] : []),
         ...(user.role === "SUPERADMIN" ? [{ href: "/review", label: "Approve questions" }, { href: "/hq", label: "HQ" }] : []),
       ]}
     >

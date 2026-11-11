@@ -29,8 +29,8 @@ export default async function Library({ searchParams }: { searchParams: Promise<
   ]);
   const count = (t: string) => sets.filter((s) => s.libType === t).length;
   const modules = resources.filter((r) => r.kind === "MODULE");
-  const videos = resources.filter((r) => r.kind === "VIDEO");
-  const ready = videos.filter((v) => v.url || v.fileId).length;
+  // Only recorded videos are shown; recording is done on the Concept videos page by roles the super-admin allows.
+  const videos = resources.filter((r) => r.kind === "VIDEO" && (r.url || r.fileId));
   const tiles = [
     { label: "Chapter learning modules", have: modules.length, target: "12–15" },
     { label: "Practice questions", have: practice, target: String(LIBRARY_TARGETS.PRACTICE) },
@@ -41,7 +41,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
     { label: "Term examination papers", have: count("TERM"), target: String(LIBRARY_TARGETS.TERM) },
     { label: "Full-length practice papers", have: count("MOCK"), target: String(LIBRARY_TARGETS.MOCK) },
     { label: "Projects / activity kits", have: kits.length, target: String(LIBRARY_TARGETS.KITS) },
-    { label: "Concept videos", have: videos.length, target: String(LIBRARY_TARGETS.VIDEO), note: `${ready} recorded · ${videos.length - ready} script only` },
+    { label: "Concept videos", have: videos.length, target: String(LIBRARY_TARGETS.VIDEO) },
   ];
   const chTitle = (id: string | null) => chapters.find((c) => c.id === id);
 
@@ -55,7 +55,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
           <div key={t.label} className="rounded-2xl border border-line bg-surface p-3">
             <div className="text-xs font-medium text-muted">{t.label}</div>
             <div className="mt-1 text-xl font-bold tabular-nums">{t.have}</div>
-            <div className="text-xs text-muted">Target {t.target}{t.note ? ` · ${t.note}` : ""}</div>
+            <div className="text-xs text-muted">Target {t.target}</div>
           </div>
         ))}
       </div>
@@ -75,7 +75,7 @@ export default async function Library({ searchParams }: { searchParams: Promise<
                     <span className="min-w-[14rem] flex-1 font-medium">{c.number}. {c.title}</span>
                     {mod && <Link href={`/learn/${mod.id}`} className="text-brand">📘 Module</Link>}
                     <a href={`/api/slides/${c.id}`} className="text-brand">📊 Slides</a>
-                    {vids.map((v, i) => <Link key={v.id} href={`/learn/${v.id}`} className="text-brand">🎬 Video {i + 1} {v.url || v.fileId ? <Pill tone="good">ready</Pill> : <Pill>script</Pill>}</Link>)}
+                    {vids.map((v, i) => <Link key={v.id} href={`/learn/${v.id}`} className="text-brand">🎬 Video {i + 1}</Link>)}
                     {kit && <Link href={`/teacher/projects/kit/${kit.id}`} className="text-brand">{kit.emoji} {kit.title}</Link>}
                     <Link href={`/teacher/chapter/${c.id}`} className="text-muted hover:underline">Chapter page →</Link>
                   </li>

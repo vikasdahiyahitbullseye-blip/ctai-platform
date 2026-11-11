@@ -70,10 +70,3 @@ export const SUBJECTS = {
 } as const;
 export type SubjectCode = keyof typeof SUBJECTS;
 
-/** Houses created for every school (named after Indian scientists and mathematicians). */
-export const DEFAULT_HOUSES = [
-  { name: "Aryabhata", color: "#e8590c", emoji: "🔥" },
-  { name: "Ramanujan", color: "#2f5bea", emoji: "🌊" },
-  { name: "Kalpana", color: "#2b8a3e", emoji: "🌱" },
-  { name: "Kalam", color: "#9c36b5", emoji: "🚀" },
-];
