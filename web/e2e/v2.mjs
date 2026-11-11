@@ -332,6 +332,31 @@ let teamUrl;
   log("videos: upload permission and visibility ok");
 }
 
+// ---------- Super-admin: edited class slides ----------
+{
+  const sa = await session("superadmin");
+  await sa.page.goto(`${BASE}/hq/slides?cls=4`);
+  const li = sa.page.locator("li[id^='c']").first();
+  const href = await li.locator("a:has-text('Download what teachers get')").getAttribute("href");
+  const generated = await (await sa.page.request.get(BASE + href)).body();
+  // Upload a "edited" deck (the generated one with a marker appended inside the zip comment area is enough to tell them apart).
+  const edited = Buffer.concat([generated, Buffer.from("EDITED-DECK-MARKER")]);
+  await li.locator("input[type=file]").setInputFiles({ name: "edited.pptx", mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation", buffer: edited });
+  await Promise.all([sa.page.waitForURL(/done=/), li.locator("button:has-text('Upload edited deck')").click()]);
+  check(await sa.page.locator("text=Edited deck").count() >= 1, "chapter shows Edited deck after upload");
+  const t = await session("teacher");
+  const got = await (await t.page.request.get(BASE + href)).body();
+  check(got.toString("latin1").endsWith("EDITED-DECK-MARKER"), "teachers download the edited deck");
+  const li2 = sa.page.locator("li[id^='c']").first();
+  await Promise.all([sa.page.waitForURL(/done=/), li2.locator("button:has-text('Go back to the generated deck')").click()]);
+  const back = await (await t.page.request.get(BASE + href)).body();
+  check(!back.toString("latin1").endsWith("EDITED-DECK-MARKER"), "after revert teachers get the generated deck");
+  const bad = await t.page.request.post(BASE + href, { multipart: { op: "revert" } });
+  check(bad.status() === 403, "teachers cannot change slides");
+  await t.ctx.close(); await sa.ctx.close();
+  log("slides: super-admin upload, teacher download, revert ok");
+}
+
 // ---------- Individual performance only (no houses) ----------
 {
   const { page, ctx } = await session("student3");

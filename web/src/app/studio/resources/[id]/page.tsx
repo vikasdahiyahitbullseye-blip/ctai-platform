@@ -11,7 +11,7 @@ export default async function EditResource({ params, searchParams }: { params: P
   const { saved } = await searchParams;
   const user = await requireUser("CONTENT", "SUPERADMIN");
   const r = await prisma.resource.findUnique({ where: { id }, include: { file: true } });
-  if (!r) notFound();
+  if (!r || r.status === "INTERNAL") notFound();
   const chapters = (await prisma.chapter.findMany({ orderBy: [{ classLevel: "asc" }, { part: "asc" }, { number: "asc" }] })).map((c) => ({ id: c.id, classLevel: c.classLevel, label: `${c.part} ${c.number}: ${c.title}` }));
   return (
     <div className="space-y-4">

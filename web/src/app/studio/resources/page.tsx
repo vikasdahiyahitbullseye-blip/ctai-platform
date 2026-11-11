@@ -8,7 +8,7 @@ const RESOURCE_KINDS: Record<string, string> = { MODULE: "Learning module", VIDE
 export default async function StudioResources({ searchParams }: { searchParams: Promise<{ kind?: string; cls?: string; ready?: string }> }) {
   await requireUser("CONTENT", "SUPERADMIN");
   const sp = await searchParams;
-  const items = await prisma.resource.findMany({ where: { ...(sp.kind ? { kind: sp.kind } : {}), ...(sp.cls ? { classLevel: Number(sp.cls) } : {}), ...(sp.ready === "no" ? { url: null, fileId: null } : {}) }, include: { chapter: true, file: true }, orderBy: [{ classLevel: "asc" }, { kind: "asc" }, { position: "asc" }, { createdAt: "desc" }], take: 300 });
+  const items = await prisma.resource.findMany({ where: { status: { not: "INTERNAL" }, ...(sp.kind ? { kind: sp.kind } : {}), ...(sp.cls ? { classLevel: Number(sp.cls) } : {}), ...(sp.ready === "no" ? { url: null, fileId: null } : {}) }, include: { chapter: true, file: true }, orderBy: [{ classLevel: "asc" }, { kind: "asc" }, { position: "asc" }, { createdAt: "desc" }], take: 300 });
   const sel = "rounded-xl border border-line bg-surface px-3 py-2 text-sm";
   return (
     <div className="space-y-6">
