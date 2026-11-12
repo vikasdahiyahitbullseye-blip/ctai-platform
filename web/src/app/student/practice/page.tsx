@@ -30,7 +30,7 @@ export default async function PracticePage() {
 
   return (
     <div>
-      <PageHeader title="Practice" subtitle="Each set has 8 questions. Questions get harder when you're on a roll and easier when you need help." />
+      <PageHeader title="Practice" subtitle="Each set has 15 questions covering every kind of question in the chapter. Questions get harder when you're on a roll and easier when you need help." />
       <Card title="Practise a thinking skill" className="mb-6">
         <div className="flex flex-wrap gap-2">
           {dashboardSkills(section.classLevel).map((s) => (

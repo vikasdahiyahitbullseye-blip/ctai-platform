@@ -19,6 +19,8 @@ export default async function MapPage() {
   if (!section) return <Empty>Not in a class yet.</Empty>;
   const adv = await adventure(prisma, user.id, section.classLevel);
   const parts = [...new Set(adv.islands.map((i) => i.part))];
+  // CBSE book questions per chapter (practised from the chapter page)
+  const cbse = new Map((await prisma.question.groupBy({ by: ["chapterId"], where: { classLevel: section.classLevel, source: "CBSE", status: "PUBLISHED", type: { not: "SHORT" } }, _count: true })).map((g) => [g.chapterId, g._count]));
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -53,7 +55,10 @@ export default async function MapPage() {
                         <div className="min-w-0">
                           <div className="text-xs font-bold text-muted">Island {i.number}{isNext && <span className="ml-2 rounded-full bg-accent px-2 py-0.5 text-white">Next!</span>}</div>
                           <div className="truncate font-extrabold">{i.title}</div>
-                          <div className="text-lg leading-none" aria-label={`${i.stars} of 3 stars`}>{"⭐".repeat(i.stars)}<span className="opacity-30">{"⭐".repeat(3 - i.stars)}</span></div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-lg leading-none" aria-label={`${i.stars} of 3 stars`}>{"⭐".repeat(i.stars)}<span className="opacity-30">{"⭐".repeat(3 - i.stars)}</span></span>
+                            {cbse.get(i.id) ? <span className="rounded-full bg-good-soft px-2 py-0.5 text-xs font-bold text-good" title="CBSE book questions">📗 {cbse.get(i.id)} CBSE</span> : null}
+                          </div>
                         </div>
                       </Link>
                     )}

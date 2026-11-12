@@ -84,7 +84,7 @@ Multi-tenant: each school is a tenant. Users belong to one school. A teacher is 
 
 1. **Curriculum and content.** Class → Part (CT / AI / EVS) → Chapter → Learning outcomes; skill tags.
 2. **Question bank.** Original items with full metadata (§5), review workflow, versioning.
-3. **Practice.** Self-paced, chapter- or skill-wise, adaptive difficulty, instant feedback with worked solutions.
+3. **Practice.** Self-paced, chapter- or skill-wise, 15 questions per round. A round first covers every kind of question the chapter has (format, picture questions, CBSE book questions) and every skill, then follows adaptive difficulty; instant feedback with worked solutions. CBSE book-question rounds cover all of a chapter's CBSE questions in book order.
 4. **Assignments and homework.** Teacher-assigned question sets with due dates; online or printable.
 5. **Tests and test generator.** Blueprint-driven paper assembly; online delivery or print (PDF and DOCX) with answer key (§7).
 6. **Projects.** Kits mapped to CBSE's project list: sessions, worksheets, datasets, submissions, rubric marking.

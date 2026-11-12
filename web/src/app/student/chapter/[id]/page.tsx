@@ -29,7 +29,7 @@ export default async function StudentChapter({ params }: { params: Promise<{ id:
         <div className="mt-1 text-2xl">{"⭐".repeat(stars)}<span className="opacity-40">{"⭐".repeat(3 - stars)}</span></div>
         {ch.focus && <p className="mt-2 max-w-2xl font-semibold opacity-95">{ch.focus}</p>}
         <div className="mt-4 flex flex-wrap gap-3">
-          <form action={startPractice}><input type="hidden" name="chapterId" value={ch.id} /><button className="kbtn kbtn-accent text-lg">▶ Play 8 questions</button></form>
+          <form action={startPractice}><input type="hidden" name="chapterId" value={ch.id} /><button className="kbtn kbtn-accent text-lg">▶ Play 15 questions</button></form>
           {cbseCount > 0 && <form action={startPractice}><input type="hidden" name="chapterId" value={ch.id} /><input type="hidden" name="source" value="CBSE" /><button className="kbtn text-lg">📗 CBSE book questions ({cbseCount})</button></form>}
         </div>
         <p className="mt-2 text-sm opacity-90">{rs.length ? `You've answered ${rs.length} questions here.` : "You haven't visited this island yet."}</p>

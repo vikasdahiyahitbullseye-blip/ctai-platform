@@ -46,7 +46,8 @@ async function answerCurrent(page) {
   // Adaptive practice set
   await page.click('button:has-text("Play this island")');
   await page.waitForURL(/\/student\/play\//);
-  for (let i = 0; i < 8; i++) {
+  if ((await page.locator("text=/^1 \\/ 15$/").count()) !== 1) errors.push("practice rounds should have 15 questions");
+  for (let i = 0; i < 40; i++) {
     await page.waitForSelector('button:has-text("Check answer")');
     await answerCurrent(page);
     await page.click('button:has-text("Check answer")');

@@ -106,7 +106,7 @@ The first page you open after starting can take 10–20 seconds while it compile
 - **AI chapters (Classes 6–8):** each chapter's Exercise (255 items): multiple choice, fill in the blanks, true or false, classify/identify tables (as multiple choice), and short answers (marked by the teacher, with CBSE's model answer).
 
 They are stored with `source = CBSE` and a `sourceRef` such as "CBSE CT & AI Student Handbook, Class 6 (2026-27) · CT Chapter 5 · Question 3". They show up in four places:
-- **Students:** each chapter page has a "CBSE book questions (N)" button. One round covers all N of the chapter's book questions in book order, starting with the ones not yet answered correctly. Normal practice rounds stay at 8 questions.
+- **Students:** each chapter page has a "CBSE book questions (N)" button. One round covers all N of the chapter's book questions in book order, starting with the ones not yet answered correctly. Normal practice rounds have 15 questions and cover every kind of question in the chapter (each format, picture questions, CBSE book questions) and every skill before following the adaptive difficulty.
 - **Teachers:** each chapter page has a CBSE exercises card (print the questions, or an answer key with CBSE's solutions). The question bank and the review queue can be filtered to CBSE questions.
 - **Test generator:** choose "Our bank + CBSE handbook", "Our question bank only" or "CBSE handbook exercises only".
 - **Unchanged:** the library, class slides and demo tests keep using our own bank.

@@ -4,7 +4,7 @@ import { isCorrect, type AnswerValue } from "./scoring";
 import { XP } from "./gamification";
 import { addXp, evaluateBadges } from "./progress";
 
-export const PRACTICE_LENGTH = 8;
+export const PRACTICE_LENGTH = 15;
 /** A CBSE book-questions round covers all of the chapter's CBSE questions (up to this many). */
 export const CBSE_ROUND_MAX = 40;
 const roundLength = (bp: PracticeBlueprint) => (bp.source === "CBSE" ? CBSE_ROUND_MAX : PRACTICE_LENGTH);
@@ -156,7 +156,7 @@ export async function markWork(
   return { score, needsMarking: unmarked };
 }
 
-/** Number of questions this practice set will actually have (8, or fewer if the pool is small). */
+/** Number of questions this practice set will actually have (15, or fewer if the pool is small). */
 export async function practiceSetSize(db: PrismaClient, attemptId: string) {
   const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { assessment: true } });
   const bp = JSON.parse(attempt.assessment.blueprint ?? "{}") as PracticeBlueprint;
@@ -200,10 +200,27 @@ export async function nextPracticeQuestion(db: PrismaClient, attemptId: string, 
   });
   const candidates = pool.filter((q) => !answeredHere.has(q.id));
   if (!candidates.length) return null;
-  // CBSE handbook exercises are worked through in book order.
   // CBSE handbook exercises: book order, starting with ones the student has not yet got right.
   if (bp.source === "CBSE") return candidates.sort((a, b) => Number(masteredIds.has(a.id)) - Number(masteredIds.has(b.id)) || a.code.localeCompare(b.code))[0];
-  const score = (q: (typeof candidates)[number]) => Math.abs(q.difficulty - target) * 10 + (masteredIds.has(q.id) ? 5 : 0) + rand();
-  candidates.sort((a, b) => score(a) - score(b));
-  return candidates[0];
+  return pickForCoverage(candidates, pool, attempt.responses.map((r) => r.question), target, masteredIds, rand);
+}
+
+type Pickable = { id: string; type: string; difficulty: number; skills: string; figure: string | null; optionFigures: string | null; source: string };
+/** The kind of a question for coverage: its format, whether it is a picture question, and whether it is from the CBSE book. */
+export const questionKind = (q: Pickable) => `${q.source === "CBSE" ? "CBSE " : ""}${q.type}${q.figure || q.optionFigures ? " (picture)" : ""}`;
+
+/**
+ * Chooses the next practice question so that a round covers every kind of question the chapter has
+ * (formats, picture questions, CBSE book questions) and every skill, then follows the adaptive difficulty target.
+ */
+export function pickForCoverage<T extends Pickable>(candidates: T[], pool: Pickable[], done: Pickable[], target: number, mastered: Set<string>, rand: () => number = Math.random): T {
+  const usedKinds = new Set(done.map(questionKind));
+  const missingKinds = new Set(pool.map(questionKind).filter((k) => !usedKinds.has(k)));
+  const usedSkills = new Set(done.flatMap((q) => q.skills.split(",")));
+  const missingSkills = new Set(pool.flatMap((q) => q.skills.split(",")).filter((k) => k && !usedSkills.has(k)));
+  const score = (q: T) =>
+    (missingKinds.size && !missingKinds.has(questionKind(q)) ? 100 : 0) +
+    (missingSkills.size && !q.skills.split(",").some((k) => missingSkills.has(k)) ? 30 : 0) +
+    Math.abs(q.difficulty - target) * 10 + (mastered.has(q.id) ? 5 : 0) + rand();
+  return [...candidates].sort((a, b) => score(a) - score(b))[0];
 }
