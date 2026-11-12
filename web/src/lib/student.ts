@@ -11,7 +11,7 @@ export function todayKey(d = new Date()) {
 
 /** Same puzzle for every student of a class level on a given day. */
 export async function puzzleOfTheDay(classLevel: number, d = new Date()) {
-  const puzzles = await prisma.question.findMany({ where: { classLevel, isPuzzle: true }, orderBy: { code: "asc" } });
+  const puzzles = await prisma.question.findMany({ where: { classLevel, isPuzzle: true, status: "PUBLISHED" }, orderBy: { code: "asc" } });
   if (!puzzles.length) return null;
   const dayNo = Math.floor(d.getTime() / 86400000);
   const question = puzzles[dayNo % puzzles.length];

@@ -45,7 +45,7 @@ export type Fig =
   | { kind: "binary"; bits: number[]; alt: string } // most significant first; 1 = card face up
   | { kind: "beads"; colours: Colour[]; alt: string }
   | { kind: "lettergrid"; rows: string[]; colour: Colour; alt: string } // one character per cell, "." = no cell (cube nets, letter grids)
-  | { kind: "image"; src: string; w: number; h: number; alt: string } // a picture file in public/cbse (CBSE handbook figures)
+  | { kind: "image"; src: string; w: number; h: number; alt: string } // a picture file: "name.webp" in public/cbse (CBSE figures) or "folder/name.webp" in public (e.g. hb/ for help-book figures)
   | { kind: "venn"; left: string; right: string; a: string; both: string; b: string; outside?: string; alt: string };
 
 // ---------- pixel transforms ----------

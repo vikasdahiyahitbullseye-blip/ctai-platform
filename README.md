@@ -178,19 +178,25 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 ## Question bank status
 
-**3,952 questions; every one of the 98 chapters (CT, AI and EVS, Classes 3–8) has at least 40 practice items.**
+**Current bank (v0.4, raised to CBSE handbook level): 4,448 live questions. Every CT chapter has 42–63 practice items and every AI and EVS chapter has 40.**
 
-| Class | Written individually | Generated from families | Total |
-|---|---|---|---|
-| 3 | 149 | 656 | 805 |
-| 4 | 141 | 664 | 805 |
-| 5 | 149 | 696 | 845 |
-| 6 | 132 | 435 | 567 |
-| 7 | 109 | 376 | 485 |
-| 8 | 101 | 344 | 445 |
+| Class | Help book | Help-book Thinking Spot puzzles | New CBSE-level CT | AI / EVS scenarios | CBSE handbook | Live total |
+|---|---|---|---|---|---|---|
+| 3 | 293 | 28 | 168 | 239 | 161 | 889 |
+| 4 | 300 | 28 | 168 | 240 | 162 | 898 |
+| 5 | 312 | 30 | 180 | 240 | 170 | 932 |
+| 6 | 206 | 20 | 120 | 97 | 206 | 649 |
+| 7 | 180 | 16 | 96 | 85 | 184 | 561 |
+| 8 | 153 | 14 | 84 | 126 | 141 | 518 |
 
-- **Written individually** (`prisma/content/class*.ts`): original items with worked solutions, aligned to CBSE grade-wise learning outcomes.
-- **Generated** (`prisma/content/gen/`): 160+ *question families*. Each family is a hand-designed question idea whose numbers, names and settings vary. The code works out the answer and step-by-step solution, so every key is correct by construction. AI and EVS questions come from banks of hand-written real-life situations (e.g. "A traffic camera reads number plates" → Computer Vision). `prisma/content/gen/index.ts` (`PLAN`) maps families to chapters and tops every chapter up to 40 with a 35/40/25 easy/medium/hard mix. Generation is deterministic.
+- **Help-book questions** (`prisma/content/helpbook/hb.json`, family `HELPBOOK`, codes `HB-<class>-CT-<chapter>-<label>`): all 1,580 exercise, Thinking Spot and activity questions from the *Think, Play & Solve* help books, Classes 3–8, with the books' answer keys and solutions. 722 book pictures are stored as WebP files in `public/hb/`. They start **Approved**. Thinking Spot items feed Puzzle of the Day. The extraction scripts are in `docs/helpbooks/` (see its README).
+- **New CBSE-level CT questions** (`prisma/content/gen/cbse_level.ts`, `cbse_level2.ts`, `cbse_level3.ts`, 50 families): longer, multi-step questions written to match the difficulty and length of the CBSE handbook exercises (ordering and seating clues, coding/decoding, clocks and calendars, number machines, working backwards, counting figures, painted cubes, bases and Roman numerals, ratio and money plans, and more). Different numbers and settings from the book questions, same topics. `CBSE_PLAN` in `prisma/content/gen/index.ts` maps them to chapters and tops each CT chapter up to at least 40 with the help-book and CBSE questions. They start **Awaiting approval**.
+- **AI and EVS scenarios** (`prisma/content/gen/scenario.ts`, 21 families): scenario questions of 40–60 words (training data and bias, accuracy and confusion counts, train/test splits, rule-based vs learning systems, ethics, online safety, the AI project cycle; water, plants, animals, food chains, maps, rainfall, waste, energy, travel, family and queues). Auto-marked, answers computed. They start **Awaiting approval**.
+- **CBSE handbook questions:** see the section above. They are not changed.
+- **The earlier bank (4,861 easier questions) is retired.** Retired questions are kept in the database (so past attempts and results still show) but are not used in practice, tests, homework, the library, slides or Puzzle of the Day. Library tests, worksheets, papers, modules and class slides are rebuilt from the new bank by `npm run seed`.
+
+The rest of this section describes the picture families. They are now retired with the earlier bank, but the code and drawing kinds are still used by the studio and by CBSE pictures:
+
 - **Picture questions** (`prisma/content/gen/pictures.ts`, `pictures2.ts`): every chapter has 8 picture questions on top of its 40 (`PICTURE_PLAN` picks the picture families that suit each chapter). There are 52 picture families (counting each sorting topic separately):
   - *Shapes and space:* mirror images, water images, quarter/half turns, completing a symmetric picture, spot-the-flipped-one, cube towers, angle types, parallel/perpendicular lines, area and perimeter on a grid, area models (distributive law).
   - *Grids and maps:* robot moves, shortest path round rocks, grid references and compass directions.

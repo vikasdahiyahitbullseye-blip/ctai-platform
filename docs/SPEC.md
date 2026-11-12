@@ -366,3 +366,12 @@ New staff get a temporary password and must change it at first sign-in. Students
 - CT: extracted from the CBSE Teacher Handbooks (question, options, CBSE answer and solution); figures cropped from the pages as WebP in `public/cbse` and shown with the `image` figure kind. AI (Classes 6–8): end-of-chapter Exercises transcribed with CBSE's solutions; tables become multiple-choice rows; short answers are teacher-marked with CBSE's model answer.
 - Students: chapter page "CBSE book questions" practice (book order, not-yet-correct first). Teachers: chapter card (print, answer key), question-bank and review filters, and a "Questions from" choice in the test generator. Library, slides and demo tests exclude CBSE questions.
 - All CBSE questions start UNREVIEWED for a reviewer to check the transcription.
+
+## 19. Question bank v0.4: CBSE handbook level
+
+- Feedback: the earlier bank was easier and shorter than the CBSE handbook exercises. All 4,861 earlier questions now have `status = RETIRED` (kept for history; filtered out of practice, tests, homework, the library, slides and Puzzle of the Day by `status = PUBLISHED`).
+- Live bank (4,448): help-book questions (1,580, `family = HELPBOOK`, `sourceRef` = book, chapter, question), CBSE handbook questions (`source = CBSE`), new CBSE-level CT families (`cbse_level*.ts`, 50 families) and AI/EVS scenario families (`scenario.ts`, 21 families).
+- Help-book pictures use the `image` figure kind (`{kind:"image", src:"hb/…webp", w, h, alt}`); a picture-only MCQ shows the options inside the picture, and slides show it large with "Choose (a), (b), (c) or (d) from the picture."
+- Seeding: `generateCbseLevel(have, 40, 12)` tops each CT chapter up to 40 (at least 12 new items), `generateScenario(have, 40, 20)` each AI/EVS chapter. Logic-puzzle families are solved by brute force and kept only when the answer is unique.
+- Difficulty: help-book items get 3 for Thinking Spot or 45+ words, 1 for 12 words or fewer without a picture, else 2.
+- Known gaps: one help-book question (Class 8 Ch 3 Q9, symbol notation) was skipped; some maths lines are shown as images; Class 3 help-book stems are short (about 20 words) by design of the book.

@@ -217,3 +217,109 @@ export function generateBank(existing: Record<number, SeedQuestion[]>): Record<n
   }
   return out;
 }
+
+// ---------------- CBSE-level families (multi-clue, CBSE-length questions) ----------------
+import { CBSE_A } from "./cbse_level";
+import { CBSE_B } from "./cbse_level2";
+import { CBSE_C } from "./cbse_level3";
+const CFAM: Record<string, Family> = Object.fromEntries([...CBSE_A, ...CBSE_B, ...CBSE_C].map((f) => [f.id, f]));
+
+/** CBSE-level families for each CT chapter (topic-matched). */
+export const CBSE_PLAN: Record<string, string[]> = {
+  "3-CT-1": ["c-name-clues", "c-caesar", "c-digit-clues"], "3-CT-2": ["c-match-grid", "c-order-clues", "c-name-clues"], "3-CT-3": ["c-digit-clues", "c-pick-sums", "c-repeat-count"],
+  "3-CT-4": ["c-money-plan", "c-time-plan", "c-days-later"], "3-CT-5": ["c-match-grid", "c-fold-perimeter", "c-order-clues"], "3-CT-6": ["c-digit-clues", "c-pick-sums", "c-wrong-term"],
+  "3-CT-7": ["c-groups-left", "c-money-plan", "c-pick-sums"], "3-CT-8": ["c-fraction-share", "c-groups-left", "c-money-plan"], "3-CT-9": ["c-digit-clues", "c-wrong-term", "c-repeat-count"],
+  "3-CT-10": ["c-order-clues", "c-money-plan", "c-time-plan"], "3-CT-11": ["c-ribbon", "c-order-clues", "c-tank"], "3-CT-12": ["c-money-plan", "c-digit-clues", "c-token-box"],
+  "3-CT-13": ["c-time-plan", "c-days-later", "c-order-clues"], "3-CT-14": ["c-money-plan", "c-time-plan", "c-order-clues"],
+  "4-CT-1": ["c-match-grid", "c-fold-perimeter", "c-order-clues"], "4-CT-2": ["c-circle-seats", "c-order-clues", "c-match-grid"], "4-CT-3": ["c-wrong-term", "c-repeat-count", "c-block-first"],
+  "4-CT-4": ["c-digit-clues", "c-meter-steps", "c-pick-sums"], "4-CT-5": ["c-fraction-share", "c-ribbon", "c-tank"], "4-CT-6": ["c-ribbon", "c-fold-perimeter", "c-order-clues"],
+  "4-CT-7": ["c-money-plan", "c-pick-sums", "c-digit-clues"], "4-CT-8": ["c-order-clues", "c-tank", "c-ribbon"], "4-CT-9": ["c-groups-left", "c-token-box", "c-money-plan"],
+  "4-CT-10": ["c-digit-clues", "c-order-clues", "c-meter-steps"], "4-CT-11": ["c-fold-perimeter", "c-match-grid", "c-circle-seats"], "4-CT-12": ["c-time-plan", "c-days-later", "c-clock-arrival"],
+  "4-CT-13": ["c-time-plan", "c-money-plan", "c-order-clues"], "4-CT-14": ["c-order-clues", "c-pick-sums", "c-digit-clues"],
+  "5-CT-1": ["c-digit-clues", "c-meter-steps", "c-pick-sums", "c-palindrome"], "5-CT-2": ["c-fraction-share", "c-tank", "c-exam-wrong"], "5-CT-3": ["c-circle-seats", "c-clock-arrival", "c-clock-right"],
+  "5-CT-4": ["c-money-plan", "c-time-plan", "c-meter-steps"], "5-CT-5": ["c-ribbon", "c-fold-perimeter", "c-order-clues"], "5-CT-6": ["c-groups-left", "c-fraction-share", "c-money-plan"],
+  "5-CT-7": ["c-block-first", "c-wrong-term", "c-match-grid"], "5-CT-8": ["c-tank", "c-order-clues", "c-ribbon"], "5-CT-9": ["c-groups-left", "c-token-box", "c-pick-sums"],
+  "5-CT-10": ["c-fold-perimeter", "c-match-grid", "c-circle-seats"], "5-CT-11": ["c-match-grid", "c-fold-perimeter", "c-block-first"], "5-CT-12": ["c-time-plan", "c-clock-right", "c-days-later"],
+  "5-CT-13": ["c-circle-steps", "c-groups-left", "c-repeat-count"], "5-CT-14": ["c-circle-seats", "c-order-clues", "c-lift-moves"], "5-CT-15": ["c-order-clues", "c-pick-sums", "c-digit-clues"],
+  "6-CT-1": ["c-wrong-term", "c-repeat-count", "c-block-first", "c-circle-steps"], "6-CT-2": ["c-circle-seats", "c-clock-arrival", "c-clock-right", "c-angle-ratio"], "6-CT-3": ["c-pick-sums", "c-palindrome", "c-digit-clues", "c-consecutive"],
+  "6-CT-4": ["c-order-clues", "c-match-jobs", "c-pick-sums"], "6-CT-5": ["c-circle-steps", "c-consecutive", "c-prime-dates", "c-zeros-end", "c-multiples"], "6-CT-6": ["c-fold-perimeter", "c-match-grid", "c-rect-count"],
+  "6-CT-7": ["c-fraction-share", "c-exam-wrong", "c-tank"], "6-CT-8": ["c-match-grid", "c-fold-perimeter", "c-block-first", "c-rect-count"], "6-CT-9": ["c-circle-seats", "c-match-grid", "c-fold-perimeter"],
+  "6-CT-10": ["c-lift-moves", "c-token-box", "c-number-machine"],
+  "7-CT-1": ["c-digit-clues", "c-meter-steps", "c-zeros-end", "c-match-jobs"], "7-CT-2": ["c-operator-swap", "c-work-backwards", "c-number-machine", "c-token-box"], "7-CT-3": ["c-decimal-shift", "c-decimal-series", "c-base"],
+  "7-CT-4": ["c-ages", "c-days-later", "c-exam-wrong", "c-work-backwards"], "7-CT-5": ["c-intersections", "c-clock-right", "c-circle-seats", "c-angle-ratio"], "7-CT-6": ["c-palindrome", "c-consecutive", "c-digit-clues", "c-pick-sums"],
+  "7-CT-7": ["c-triangle-count", "c-angle-ratio", "c-clock-arrival"], "7-CT-8": ["c-fraction-share", "c-exam-wrong", "c-tank"],
+  "8-CT-1": ["c-painted-cube", "c-make-cube", "c-zeros-end"], "8-CT-2": ["c-last-digit", "c-power-order", "c-wrong-term", "c-repeat-count"], "8-CT-3": ["c-base", "c-roman", "c-caesar"],
+  "8-CT-4": ["c-rect-count", "c-quad-angles", "c-match-grid"], "8-CT-5": ["c-groups-left", "c-consecutive", "c-multiples", "c-prime-dates"], "8-CT-6": ["c-quick-product", "c-token-box", "c-ages"],
+  "8-CT-7": ["c-ratio", "c-tank", "c-fraction-share"],
+};
+
+/**
+ * CBSE-level generated items for CT chapters: tops each chapter up so that, with the help-book and CBSE handbook
+ * questions already there (`have[key]`), it has at least `target` practice items, and never fewer than `min` new ones.
+ */
+export function generateCbseLevel(have: Record<string, number>, target = 40, min = 12): Record<number, SeedQuestion[]> {
+  const out: Record<number, SeedQuestion[]> = {};
+  for (const [key, ids] of Object.entries(CBSE_PLAN)) {
+    const [c0, , chS] = key.split("-");
+    const cls = Number(c0), ch = Number(chS);
+    const title = CURRICULUM[cls]?.CT?.[ch - 1]; if (!title) continue;
+    const fams = ids.map((id) => CFAM[id]).filter(Boolean);
+    const need = Math.max(min, target - (have[key] ?? 0));
+    const r = R(hash(`cbse:${key}`));
+    const ctx = { cls, part: "CT" as const, ch, title, r };
+    const seen = new Set<string>();
+    const list: SeedQuestion[] = [];
+    let turn = 0, tries = 0;
+    while (list.length < need && tries < need * 80) {
+      tries++;
+      const f = fams[turn++ % fams.length];
+      const d = f.ds[(list.length + turn) % f.ds.length];
+      const it = f.make(ctx, d);
+      if (!it || seen.has(it.stem)) continue;
+      seen.add(it.stem);
+      list.push({ ...it, ch, part: "CT", family: f.id });
+    }
+    (out[cls] ??= []).push(...list);
+  }
+  return out;
+}
+
+// ---------------- Scenario-level families for the AI chapters and EVS themes ----------------
+import { SCENARIO_FAMILIES } from "./scenario";
+const SFAM: Record<string, Family> = Object.fromEntries(SCENARIO_FAMILIES.map((f) => [f.id, f]));
+export const SCENARIO_PLAN: Record<string, string[]> = {
+  "3-EVS-1": ["s-evs-family", "s-evs-queue", "s-evs-travel"], "3-EVS-2": ["s-evs-plant", "s-evs-food-chain", "s-evs-water"], "3-EVS-3": ["s-evs-animal-clues", "s-evs-food-chain", "s-evs-queue"],
+  "3-EVS-4": ["s-evs-food-chain", "s-evs-waste", "s-evs-plant"], "3-EVS-5": ["s-evs-water", "s-evs-rain", "s-evs-plant"], "3-EVS-6": ["s-evs-map-route", "s-evs-travel", "s-evs-queue"],
+  "4-EVS-1": ["s-evs-water", "s-evs-queue", "s-evs-family"], "4-EVS-2": ["s-evs-plant", "s-evs-food-chain", "s-evs-rain"], "4-EVS-3": ["s-evs-animal-clues", "s-evs-food-chain", "s-evs-queue"],
+  "4-EVS-4": ["s-evs-water", "s-evs-rain", "s-evs-plant"], "4-EVS-5": ["s-evs-travel", "s-evs-map-route", "s-evs-queue"], "4-EVS-6": ["s-evs-waste", "s-evs-energy", "s-evs-water"],
+  "5-EVS-1": ["s-evs-plant", "s-evs-rain", "s-evs-food-chain"], "5-EVS-2": ["s-evs-rain", "s-evs-water", "s-evs-plant"], "5-EVS-3": ["s-evs-map-route", "s-evs-travel", "s-evs-queue"],
+  "5-EVS-4": ["s-evs-energy", "s-evs-travel", "s-evs-water"], "5-EVS-5": ["s-evs-rain", "s-evs-plant", "s-evs-water"], "5-EVS-6": ["s-evs-waste", "s-evs-energy", "s-evs-water"],
+  "6-AI-1": ["s-ai-domain-learning", "s-ai-rules", "s-ai-split"], "6-AI-2": ["s-data-mean", "s-ai-chart", "s-ai-split"], "6-AI-3": ["s-ai-rules", "s-data-mean", "s-ai-accuracy"], "6-AI-4": ["s-online-safety", "s-ai-ethics", "s-ai-bias"],
+  "7-AI-1": ["s-ai-domain-learning", "s-ai-accuracy", "s-ai-split"], "7-AI-2": ["s-ai-domain-learning", "s-ai-rules", "s-ai-accuracy"], "7-AI-3": ["s-ai-chart", "s-data-mean", "s-ai-split"], "7-AI-4": ["s-ai-bias", "s-ai-ethics", "s-online-safety"],
+  "8-AI-1": ["s-ai-lifecycle", "s-ai-accuracy", "s-ai-split"], "8-AI-2": ["s-ai-domain-learning", "s-ai-rules", "s-ai-accuracy"], "8-AI-3": ["s-ai-bias", "s-ai-split", "s-data-mean"], "8-AI-4": ["s-ai-ethics", "s-online-safety", "s-ai-bias"],
+};
+/** Scenario-level items for AI chapters and EVS themes, topping each up to `target` (with the CBSE items in `have`). */
+export function generateScenario(have: Record<string, number>, target = 40, min = 20): Record<number, SeedQuestion[]> {
+  const out: Record<number, SeedQuestion[]> = {};
+  for (const [key, ids] of Object.entries(SCENARIO_PLAN)) {
+    const [c0, part, chS] = key.split("-");
+    const cls = Number(c0), ch = Number(chS);
+    const title = (CURRICULUM[cls] as Record<string, string[]>)?.[part]?.[ch - 1]; if (!title) continue;
+    const fams = ids.map((id) => SFAM[id]).filter(Boolean);
+    const need = Math.max(min, target - (have[key] ?? 0));
+    const r = R(hash(`scn:${key}`));
+    const ctx = { cls, part: part as "AI" | "EVS", ch, title, r };
+    const seen = new Set<string>(); const list: SeedQuestion[] = [];
+    let turn = 0, tries = 0;
+    while (list.length < need && tries < need * 100) {
+      tries++;
+      const f = fams[turn++ % fams.length];
+      const d = f.ds[(list.length + turn) % f.ds.length];
+      const it = f.make(ctx, d);
+      if (!it || seen.has(it.stem)) continue;
+      seen.add(it.stem); list.push({ ...it, ch, part: part as "AI" | "EVS", family: f.id });
+    }
+    (out[cls] ??= []).push(...list);
+  }
+  return out;
+}

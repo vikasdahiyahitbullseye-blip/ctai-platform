@@ -23,3 +23,28 @@ The Classes 3–8 help books get a 1–2 page "Learn it" theory section before e
 
    The script finds each chapter's first page, inserts that chapter's theory pages before it, renumbers every page in the book's footer style, and adds a "New in this edition" badge to the cover.
    Use the same command for classes 4 to 8 with their books.
+
+## Import the help-book questions into the platform
+
+The help-book questions in `web/prisma/content/helpbook/hb.json` and their pictures in `web/public/hb/` were extracted
+from the original help-book PDFs (not stored here) with three scripts. They need `poppler-utils` and `pip install pillow`.
+
+1. Extract each book (questions, options, answer keys, solutions and picture crops) into `out/`:
+
+   ```bash
+   mkdir -p out/img
+   python3 hb_extract.py CT_Class3_HelpBook.pdf 3 out
+   ```
+
+   Repeat for Classes 4–8. Questions start at a numbered badge (`1`, `A1`, `P`); the skill tag is read from the right margin.
+   Picture crops have the question text and badge painted out.
+
+2. Optional check: `python3 sheets.py /path/to/font.ttf 3 0` writes a contact sheet of 16 picture crops (class 3, from item 0).
+
+3. Convert to the platform format (run from the folder that holds `out/`):
+
+   ```bash
+   python3 hb_convert.py /path/to/ctai-platform/web
+   ```
+
+   This writes `hb.json` and the WebP pictures. Then run `npm run seed` (or `npm run db:setup`) in `web/`.

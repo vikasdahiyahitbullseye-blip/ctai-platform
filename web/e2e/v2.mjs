@@ -205,7 +205,7 @@ let teamUrl;
   check(page.url().endsWith("/review"), "reviewer should land on /review");
   const awaiting = async () => Number(await page.getAttribute("[data-awaiting]", "data-awaiting"));
   const before = await awaiting();
-  check(before > 3000, `expected thousands awaiting approval, got ${before}`);
+  check(before > 2000, `expected thousands awaiting approval, got ${before}`);
   await page.goto(`${BASE}/review?cls=5&source=GENERATED`);
   await shot(page, "v2-11-review-queue");
   const ticks = page.locator('input[name="ids"]');

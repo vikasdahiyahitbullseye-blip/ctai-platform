@@ -37,7 +37,7 @@ function body(fig: Fig): { w: number; h: number; markup: string } {
   if (fig.kind === "image") {
     // Embed the picture file so the SVG/PNG works outside the browser (slides, documents).
     const w = Math.round(fig.w * 0.64), h = Math.round(fig.h * 0.64);
-    const file = path.join(process.cwd(), "public", "cbse", path.basename(fig.src));
+    const file = fig.src.includes("/") ? path.join(process.cwd(), "public", ...fig.src.split("/").map((x) => path.basename(x))) : path.join(process.cwd(), "public", "cbse", path.basename(fig.src));
     const data = fs.existsSync(file) ? fs.readFileSync(file).toString("base64") : "";
     return { w, h, markup: `<image href="data:image/webp;base64,${data}" x="0" y="0" width="${w}" height="${h}"/>` };
   }
@@ -84,6 +84,13 @@ export function figureSvg(fig: Fig) {
 
 /** PNG as a data URL, rendered at `scale` × for crisp projection. */
 export async function figurePng(fig: Fig, scale = 2) {
+  if (fig.kind === "image") {
+    // Book figures are already pictures: convert the file straight to PNG (no SVG step).
+    const file = fig.src.includes("/") ? path.join(process.cwd(), "public", ...fig.src.split("/").map((x) => path.basename(x))) : path.join(process.cwd(), "public", "cbse", path.basename(fig.src));
+    const w = Math.round(fig.w * 0.64), h = Math.round(fig.h * 0.64);
+    const png = await sharp(file).png().toBuffer();
+    return { data: `image/png;base64,${png.toString("base64")}`, w, h };
+  }
   const { svg, w, h } = figureSvg(fig);
   const png = await sharp(Buffer.from(svg), { density: 72 * scale }).png().toBuffer();
   return { data: `image/png;base64,${png.toString("base64")}`, w, h };

@@ -171,7 +171,11 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
       s.addImage({ data: img.data, x: x + (maxW - w) / 2, y: top, w, h });
       return h;
     };
-    if (ofigs?.some(Boolean)) {
+    if (fig && q.type === "MCQ" && opts.length && opts.every((o) => !o.trim())) {
+      // Book questions whose options are drawn in the picture (labelled a–d): show the picture large.
+      await place(fig, M, y + 0.1, W - 2 * M, bottom - y - 0.75, 3);
+      s.addText(`Choose ${opts.map((_, i) => `(${String.fromCharCode(97 + i)})`).join(", ").replace(/, ([^,]+)$/, " or $1")} from the picture.`, { x: M, y: bottom - 0.55, w: W - 2 * M, h: 0.5, fontFace: FONT, fontSize: fs.opt - 4, italic: true, color: C.muted });
+    } else if (ofigs?.some(Boolean)) {
       let top = y + 0.1;
       if (fig) top += (await place(fig, M, top, 5, Math.max(1.4, Math.min(2.1, bottom - top - 2.6)), 2.4)) + 0.15;
       const n = opts.length, cw = (W - 2 * M) / n;

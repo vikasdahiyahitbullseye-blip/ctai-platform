@@ -21,9 +21,10 @@ import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
 import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
-import { generateBank } from "./content/gen";
+import { generateBank, generateCbseLevel, generateScenario } from "./content/gen";
 import { buildClassLibrary } from "../src/lib/library";
 import { cbseQuestions } from "./content/cbse";
+import { HELPBOOK, helpbookRef } from "./content/helpbook";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -58,7 +59,7 @@ async function main() {
 
   // Question bank
   const counters: Record<string, number> = {};
-  const addQuestions = async (cls: number, list: SeedQuestion[], source = "AUTHORED") => {
+  const addQuestions = async (cls: number, list: SeedQuestion[], source = "AUTHORED", current = false) => {
     for (const raw of list) {
       const q = balanceOptions(raw);
       const part = q.part ?? "CT";
@@ -84,6 +85,10 @@ async function main() {
           figure: q.figure ? JSON.stringify(q.figure) : null,
           optionFigures: q.optionFigures ? JSON.stringify(q.optionFigures) : null,
           source,
+          // The first bank was easier and shorter than the CBSE handbooks; it is kept for history but retired.
+          // Practice now comes from the help books, the CBSE handbooks, the CBSE-level CT families and the
+          // scenario-level AI / EVS families.
+          status: current ? "PUBLISHED" : "RETIRED",
           // Hand-written questions are signed off; generated ones wait for a reviewer (still usable meanwhile).
           approval: source === "GENERATED" ? "UNREVIEWED" : "APPROVED",
           approvedAt: source === "GENERATED" ? null : new Date(),
@@ -106,6 +111,29 @@ async function main() {
   const authored: Record<number, SeedQuestion[]> = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
   const generated = generateBank(authored);
   for (const [cls, list] of Object.entries(generated)) await addQuestions(Number(cls), list, "GENERATED");
+
+  // CT bank: the help-book questions (CBSE level; the Thinking Spot puzzles are the Puzzle of the Day).
+  for (const r of HELPBOOK) {
+    const key = `${r.c}-CT-${r.ch}`;
+    if (!chapterId[key]) continue;
+    await db.question.create({
+      data: {
+        code: `HB-${r.c}-CT-${String(r.ch).padStart(2, "0")}-${r.label}`, classLevel: r.c, chapterId: chapterId[key], skills: r.skills.join(","), type: "MCQ",
+        difficulty: r.d, stem: r.stem, options: JSON.stringify(r.options), answer: JSON.stringify(r.answer), solution: r.solution,
+        marks: r.d === 3 ? 2 : 1, timeSec: 60 + r.d * 30, isPuzzle: r.label.startsWith("P"),
+        figure: r.fig ? JSON.stringify({ kind: "image", src: r.fig[0], w: r.fig[1], h: r.fig[2], alt: `Figure for: ${r.stem.slice(0, 120)}` }) : null,
+        source: "AUTHORED", family: "HELPBOOK", sourceRef: helpbookRef(r), approval: "APPROVED", approvedAt: new Date(),
+      },
+    });
+  }
+
+  // CBSE-level generated questions top every CT chapter up to 40 practice items (help book + CBSE handbook + these).
+  const have: Record<string, number> = {};
+  for (const r of HELPBOOK) if (!r.label.startsWith("P")) have[`${r.c}-CT-${r.ch}`] = (have[`${r.c}-CT-${r.ch}`] ?? 0) + 1;
+  for (const q of cbseQuestions()) if (q.type !== "SHORT") have[q.chapterKey] = (have[q.chapterKey] ?? 0) + 1;
+  const cbseLevel = generateCbseLevel(have);
+  for (const [cls, list] of Object.entries(cbseLevel)) await addQuestions(Number(cls), list, "GENERATED", true);
+  for (const [cls, list] of Object.entries(generateScenario(have))) await addQuestions(Number(cls), list, "GENERATED", true);
 
   // School and people
   const hash = await bcrypt.hash("demo123", 10);
@@ -234,7 +262,7 @@ async function main() {
 
   // Teacher-made tests via the generator.
   const makeTest = async (cls: number, sectionId: string, title: string, chapters: string[], count: number, daysAgo: number, dueInDays: number, completion: number) => {
-    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, type: { not: "SHORT" }, source: { not: "CBSE" }, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
+    const pool = (await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" }, source: { not: "CBSE" }, chapterId: { in: chapters } } })).map((q) => ({ id: q.id, chapterId: q.chapterId, skills: parseSkills(q.skills), type: q.type, difficulty: q.difficulty, marks: q.marks }));
     const blueprint = { chapterIds: chapters, count, difficultyMix: { 1: 40, 2: 40, 3: 20 } as const, seed: daysAgo + 7 };
     const gen = generatePaper(pool, blueprint);
     const created = new Date(now - daysAgo * DAY);
