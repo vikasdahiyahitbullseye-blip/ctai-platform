@@ -6,7 +6,7 @@ import { QuestionInput, hasAnswer, finalAnswer } from "./QuestionInput";
 import { Markdown } from "./Markdown";
 import { btn, Progress } from "./ui";
 import { Confetti, Mascot } from "./kid";
-import { answerInstant, nextQuestion, finishAttempt } from "@/app/actions/student";
+import { answerInstant, skipInstant, nextQuestion, finishAttempt } from "@/app/actions/student";
 import { DIFFICULTY } from "@/lib/constants";
 
 type Feedback = { correct: boolean; solution: string; correctText: string; xp: number };
@@ -19,6 +19,7 @@ export function PracticePlayer({ attemptId, initial, answered, total, mode, big 
   const [fb, setFb] = useState<Feedback | null>(null);
   const [xp, setXp] = useState(0);
   const [party, setParty] = useState(0);
+  const [skipped, setSkipped] = useState(0);
   const [pending, start] = useTransition();
 
   const check = () =>
@@ -31,16 +32,29 @@ export function PracticePlayer({ attemptId, initial, answered, total, mode, big 
       setCount((c) => c + 1);
     });
 
-  const next = () =>
+  const load = async (done: number) => {
+    if (mode === "PUZZLE" || done >= total) return finishAttempt(attemptId);
+    const n = await nextQuestion(attemptId);
+    if (!n) return finishAttempt(attemptId);
+    setQ(n);
+    setValue(null);
+    setHint(false);
+    setFb(null);
+  };
+  const next = () => start(() => load(count));
+
+  const skip = () =>
     start(async () => {
-      if (mode === "PUZZLE" || count >= total) return finishAttempt(attemptId);
-      const n = await nextQuestion(attemptId);
-      if (!n) return finishAttempt(attemptId);
-      setQ(n);
-      setValue(null);
-      setHint(false);
-      setFb(null);
+      if (!q) return;
+      await skipInstant(attemptId, q.id);
+      setSkipped((n) => n + 1);
+      setCount((c) => c + 1);
+      await load(count + 1);
     });
+
+  const stop = () => {
+    if (confirm(`End this round now? You answered ${count - skipped} of ${total} questions. Questions you did not reach are not counted.`)) start(() => finishAttempt(attemptId));
+  };
 
   if (!q) {
     return (
@@ -59,6 +73,12 @@ export function PracticePlayer({ attemptId, initial, answered, total, mode, big 
           <Progress value={count} max={total} label="Set progress" />
           <span className="whitespace-nowrap text-sm font-medium tabular-nums">{Math.min(count + (fb ? 0 : 1), total)} / {total}</span>
           <span className="whitespace-nowrap rounded-full bg-accent px-3 py-1 text-sm font-extrabold tabular-nums text-white">+{xp} XP</span>
+        </div>
+      )}
+      {mode === "PRACTICE" && (
+        <div className="-mt-2 mb-3 flex items-center justify-between text-xs text-muted">
+          <span>{skipped > 0 ? `${skipped} skipped` : ""}</span>
+          {count > 0 && <button type="button" className="font-semibold text-brand underline-offset-2 hover:underline disabled:opacity-50" onClick={stop} disabled={pending}>End round and see results</button>}
         </div>
       )}
       <div className="rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
@@ -88,7 +108,10 @@ export function PracticePlayer({ attemptId, initial, answered, total, mode, big 
             <button type="button" className={btn.ghost} onClick={() => setHint(true)} disabled={hint}>💡 {hint ? "Hint shown (+5 XP if correct)" : "Show a hint"}</button>
           ) : <span />}
           {!fb ? (
+            <span className="flex flex-wrap items-center gap-3">
+            {mode === "PRACTICE" && <button type="button" className={btn.ghost} onClick={skip} disabled={pending}>Skip ⏭</button>}
             <button className="kbtn" onClick={check} disabled={!hasAnswer(q, value) && q.type !== "ORDER" || pending}>{pending ? "Checking…" : "Check answer"}</button>
+            </span>
           ) : (
             <button className="kbtn kbtn-accent" onClick={next} disabled={pending}>{mode === "PUZZLE" || count >= total ? "Finish" : "Next question →"}</button>
           )}

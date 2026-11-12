@@ -49,6 +49,14 @@ export async function answerInstant(attemptId: string, questionId: string, answe
   return { correct: res.correct, solution: res.solution, correctText: formatAnswer(q.type, JSON.parse(q.options), res.answer), xp };
 }
 
+/** Skips a practice question: it counts towards the round but not as right or wrong, and earns no XP. */
+export async function skipInstant(attemptId: string, questionId: string) {
+  const { attempt } = await ownAttempt(attemptId);
+  if (attempt.assessment.kind !== "PRACTICE") throw new Error("Only practice questions can be skipped");
+  await saveAnswer(prisma, attemptId, questionId, null, { skip: true });
+  return { ok: true };
+}
+
 export async function saveTestAnswer(attemptId: string, questionId: string, answer: AnswerValue) {
   const { attempt } = await ownAttempt(attemptId);
   if (attempt.submittedAt) return { ok: false };

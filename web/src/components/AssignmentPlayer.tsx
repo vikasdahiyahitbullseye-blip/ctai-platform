@@ -17,12 +17,40 @@ export function AssignmentPlayer({ attemptId, questions, saved, tasks, big }: { 
   const [pending, start] = useTransition();
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
+  const unsent = useRef<Record<string, () => Promise<unknown>>>({});
+  const inflight = useRef(new Set<Promise<unknown>>());
+  const saveNow = async (key: string) => {
+    const job = unsent.current[key];
+    if (!job) return;
+    delete unsent.current[key];
+    clearTimeout(timers.current[key]);
+    const sending = job();
+    inflight.current.add(sending);
+    try {
+      await sending;
+      if (!Object.keys(unsent.current).length) setStatus("All changes saved");
+    } catch {
+      setStatus("⚠ Not saved — check your connection");
+      throw new Error("Not saved");
+    } finally {
+      inflight.current.delete(sending);
+    }
+  };
   const debounce = (key: string, fn: () => Promise<unknown>) => {
     setStatus("Saving…");
+    unsent.current[key] = fn;
     clearTimeout(timers.current[key]);
-    timers.current[key] = setTimeout(async () => {
-      try { await fn(); setStatus("All changes saved"); } catch { setStatus("⚠ Not saved — check your connection"); }
-    }, 700);
+    timers.current[key] = setTimeout(() => { saveNow(key).catch(() => {}); }, 700);
+  };
+  /** Sends every answer still waiting before handing in. */
+  const flush = async () => {
+    await Promise.all(Object.keys(unsent.current).map(saveNow));
+    await Promise.all([...inflight.current]);
+  };
+
+  const setAnswer = (q: ClientQuestion, v: AnswerValue) => {
+    setAnswers((a) => ({ ...a, [q.id]: v }));
+    debounce(q.id, () => saveTestAnswer(attemptId, q.id, v === null ? null : finalAnswer(q, v)));
   };
 
   const answered = questions.filter((q) => hasAnswer(q, answers[q.id])).length;
@@ -37,7 +65,10 @@ export function AssignmentPlayer({ attemptId, questions, saved, tasks, big }: { 
       {questions.map((q, i) => (
         <div key={q.id} className="rounded-3xl border-2 border-line bg-surface p-6">
           <div className="mb-3 text-sm font-bold text-muted">Question {i + 1} · {q.marks} mark{q.marks > 1 ? "s" : ""}</div>
-          <QuestionInput q={q} value={answers[q.id] ?? null} big={big} onChange={(v) => { setAnswers((a) => ({ ...a, [q.id]: v })); debounce(q.id, () => saveTestAnswer(attemptId, q.id, finalAnswer(q, v))); }} />
+          <QuestionInput q={q} value={answers[q.id] ?? null} big={big} onChange={(v) => setAnswer(q, v)} />
+          {hasAnswer(q, answers[q.id]) && q.type !== "ORDER" && (
+            <button type="button" className="mt-3 text-sm font-semibold text-muted underline-offset-2 hover:text-ink hover:underline" onClick={() => setAnswer(q, null)}>✕ Clear my answer</button>
+          )}
         </div>
       ))}
       {taskState.map((t, i) => (
@@ -66,7 +97,7 @@ export function AssignmentPlayer({ attemptId, questions, saved, tasks, big }: { 
       ))}
       {error && <p className="text-sm font-semibold text-bad">{error}</p>}
       <div className="flex justify-end">
-        <button className="rounded-2xl bg-brand px-6 py-3 text-lg font-bold text-white shadow-[0_5px_0_var(--brand-ink)] active:translate-y-0.5 active:shadow-none disabled:opacity-50" disabled={pending || status === "Saving…"} onClick={() => { if (confirm("Hand in your homework? You can't change it afterwards.")) start(() => finishAttempt(attemptId)); }}>
+        <button className="rounded-2xl bg-brand px-6 py-3 text-lg font-bold text-white shadow-[0_5px_0_var(--brand-ink)] active:translate-y-0.5 active:shadow-none disabled:opacity-50" disabled={pending} onClick={() => { const left = questions.length - answered + tasks.length - tasksDone; if (confirm(`Hand in your homework?${left > 0 ? ` ${left} question${left > 1 ? "s are" : " is"} still blank — you can hand in anyway.` : ""} You can't change it afterwards.`)) start(async () => { await flush(); await finishAttempt(attemptId); }); }}>
           📬 Hand in homework
         </button>
       </div>

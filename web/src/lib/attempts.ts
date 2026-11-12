@@ -17,14 +17,18 @@ export async function saveAnswer(
   attemptId: string,
   questionId: string,
   answer: AnswerValue,
-  opts: { usedHint?: boolean; timeSec?: number; at?: Date } = {},
+  opts: { usedHint?: boolean; timeSec?: number; at?: Date; skip?: boolean } = {},
 ) {
   const attempt = await db.attempt.findUniqueOrThrow({ where: { id: attemptId }, include: { assessment: true } });
   if (attempt.submittedAt) throw new Error("Attempt already submitted");
   const q = await db.question.findUniqueOrThrow({ where: { id: questionId } });
   const item = await db.assessmentItem.findFirst({ where: { assessmentId: attempt.assessmentId, questionId } });
   const instant = attempt.assessment.kind === "PRACTICE" || attempt.assessment.kind === "PUZZLE";
-  const correct = isCorrect(q.type, JSON.parse(q.answer), answer);
+  // A skipped practice question is recorded with no answer and no result: it uses up its place in the round
+  // but does not count as wrong in accuracy, mastery or the adaptive difficulty.
+  const skip = !!opts.skip && attempt.assessment.kind === "PRACTICE";
+  const blank = answer === null || answer === undefined || answer === "" || (Array.isArray(answer) && answer.length === 0);
+  const correct = !skip && isCorrect(q.type, JSON.parse(q.answer), answer);
   const marks = correct ? item?.marks ?? q.marks : 0;
   const at = opts.at ?? new Date();
 
@@ -32,8 +36,8 @@ export async function saveAnswer(
   if (existing && instant) return { correct: existing.correct, solution: q.solution, answer: JSON.parse(q.answer) };
 
   const data = {
-    answer: JSON.stringify(answer),
-    correct: instant ? correct : null,
+    answer: skip || blank ? null : JSON.stringify(answer),
+    correct: instant && !skip ? correct : null,
     marks: instant ? marks : 0,
     usedHint: !!opts.usedHint,
     timeSec: opts.timeSec,
@@ -45,7 +49,7 @@ export async function saveAnswer(
     update: data,
   });
 
-  if (attempt.assessment.kind === "PRACTICE") {
+  if (attempt.assessment.kind === "PRACTICE" && !skip) {
     await addXp(db, attempt.userId, XP.PRACTICE_ATTEMPT + (correct ? (opts.usedHint ? XP.PRACTICE_CORRECT_WITH_HINT : XP.PRACTICE_CORRECT) : 0), "Practice answer", at);
   }
   if (attempt.assessment.kind === "PUZZLE" && correct) await addXp(db, attempt.userId, XP.PUZZLE_SOLVED, "Puzzle of the Day", at);
@@ -53,7 +57,7 @@ export async function saveAnswer(
     await db.attempt.update({ where: { id: attemptId }, data: { submittedAt: at, score: marks, maxScore: q.marks } });
     await evaluateBadges(db, attempt.userId, attemptId, at);
   }
-  return instant ? { correct, solution: q.solution, answer: JSON.parse(q.answer) } : { saved: true };
+  return instant ? { correct: skip ? null : correct, solution: q.solution, answer: JSON.parse(q.answer) } : { saved: true };
 }
 
 /** Grades all responses and closes the attempt. Written answers and activity tasks are left for the teacher. */

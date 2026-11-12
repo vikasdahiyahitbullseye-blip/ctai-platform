@@ -212,7 +212,7 @@ let teamUrl;
   const shown = await ticks.count();
   check(shown === 20, `expected 20 in the queue, got ${shown}`);
   await ticks.nth(0).uncheck(); // leave one out
-  await Promise.all([page.waitForLoadState("networkidle"), page.click('button:has-text("Approve ticked questions")')]);
+  await Promise.all([page.waitForResponse((r) => r.request().method() === "POST" && r.url().includes("/review")), page.click('button:has-text("Approve ticked questions")')]);
   await page.goto(`${BASE}/review`);
   const after = await awaiting();
   check(before - after === 19, `approving 19 should drop the queue by 19 (was ${before}, now ${after})`);
@@ -221,7 +221,7 @@ let teamUrl;
   const first = page.locator("ol > li").first();
   const code = (await first.locator("code").first().textContent()).trim();
   await first.locator('input[placeholder^="Reason"]').fill("Picture is unclear");
-  await Promise.all([page.waitForLoadState("networkidle"), first.locator('button:has-text("Reject")').click()]);
+  await Promise.all([page.waitForResponse((r) => r.request().method() === "POST" && r.url().includes("/review")), first.locator('button:has-text("Reject")').click()]);
   await page.goto(`${BASE}/review?state=REJECTED`);
   await page.waitForSelector(`text=${code}`);
   check(await page.locator("text=Reason: Picture is unclear").count() > 0, "reject reason should show");

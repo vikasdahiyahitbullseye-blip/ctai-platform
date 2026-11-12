@@ -9,6 +9,9 @@ import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { Card, PageHeader, Pill, btn } from "@/components/ui";
 import { Confetti, Mascot } from "@/components/kid";
 
+/** True when no answer was given (older rows stored a blank as the JSON text "null"). */
+const blank = (raw: string | null | undefined) => !raw || raw === "null" || raw === '""' || raw === "[]";
+
 function describe(type: string, options: string[], raw: string | null) {
   if (raw === null) return "—";
   const v = JSON.parse(raw);
@@ -40,6 +43,7 @@ export default async function ResultPage({ params, searchParams }: { params: Pro
   const pct = attempt.maxScore ? Math.round(((attempt.score ?? 0) / attempt.maxScore) * 100) : 0;
   const newBadges = (badges ?? "").split(",").filter((b) => BADGES[b]);
   const correctCount = rows.filter((x) => x.r?.correct).length;
+  const skippedCount = rows.filter((x) => blank(x.r?.answer)).length;
 
   return (
     <div className="space-y-6">
@@ -51,7 +55,7 @@ export default async function ResultPage({ params, searchParams }: { params: Pro
           <div className="absolute right-3 top-3"><Mascot size={56} mood={pct >= 65 ? "cheer" : "think"} /></div>
           <div className="text-sm opacity-80">Your score</div>
           <div className="text-4xl font-bold tabular-nums">{attempt.score}/{attempt.maxScore}</div>
-          <div className="mt-1 text-sm opacity-90">{pct}% · {correctCount} of {rows.length} correct</div>
+          <div className="mt-1 text-sm opacity-90">{pct}% · {correctCount} of {rows.length} correct{skippedCount > 0 ? ` · ${skippedCount} ${a.kind === "PRACTICE" ? "skipped" : "not answered"}` : ""}</div>
           {attempt.needsMarking && <div className="mt-2 rounded-xl bg-white/20 px-3 py-1.5 text-sm">⏳ Some answers are waiting for your teacher to mark</div>}
           <div className="mt-3 text-lg">{pct >= 85 ? "Outstanding! 🌟" : pct >= 65 ? "Great work! 👍" : pct >= 40 ? "Good effort — keep practising 💪" : "Keep going — every try builds your brain 🧠"}</div>
         </div>
@@ -81,7 +85,7 @@ export default async function ResultPage({ params, searchParams }: { params: Pro
                 <li key={q.id} className="rounded-2xl border border-line p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <span className="font-semibold">Q{i + 1}.</span>
-                    {q.type === "SHORT" && r?.answer && !r.markedAt ? <Pill tone="warn">⏳ Waiting for teacher</Pill> : r?.correct ? <Pill tone="good">✓ Correct</Pill> : r?.answer ? <Pill tone="bad">✗ Incorrect</Pill> : <Pill>Not answered</Pill>}
+                    {q.type === "SHORT" && !blank(r?.answer) && !r?.markedAt ? <Pill tone="warn">⏳ Waiting for teacher</Pill> : r?.correct ? <Pill tone="good">✓ Correct</Pill> : !blank(r?.answer) ? <Pill tone="bad">✗ Incorrect</Pill> : <Pill>{a.kind === "PRACTICE" ? "⏭ Skipped" : "Not answered"}</Pill>}
                     <span className="ml-auto text-xs text-muted">{r?.marks ?? 0}/{marks}</span>
                   </div>
                   <Markdown text={q.stem} />

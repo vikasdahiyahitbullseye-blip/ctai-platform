@@ -121,7 +121,7 @@ export async function itemAnalysis(assessmentId: string) {
       question: it.question,
       options: opts,
       attempted: rs.filter((r) => r.answer !== null).length,
-      skipped: submitted - rs.filter((r) => r.answer !== null).length,
+      skipped: submitted - rs.filter((r) => r.answer !== null && r.answer !== "null").length,
       correct,
       p,
       distractors,

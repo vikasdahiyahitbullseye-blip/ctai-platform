@@ -151,7 +151,13 @@ See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admi
 
 ## What was in v0.1
 
-**Student:** home with level/XP/streak/badges, Puzzle of the Day, adaptive practice by chapter or skill with hints and worked solutions, timed tests with autosave and question palette, results review, skill progress, badges, weekly leaderboard (or class team points for Classes 3–5).
+**Student:** home with level/XP/streak/badges, Puzzle of the Day, adaptive practice by chapter or skill with hints and worked solutions, timed tests with autosave and question palette, results review, skipping (see below), skill progress, badges, weekly leaderboard (or class team points for Classes 3–5).
+
+**Skipping questions:**
+- *Practice and CBSE book rounds:* **Skip** moves to the next question. A skipped question uses its place in the round, earns no XP, and is not counted as right or wrong in accuracy, mastery or the adaptive difficulty; it can come again in a later round. **End round and see results** stops a round early. Results mark skipped questions "⏭ Skipped" and the score card counts them. Puzzle of the Day stays one try only.
+- *Tests:* the button reads **Skip for now →** on an unanswered question; **✕ Clear my answer** removes an answer. Before submitting, the dialog lists the unanswered question numbers (click one to go back). Unanswered questions score 0 and show as "Not answered"; teachers see them in the item analysis "Skipped" column.
+- *Homework:* questions can be left blank or cleared; handing in says how many are still blank.
+- Submitting a test or homework (or the timer running out) first sends every answer still being saved, so quick last answers are not lost.
 
 **Teacher:** class dashboards (KPIs, student × skill mastery heatmap, chapter accuracy, students needing support), test generator (chapters, skills, types, difficulty mix, avoids recently used questions), swap/remove questions, assign online, printable Sets A/B/C with answer keys (PDF via print), Word export, item analysis, question bank browser, observation journal, leaderboard toggle.
 

@@ -49,6 +49,13 @@ async function answerCurrent(page) {
   if ((await page.locator("text=/^1 \\/ 15$/").count()) !== 1) errors.push("practice rounds should have 15 questions");
   for (let i = 0; i < 40; i++) {
     await page.waitForSelector('button:has-text("Check answer")');
+    if (i === 1) {
+      // Skip the second question: the round moves on and counts it as skipped.
+      await page.click('button:has-text("Skip")');
+      await page.waitForSelector("text=/^1 skipped$/");
+      if ((await page.locator("text=/^3 \\/ 15$/").count()) !== 1) errors.push("skipping should move the round to question 3");
+      continue;
+    }
     await answerCurrent(page);
     await page.click('button:has-text("Check answer")');
     await page.waitForSelector('[role="status"]');
@@ -61,6 +68,8 @@ async function answerCurrent(page) {
     await Promise.all([page.waitForSelector('button:has-text("Check answer")'), page.click('button:has-text("Next question")')]);
   }
   await page.waitForSelector("text=Your score");
+  if ((await page.locator("text=⏭ Skipped").count()) !== 1) errors.push("practice result should show one skipped question");
+  if ((await page.locator("text=/1 skipped/").count()) < 1) errors.push("practice score card should count the skip");
   await shot(page, "03-practice-result");
   log("practice set ok:", await page.locator("text=/\\d+\\/\\d+/").first().textContent());
 
@@ -85,13 +94,16 @@ async function answerCurrent(page) {
   await shot(page, "05-test-player");
   const total = Number((await page.locator("text=/Question 1 of \\d+/").textContent()).match(/of (\d+)/)[1]);
   for (let i = 0; i < total; i++) {
+    if (i === 1 && total > 2) { await page.click('button:has-text("Skip for now →")'); continue; } // leave Q2 blank
     await answerCurrent(page);
     if (i < total - 1) await page.click('button:has-text("Next →")');
   }
   await page.waitForSelector("text=All changes saved", { timeout: 10000 });
   await page.click('button:has-text("Finish test")');
+  if (total > 2 && (await page.locator('[role="dialog"] button[aria-label="Go to question 2"]').count()) !== 1) errors.push("submit dialog should list the skipped question");
   await Promise.all([page.waitForURL(/\/student\/result\//), page.locator('[role="dialog"] button:has-text("Submit")').click()]);
   await page.waitForSelector("text=Your score");
+  if (total > 2 && (await page.locator("text=/1 not answered/").count()) < 1) errors.push("test result should count the unanswered question");
   await shot(page, "06-test-result");
   log("test submitted ok");
 
