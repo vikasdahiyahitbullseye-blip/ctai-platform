@@ -160,7 +160,7 @@ export default async function StudentHome({ searchParams }: { searchParams: Prom
           {adv.next ? (
             <div className="mt-3">
               <p className="text-sm font-semibold text-ink-2">Next island:</p>
-              <p className="text-xl font-extrabold">{adv.next.part === "AI" ? "🤖 " : adv.next.part === "EVS" ? "🌿 " : "🏝️ "}{adv.next.title}</p>
+              <p className="text-xl font-extrabold">{adv.next.part === "AI" ? "🤖 " : "🏝️ "}{adv.next.title}</p>
               <p className="text-sm text-muted">{"⭐".repeat(adv.next.stars)}{"☆".repeat(3 - adv.next.stars)}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <form action={startPractice}><input type="hidden" name="chapterId" value={adv.next.id} /><button className="kbtn">Play this island</button></form>

@@ -4,7 +4,7 @@ import { savePlan } from "@/app/actions/library";
 import { btn } from "@/components/ui";
 
 type Row = { id: string; part: string; number: number; title: string; periods: number };
-const PART: Record<string, string> = { CT: "CT", AI: "AI", EVS: "EVS" };
+const PART: Record<string, string> = { CT: "CT", AI: "AI" };
 
 export function PlanEditor({ classLevel, rows, target }: { classLevel: number; rows: Row[]; target: number }) {
   const [state, action, pending] = useActionState(savePlan.bind(null, classLevel), undefined);

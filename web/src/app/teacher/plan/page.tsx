@@ -46,7 +46,7 @@ export default async function YearPlan({ searchParams }: { searchParams: Promise
   const taught = done.size;
   const next = lessons.find((l) => !done.has(l.id));
   const months = [...new Set(lessons.map((l) => l.month))];
-  const parts = ["CT", "AI", "EVS"].filter((p) => chapters.some((c) => c.part === p));
+  const parts = ["CT", "AI"].filter((p) => chapters.some((c) => c.part === p));
 
   return (
     <div className="space-y-6">

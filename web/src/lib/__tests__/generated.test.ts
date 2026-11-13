@@ -4,7 +4,6 @@ import { balanceOptions } from "../../../prisma/content/balance";
 import { CURRICULUM } from "../constants";
 import { isCorrect } from "../scoring";
 import { class3 } from "../../../prisma/content/class3";
-import { evs3 } from "../../../prisma/content/evs3";
 import { class3more } from "../../../prisma/content/class3more";
 import { class4 } from "../../../prisma/content/class4";
 import { class5 } from "../../../prisma/content/class5";
@@ -13,7 +12,7 @@ import { class6more } from "../../../prisma/content/class6more";
 import { class7 } from "../../../prisma/content/class7";
 import { class8 } from "../../../prisma/content/class8";
 
-const authored = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
+const authored = { 3: [...class3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
 const gen = generateBank(authored);
 const all = Object.values(gen).flat();
 

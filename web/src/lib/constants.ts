@@ -36,18 +36,21 @@ export const DIFFICULTY = { 1: "Easy", 2: "Medium", 3: "Hard" } as const;
 export const ROLES = ["STUDENT", "TEACHER", "ADMIN", "GROUPADMIN", "CONTENT", "REVIEWER", "SUPERADMIN"] as const;
 export type Role = (typeof ROLES)[number];
 
-/** CBSE handbook chapter structure, 2026-27 (docs/SPEC.md §2). */
-export const CURRICULUM: Record<number, { CT: string[]; AI?: string[]; EVS?: string[] }> = {
-  3: { EVS: ["Family and Friends", "Plants Around Us", "Animals Around Us", "Food We Eat", "Water — Every Drop Counts", "Our Neighbourhood and Maps"], CT: ["What's in a Name?", "Toy Joy", "Double Century", "Vacation with My Nani Maa", "Fun with Shapes", "House of Hundreds – I", "Raksha Bandhan", "Fair Share", "House of Hundreds – II", "Fun at Class Party!", "Filling and Lifting", "Give and Take", "Time Goes On", "The Surajkund Fair"] },
-  4: { EVS: ["Our Body and Health", "Seeds and Plants", "Animal Homes", "Sources of Water", "Travel and Transport", "Waste and Recycling"], CT: ["Shapes Around Us", "Hide and Seek", "Patterns Around Us", "Thousands Around Us", "Sharing and Measuring", "Measuring Length", "The Cleanest Village", "Weigh It, Pour It", "Equal Groups", "Elephants, Tigers, and Leopards", "Fun with Symmetry", "Ticking Clocks and Turning Calendar", "The Transport Museum", "Data Handling"] },
-  5: { EVS: ["Food and Farming", "The Water Cycle", "Maps and Directions", "Energy Around Us", "Weather and Seasons", "Caring for Our Planet"], CT: ["We the Travellers – I", "Fractions", "Angles as Turns", "We the Travellers – II", "Far and Near", "The Dairy Farm", "Shapes and Patterns", "Weight and Capacity", "Coconut Farm", "Symmetrical Designs", "Grandmother's Quilt", "Racing Seconds", "Animal Jumps", "Maps and Locations", "Data Through Pictures"] },
+/**
+ * Chapters exactly as in the CBSE CT & AI handbooks, 2026-27 (docs/SPEC.md §2). Classes 3–5: CT only (taught inside
+ * Maths and The World Around Us periods; there are no separate EVS chapters). Classes 6–8: CT and AI.
+ */
+export const CURRICULUM: Record<number, { CT: string[]; AI?: string[] }> = {
+  3: { CT: ["What's in a Name?", "Toy Joy", "Double Century", "Vacation with My Nani Maa", "Fun with Shapes", "House of Hundreds – I", "Raksha Bandhan", "Fair Share", "House of Hundreds – II", "Fun at Class Party!", "Filling and Lifting", "Give and Take", "Time Goes On", "The Surajkund Fair"] },
+  4: { CT: ["Shapes Around Us", "Hide and Seek", "Patterns Around Us", "Thousands Around Us", "Sharing and Measuring", "Measuring Length", "The Cleanest Village", "Weigh It, Pour It", "Equal Groups", "Elephants, Tigers, and Leopards", "Fun with Symmetry", "Ticking Clocks and Turning Calendar", "The Transport Museum", "Data Handling"] },
+  5: { CT: ["We the Travellers – I", "Fractions", "Angles as Turns", "We the Travellers – II", "Far and Near", "The Dairy Farm", "Shapes and Patterns", "Weight and Capacity", "Coconut Farm", "Symmetrical Designs", "Grandmother's Quilt", "Racing Seconds", "Animal Jumps", "Maps and Locations", "Data Through Pictures"] },
   6: {
     CT: ["Patterns in Mathematics", "Lines and Angles", "Number Play", "Data Handling and Presentation", "Prime Time", "Perimeter and Area", "Fractions", "Playing with Constructions", "Symmetry", "The Other Side of Zero"],
-    AI: ["Introduction to AI and Everyday Examples", "Basic Data Concepts", "Simple Pattern Recognition and Decision Making", "Ethics and Digital Responsibility"],
+    AI: ["Introduction to Artificial Intelligence and Everyday Examples", "Basic Data Concepts", "Simple Pattern Recognition and Decision Making", "Ethics and Digital Responsibility"],
   },
   7: {
     CT: ["Large Numbers Around Us", "Arithmetic Expressions", "A Peek Beyond the Point", "Expressions using Letter-Numbers", "Parallel and Intersecting Lines", "Number Play", "A Tale of Three Intersecting Lines", "Working with Fractions"],
-    AI: ["AI Domains and Applications", "AI in Industries", "Data Visualisation and Analysis", "Ethics and AI Bias Awareness"],
+    AI: ["AI Domains and Applications", "AI in Industries", "Data Visualization and Analysis", "Ethics and AI Bias Awareness"],
   },
   8: {
     CT: ["A Square and a Cube", "Power Play", "A Story of Numbers", "Quadrilaterals", "Number Play", "We Distribute Yet Things Multiply", "Proportional Reasoning"],
@@ -55,7 +58,7 @@ export const CURRICULUM: Record<number, { CT: string[]; AI?: string[]; EVS?: str
   },
 };
 
-export const PART_LABEL: Record<string, string> = { CT: "Computational Thinking", AI: "Artificial Intelligence", EVS: "EVS (The World Around Us)" };
+export const PART_LABEL: Record<string, string> = { CT: "Computational Thinking", AI: "Artificial Intelligence" };
 
 export const SUBJECTS = {
   MATHS: { name: "Mathematics", emoji: "➗", color: "#2f5bea" },

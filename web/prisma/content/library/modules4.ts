@@ -1,4 +1,4 @@
-// Class 4 learning modules (CT chapters follow NCERT Maths Mela 4; EVS themes follow TWAU).
+// Class 4 learning modules (CT chapters follow NCERT Maths Mela 4).
 import { M, type ModuleData } from "./types";
 
 export const MODULES4: Record<string, ModuleData> = {
@@ -127,59 +127,5 @@ export const MODULES4: Record<string, ModuleData> = {
     mistake: "Counting pictures in a pictograph without using the key (one picture may stand for 2 or 5).",
     home: "Ask 10 people their favourite colour. Make a tally table and a pictograph.",
     kit: { t: "Class Survey Studio", e: "📊", mat: "Chart paper, sticky notes, stickers", steps: [["Ask a question", "Choose a survey question with 4 choices.", "Check the question has clear choices."], ["Collect", "Ask classmates and record tally marks.", "Remind children to group tallies in fives."], ["Show it", "Make a pictograph with a key and write 2 findings.", "Ask groups to present one surprising result."]], out: "A pictograph with a key and two written findings" },
-  }),
-  "4-EVS-1": M({
-    o: ["I can name body parts and what they do.", "I can track healthy habits in a table.", "I can find patterns in health data, like heartbeats after exercise."],
-    hook: "Count your heartbeats for 15 seconds. Now jump for 30 seconds and count again. What changed?",
-    ideas: ["Different body parts do different jobs.", "Exercise changes our heart rate; rest brings it back.", "Recording numbers in a table shows patterns.", "Healthy habits are steps we repeat every day."],
-    terms: [["Pulse", "The beat we feel from the heart"], ["Habit", "Something we do regularly"], ["Record", "Write down to remember"]],
-    mistake: "Comparing a 15-second count with a 1-minute count without multiplying by 4.",
-    home: "Keep a 5-day habit chart: water glasses, sleep hours and play time. What pattern do you see?",
-    kit: { t: "Heartbeat Lab", e: "❤️", mat: "A clock with a seconds hand, recording sheets", steps: [["Rest count", "Count your pulse for 15 seconds at rest and multiply by 4.", "Show where to feel the pulse."], ["After exercise", "Jump for 30 seconds and count again.", "Keep exercise safe and short."], ["Pattern", "Record the class data and describe the pattern.", "Ask: why does the heart beat faster?"]], out: "A class table of heartbeats with a written pattern" },
-  }),
-  "4-EVS-2": M({
-    o: ["I can describe how seeds spread and grow.", "I can sort seeds by size, shape and how they travel.", "I can record plant growth and spot patterns."],
-    hook: "How does a mango seed travel? How does a dandelion seed? Why are they so different?",
-    ideas: ["Seeds spread by wind, water, animals and bursting.", "A seed's shape gives a clue to how it travels.", "Measuring growth over days gives data with a pattern.", "Plants need water, air, sunlight and soil to grow."],
-    terms: [["Germinate", "When a seed starts to grow"], ["Disperse", "Spread to new places"], ["Observe", "Watch carefully"]],
-    mistake: "Thinking all seeds need soil to start growing (many sprout on wet cotton).",
-    home: "Collect 5 kinds of seeds from the kitchen. Sort them by size and guess how each travels.",
-    kit: { t: "Seed Sort and Sprout", e: "🌰", mat: "Different seeds, wet cotton, rulers", steps: [["Sort", "Sort seeds by size, then by how they might travel.", "Accept reasoned guesses."], ["Sprout", "Set up wet-cotton cups for two kinds of seeds.", "Label cups with names and date."], ["Measure", "Measure shoot length on days 2, 4 and 6 and draw a bar chart.", "Ask: which grew faster?"]], out: "A seed sorting chart and a growth bar chart" },
-  }),
-  "4-EVS-3": M({
-    o: ["I can match animals to their homes.", "I can group animals by features using a table.", "I can find the odd one out and explain the rule."],
-    hook: "Why does a bird build a nest in a tree, but a rabbit digs a burrow?",
-    ideas: ["Animals build or choose homes that suit their bodies and needs.", "Homes protect animals from weather and enemies.", "A table helps compare animals on several features.", "Classification uses yes/no questions."],
-    terms: [["Habitat", "The natural home of an animal"], ["Burrow", "A hole dug in the ground as a home"], ["Classify", "Sort by features"]],
-    mistake: "Thinking all birds live in nests all the time (nests are mainly for eggs and chicks).",
-    home: "Spot 3 animal homes near you (nests, anthills, webs). Draw them and say what each protects against.",
-    kit: { t: "Yes/No Animal Key", e: "🦉", mat: "Animal cards, chart paper", steps: [["Ask a question", "Write one yes/no question that splits the animal cards into two groups.", "Example: Does it fly?"], ["Keep splitting", "Ask new questions until each animal is alone.", "This is a decision tree."], ["Test it", "Give your key to another group with a new animal card.", "Did the key work?"]], out: "A yes/no key that identifies 6 animals" },
-  }),
-  "4-EVS-4": M({
-    o: ["I can name sources of water.", "I can compare water use using a table and graph.", "I can suggest ways to save water based on data."],
-    hook: "Where does the water in your tap come from? Trace it back as far as you can.",
-    ideas: ["Water comes from rain, rivers, lakes, wells and groundwater.", "Measuring use gives data for good decisions.", "A bar graph helps compare quantities quickly.", "Rainwater harvesting saves water for later."],
-    terms: [["Groundwater", "Water stored under the ground"], ["Harvest", "Collect and store"], ["Bar graph", "Bars that compare amounts"]],
-    mistake: "Starting a bar graph scale from a number other than zero and making small differences look huge.",
-    home: "List the water sources used in your area. Ask an elder how they have changed over the years.",
-    kit: { t: "Rain Gauge Makers", e: "🌧️", mat: "Plastic bottles, rulers, tape", steps: [["Build", "Cut a bottle and tape a ruler to the side to make a rain gauge.", "Adults handle cutting."], ["Measure", "Place it outside and record rainfall each day (or use given data).", "If it does not rain, use sample data."], ["Graph", "Make a bar graph of rainfall for a week.", "Ask: which day had most rain?"]], out: "A rain gauge and a week's rainfall bar graph" },
-  }),
-  "4-EVS-5": M({
-    o: ["I can compare different ways of travel.", "I can read a simple route map and timetable.", "I can choose the best way to travel using rules."],
-    hook: "To visit a town 60 km away, would you walk, cycle, take a bus or a train? What would you need to know first?",
-    ideas: ["Travel choices depend on distance, time, cost and comfort.", "Timetables show when buses and trains leave and arrive.", "We can compare options with a table.", "Choosing the best option means deciding what matters most."],
-    terms: [["Route", "The way from one place to another"], ["Timetable", "A table of travel times"], ["Distance", "How far it is"]],
-    mistake: "Choosing the fastest option without checking if it fits the budget or timetable.",
-    home: "Ask your family how they travel to work or market. Compare time and cost in a table.",
-    kit: { t: "Best Trip Planner", e: "🚌", mat: "A pretend timetable, price list, map", steps: [["Read", "Read the timetable for buses and trains.", "Practise finding departure times."], ["Compare", "Fill a table comparing time, cost and comfort for 3 options.", "Use stars for comfort."], ["Decide", "Pick the best option for a given rule (cheapest, fastest).", "Ask groups to justify their choice."]], out: "A comparison table and a justified travel choice" },
-  }),
-  "4-EVS-6": M({
-    o: ["I can sort waste into wet, dry and recyclable.", "I can count and compare waste using tables.", "I can plan steps to reduce waste."],
-    hook: "Which bin should a banana peel go in? A plastic bottle? A newspaper?",
-    ideas: ["Wet waste rots; dry waste does not; some dry waste can be recycled.", "Sorting at home makes recycling possible.", "Counting waste over days shows patterns.", "Reduce, reuse, recycle, in that order."],
-    terms: [["Recycle", "Make something new from used material"], ["Compost", "Rotted wet waste that feeds soil"], ["Reduce", "Use less"]],
-    mistake: "Putting plastic-wrapped food waste in the wet bin without removing the wrapper.",
-    home: "Sort your home's waste for one day into wet and dry. Count items in each and suggest one way to reduce.",
-    kit: { t: "Bin Sorting Relay", e: "♻️", mat: "Clean 'waste' picture cards, three labelled boxes", steps: [["Sort", "Teams sort waste cards into wet, dry and recyclable boxes as fast as they can.", "Check sorting together afterwards."], ["Count", "Count each box and make a table.", "Ask: which bin had most?"], ["Plan", "Write 3 steps to reduce your class's waste.", "Choose one plan to try for a week."]], out: "A waste table and a class reduce-waste plan" },
   }),
 };

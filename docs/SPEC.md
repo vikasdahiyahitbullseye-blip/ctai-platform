@@ -21,7 +21,7 @@ This document specifies the complete Hitbullseye solution for the CBSE Computati
 |---|---|
 | About 10–13 questions per chapter only | Large graded question bank: practice, revision, retests |
 | No tests, papers, or assessment tools | Test generator (online + print), chapter/term papers, rubric and observation-journal tools |
-| CT required in EVS (TWAU), but only Maths handbooks exist | EVS CT worksheets, Classes 3–5 |
+| CT is taught inside Maths and EVS (TWAU) periods | Chapters follow the handbooks; subject links show where each chapter connects to EVS |
 | Two 20-hour projects/year required, no implementation material | Session-by-session project kits built on CBSE's project list |
 | PDFs only | Online practice, auto-marking, gamification, analytics |
 | One-off training | In-school onboarding and ongoing support |
@@ -52,15 +52,15 @@ This document specifies the complete Hitbullseye solution for the CBSE Computati
 - **Class 5 (15):** We the Travellers – I; Fractions; Angles as Turns; We the Travellers – II; Far and Near; The Dairy Farm; Shapes and Patterns; Weight and Capacity; Coconut Farm; Symmetrical Designs; Grandmother's Quilt; Racing Seconds; Animal Jumps; Maps and Locations; Data Through Pictures.
 - **Class 6:**
   - CT (10): Patterns in Mathematics; Lines and Angles; Number Play; Data Handling and Presentation; Prime Time; Perimeter and Area; Fractions; Playing with Constructions; Symmetry; The Other Side of Zero.
-  - AI (4): Introduction to AI and Everyday Examples; Basic Data Concepts; Simple Pattern Recognition and Decision Making; Ethics and Digital Responsibility.
+  - AI (4): Introduction to Artificial Intelligence and Everyday Examples; Basic Data Concepts; Simple Pattern Recognition and Decision Making; Ethics and Digital Responsibility.
 - **Class 7:**
   - CT (8): Large Numbers Around Us; Arithmetic Expressions; A Peek Beyond the Point; Expressions using Letter-Numbers; Parallel and Intersecting Lines; Number Play; A Tale of Three Intersecting Lines; Working with Fractions.
-  - AI (4): AI Domains and Applications; AI in Industries; Data Visualisation and Analysis; Ethics and AI Bias Awareness.
+  - AI (4): AI Domains and Applications; AI in Industries; Data Visualization and Analysis; Ethics and AI Bias Awareness.
 - **Class 8:**
   - CT (7): A Square and a Cube; Power Play; A Story of Numbers; Quadrilaterals; Number Play; We Distribute Yet Things Multiply; Proportional Reasoning.
   - AI (4): AI Project Lifecycle; Artificial Intelligence and Its Applications; Data and Fairness in AI; Ethics and Responsible AI.
 
-Product extension (not a CBSE chapter): **EVS / TWAU CT worksheets**, Classes 3–5, tagged `strand = EVS`.
+There are no EVS chapters: CBSE teaches Classes 3–5 CT inside Maths and The World Around Us periods using the Maths-based handbook chapters above. (EVS themes added in early versions were removed in v0.5.1.)
 
 ---
 
@@ -82,7 +82,7 @@ Multi-tenant: each school is a tenant. Users belong to one school. A teacher is 
 
 ## 4. Modules
 
-1. **Curriculum and content.** Class → Part (CT / AI / EVS) → Chapter → Learning outcomes; skill tags.
+1. **Curriculum and content.** Class → Part (CT / AI) → Chapter → Learning outcomes; skill tags.
 2. **Question bank.** Original items with full metadata (§5), review workflow, versioning.
 3. **Practice.** Self-paced, chapter- or skill-wise, 15 questions per round. A round first covers every kind of question the chapter has (format, picture questions, CBSE book questions) and every skill, then follows adaptive difficulty; instant feedback with worked solutions. CBSE book-question rounds cover all of a chapter's CBSE questions in book order.
 4. **Assignments and homework.** Teacher-assigned question sets with due dates; online or printable.
@@ -126,7 +126,6 @@ Multi-tenant: each school is a tenant. Users belong to one school. A teacher is 
 - 2 term papers
 - 4 practice papers
 - 20 Puzzles of the Day per month
-- Classes 3–5: EVS worksheets
 - Classes 6–8: 4–6 project kits
 
 That is roughly 560–700 items per class (about 3,800 total).
@@ -248,7 +247,7 @@ Always show the evidence count, not just a level. Observation-journal ratings ar
 |---|---|---|
 | **0 — Prototype (this build)** | Auth and roles; curriculum for all classes; sample original questions (Class 3 and Class 6); student practice, tests, results, XP/levels/badges/streak, Puzzle of the Day, leaderboard; teacher question bank, test generator (online + print + DOCX + answer key), class dashboard, skill heatmap, item analysis; observation journal | Now |
 | 1 — MVP pilot | Content for all 6 classes (Year-1 targets); admin bulk import; assignments; short-answer marking; rubric engine; Postgres + deployment; 5–10 pilot schools | Feb–Mar 2027 |
-| 2 — Launch 2027-28 | Project kits module; EVS worksheets; school dashboard; Hindi; PWA/offline; parent view; content CMS with review workflow | Apr 2027 |
+| 2 — Launch 2027-28 | Project kits module; school dashboard; Hindi; PWA/offline; parent view; content CMS with review workflow | Apr 2027 |
 | 3 — Growth | Adaptive recommendations; inter-school CT challenge/Olympiad; class challenges; more item types (grid, drag-drop); LMS/ERP integration, SSO | 2027-28 |
 
 ## 13. Open questions
@@ -304,12 +303,11 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Chapters also carry authored links to EVS, Science, Social Science, English, Art, PE, Computer Studies and daily life, each with a one-line "how" and an activity idea.
 - **Teachers:** curriculum map (chapters × skills × subjects), a chapter planner, and printable worksheets with answer keys.
 - **Students:** "Where else will you use this?" on each chapter page.
-- **EVS (TWAU) CT worksheets** for Classes 3–5, by theme. Theme names should be checked against the NCERT TWAU textbook in use.
 
 ### 14.5 Gamification v2 and student design
 
 - **Design:** a separate playful theme ("Think Quest"), with rounded type, chunky buttons, a mascot ("Bitto"), confetti on correct answers, and mobile bottom navigation. Reduced-motion is respected.
-- **Adventure map:** chapters are islands in worlds (Nature Trail = EVS, Thinking Islands = CT, AI Galaxy). Each island earns 0–3 stars:
+- **Adventure map:** chapters are islands in worlds (Thinking Islands = CT, AI Galaxy). Each island earns 0–3 stars:
 
   | Stars | Rule |
   |---|---|
@@ -329,7 +327,7 @@ New staff get a temporary password and must change it at first sign-in. Students
 - **How the bank is made:**
   - Individually written items set the standard and cover each chapter's core ideas.
   - **Question families** add depth: each family is one reviewed question design with varied numbers and settings, and its answer and solution are computed.
-  - **Situation banks** (hand-written real-life cases with known categories) power the AI and EVS families.
+  - **Situation banks** (hand-written real-life cases with known categories) power the AI families.
 - **Governance:**
   - Generated items carry `source = GENERATED` and a `family` id.
   - Approval: `Question.approval` = UNREVIEWED | APPROVED | REJECTED, with `approvedById` and `approvedAt`. Written items are seeded APPROVED, generated ones UNREVIEWED (still usable). The REVIEWER role (and SUPERADMIN) approves in `/review`, in bulk or one by one; rejecting retires the question with a reason. Editing a question resets it to UNREVIEWED. HQ → Staff accounts creates reviewer and content logins.
@@ -350,14 +348,14 @@ New staff get a temporary password and must change it at first sign-in. Students
 ## 17. Learn it theory (Classes 3–8)
 
 - Content: `prisma/content/theory/` (`THEORY`, keyed `<class>-CT-<chapter>`). Each chapter has an intro, 3–5 concepts (text, points, optional figure/table, worked example, remember note) and a thinking tip. Figures use the platform's `Fig` specs, including `lettergrid` and `venn`.
-- Shown in the learning module (`TheoryView`, CT chapters of Classes 3–8; the AI chapters and EVS themes have none), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).
+- Shown in the learning module (`TheoryView`, CT chapters of Classes 3–8; the AI chapters have none), in the class slides (Introduce section), and in the help-book PDF editions (`scripts/theory-pages.ts` + `docs/helpbooks/merge_helpbook.py`).
 
 ## 18. Concept-video uploads and period names
 
 - `Setting` (key/value) holds platform settings. `videoUploadRoles` lists the roles allowed to upload concept videos; it is empty by default, so uploading is off and the upload page does not exist for anyone. The super-admin changes it in HQ → Settings.
 - Allowed roles get `/videos` (all classes): add a YouTube or video link, upload an MP4/WebM file (`POST /api/videos/[id]`, up to `VIDEO_MAX_MB`, default 200), or remove a recording. Video links/files cannot be set from Content studio unless the role is allowed.
 - Videos without a recording are hidden everywhere else (library, chapter pages, year plan, print plan, learn pages); teachers and students see only recorded videos, without scripts.
-- Year-plan periods are labelled by chapter (`periodLabels` in `src/lib/plan.ts`): "Chapter 1-1", "Chapter 1-2", …; "AI Chapter n-k" / "EVS Chapter n-k"; "Getting started", "Term n revision", "Term n exam". `Lesson.number` stays as the internal order.
+- Year-plan periods are labelled by chapter (`periodLabels` in `src/lib/plan.ts`): "Chapter 1-1", "Chapter 1-2", …; "AI Chapter n-k"; "Getting started", "Term n revision", "Term n exam". `Lesson.number` stays as the internal order.
 - Edited class slides: the super-admin uploads a .pptx per chapter in HQ → Class slides (`POST /api/slides/[chapterId]`, op upload/revert, max 100 MB, zip signature checked). It is stored as an internal `Resource` (kind SLIDES, status INTERNAL, code `DECK-<class>-<part>-<chapter>`), hidden from resource lists. `GET /api/slides/[chapterId]` serves the edited deck when there is one, else builds the deck; `?generated=1` always builds it.
 
 ## 19. CBSE handbook questions
@@ -372,7 +370,7 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Feedback: the earlier bank was easier and shorter than the CBSE handbook exercises. All 4,861 earlier questions now have `status = RETIRED` (kept for history; filtered out of practice, tests, homework, the library, slides and Puzzle of the Day by `status = PUBLISHED`).
 - Live bank (4,448): help-book questions (1,580, `family = HELPBOOK`, `sourceRef` = book, chapter, question), CBSE handbook questions (`source = CBSE`), new CBSE-level CT families (`cbse_level*.ts`, 50 families) and AI/EVS scenario families (`scenario.ts`, 21 families).
 - Help-book pictures use the `image` figure kind (`{kind:"image", src:"hb/…webp", w, h, alt}`); a picture-only MCQ shows the options inside the picture, and slides show it large with "Choose (a), (b), (c) or (d) from the picture."
-- Seeding: `generateCbseLevel(have, 40, 12)` tops each CT chapter up to 40 (at least 12 new items), `generateScenario(have, 40, 20)` each AI/EVS chapter. Logic-puzzle families are solved by brute force and kept only when the answer is unique.
+- Seeding: `generateCbseLevel(have, 40, 12)` tops each CT chapter up to 40 (at least 12 new items), `generateScenario(have, 40, 20)` each AI chapter. Logic-puzzle families are solved by brute force and kept only when the answer is unique.
 - Difficulty: help-book items get 3 for Thinking Spot or 45+ words, 1 for 12 words or fewer without a picture, else 2.
 - Known gaps: one help-book question (Class 8 Ch 3 Q9, symbol notation) was skipped; some maths lines are shown as images; Class 3 help-book stems are short (about 20 words) by design of the book.
 
@@ -383,3 +381,10 @@ New staff get a temporary password and must change it at first sign-in. Students
 - **Friend groups:** `StudentGroup` (name, emoji, unique 6-char `code`, `schoolId`, `ownerId`) and `StudentGroupMember`. Same-school only; limits 40 members, 6 groups per student; name filter; owner can remove/delete; staff can delete (`STUDENT_GROUP_DELETED` in the audit log).
 - **Logic games:** `GamePlay` (`game`, `level` 0–6, `seed`, `moves`, `timeSec`, `xp`; unique per user+game+seed). Generators and checkers in `src/lib/games` are shared by browser and server; `submitGame` verifies before awarding XP; 5 XP games a day.
 - **Groups of schools:** `SchoolGroup`; `School.groupId`; role `GROUPADMIN` with `User.schoolGroupId` (accounts live in the HQ school and are listed under Staff accounts). `/group` overview; the acting school is held in the `ctai_acting_school` cookie and `requireSchoolAdmin()` scopes every school-admin page and action to it. Opening a school is written to that school's activity log.
+
+## 21. Chapter check (v0.5.1)
+
+- Chapters were re-checked against the contents pages of the CBSE CT & AI Student Handbooks (Classes 3–8) and match them exactly, in order: CT 14/14/15/10/8/7 and AI 4/4/4 (Classes 6–8). Two AI titles were corrected to the book wording ("Introduction to Artificial Intelligence and Everyday Examples"; "Data Visualization and Analysis").
+- The 18 EVS themes for Classes 3–5 (not in the handbooks) were removed with their questions, modules, picture plans, subject-link entries and year-plan periods. The Classes 3–5 year plans keep 75 periods, now shared by the CT chapters. "EVS" remains only as a *subject* that chapters connect to.
+- The help-book questions use the same chapter numbers as the handbooks.
+- `content.test.ts` fails if the chapter list stops matching the handbooks.

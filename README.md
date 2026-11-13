@@ -79,9 +79,9 @@ The first page you open after starting can take 10–20 seconds while it compile
 | 3–5 | 50 (inside Maths and EVS/TWAU) | 50 h = **75 periods** | — |
 | 6–8 | 100 = 40 CT + 20 AI + 40 projects | 60 h = **90 periods** (60 CT, 30 AI) | 40 h: two 20-hour projects |
 
-- **Chapter-wise periods:** CBSE sets 5 hours for each AI chapter (7–8 periods) but no hours for individual CT chapters. CT chapters therefore share the CT time equally, and EVS (TWAU) themes get 60% of a CT chapter. 5 periods are kept for getting started, 2 revision periods and 2 term exams. The content team can change any chapter's periods in **Content studio → Teaching plan**, which rebuilds that class's plan and library. Uploaded videos and teachers' ticked periods are kept.
+- **Chapter-wise periods:** CBSE sets 5 hours for each AI chapter (7–8 periods) but no hours for individual CT chapters. CT chapters therefore share the CT time equally. 5 periods are kept for getting started, 2 revision periods and 2 term exams. The content team can change any chapter's periods in **Content studio → Teaching plan**, which rebuilds that class's plan and library. Uploaded videos and teachers' ticked periods are kept.
 - **Period-by-period plan** (`src/lib/plan.ts`, stored as `Lesson` rows): every period has a type (Introduce, Explore, Practise, Hands-on activity, Chapter check, Revision, Term exam), a month and week, a learning objective, a 40-minute lesson flow (warm-up, main part, wrap-up), the resources to use and the homework to set. Term 1 runs April–September and Term 2 October–February; June is the summer break.
-- **Period names:** periods are named by chapter, not numbered through the year: *Chapter 1-1* is the first period of Chapter 1, *Chapter 1-2* the second (AI and EVS chapters: *AI Chapter 1-1*, *EVS Chapter 1-1*). The other periods are *Getting started*, *Term 1 revision* and *Term 1 exam*.
+- **Period names:** periods are named by chapter, not numbered through the year: *Chapter 1-1* is the first period of Chapter 1, *Chapter 1-2* the second (AI chapters: *AI Chapter 1-1*, *EVS Chapter 1-1*). The other periods are *Getting started*, *Term 1 revision* and *Term 1 exam*.
 - **Teachers** open **Year plan**: pick a class section, tick periods as taught, see whether they are on track for the week, open each lesson plan, and print the whole plan.
 
 **Content library per class** (built by `src/lib/library.ts` from the question bank and `prisma/content/library/modules*.ts`):
@@ -172,7 +172,7 @@ See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admi
 
 **Admin:** school overview (sections, teachers, weekly activity), now with full management (see v0.2).
 
-**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks) plus EVS themes for Classes 3–5; 4,736 questions — at least 40 per chapter for every chapter of Classes 3–8 (782 written individually, 3,955 generated from question families, including 784 colourful picture questions: 8 in every chapter); 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
+**Content:** curriculum chapters for all six classes (CBSE 2026-27 handbooks); 4,736 questions — at least 40 per chapter for every chapter of Classes 3–8 (782 written individually, 3,955 generated from question families, including 784 colourful picture questions: 8 in every chapter); 5 project kits; teaching resources; subject connections. Content for the other classes is to be authored (see SPEC §5 targets).
 
 ## Code map
 
@@ -193,20 +193,22 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 ## Question bank status
 
-**Current bank (v0.4, raised to CBSE handbook level): 4,448 live questions. Every CT chapter has 42–63 practice items and every AI and EVS chapter has 40.**
+**Chapters:** exactly the chapters of the CBSE CT & AI handbooks, 80 in all: Classes 3–5 have CT chapters only (14, 14, 15), and Classes 6–8 have CT (10, 8, 7) and 4 AI chapters each. CBSE teaches Classes 3–5 CT inside the Maths and The World Around Us (EVS) periods, but there are **no separate EVS chapters**; the EVS themes that earlier versions added were removed (a unit test now checks the chapter list against the handbooks).
 
-| Class | Help book | Help-book Thinking Spot puzzles | New CBSE-level CT | AI / EVS scenarios | CBSE handbook | Live total |
+**Current bank (v0.4, raised to CBSE handbook level): 3,728 live questions. Every CT chapter has 42–63 practice items and every AI chapter has 40.**
+
+| Class | Help book | Help-book Thinking Spot puzzles | New CBSE-level CT | AI scenarios | CBSE handbook | Live total |
 |---|---|---|---|---|---|---|
-| 3 | 293 | 28 | 168 | 239 | 161 | 889 |
-| 4 | 300 | 28 | 168 | 240 | 162 | 898 |
-| 5 | 312 | 30 | 180 | 240 | 170 | 932 |
+| 3 | 293 | 28 | 168 | — | 161 | 650 |
+| 4 | 300 | 28 | 168 | — | 162 | 658 |
+| 5 | 312 | 30 | 180 | — | 170 | 692 |
 | 6 | 206 | 20 | 120 | 97 | 206 | 649 |
 | 7 | 180 | 16 | 96 | 85 | 184 | 561 |
 | 8 | 153 | 14 | 84 | 126 | 141 | 518 |
 
 - **Help-book questions** (`prisma/content/helpbook/hb.json`, family `HELPBOOK`, codes `HB-<class>-CT-<chapter>-<label>`): all 1,580 exercise, Thinking Spot and activity questions from the *Think, Play & Solve* help books, Classes 3–8, with the books' answer keys and solutions. 722 book pictures are stored as WebP files in `public/hb/`. They start **Approved**. Thinking Spot items feed Puzzle of the Day. The extraction scripts are in `docs/helpbooks/` (see its README).
 - **New CBSE-level CT questions** (`prisma/content/gen/cbse_level.ts`, `cbse_level2.ts`, `cbse_level3.ts`, 50 families): longer, multi-step questions written to match the difficulty and length of the CBSE handbook exercises (ordering and seating clues, coding/decoding, clocks and calendars, number machines, working backwards, counting figures, painted cubes, bases and Roman numerals, ratio and money plans, and more). Different numbers and settings from the book questions, same topics. `CBSE_PLAN` in `prisma/content/gen/index.ts` maps them to chapters and tops each CT chapter up to at least 40 with the help-book and CBSE questions. They start **Awaiting approval**.
-- **AI and EVS scenarios** (`prisma/content/gen/scenario.ts`, 21 families): scenario questions of 40–60 words (training data and bias, accuracy and confusion counts, train/test splits, rule-based vs learning systems, ethics, online safety, the AI project cycle; water, plants, animals, food chains, maps, rainfall, waste, energy, travel, family and queues). Auto-marked, answers computed. They start **Awaiting approval**.
+- **AI scenarios** (`prisma/content/gen/scenario.ts`): scenario questions of 40–60 words (training data and bias, accuracy and confusion counts, train/test splits, rule-based vs learning systems, ethics, online safety, the AI project cycle; water, plants, animals, food chains, maps, rainfall, waste, energy, travel, family and queues). Auto-marked, answers computed. They start **Awaiting approval**.
 - **CBSE handbook questions:** see the section above. They are not changed.
 - **The earlier bank (4,861 easier questions) is retired.** Retired questions are kept in the database (so past attempts and results still show) but are not used in practice, tests, homework, the library, slides or Puzzle of the Day. Library tests, worksheets, papers, modules and class slides are rebuilt from the new bank by `npm run seed`.
 

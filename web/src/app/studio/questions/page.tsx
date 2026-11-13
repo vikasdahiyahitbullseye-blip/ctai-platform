@@ -25,7 +25,7 @@ export default async function StudioQuestions({ searchParams }: { searchParams: 
       <Card>
         <form className="flex flex-wrap items-end gap-2">
           <select name="cls" defaultValue={sp.cls ?? ""} className={sel}><option value="">All classes</option>{[3, 4, 5, 6, 7, 8].map((c) => <option key={c} value={c}>Class {c}</option>)}</select>
-          <select name="part" defaultValue={sp.part ?? ""} className={sel}><option value="">All parts</option><option value="CT">CT</option><option value="AI">AI</option><option value="EVS">EVS</option></select>
+          <select name="part" defaultValue={sp.part ?? ""} className={sel}><option value="">All parts</option><option value="CT">CT</option><option value="AI">AI</option></select>
           <select name="status" defaultValue={sp.status ?? ""} className={sel}><option value="">Any status</option>{["DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED"].map((s) => <option key={s}>{s}</option>)}</select>
           <select name="source" defaultValue={sp.source ?? ""} className={sel}><option value="">Authored + generated</option><option value="AUTHORED">Authored only</option><option value="GENERATED">Generated only</option></select>
           <select name="approval" defaultValue={sp.approval ?? ""} className={sel}><option value="">Any approval</option><option value="UNREVIEWED">Awaiting approval</option><option value="APPROVED">Approved</option><option value="REJECTED">Rejected</option></select>

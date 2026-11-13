@@ -10,7 +10,7 @@ export default async function CurriculumMap({ searchParams }: { searchParams: Pr
   const levels = [...new Set((await teacherSections(user.id)).map((s) => s.section.classLevel))].sort();
   const cls = Number((await searchParams).cls ?? levels[0] ?? 3);
   const chapters = await prisma.chapter.findMany({ where: { classLevel: cls }, include: { links: true, questions: { where: { status: "PUBLISHED" }, select: { skills: true } }, _count: { select: { resources: true } } }, orderBy: [{ part: "asc" }, { number: "asc" }] });
-  const parts = [...new Set(chapters.map((c) => c.part))].sort((a, b) => ["CT", "AI", "EVS"].indexOf(a) - ["CT", "AI", "EVS"].indexOf(b));
+  const parts = [...new Set(chapters.map((c) => c.part))].sort((a, b) => ["CT", "AI"].indexOf(a) - ["CT", "AI"].indexOf(b));
   const skillCols = cls >= 6 ? [...CORE_CT_SKILLS, ...AI_SKILLS] : CORE_CT_SKILLS;
   const subjectCols = Object.keys(SUBJECTS).filter((s) => chapters.some((c) => c.links.some((l) => l.subject === s)));
   return (

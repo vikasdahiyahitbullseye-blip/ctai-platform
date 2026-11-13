@@ -1,4 +1,4 @@
-// Original Hitbullseye items, Class 3 — remaining CT chapters (2–4, 6–13) and EVS themes (1, 3, 4, 6).
+// Original Hitbullseye items, Class 3 — remaining CT chapters (2–4, 6–13).
 // Class 3 outcomes: simple patterns with 1–2 changes, problems with 2–3 clues, flips/folds/views,
 // step-by-step rules, grid/direction paths and before/after ordering.
 import type { SeedQuestion } from "./types";
@@ -114,25 +114,8 @@ export const class3more: SeedQuestion[] = [
   { ch: 13, skills: ["ALGORITHMIC"], type: "ORDER", d: 2, stem: "Put these in order, **earliest in the day first**.", options: ["Eat lunch", "Wake up", "Go to bed", "Go to school"], answer: [1, 3, 0, 2], solution: "Wake up, go to school, eat lunch, go to bed." },
   { ch: 13, skills: ["ALGORITHMIC"], type: "NUMERIC", d: 2, stem: "The clock shows **3 o'clock**. What time will it be **4 hours later**? (Type the hour.)", answer: 7, solution: "3 + 4 = 7 o'clock." },
 
-  // ---------- EVS themes ----------
   // Theme 1 — Family and Friends
-  { part: "EVS", ch: 1, skills: ["DECOMPOSITION"], type: "NUMERIC", d: 1, stem: "Riya lives with her **mother, father, grandmother** and **brother**. How many people are in her family, **including Riya**?", answer: 5, solution: "Mother, father, grandmother, brother and Riya: 5." },
-  { part: "EVS", ch: 1, skills: ["DECOMPOSITION", "ABSTRACT"], type: "MCQ", d: 2, stem: "Meena is **Raju's mother**. Raju is **Tina's brother**. Who is **Tina's mother**?", options: ["Meena", "Raju", "Tina", "We can't tell"], answer: 0, solution: "Raju and Tina are brother and sister, so they have the same mother: Meena." },
-  { part: "EVS", ch: 1, skills: ["ALGORITHMIC"], type: "ORDER", d: 2, stem: "Put the family members from **youngest to oldest**.", options: ["Grandfather (70)", "Baby (1)", "Father (40)", "Sister (10)"], answer: [1, 3, 2, 0], solution: "1, 10, 40, 70: baby, sister, father, grandfather." },
-  { part: "EVS", ch: 1, skills: ["DECOMPOSITION", "GENERALISATION"], type: "NUMERIC", d: 3, stem: "**5 friends** meet. Each friend shakes hands **once** with every other friend. How many handshakes happen?", answer: 10, solution: "The 1st friend shakes 4 hands, the 2nd 3 new hands, then 2, then 1: 4 + 3 + 2 + 1 = 10." },
   // Theme 3 — Animals Around Us
-  { part: "EVS", ch: 3, skills: ["DECOMPOSITION"], type: "MULTI", d: 1, stem: "Which animals have **4 legs**? Choose all that apply.", options: ["Dog", "Hen", "Cow", "Parrot"], answer: [0, 2], solution: "Dogs and cows have 4 legs. Hens and parrots are birds with 2 legs." },
-  { part: "EVS", ch: 3, skills: ["DECOMPOSITION"], type: "NUMERIC", d: 2, stem: "There are **3 hens** and **2 dogs** in a yard. How many legs are there in all?", answer: 14, solution: "Hens: 3 × 2 = 6. Dogs: 2 × 4 = 8. 6 + 8 = 14." },
-  { part: "EVS", ch: 3, skills: ["DECOMPOSITION", "EVALUATION"], type: "MCQ", d: 2, stem: "Find the **odd one out**: Cow, Goat, Buffalo, Crow", options: ["Crow", "Cow", "Goat", "Buffalo"], answer: 0, solution: "Cow, goat and buffalo give milk and have 4 legs. A crow is a bird." },
-  { part: "EVS", ch: 3, skills: ["PATTERN", "ALGORITHMIC"], type: "MCQ", d: 3, stem: "A frog's life goes: egg → tadpole → ___ → frog. What comes in the gap?", options: ["Tadpole with legs", "Butterfly", "Chick", "Caterpillar"], answer: 0, solution: "A tadpole grows legs and loses its tail as it becomes a frog." },
   // Theme 4 — Food We Eat
-  { part: "EVS", ch: 4, skills: ["DECOMPOSITION"], type: "MULTI", d: 1, stem: "Which foods come from **plants**? Choose all that apply.", options: ["Rice", "Egg", "Apple", "Milk"], answer: [0, 2], solution: "Rice and apples come from plants. Eggs and milk come from animals." },
-  { part: "EVS", ch: 4, skills: ["DECOMPOSITION"], type: "NUMERIC", d: 2, stem: "**4 people** in a family each eat **2 rotis** at dinner. How many rotis are needed?", answer: 8, solution: "2 + 2 + 2 + 2 = 8." },
-  { part: "EVS", ch: 4, skills: ["ALGORITHMIC"], type: "ORDER", d: 2, stem: "Put the steps for **making a sandwich** in order.", options: ["Take two slices of bread", "Spread chutney", "Add vegetables", "Close it and cut"], answer: [0, 1, 2, 3], solution: "Bread, chutney, vegetables, then close and cut." },
-  { part: "EVS", ch: 4, skills: ["EVALUATION"], type: "MCQ", d: 3, stem: "Which plate is the **most balanced** meal?", options: ["Dal, rice, vegetables and curd", "Only chips", "Only sweets", "Only rice"], answer: 0, solution: "It has grains, protein (dal, curd) and vegetables." },
   // Theme 6 — Our Neighbourhood and Maps
-  { part: "EVS", ch: 6, skills: ["ABSTRACT"], type: "MCQ", d: 1, stem: "On a map, a red **✚** on a building usually shows a …", options: ["Hospital", "School", "Park", "Shop"], answer: 0, solution: "The plus sign is a common symbol for a hospital." },
-  { part: "EVS", ch: 6, skills: ["ALGORITHMIC"], type: "MCQ", d: 2, stem: "To reach the park, Anu walks **3 squares right**, then **2 squares up** on a grid. How does she walk **back home** the same way?", options: ["2 squares down, then 3 squares left", "3 squares right, then 2 squares up", "2 squares up, then 3 squares left", "3 squares left, then 2 squares up"], answer: 0, solution: "Undo the steps in reverse: first undo 'up' by going down 2, then undo 'right' by going left 3." },
-  { part: "EVS", ch: 6, skills: ["ABSTRACT"], type: "MCQ", d: 2, stem: "Seen from **above** (a bird's view), a round water tank looks like a …", options: ["Circle", "Rectangle", "Triangle", "Star"], answer: 0, solution: "From above you see its round top." },
-  { part: "EVS", ch: 6, skills: ["DECOMPOSITION", "ABSTRACT"], type: "NUMERIC", d: 3, stem: "On a straight road, the shop is **5 houses to the left** of the school and the temple is **3 houses to the right** of the school. How many houses apart are the shop and the temple?", answer: 8, solution: "They are on opposite sides of the school: 5 + 3 = 8." },
 ];

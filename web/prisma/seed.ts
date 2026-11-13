@@ -7,7 +7,6 @@ import { saveAnswer, submitAttempt, nextPracticeQuestion } from "../src/lib/atte
 import { parseSkills } from "../src/lib/progress";
 import { class3 } from "./content/class3";
 import { class6, class6Short } from "./content/class6";
-import { evs3 } from "./content/evs3";
 import { class4 } from "./content/class4";
 import { class5 } from "./content/class5";
 import { class7 } from "./content/class7";
@@ -64,6 +63,7 @@ async function main() {
       const q = balanceOptions(raw);
       const part = q.part ?? "CT";
       const key = `${cls}-${part}-${q.ch}`;
+      if (!chapterId[key]) continue; // only chapters in the CBSE handbooks
       counters[key] = (counters[key] ?? 0) + 1;
       const code = `C${cls}-${part}-${source === "GENERATED" ? "G" : ""}${q.type === "SHORT" ? "S" : ""}${String(q.ch).padStart(2, "0")}-${q.skills[0].slice(0, 3)}-${String(counters[key]).padStart(4, "0")}`;
       await db.question.create({
@@ -99,7 +99,6 @@ async function main() {
   };
   await addQuestions(3, class3);
   await addQuestions(6, [...class6, ...class6Short]);
-  await addQuestions(3, evs3);
   await addQuestions(3, class3more);
   await addQuestions(6, class6more);
   await addQuestions(4, class4);
@@ -108,7 +107,7 @@ async function main() {
   await addQuestions(8, class8);
 
   // Top every chapter up to 40 practice items with question families (flagged as GENERATED for review).
-  const authored: Record<number, SeedQuestion[]> = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
+  const authored: Record<number, SeedQuestion[]> = { 3: [...class3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 };
   const generated = generateBank(authored);
   for (const [cls, list] of Object.entries(generated)) await addQuestions(Number(cls), list, "GENERATED");
 
@@ -208,7 +207,7 @@ async function main() {
   }
 
   const chaptersWithQs = async (cls: number) =>
-    (await db.chapter.findMany({ where: { classLevel: cls, part: { not: "EVS" }, questions: { some: { isPuzzle: false } } }, select: { id: true } })).map((c) => c.id);
+    (await db.chapter.findMany({ where: { classLevel: cls, questions: { some: { isPuzzle: false } } }, select: { id: true } })).map((c) => c.id);
   const chMap: Record<number, string[]> = {};
   for (const c of [3, 4, 5, 6, 7, 8]) chMap[c] = await chaptersWithQs(c);
 
@@ -378,7 +377,7 @@ async function main() {
       }
     }
   };
-  await makeHomework(3, sections["3A"].id, "Homework: Every drop counts", { chapter: { part: "EVS", number: 5 } }, { title: "My water diary", prompt: "Keep a **water diary** for one day at home. How many buckets or mugs did your family use for bathing, brushing and cooking? Which activity used the most water? Write or upload a photo of your diary." }, 3, 3);
+  await makeHomework(3, sections["3A"].id, "Homework: Filling and Lifting", { chapter: { part: "CT", number: 11 }, status: "PUBLISHED" }, { title: "My water diary", prompt: "Keep a **water diary** for one day at home. How many mugs or buckets did your family use for bathing, brushing and cooking? Which activity used the most water? Write or upload a photo of your diary." }, 3, 3);
   await makeHomework(6, sections["6A"].id, "Homework: AI around my home", { chapter: { part: "AI", number: 1 } }, { title: "AI spotter", prompt: "Find **three** things at home or in your family's phones that use AI. For each one, write what it does and which AI domain it belongs to (Computer Vision, NLP or Data Science)." }, 4, 2);
 
   // Class challenges

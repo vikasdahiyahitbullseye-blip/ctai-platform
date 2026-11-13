@@ -2,14 +2,14 @@
 // Pure functions (no database) so the plan is easy to test and to rebuild when a chapter's periods change.
 //
 // CBSE CT & AI Curriculum 2026-27 §3.4 and §10.2:
-//   Classes 3–5: 50 hours a year, integrated into Mathematics and TWAU (EVS).
+//   Classes 3–5: 50 hours a year, integrated into Mathematics and TWAU (EVS) periods; CT chapters only.
 //   Classes 6–8: 100 hours a year = 40 h Advanced CT + 20 h AI (5 h per AI chapter) + 40 h projects (2 × 20 h).
 // Projects in Classes 6–8 run outside the timetable here, so the in-class plan covers 60 hours.
 
 export const PERIOD_MIN = 40;
 export const RESERVED_PERIODS = 5; // orientation + (revision + term exam) × 2
 
-export type Part = "CT" | "AI" | "EVS";
+export type Part = "CT" | "AI";
 export type PlanChapter = { key: string; part: Part; number: number; title: string };
 export type LessonKind = "ORIENTATION" | "INTRODUCE" | "EXPLORE" | "PRACTISE" | "ACTIVITY" | "CHECK" | "REVISION" | "TERM_EXAM";
 
@@ -40,14 +40,14 @@ export function apportion(total: number, weights: number[], min = 1): number[] {
 
 /**
  * Default periods per chapter. CBSE does not set per-chapter hours for CT, so CT chapters share the CT periods
- * equally and EVS (TWAU) themes get 60% of a CT chapter. AI chapters get CBSE's 5 hours each (7–8 periods).
+ * equally. AI chapters (Classes 6–8) get CBSE's 5 hours each (7–8 periods).
  */
 export function defaultPeriods(classLevel: number, chapters: PlanChapter[]): Record<string, number> {
   const b = budget(classLevel);
   const out: Record<string, number> = {};
   if (classLevel <= 5) {
-    const list = chapters.filter((c) => c.part !== "AI");
-    apportion(b.periods - RESERVED_PERIODS, list.map((c) => (c.part === "EVS" ? 0.6 : 1))).forEach((p, i) => (out[list[i].key] = p));
+    const list = chapters.filter((c) => c.part === "CT");
+    apportion(b.periods - RESERVED_PERIODS, list.map(() => 1)).forEach((p, i) => (out[list[i].key] = p));
   } else {
     const ai = chapters.filter((c) => c.part === "AI");
     const ct = chapters.filter((c) => c.part === "CT");
@@ -77,7 +77,7 @@ function monthOfWeek(week: number) {
   return CALENDAR[CALENDAR.length - 1].month;
 }
 
-/** Teaching order split into two terms. EVS themes are spread between CT chapters; AI chapters 1–2 go in term 1, 3–4 in term 2. */
+/** Teaching order split into two terms, in book order. AI chapters 1–2 go in term 1, 3–4 in term 2. */
 export function termOrder(classLevel: number, chapters: PlanChapter[], periods: Record<string, number>) {
   const ct = chapters.filter((c) => c.part === "CT").sort((a, b) => a.number - b.number);
   const half = (list: PlanChapter[]) => {
@@ -86,17 +86,7 @@ export function termOrder(classLevel: number, chapters: PlanChapter[], periods: 
     for (const [i, c] of list.entries()) { acc += periods[c.key]; if (acc * 2 >= total) { cut = i + 1; break; } }
     return [list.slice(0, cut), list.slice(cut)];
   };
-  if (classLevel <= 5) {
-    const evs = chapters.filter((c) => c.part === "EVS").sort((a, b) => a.number - b.number);
-    const merged: PlanChapter[] = [];
-    let e = 0;
-    ct.forEach((c, i) => {
-      merged.push(c);
-      while (e < evs.length && Math.round(((e + 1) * ct.length) / (evs.length + 1)) === i + 1) merged.push(evs[e++]);
-    });
-    while (e < evs.length) merged.push(evs[e++]);
-    return half(merged);
-  }
+  if (classLevel <= 5) return half(ct);
   const ai = chapters.filter((c) => c.part === "AI").sort((a, b) => a.number - b.number);
   const [c1, c2] = half(ct);
   const aiCut = Math.ceil(ai.length / 2);
@@ -142,8 +132,8 @@ export const KIND_LABEL: Record<LessonKind, string> = {
 
 type LabelLesson = { id: string; number: number; kind: string; term: number; chapterId: string | null; chapter?: { number: number; part: string } | null };
 /**
- * Teacher-facing names for periods: "Chapter 1-2" is the 2nd period of Chapter 1 (AI and EVS chapters get an
- * "AI " / "EVS " prefix so they do not clash with CT chapters). Periods outside chapters are named by what they are.
+ * Teacher-facing names for periods: "Chapter 1-2" is the 2nd period of Chapter 1 (AI chapters get an "AI " prefix
+ * so they do not clash with CT chapters). Periods outside chapters are named by what they are.
  */
 export function periodLabels(lessons: LabelLesson[]): Map<string, string> {
   const seen = new Map<string, number>();

@@ -43,7 +43,7 @@ export default async function StudioHome() {
           <thead><tr className="text-left text-xs text-muted"><th className="py-2">Class</th><th>Chapters</th><th className="text-right">Published</th><th className="text-right">Target</th><th className="w-1/3 pl-4">Progress</th></tr></thead>
           <tbody>
             {Object.entries(CURRICULUM).map(([cls, parts]) => {
-              const chapters = (parts.CT?.length ?? 0) + (parts.AI?.length ?? 0) + (parts.EVS?.length ?? 0);
+              const chapters = (parts.CT?.length ?? 0) + (parts.AI?.length ?? 0);
               const target = chapters * TARGET_PER_CHAPTER;
               const have = byClass.find((b) => b.classLevel === Number(cls))?._count ?? 0;
               const pct = Math.round((have / target) * 100);

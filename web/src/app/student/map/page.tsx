@@ -7,7 +7,6 @@ import { Empty } from "@/components/ui";
 import { Mascot, SpeechBubble } from "@/components/kid";
 
 const WORLDS: Record<string, { name: string; icon: string; bg: string; island: string }> = {
-  EVS: { name: "Nature Trail", icon: "🌿", bg: "from-[#d9f7e6] to-[#c7f0ff] dark:from-[#0f2e22] dark:to-[#0e2433]", island: "🌳" },
   CT: { name: "Thinking Islands", icon: "🏝️", bg: "from-[#cfeaff] to-[#e6dcff] dark:from-[#0e2440] dark:to-[#221a46]", island: "🏝️" },
   AI: { name: "AI Galaxy", icon: "🤖", bg: "from-[#2b2366] to-[#14103a]", island: "🪐" },
 };

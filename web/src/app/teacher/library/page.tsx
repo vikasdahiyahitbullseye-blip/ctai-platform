@@ -6,7 +6,7 @@ import { LIBRARY_TARGETS } from "@/lib/library";
 import { PART_LABEL } from "@/lib/constants";
 import { Card, PageHeader, Pill, btn } from "@/components/ui";
 
-const PARTS = ["CT", "AI", "EVS"];
+const PARTS = ["CT", "AI"];
 const SETS: { type: string; title: string; icon: string; target: (chapters: number) => string }[] = [
   { type: "CHAPTER_TEST", title: "Chapter tests", icon: "✅", target: () => "12–15" },
   { type: "WORKSHEET", title: "Worksheets", icon: "📝", target: () => String(LIBRARY_TARGETS.WORKSHEET) },

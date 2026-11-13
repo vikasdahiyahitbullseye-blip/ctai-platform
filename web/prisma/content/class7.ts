@@ -108,7 +108,7 @@ export const class7: SeedQuestion[] = [
   { part: "AI", ch: 2, skills: ["ETHICS"], type: "TRUE_FALSE", d: 1, stem: "True or false: when AI is used in hospitals, patients' data should be kept private.", answer: true, solution: "Health data is very personal and must be protected." },
   { part: "AI", ch: 2, skills: ["AI_CONCEPT", "EVALUATION"], type: "MCQ", d: 3, stem: "Which job is **least likely** to be fully replaced by AI?", options: ["Counselling a worried student", "Sorting parcels by PIN code", "Checking spellings", "Counting cars on a road"], answer: 0, solution: "Counselling needs empathy, trust and judgement. The others are repetitive tasks AI is good at." },
 
-  // ---------- AI Ch 3 — Data Visualisation and Analysis ----------
+  // ---------- AI Ch 3 — Data Visualization and Analysis ----------
   { part: "AI", ch: 3, skills: ["DATA"], type: "MCQ", d: 1, stem: "Which chart is best to show **parts of a whole** (e.g. how a family spends its money)?", options: ["Pie chart", "Line graph", "Table only", "Map"], answer: 0, solution: "A pie chart shows each part as a slice of the whole." },
   { part: "AI", ch: 3, skills: ["DATA"], type: "MCQ", d: 1, stem: "Which chart is best to show **change over time** (e.g. temperature each day)?", options: ["Line graph", "Pie chart", "Pictograph", "Venn diagram"], answer: 0, solution: "Line graphs join points in time order, showing trends." },
   { part: "AI", ch: 3, skills: ["DATA"], type: "MCQ", d: 2, stem: "Which chart is best to **compare** the number of students in 4 different sports clubs?", options: ["Bar graph", "Line graph", "Pie chart of one club", "Scatter of heights"], answer: 0, solution: "Bar graphs compare separate categories side by side." },

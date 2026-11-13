@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { class3 } from "../../../prisma/content/class3";
 import { class6, class6Short } from "../../../prisma/content/class6";
-import { evs3 } from "../../../prisma/content/evs3";
 import { class4 } from "../../../prisma/content/class4";
 import { class5 } from "../../../prisma/content/class5";
 import { class7 } from "../../../prisma/content/class7";
@@ -15,11 +14,11 @@ import { balanceOptions } from "../../../prisma/content/balance";
 import { SKILLS, CURRICULUM } from "../constants";
 
 describe("seed content integrity", () => {
-  for (const [cls, list] of [[3, [...class3, ...evs3, ...class3more]], [4, class4], [5, class5], [6, [...class6, ...class6Short, ...class6more]], [7, class7], [8, class8]] as const) {
+  for (const [cls, list] of [[3, [...class3, ...class3more]], [4, class4], [5, class5], [6, [...class6, ...class6Short, ...class6more]], [7, class7], [8, class8]] as const) {
     it(`class ${cls}: every item is well-formed and its key grades as correct`, () => {
-      for (const q of list) {
+      for (const q of list.filter((x) => (x.part ?? "CT") !== "EVS")) {
         const part = q.part ?? "CT";
-        const chapters = CURRICULUM[cls][part as "CT" | "AI" | "EVS"]!;
+        const chapters = CURRICULUM[cls][part as "CT" | "AI"]!;
         expect(q.ch, q.stem).toBeLessThanOrEqual(chapters.length);
         expect(q.skills.length).toBeGreaterThan(0);
         q.skills.forEach((s) => expect(Object.keys(SKILLS), s).toContain(s));
@@ -34,17 +33,17 @@ describe("seed content integrity", () => {
   }
 
   it("no duplicate question stems within a class", () => {
-    for (const list of [[...class3, ...evs3, ...class3more], class4, class5, [...class6, ...class6Short, ...class6more], class7, class8]) {
+    for (const list of [[...class3, ...class3more], class4, class5, [...class6, ...class6Short, ...class6more], class7, class8]) {
       const stems = list.map((q) => q.stem.trim());
       const dupes = stems.filter((s, i) => stems.indexOf(s) !== i);
       expect(dupes).toEqual([]);
     }
   });
-  it("every chapter of every class is covered (CT ≥ 8, AI ≥ 10, EVS ≥ 4 practice items; 5 puzzles per class)", () => {
-    const byClass = { 3: [...class3, ...evs3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 } as const;
-    const min = { CT: 8, AI: 10, EVS: 4 } as const;
+  it("every chapter of every class is covered (CT ≥ 8, AI ≥ 10 practice items; 5 puzzles per class)", () => {
+    const byClass = { 3: [...class3, ...class3more], 4: class4, 5: class5, 6: [...class6, ...class6Short, ...class6more], 7: class7, 8: class8 } as const;
+    const min = { CT: 8, AI: 10 } as const;
     for (const [cls, list] of Object.entries(byClass)) {
-      for (const part of ["CT", "AI", "EVS"] as const) {
+      for (const part of ["CT", "AI"] as const) {
         (CURRICULUM[Number(cls)][part] ?? []).forEach((_, i) => {
           const n = list.filter((q) => (q.part ?? "CT") === part && q.ch === i + 1 && !q.puzzle && q.type !== "SHORT").length;
           expect(n, `class ${cls} ${part} ch ${i + 1}`).toBeGreaterThanOrEqual(min[part]);
@@ -60,7 +59,7 @@ describe("seed content integrity", () => {
     }
   });
   it("balancing keeps answers correct and spreads the correct option across positions", () => {
-    const all = [...class3, ...evs3, ...class3more, ...class4, ...class5, ...class6, ...class6Short, ...class6more, ...class7, ...class8];
+    const all = [...class3, ...class3more, ...class4, ...class5, ...class6, ...class6Short, ...class6more, ...class7, ...class8];
     const counts = [0, 0, 0, 0, 0];
     let mcq = 0;
     for (const raw of all) {
@@ -82,10 +81,22 @@ describe("seed content integrity", () => {
       if (k.classLevel >= 6) expect(k.milestones.reduce((s, m) => s + m.sessions, 0)).toBe(20);
     }
   });
+  it("chapters are exactly the CBSE handbook chapters (no EVS chapters)", () => {
+    expect(Object.keys(CURRICULUM).map(Number)).toEqual([3, 4, 5, 6, 7, 8]);
+    expect(CURRICULUM[3].CT.length).toBe(14);
+    expect(CURRICULUM[4].CT.length).toBe(14);
+    expect(CURRICULUM[5].CT.length).toBe(15);
+    expect(CURRICULUM[6].CT.length).toBe(10);
+    expect(CURRICULUM[7].CT.length).toBe(8);
+    expect(CURRICULUM[8].CT.length).toBe(7);
+    for (const c of [3, 4, 5]) expect(CURRICULUM[c].AI, `class ${c} has no AI chapters`).toBeUndefined();
+    for (const c of [6, 7, 8]) expect(CURRICULUM[c].AI!.length).toBe(4);
+    for (const c of Object.values(CURRICULUM)) expect(Object.keys(c).sort()).toEqual(c.AI ? ["AI", "CT"] : ["CT"]);
+  });
   it("connections point at real chapters", () => {
     for (const key of Object.keys(CONNECTIONS)) {
       const [cls, part, n] = key.split("-");
-      const list = CURRICULUM[Number(cls)][part as "CT" | "AI" | "EVS"];
+      const list = CURRICULUM[Number(cls)][part as "CT" | "AI"];
       expect(list, key).toBeDefined();
       expect(Number(n), key).toBeLessThanOrEqual(list!.length);
     }

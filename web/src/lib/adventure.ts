@@ -15,7 +15,7 @@ export async function adventure(db: PrismaClient, userId: string, classLevel: nu
     include: { _count: { select: { questions: { where: { isPuzzle: false, status: "PUBLISHED", type: { not: "SHORT" } } } } } },
     orderBy: [{ part: "asc" }, { number: "asc" }],
   });
-  const ordered = [...chapters].sort((a, b) => ["EVS", "CT", "AI"].indexOf(a.part) - ["EVS", "CT", "AI"].indexOf(b.part) || a.number - b.number);
+  const ordered = [...chapters].sort((a, b) => ["CT", "AI"].indexOf(a.part) - ["CT", "AI"].indexOf(b.part) || a.number - b.number);
   const rs = await db.response.findMany({ where: { attempt: { userId }, correct: { not: null } }, select: { correct: true, question: { select: { chapterId: true } } } });
   const stats = new Map<string, { n: number; c: number }>();
   for (const r of rs) {

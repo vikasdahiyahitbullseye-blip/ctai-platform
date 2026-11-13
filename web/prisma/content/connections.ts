@@ -26,20 +26,6 @@ export const CONNECTIONS: Record<string, { focus: string; links: Link[] }> = {
       { subject: "PE", topic: "Movement games", how: "'Robot' games (2 steps forward, turn right) act out an algorithm with the body.", activity: "Play 'Programme the Robot' in the playground with direction cards." },
     ],
   },
-  "3-EVS-2": {
-    focus: "Plant growth steps, plant products and repeating patterns in nature.",
-    links: [
-      { subject: "MATHS", topic: "Adding equal amounts", how: "Growth of 2 cm every week is a repeating rule — a number pattern." },
-      { subject: "SCIENCE", topic: "What plants need", how: "Ordering the steps to grow a seed is sequencing (algorithmic thinking)." },
-    ],
-  },
-  "3-EVS-5": {
-    focus: "Saving water: measuring use, finding patterns and choosing the best option.",
-    links: [
-      { subject: "MATHS", topic: "Addition and time", how: "Adding litres used and counting drops per minute is decomposition with numbers.", activity: "Keep a one-day 'water diary' at home and total it in class." },
-      { subject: "DAILY_LIFE", topic: "Saving water at home", how: "Comparing options and choosing the one that saves most water is evaluation." },
-    ],
-  },
   // ---------------- Class 4 ----------------
   "4-CT-3": {
     focus: "Patterns in numbers, shapes and around us.",

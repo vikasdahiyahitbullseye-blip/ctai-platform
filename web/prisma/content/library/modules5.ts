@@ -1,4 +1,4 @@
-// Class 5 learning modules (CT chapters follow NCERT Maths Mela 5; EVS themes follow TWAU).
+// Class 5 learning modules (CT chapters follow NCERT Maths Mela 5).
 import { M, type ModuleData } from "./types";
 
 export const MODULES5: Record<string, ModuleData> = {
@@ -136,59 +136,5 @@ export const MODULES5: Record<string, ModuleData> = {
     mistake: "Choosing a key that makes the pictograph impossible to draw (e.g. one picture = 7).",
     home: "Collect data on how classmates or neighbours travel to school. Draw a bar graph.",
     kit: { t: "Data Detectives", e: "🔍", mat: "Survey sheets, graph paper", steps: [["Ask", "Choose a question and collect answers from 20 people.", "Use tally marks."], ["Graph", "Draw a pictograph and a bar graph of the same data.", "Choose a sensible key and scale."], ["Conclude", "Write 3 true statements from your graph.", "Partners check each statement against the graph."]], out: "Two graphs of the same data with 3 conclusions" },
-  }),
-  "5-EVS-1": M({
-    o: ["I can describe the steps from farm to plate.", "I can match crops to seasons.", "I can compare crop data in tables."],
-    hook: "Your roti started as a seed. List every step it went through to reach your plate.",
-    ideas: ["Farming follows steps: ploughing, sowing, watering, harvesting.", "Different crops grow in different seasons (kharif, rabi).", "Tables and graphs help compare harvests.", "Farmers decide using weather and soil data."],
-    terms: [["Kharif", "Crops sown in the monsoon"], ["Rabi", "Crops sown in winter"], ["Harvest", "Gathering the crop"]],
-    mistake: "Thinking all crops are grown at the same time of year.",
-    home: "Ask an elder which crops are grown near your area and in which season. Make a table.",
-    kit: { t: "Farm to Plate Chain", e: "🌾", mat: "Step cards, crop picture cards", steps: [["Order", "Arrange farm step cards in the right order.", "Discuss what happens if a step is skipped."], ["Season sort", "Sort crop cards into kharif and rabi.", "Use local crops."], ["Data", "Read a crop harvest table and answer 3 questions.", "Ask one comparison question."]], out: "An ordered farming chain and a season sort chart" },
-  }),
-  "5-EVS-2": M({
-    o: ["I can describe the stages of the water cycle.", "I can read rainfall data from graphs.", "I can explain why water must be saved."],
-    hook: "Where did the rain that fell yesterday come from? Where will it go next?",
-    ideas: ["The water cycle: evaporation, condensation, precipitation, collection.", "The cycle repeats again and again.", "Rainfall data shows patterns across months.", "Saving water matters because clean water is limited."],
-    terms: [["Evaporation", "Water turning into vapour"], ["Condensation", "Vapour turning into droplets"], ["Precipitation", "Rain, snow or hail"]],
-    mistake: "Thinking clouds are made of smoke rather than tiny water droplets.",
-    home: "Put a bowl of water in the sun and mark the level each day for 3 days. Explain what happened.",
-    kit: { t: "Water Cycle in a Bag", e: "🌦️", mat: "Zip bags, water, blue colour, tape, marker", steps: [["Build", "Draw sun, cloud and sea on a bag, add a little coloured water, seal and tape to a sunny window.", "Use small amounts of water."], ["Observe", "Observe after an hour and the next day; draw what you see.", "Look for droplets at the top."], ["Explain", "Label each stage of the cycle on your drawing.", "Ask children to use the four key words."]], out: "A labelled water-cycle bag drawing" },
-  }),
-  "5-EVS-3": M({
-    o: ["I can use directions and a compass rose.", "I can read a map using a key and scale.", "I can describe routes using directions and distances."],
-    hook: "If you face the rising sun, which direction are you facing? Where is north?",
-    ideas: ["The sun rises in the east and sets in the west.", "A compass rose shows N, S, E, W and in-between directions.", "A map key explains symbols.", "Routes can be described with directions and distances."],
-    terms: [["Compass rose", "A symbol showing directions"], ["North-east", "Between north and east"], ["Scale", "How far map distances are in real life"]],
-    mistake: "Assuming north is always 'up' in real life rather than on the map.",
-    home: "Find which direction your front door faces using the sun's position in the morning.",
-    kit: { t: "Sun Compass Walk", e: "☀️", mat: "Chalk, a stick, a direction worksheet", steps: [["Find east", "In the morning, find where the sun is and mark east.", "Never look straight at the sun."], ["Mark all", "Mark N, S, E, W on the ground.", "Check with a phone compass if available."], ["Describe", "Describe a route from the gate to your classroom using directions.", "Swap and follow descriptions."]], out: "A chalk compass and a written route" },
-  }),
-  "5-EVS-4": M({
-    o: ["I can name sources of energy.", "I can sort energy sources as renewable or not.", "I can compare energy use with data."],
-    hook: "List everything that used electricity in your home this morning. Could any of it use the sun instead?",
-    ideas: ["Energy makes things work: food, fuel, electricity, sunlight, wind.", "Renewable sources do not run out; fossil fuels do.", "Measuring energy use shows where to save.", "Switching off and using natural light saves energy."],
-    terms: [["Renewable", "Will not run out"], ["Fossil fuel", "Coal, oil and gas"], ["Unit", "A measure of electricity used"]],
-    mistake: "Thinking electricity itself is a source rather than something made from a source.",
-    home: "Read your electricity bill with an adult. Find the units used and one way to reduce them.",
-    kit: { t: "Energy Detectives", e: "⚡", mat: "Energy source cards, a school energy checklist", steps: [["Sort", "Sort energy source cards into renewable and non-renewable.", "Discuss tricky ones (wood, biogas)."], ["Audit", "Walk around and list energy uses in the classroom.", "Count lights and fans."], ["Save", "Make 3 energy-saving rules and estimate savings.", "Display rules near switches."]], out: "A sorted chart and a classroom energy-saving poster" },
-  }),
-  "5-EVS-5": M({
-    o: ["I can describe seasons and weather.", "I can record weather data in a table.", "I can find patterns in temperature and rainfall data."],
-    hook: "Why do we wear sweaters in December in Delhi but not in Chennai?",
-    ideas: ["Weather is day-to-day; climate is the pattern over years.", "Temperature, rainfall and wind are measured to describe weather.", "Recording data daily reveals patterns.", "Patterns help predict weather, which is what AI weather models do too."],
-    terms: [["Temperature", "How hot or cold it is"], ["Season", "A part of the year with typical weather"], ["Predict", "Say what will happen next"]],
-    mistake: "Calling one cold day a 'cold climate'.",
-    home: "Keep a weather diary for 5 days: sunny, cloudy or rainy, and the temperature from the news.",
-    kit: { t: "Weather Station", e: "🌡️", mat: "Weather chart, thermometer or newspaper data", steps: [["Record", "Record weather each day for a week on a class chart.", "Rotate the weather reporter job."], ["Graph", "Draw a line or bar graph of temperatures.", "Label axes clearly."], ["Predict", "Use the pattern to predict tomorrow; check the next day.", "Discuss why predictions can be wrong."]], out: "A week's weather chart, graph and checked prediction" },
-  }),
-  "5-EVS-6": M({
-    o: ["I can identify ways people harm and protect the environment.", "I can use data to measure a problem like waste or plastic use.", "I can plan steps for a class action project."],
-    hook: "How many plastic bags does your family bring home in a week? Guess, then count.",
-    ideas: ["Pollution, waste and cutting trees harm our planet.", "Measuring a problem shows how big it is.", "Small actions by many people add up.", "A good plan has clear steps, roles and a way to check progress."],
-    terms: [["Pollution", "Harmful things in air, water or land"], ["Conserve", "Protect and use carefully"], ["Action plan", "Steps to solve a problem"]],
-    mistake: "Planning without measuring, so we cannot tell if the plan worked.",
-    home: "Count plastic items used at home in a day. Suggest a replacement for each.",
-    kit: { t: "Green Class Pledge", e: "🌍", mat: "Chart paper, tally sheets", steps: [["Measure", "Count plastic or paper waste in the class bin for 2 days.", "Use a tally sheet."], ["Plan", "Write a 4-step plan to reduce it, with roles.", "Plans must be things children can do."], ["Check", "Count again after a week and compare.", "Celebrate any reduction."]], out: "Before-and-after waste counts and a class pledge" },
   }),
 };

@@ -39,12 +39,6 @@ export const PLAN: Record<string, string[]> = {
   "3-CT-12": ["two-step", "money-change", "missing-number"],
   "3-CT-13": ["day-after", "time-after", "calendar-date", "seq-next"],
   "3-CT-14": ["turns", "grid-walk", "money-change", "queue-pos", "ordering"],
-  "3-EVS-1": ["ordering", "queue-pos", "handshakes", "healthy-habit"],
-  "3-EVS-2": ["plant-part", "evs-plant-growth", "food-source"],
-  "3-EVS-3": ["animal-home", "evs-legs", "heads-legs"],
-  "3-EVS-4": ["food-source", "healthy-habit", "groups-total"],
-  "3-EVS-5": ["water-source", "evs-water", "evs-rainfall"],
-  "3-EVS-6": ["grid-walk", "turns", "transport-mode", "evs-map-scale"],
   // Class 4
   "4-CT-1": ["symmetry-lines", "count-squares", "emoji-pattern", "groups-total"],
   "4-CT-2": ["queue-pos", "grid-walk", "turns", "seq-next"],
@@ -60,12 +54,6 @@ export const PLAN: Record<string, string[]> = {
   "4-CT-12": ["day-after", "time-after", "calendar-date"],
   "4-CT-13": ["money-change", "time-after", "groups-total", "combos"],
   "4-CT-14": ["data-table", "two-step"],
-  "4-EVS-1": ["body-part", "healthy-habit", "evs-water"],
-  "4-EVS-2": ["plant-part", "evs-plant-growth", "crop-season"],
-  "4-EVS-3": ["animal-home", "evs-legs"],
-  "4-EVS-4": ["water-source", "evs-water", "evs-rainfall", "two-step"],
-  "4-EVS-5": ["transport-mode", "time-after", "evs-map-scale"],
-  "4-EVS-6": ["waste-type", "evs-trees", "data-table"],
   // Class 5
   "5-CT-1": ["digit-value", "place-compose", "order-numbers", "digits-make", "compare-sign"],
   "5-CT-2": ["fraction-of", "compare-fractions"],
@@ -82,12 +70,6 @@ export const PLAN: Record<string, string[]> = {
   "5-CT-13": ["seq-next", "hcf-lcm", "nth-term", "divisibility"],
   "5-CT-14": ["grid-walk", "turns", "queue-pos"],
   "5-CT-15": ["data-table"],
-  "5-EVS-1": ["crop-season", "food-source", "money-change"],
-  "5-EVS-2": ["water-source", "evs-rainfall", "evs-water"],
-  "5-EVS-3": ["evs-map-scale", "grid-walk", "turns"],
-  "5-EVS-4": ["energy", "evs-energy"],
-  "5-EVS-5": ["evs-rainfall", "data-mean-range", "ai-predict-next"],
-  "5-EVS-6": ["waste-type", "energy", "evs-trees"],
   // Class 6
   "6-CT-1": ["seq-next", "seq-growing", "seq-geometric", "nth-term", "seq-interleaved", "letter-pattern"],
   "6-CT-2": ["angle-facts", "clock-angle", "handshakes"],
@@ -288,12 +270,6 @@ export function generateCbseLevel(have: Record<string, number>, target = 40, min
 import { SCENARIO_FAMILIES } from "./scenario";
 const SFAM: Record<string, Family> = Object.fromEntries(SCENARIO_FAMILIES.map((f) => [f.id, f]));
 export const SCENARIO_PLAN: Record<string, string[]> = {
-  "3-EVS-1": ["s-evs-family", "s-evs-queue", "s-evs-travel"], "3-EVS-2": ["s-evs-plant", "s-evs-food-chain", "s-evs-water"], "3-EVS-3": ["s-evs-animal-clues", "s-evs-food-chain", "s-evs-queue"],
-  "3-EVS-4": ["s-evs-food-chain", "s-evs-waste", "s-evs-plant"], "3-EVS-5": ["s-evs-water", "s-evs-rain", "s-evs-plant"], "3-EVS-6": ["s-evs-map-route", "s-evs-travel", "s-evs-queue"],
-  "4-EVS-1": ["s-evs-water", "s-evs-queue", "s-evs-family"], "4-EVS-2": ["s-evs-plant", "s-evs-food-chain", "s-evs-rain"], "4-EVS-3": ["s-evs-animal-clues", "s-evs-food-chain", "s-evs-queue"],
-  "4-EVS-4": ["s-evs-water", "s-evs-rain", "s-evs-plant"], "4-EVS-5": ["s-evs-travel", "s-evs-map-route", "s-evs-queue"], "4-EVS-6": ["s-evs-waste", "s-evs-energy", "s-evs-water"],
-  "5-EVS-1": ["s-evs-plant", "s-evs-rain", "s-evs-food-chain"], "5-EVS-2": ["s-evs-rain", "s-evs-water", "s-evs-plant"], "5-EVS-3": ["s-evs-map-route", "s-evs-travel", "s-evs-queue"],
-  "5-EVS-4": ["s-evs-energy", "s-evs-travel", "s-evs-water"], "5-EVS-5": ["s-evs-rain", "s-evs-plant", "s-evs-water"], "5-EVS-6": ["s-evs-waste", "s-evs-energy", "s-evs-water"],
   "6-AI-1": ["s-ai-domain-learning", "s-ai-rules", "s-ai-split"], "6-AI-2": ["s-data-mean", "s-ai-chart", "s-ai-split"], "6-AI-3": ["s-ai-rules", "s-data-mean", "s-ai-accuracy"], "6-AI-4": ["s-online-safety", "s-ai-ethics", "s-ai-bias"],
   "7-AI-1": ["s-ai-domain-learning", "s-ai-accuracy", "s-ai-split"], "7-AI-2": ["s-ai-domain-learning", "s-ai-rules", "s-ai-accuracy"], "7-AI-3": ["s-ai-chart", "s-data-mean", "s-ai-split"], "7-AI-4": ["s-ai-bias", "s-ai-ethics", "s-online-safety"],
   "8-AI-1": ["s-ai-lifecycle", "s-ai-accuracy", "s-ai-split"], "8-AI-2": ["s-ai-domain-learning", "s-ai-rules", "s-ai-accuracy"], "8-AI-3": ["s-ai-bias", "s-ai-split", "s-data-mean"], "8-AI-4": ["s-ai-ethics", "s-online-safety", "s-ai-bias"],

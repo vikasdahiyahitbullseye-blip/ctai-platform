@@ -293,7 +293,7 @@ const TOPIC_CHARTS: Record<string, Theme[]> = {
   ai: [["Photos in the training set", ["Cats", "Dogs", "Rabbits", "Birds", "Fish"]], ["Robots used in factories", ["2021", "2022", "2023", "2024", "2025"]]],
   family: [["Family members", ["Asha", "Ravi", "Meena", "Kabir", "Zoya"]], ["Pets at home", ["Dog", "Cat", "Fish", "Parrot", "Rabbit"]]],
 };
-const CHART_TOPIC: Record<string, string> = { "3-EVS-1": "family", "3-EVS-2": "plants", "3-EVS-5": "water", "4-EVS-2": "plants", "4-EVS-4": "water", "4-EVS-6": "waste", "4-CT-7": "waste", "5-EVS-1": "farm", "5-EVS-2": "water", "5-EVS-4": "energy", "5-EVS-5": "weather", "5-EVS-6": "waste", "5-CT-6": "farm", "7-AI-2": "ai", "7-AI-3": "ai", "6-AI-2": "ai", "6-AI-3": "ai" };
+const CHART_TOPIC: Record<string, string> = { "4-CT-7": "waste", "5-CT-6": "farm", "7-AI-2": "ai", "7-AI-3": "ai", "6-AI-2": "ai", "6-AI-3": "ai" };
 const PICTO_TOPIC: Record<string, readonly [string, readonly string[], string][]> = {
   water: [["Buckets of water used", ["Mon", "Tue", "Wed", "Thu"], "💧"], ["Rainy days", ["Jun", "Jul", "Aug", "Sep"], "🌧️"]],
   weather: [["Rainy days", ["Jun", "Jul", "Aug", "Sep"], "🌧️"], ["Sunny days", ["Jan", "Feb", "Mar", "Apr"], "☀️"]],
@@ -302,7 +302,7 @@ const PICTO_TOPIC: Record<string, readonly [string, readonly string[], string][]
   family: [["Visits to Nani's house", ["Asha", "Ravi", "Meena", "Kabir"], "🏠"], ["Birthday cakes this year", ["Jan", "Feb", "Mar", "Apr"], "🎂"]],
   food: [["Fruits eaten this week", ["Asha", "Ravi", "Meena", "Kabir"], "🍎"], ["Glasses of water drunk", ["Mon", "Tue", "Wed", "Thu"], "💧"]],
 };
-const PICTO_KEY: Record<string, string> = { "3-EVS-1": "family", "3-EVS-5": "water", "4-EVS-1": "food", "4-EVS-4": "water", "5-EVS-2": "water", "5-EVS-4": "energy", "5-EVS-5": "weather", "5-CT-6": "farm" };
+const PICTO_KEY: Record<string, string> = { "5-CT-6": "farm" };
 const chapterKey = (c: { cls: number; part: string; ch: number }) => `${c.cls}-${c.part}-${c.ch}`;
 
 const CHART_THEMES = [["Favourite fruit", ["Mango", "Apple", "Banana", "Guava", "Grapes"]], ["Pets at home", ["Dog", "Cat", "Fish", "Parrot", "Rabbit"]], ["Way to school", ["Walk", "Bus", "Cycle", "Car", "Auto"]], ["Books read", ["Asha", "Ravi", "Meena", "Kabir", "Zoya"]]] as const;
@@ -380,9 +380,9 @@ export const PICTURE_FAMILIES: Record<string, Family> = Object.fromEntries([mirr
 /** Picture families per chapter; each listed chapter gets PICTURES_PER_CHAPTER picture questions on top of its 40. */
 export const PICTURES_PER_CHAPTER = 8;
 export const PICTURE_PLAN: Record<string, string[]> = {
-  "3-CT-1": ["pic-sequence", "pic-count-shapes"], "3-CT-2": ["pic-cubes", "pic-count-shapes"], "3-CT-5": ["pic-mirror", "pic-count-shapes", "pic-symmetry-complete"], "3-CT-10": ["pic-sequence", "pic-count-shapes"], "3-CT-13": ["pic-clock"], "3-CT-14": ["pic-grid-robot", "pic-grid-map", "pic-grid-shortest"], "3-EVS-6": ["pic-grid-map", "pic-grid-robot"],
+  "3-CT-1": ["pic-sequence", "pic-count-shapes"], "3-CT-2": ["pic-cubes", "pic-count-shapes"], "3-CT-5": ["pic-mirror", "pic-count-shapes", "pic-symmetry-complete"], "3-CT-10": ["pic-sequence", "pic-count-shapes"], "3-CT-13": ["pic-clock"], "3-CT-14": ["pic-grid-robot", "pic-grid-map", "pic-grid-shortest"], 
   "4-CT-1": ["pic-cubes", "pic-count-shapes"], "4-CT-2": ["pic-grid-robot", "pic-grid-shortest", "pic-cubes"], "4-CT-3": ["pic-sequence"], "4-CT-10": ["pic-bar-chart", "pic-pictograph"], "4-CT-11": ["pic-mirror", "pic-water", "pic-symmetry-complete"], "4-CT-12": ["pic-clock"], "4-CT-14": ["pic-bar-chart", "pic-pictograph"],
-  "5-CT-3": ["pic-rotate", "pic-clock", "pic-sequence"], "5-CT-7": ["pic-sequence", "pic-count-shapes"], "5-CT-10": ["pic-mirror", "pic-water", "pic-symmetry-complete", "pic-odd-one-out"], "5-CT-12": ["pic-clock"], "5-CT-14": ["pic-grid-map", "pic-grid-robot", "pic-grid-shortest"], "5-CT-15": ["pic-pictograph", "pic-bar-chart"], "5-EVS-3": ["pic-grid-map", "pic-grid-shortest"],
+  "5-CT-3": ["pic-rotate", "pic-clock", "pic-sequence"], "5-CT-7": ["pic-sequence", "pic-count-shapes"], "5-CT-10": ["pic-mirror", "pic-water", "pic-symmetry-complete", "pic-odd-one-out"], "5-CT-12": ["pic-clock"], "5-CT-14": ["pic-grid-map", "pic-grid-robot", "pic-grid-shortest"], "5-CT-15": ["pic-pictograph", "pic-bar-chart"], 
   "6-CT-1": ["pic-sequence"], "6-CT-4": ["pic-bar-chart", "pic-pictograph"], "6-CT-8": ["pic-grid-robot", "pic-rotate"], "6-CT-9": ["pic-mirror", "pic-water", "pic-rotate", "pic-odd-one-out", "pic-symmetry-complete"], "6-AI-2": ["pic-bar-chart"], "6-AI-3": ["pic-sequence", "pic-bar-chart"],
   "7-CT-7": ["pic-odd-one-out", "pic-rotate"], "7-AI-3": ["pic-bar-chart", "pic-pictograph"],
   "8-CT-1": ["pic-cubes"], "8-CT-4": ["pic-odd-one-out", "pic-rotate"], "8-AI-1": ["pic-grid-shortest"],

@@ -104,7 +104,7 @@ let hwAttemptUrl;
 {
   const { page, ctx } = await session("student3");
   await page.goto(`${BASE}/student/tests`);
-  await Promise.all([page.waitForURL(/\/student\/play\//), page.locator("li", { hasText: "Every drop counts" }).locator('button:has-text("Start")').click()]);
+  await Promise.all([page.waitForURL(/\/student\/play\//), page.locator("li", { hasText: "Homework: Filling and Lifting" }).locator('button:has-text("Start")').click()]);
   await page.waitForSelector("text=Activity 1");
   const radios = page.locator('[role="radio"]');
   if (await radios.count()) await radios.first().click();
@@ -121,7 +121,7 @@ let hwAttemptUrl;
 {
   const { page, ctx } = await session("teacher");
   await page.goto(`${BASE}/teacher/assignments`);
-  await page.click("text=Homework: Every drop counts");
+  await page.click("text=Homework: Filling and Lifting");
   const row = page.locator("tr", { hasText: "Aarav Sharma" });
   await row.locator("text=Mark →").click();
   await page.waitForSelector("text=Marking: Aarav Sharma");
@@ -287,12 +287,6 @@ let teamUrl;
   await ctx.close();
 
   const { page: st, ctx: sctx } = await session("student3");
-  await st.goto(`${BASE}/student/map`);
-  await st.goto(BASE + (await st.locator("a[href^='/student/chapter/']").first().getAttribute("href")));
-  await st.locator("a:has-text('Learning module')").click();
-  await st.waitForSelector("text=Try it");
-  // Theory comes from the CT help books, so it shows on CT chapters (not on the EVS themes).
-  check(await st.locator("#learn-it").count() === 0, "EVS module has no help-book theory");
   await st.goto(`${BASE}/student/map`);
   await st.goto(BASE + (await st.locator("a[href^='/student/chapter/']:has-text('Toy Joy')").first().getAttribute("href")));
   await st.locator("a:has-text('Learning module')").click();

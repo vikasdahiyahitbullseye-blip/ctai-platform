@@ -10,7 +10,7 @@ export type QuestionDraft = {
 
 const base = z.object({
   classLevel: z.number().int().min(3).max(8),
-  part: z.enum(["CT", "AI", "EVS"]),
+  part: z.enum(["CT", "AI"]),
   chapterNumber: z.number().int().min(1),
   type: z.enum(Object.keys(QUESTION_TYPES) as [string, ...string[]]),
   difficulty: z.number().int().min(1).max(3),

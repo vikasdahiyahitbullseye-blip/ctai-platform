@@ -12,7 +12,7 @@ export default async function StudioImport() {
           <table className="w-full">
             <tbody className="[&_td]:border-t [&_td]:border-line [&_td]:py-1.5 [&_td]:pr-4">
               <tr><td className="font-mono">class</td><td>3–8</td></tr>
-              <tr><td className="font-mono">part</td><td>CT, AI or EVS</td></tr>
+              <tr><td className="font-mono">part</td><td>CT or AI (AI for Classes 6–8)</td></tr>
               <tr><td className="font-mono">chapter</td><td>Chapter number within the part</td></tr>
               <tr><td className="font-mono">type</td><td>MCQ, MULTI, TRUE_FALSE, NUMERIC, FILL_BLANK, ORDER, SHORT</td></tr>
               <tr><td className="font-mono">difficulty</td><td>1 easy, 2 medium, 3 hard</td></tr>

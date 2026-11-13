@@ -42,7 +42,7 @@ export default async function PracticePage() {
         </div>
       </Card>
       {parts.map((part) => (
-        <Card key={part} title={part === "CT" ? "Computational Thinking — chapters" : part === "AI" ? "Artificial Intelligence — chapters" : "EVS worksheets"} className="mb-6">
+        <Card key={part} title={part === "CT" ? "Computational Thinking — chapters" : "Artificial Intelligence — chapters"} className="mb-6">
           <ul className="grid gap-3 sm:grid-cols-2">
             {chapters.filter((c) => c.part === part).map((c) => {
               const s = stats.get(c.id);

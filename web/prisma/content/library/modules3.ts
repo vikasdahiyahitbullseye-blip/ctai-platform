@@ -1,4 +1,4 @@
-// Class 3 learning modules (CT chapters follow the NCERT Maths Mela chapters; EVS themes follow TWAU).
+// Class 3 learning modules (CT chapters follow the NCERT Maths Mela chapters).
 import { M, type ModuleData } from "./types";
 
 export const MODULES3: Record<string, ModuleData> = {
@@ -127,59 +127,5 @@ export const MODULES3: Record<string, ModuleData> = {
     mistake: "Turning left when the instruction says right because the friend is facing a different way.",
     home: "Write directions from your door to the kitchen (or another room) using steps and turns. Ask someone to follow them exactly.",
     kit: { t: "Program the Robot", e: "🤖", mat: "Chalk grid or squared mat, arrow cards, a blindfold (optional)", steps: [["Plan the path", "Place a 'stall' on the grid. Lay arrow cards for the robot to reach it.", "Start with forward and turn cards only."], ["Run the program", "The robot follows the cards exactly. Did it reach the stall?", "The robot must not guess: only follow cards."], ["Debug", "If the robot went wrong, find the wrong card and fix it.", "Celebrate finding bugs."]], out: "A working arrow-card program and one bug that was fixed" },
-  }),
-  "3-EVS-1": M({
-    o: ["I can describe how families and friends are related.", "I can order family members by age or height.", "I can use clues to solve 'who is who' puzzles."],
-    hook: "Riya is older than Sam. Sam is older than Tina. Who is the youngest? How do you know?",
-    ideas: ["Families have different sizes and members.", "Clues about 'older' and 'taller' can be put in order.", "A family tree shows how people are related.", "Using one clue at a time makes puzzles easier."],
-    terms: [["Relation", "How two people are connected"], ["Family tree", "A drawing that shows a family"], ["Order", "Arrange from first to last"]],
-    mistake: "Reading 'A is older than B' backwards and putting B first.",
-    home: "Draw your family tree with names and ages (or birthdays). Order everyone from youngest to oldest.",
-    kit: { t: "Family Clue Cards", e: "👨‍👩‍👧", mat: "Clue cards, name cards, string", steps: [["Read the clues", "Read 3 clue cards about a pretend family.", "Read clues aloud together first."], ["Line them up", "Arrange name cards in age order using the clues.", "Ask children to point to the clue for each step."], ["Make a puzzle", "Write 2 clues about your own family for a friend to solve.", "Check the clues lead to only one answer."]], out: "An ordered family line and a puzzle written by the child" },
-  }),
-  "3-EVS-2": M({
-    o: ["I can put the stages of plant growth in order.", "I can name plant parts and what they give us.", "I can spot repeating patterns in leaves and flowers."],
-    hook: "A seed is planted on Monday. What has to happen before it becomes a plant with a flower? Put it in order.",
-    ideas: ["A plant grows in stages: seed, sprout, young plant, flowering plant.", "Plants give us food, wood, cotton and more.", "Leaves and petals often show repeating patterns and symmetry.", "Steps in nature happen in a fixed order, like an algorithm."],
-    terms: [["Sprout", "A young plant coming out of a seed"], ["Stage", "One step in growing"], ["Petal", "A coloured part of a flower"]],
-    mistake: "Thinking roots grow after the leaves. The root comes out first.",
-    home: "Soak 5 moong seeds overnight and keep them on wet cotton. Draw them every day for 4 days.",
-    kit: { t: "Seed Diary", e: "🌱", mat: "Moong or chana seeds, wet cotton, small cups, diary sheets", steps: [["Plant", "Place seeds on wet cotton and label your cup.", "Explain that seeds need water and air."], ["Observe", "Draw your seed each day and count roots and leaves.", "Keep the diary short: one drawing, one number."], ["Order the stages", "Cut out your drawings and put them in order.", "Ask: what changed first?"]], out: "A 4-day seed diary in the correct order" },
-  }),
-  "3-EVS-3": M({
-    o: ["I can group animals by how they move, eat and live.", "I can count legs and wings using groups.", "I can find the odd animal out and give a reason."],
-    hook: "A hen, a cow, a fish and a sparrow. Which one is the odd one out? Can you find two different answers?",
-    ideas: ["Animals can be grouped by features: legs, wings, where they live, what they eat.", "One collection can be sorted in different ways.", "Counting legs: 3 cows have 3 × 4 legs.", "An odd one out depends on the rule we choose."],
-    terms: [["Feature", "Something that describes an animal"], ["Habitat", "Where an animal lives"], ["Group", "Things that share a feature"]],
-    mistake: "Thinking there is only one correct odd one out. Any answer with a clear rule is fine.",
-    home: "Watch animals or birds near your home for 10 minutes. Make a tally of the ones you see.",
-    kit: { t: "Animal Sorting Game", e: "🐄", mat: "Animal picture cards, sorting hoops or chalk circles", steps: [["Sort by legs", "Sort cards into 0, 2 and 4 legs.", "Discuss birds versus animals with 4 legs."], ["Sort again", "Find a new rule (lives in water / on land) and sort again.", "Show that the same cards fit different rules."], ["Leg count", "Pick 5 cards and find the total number of legs.", "Encourage using groups of 2 and 4."]], out: "Two sorting charts and a leg-count sum" },
-  }),
-  "3-EVS-4": M({
-    o: ["I can sort food by where it comes from.", "I can plan a healthy meal from a menu.", "I can count and compare servings using a table."],
-    hook: "Your lunch box has roti, dal, curd and a banana. Which came from plants and which from animals?",
-    ideas: ["Food comes from plants and animals.", "A healthy plate has different kinds of food.", "A table helps us compare what we eat.", "Choosing a meal with rules (one fruit, one grain) is like solving a puzzle."],
-    terms: [["Grain", "Seeds we eat, such as rice and wheat"], ["Serving", "One portion of food"], ["Balanced", "Having a bit of each kind"]],
-    mistake: "Calling milk and curd 'plant foods' because cows eat plants.",
-    home: "Record what you eat in one day in a table: plant food or animal food? Count each.",
-    kit: { t: "Build a Thali", e: "🍛", mat: "Food picture cards, paper plates, rule cards", steps: [["Sort the food", "Sort food cards into plant and animal sources.", "Use familiar regional foods."], ["Follow the rules", "Build a thali that has one grain, one dal, one vegetable and one fruit.", "Check every rule is met."], ["Compare", "Count items from plants and animals in your thali; make a tally.", "Discuss why variety matters."]], out: "A thali that follows the rules and a tally of food sources" },
-  }),
-  "3-EVS-5": M({
-    o: ["I can measure how much water we use.", "I can find patterns in water use from a table.", "I can choose the best way to save water."],
-    hook: "Brushing with the tap running uses about 10 mugs of water. With a mug it uses 1. How much is saved in a week?",
-    ideas: ["We use water for drinking, cooking, cleaning and bathing.", "Measuring water use with a mug or bucket gives us data.", "Data shows where most water is used.", "Small changes, repeated every day, save a lot."],
-    terms: [["Measure", "Find how much"], ["Save", "Use less"], ["Data", "Facts and numbers we collect"]],
-    mistake: "Forgetting to multiply by 7 when finding water saved in a week.",
-    home: "Count how many mugs of water your family uses for one job (washing dishes or bathing). Suggest one way to use less.",
-    kit: { t: "Water Watchers", e: "💧", mat: "Mugs, a bucket, a tally sheet", steps: [["Measure", "Find how many mugs fill a bucket.", "Use real water outdoors if possible."], ["Collect data", "Tally the water used at the class tap for 5 minutes.", "One child counts, one records."], ["Save water", "Make a rule card for the tap. Estimate the water saved in a week.", "Ask: how did you work out the weekly amount?"]], out: "A tally chart and a water-saving rule card" },
-  }),
-  "3-EVS-6": M({
-    o: ["I can read a simple map of my neighbourhood.", "I can describe a route with directions and landmarks.", "I can find the shortest way between two places."],
-    hook: "Draw a quick map from your house to the school gate. Which places do you pass?",
-    ideas: ["A map is a drawing of a place seen from above.", "Landmarks help us give directions.", "Grid squares help us say exactly where something is.", "The shortest route has the fewest steps."],
-    terms: [["Map", "A drawing of a place from above"], ["Landmark", "A place that is easy to see"], ["Direction", "The way to go: left, right, up, down"]],
-    mistake: "Drawing a map from the side instead of from above.",
-    home: "Draw a map of your street or building with 4 landmarks. Write directions from your home to one landmark.",
-    kit: { t: "Classroom Treasure Map", e: "🗺️", mat: "Squared chart paper, stickers, a small 'treasure'", steps: [["Map the room", "Draw the classroom from above on squared paper with doors, desks and board.", "Do the first few landmarks together."], ["Hide and direct", "Hide the treasure and write directions using landmarks and steps.", "Ask children to use 'left' and 'right' carefully."], ["Find it", "Another group follows the directions to find the treasure.", "Discuss which directions were clear."]], out: "A classroom map with a tested set of directions" },
   }),
 };

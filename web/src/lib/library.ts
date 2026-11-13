@@ -206,7 +206,7 @@ export async function buildClassLibrary(db: PrismaClient, cls: number) {
     const phases = ["EXPLORE", "CREATE", "PRESENT", "REFLECT"];
     const kitData = {
       classLevel: cls, kind: "ACTIVITY", chapterKey: c.key, title: k.t, emoji: k.e, tagline: `A one-period activity for "${c.title}".`, drivingQuestion: c.mod.hook,
-      overview: `${c.mod.o[1]} Materials: ${k.mat}.`, subjects: c.part === "EVS" ? "EVS,MATHS" : c.part === "AI" ? "COMPUTER,SCIENCE" : "MATHS", skills: "DECOMPOSITION,ALGORITHMIC", hours: 1, finalProduct: k.out, published: true,
+      overview: `${c.mod.o[1]} Materials: ${k.mat}.`, subjects: c.part === "AI" ? "COMPUTER,SCIENCE" : "MATHS", skills: "DECOMPOSITION,ALGORITHMIC", hours: 1, finalProduct: k.out, published: true,
     };
     const existing = await db.projectKit.findUnique({ where: { code: kcode } });
     const kit = existing ? await db.projectKit.update({ where: { code: kcode }, data: kitData }) : await db.projectKit.create({ data: { code: kcode, ...kitData } });
