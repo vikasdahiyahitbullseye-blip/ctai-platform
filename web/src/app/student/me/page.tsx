@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { logout } from "@/app/actions/auth";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { studentSummary } from "@/lib/progress";
@@ -24,6 +25,7 @@ export default async function MePage() {
         <Link href="/student/rewards" className="kbtn kbtn-ghost">🏅 Badges</Link>
         <Link href="/student/projects" className="kbtn kbtn-ghost">🚀 Projects</Link>
         <Link href="/account" className="kbtn kbtn-ghost">🔑 Change password</Link>
+        <form action={logout}><button className="kbtn kbtn-ghost">↪ Sign out</button></form>
       </div>
     </div>
   );

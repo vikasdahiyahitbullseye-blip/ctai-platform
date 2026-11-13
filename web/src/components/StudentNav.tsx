@@ -24,8 +24,8 @@ export function SideNav() {
     <nav className="space-y-1" aria-label="Main">
       {STUDENT_NAV.map((n) => (
         <Link key={n.href} href={n.href} aria-current={isActive(path, n.href) ? "page" : undefined}
-          className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-base font-extrabold transition ${isActive(path, n.href) ? "bg-brand text-white shadow-[0_4px_0_var(--brand-ink)]" : "text-ink-2 hover:bg-surface-2"}`}>
-          <span className="text-2xl" aria-hidden>{n.icon}</span>{n.label}
+          className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 text-base font-extrabold transition ${isActive(path, n.href) ? "bg-brand text-white shadow-[0_4px_0_var(--brand-ink)]" : "text-ink-2 hover:bg-surface-2"}`}>
+          <span className="text-xl" aria-hidden>{n.icon}</span>{n.label}
         </Link>
       ))}
     </nav>
