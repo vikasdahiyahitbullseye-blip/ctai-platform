@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { studentSection, leaderboard } from "@/lib/student";
@@ -36,25 +37,10 @@ export default async function RewardsPage() {
         </ul>
       </Card>
 
-      {section.leaderboard ? (
-        <Card title={`This week's leaderboard · Class ${section.classLevel}-${section.section}`}>
-          <ol className="divide-y divide-line">
-            {board.slice(0, 10).map((r) => (
-              <li key={r.userId} className={`flex items-center gap-4 py-2.5 ${r.userId === user.id ? "rounded-xl bg-brand-soft px-2 font-semibold" : ""}`}>
-                <span className="w-8 text-center text-lg">{r.rank === 1 ? "🥇" : r.rank === 2 ? "🥈" : r.rank === 3 ? "🥉" : r.rank}</span>
-                <span className="flex-1">{r.name}{r.userId === user.id ? " (you)" : ""}</span>
-                <span className="tabular-nums">{r.xp} XP</span>
-              </li>
-            ))}
-          </ol>
-          {me && me.rank > 10 && <p className="mt-3 text-sm">You are #{me.rank} with {me.xp} XP this week. Keep going!</p>}
-        </Card>
-      ) : (
-        <Card title="Your XP this week">
-          <p className="text-4xl font-bold tabular-nums text-brand">⭐ {me?.xp ?? 0} XP</p>
-          <p className="mt-2 text-sm text-muted">Earned in the last 7 days. Keep practising to beat your own score!</p>
-        </Card>
-      )}
+      <Card title="Leaderboard">
+        <p className="text-sm text-ink-2">{me ? <>You earned <strong>⭐ {me.xp} XP</strong> this week{section.leaderboard ? <> and are <strong>#{me.rank}</strong> in Class {section.classLevel}-{section.section}</> : null}. </> : null}See your section, class, school and friend groups on the leaderboard.</p>
+        <Link href="/student/leaderboard" className="kbtn mt-3 inline-block">🏆 Open the leaderboard</Link>
+      </Card>
     </div>
   );
 }

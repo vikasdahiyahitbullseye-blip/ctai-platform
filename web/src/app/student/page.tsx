@@ -12,10 +12,12 @@ import { Mascot, SpeechBubble, AvatarBadge } from "@/components/kid";
 import { Empty } from "@/components/ui";
 import { startPuzzle, startPractice, startAssigned } from "@/app/actions/student";
 import { claimMissionAction, claimChallenge } from "@/app/actions/gamify";
+import { board, boardsFor, parsePeriod, parseScope } from "@/lib/leaderboard";
+import { BoardList, BoardTabs } from "@/components/Leaderboard";
 
 const GREETINGS = ["Ready for today's brain workout?", "Every puzzle makes your brain stronger!", "Let's find some patterns today!", "Mistakes help us learn — have a go!"];
 
-export default async function StudentHome() {
+export default async function StudentHome({ searchParams }: { searchParams: Promise<{ board?: string; period?: string }> }) {
   const user = await requireUser("STUDENT");
   const section = await studentSection(user.id);
   if (!section) return <Empty>You are not in a class yet. Please ask your teacher.</Empty>;
@@ -37,6 +39,13 @@ export default async function StudentHome() {
   const chProgress = ch ? await challengeProgress(prisma, ch) : 0;
   const chClaimed = ch ? !!(await prisma.missionClaim.findUnique({ where: { userId_mission_weekKey: { userId: user.id, mission: `CH_${ch.id}`, weekKey: "challenge" } } })) : false;
   const avatar = parseAvatar(user.avatar);
+  const sp = await searchParams;
+  const boards = (await boardsFor(user.id, section)).list;
+  let scope = parseScope(sp.board);
+  if (!boards.some((b) => b.scope === scope)) scope = boards[0]?.scope ?? "section";
+  const period = parsePeriod(sp.period);
+  const rows = boards.length ? await board(user.id, section, scope, period) : null;
+  const myRow = rows?.find((r) => r.userId === user.id);
   const greeting = GREETINGS[new Date().getDate() % GREETINGS.length];
 
   return (
@@ -101,6 +110,30 @@ export default async function StudentHome() {
           </ul>
         </section>
       </div>
+
+      {/* Leaderboard */}
+      <section id="leaderboard" className="scroll-mt-4 rounded-[2rem] border-2 border-line bg-surface p-6 shadow-sm">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-2xl font-extrabold">🏆 Leaderboard</h2>
+          <span className="flex items-center gap-3">
+            {myRow && <span className="rounded-full bg-brand-soft px-3 py-1 text-sm font-extrabold text-brand">You are #{myRow.rank} of {rows!.length}</span>}
+            <Link href="/student/leaderboard" className="text-sm font-bold text-brand">Groups &amp; full board →</Link>
+          </span>
+        </div>
+        {boards.length ? (
+          <>
+            <BoardTabs base="/student" boards={boards} scope={scope} period={period} />
+            <div className="mt-3">{rows ? <BoardList rows={rows} me={user.id} top={5} /> : null}</div>
+          </>
+        ) : (
+          <p className="font-semibold text-ink-2">Class leaderboards are off for your class. <Link className="text-brand underline" href="/student/leaderboard">Make a group with friends</Link> to compare XP!</p>
+        )}
+      </section>
+
+      <Link href="/student/games" className="flex flex-wrap items-center justify-between gap-3 rounded-[2rem] border-2 border-line bg-gradient-to-r from-[#fff4d6] to-[#ffe3ef] p-5 shadow-sm dark:from-[#3a2c10] dark:to-[#3a1626]">
+        <span><span className="text-2xl font-extrabold">🧩 Logic games</span><span className="block text-sm font-bold text-ink-2">Sudoku · Tower of Hanoi · Lights Out · Sliding tiles · Code breaker — levels for Class {section.classLevel}</span></span>
+        <span className="kbtn kbtn-accent">Play →</span>
+      </Link>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Due work */}

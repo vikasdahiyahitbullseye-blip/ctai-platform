@@ -12,17 +12,31 @@ datasource db {
 }
 
 model School {
-  id        String         @id @default(cuid())
+  id            String         @id @default(cuid())
+  name          String
+  city          String?
+  session       String         @default("2026-27")
+  code          String?        @unique
+  active        Boolean        @default(true)
+  isHq          Boolean        @default(false) // Hitbullseye staff "school"
+  groupId       String? // set when the school belongs to a group of schools (a chain)
+  group         SchoolGroup?   @relation(fields: [groupId], references: [id])
+  createdAt     DateTime       @default(now())
+  studentGroups StudentGroup[]
+  users         User[]
+  sections      ClassSection[]
+  audit         AuditLog[]
+}
+
+/**
+ * A group (chain) of schools run by one management. Its GROUPADMIN users manage every school in it.
+ */
+model SchoolGroup {
+  id        String   @id @default(cuid())
   name      String
-  city      String?
-  session   String         @default("2026-27")
-  code      String?        @unique
-  active    Boolean        @default(true)
-  isHq      Boolean        @default(false) // Hitbullseye staff "school"
-  createdAt DateTime       @default(now())
-  users     User[]
-  sections  ClassSection[]
-  audit     AuditLog[]
+  createdAt DateTime @default(now())
+  schools   School[]
+  admins    User[]   @relation("groupAdmin")
 }
 
 model AuditLog {
@@ -36,38 +50,43 @@ model AuditLog {
 }
 
 model User {
-  id           String         @id @default(cuid())
-  schoolId     String
-  school       School         @relation(fields: [schoolId], references: [id])
-  role         String // STUDENT | TEACHER | ADMIN | CONTENT | SUPERADMIN
-  name         String
-  username     String         @unique
-  passwordHash String
-  rollNo       String?
-  active       Boolean        @default(true)
-  mustChangePassword Boolean  @default(false)
-  avatar       String         @default("{}") // JSON {animal, bg, accessory}
-  createdAt    DateTime       @default(now())
-  files        StoredFile[]
-  teamMemberships ProjectTeamMember[]
-  missionClaims MissionClaim[]
-  enrollments  Enrollment[]
-  teaching     TeacherAssignment[]
-  attempts     Attempt[]
-  xpEvents     XpEvent[]
-  badges       UserBadge[]
-  createdAssessments Assessment[] @relation("createdBy")
-  observationsAbout  Observation[] @relation("observedStudent")
-  observationsBy     Observation[] @relation("observer")
+  id                 String               @id @default(cuid())
+  schoolId           String
+  school             School               @relation(fields: [schoolId], references: [id])
+  role               String // STUDENT | TEACHER | ADMIN | GROUPADMIN | CONTENT | REVIEWER | SUPERADMIN
+  schoolGroupId      String? // GROUPADMIN only: the group of schools this user manages
+  schoolGroup        SchoolGroup?         @relation("groupAdmin", fields: [schoolGroupId], references: [id])
+  name               String
+  username           String               @unique
+  passwordHash       String
+  rollNo             String?
+  active             Boolean              @default(true)
+  mustChangePassword Boolean              @default(false)
+  avatar             String               @default("{}") // JSON {animal, bg, accessory}
+  createdAt          DateTime             @default(now())
+  files              StoredFile[]
+  teamMemberships    ProjectTeamMember[]
+  missionClaims      MissionClaim[]
+  enrollments        Enrollment[]
+  teaching           TeacherAssignment[]
+  attempts           Attempt[]
+  xpEvents           XpEvent[]
+  badges             UserBadge[]
+  createdAssessments Assessment[]         @relation("createdBy")
+  observationsAbout  Observation[]        @relation("observedStudent")
+  observationsBy     Observation[]        @relation("observer")
+  ownedGroups        StudentGroup[]
+  groupMemberships   StudentGroupMember[]
+  gamePlays          GamePlay[]
 }
 
 model ClassSection {
-  id          String              @id @default(cuid())
+  id          String                 @id @default(cuid())
   schoolId    String
-  school      School              @relation(fields: [schoolId], references: [id])
+  school      School                 @relation(fields: [schoolId], references: [id])
   classLevel  Int
   section     String
-  leaderboard Boolean             @default(true)
+  leaderboard Boolean                @default(true)
   enrollments Enrollment[]
   projectRuns ProjectRun[]
   challenges  ClassChallenge[]
@@ -100,7 +119,7 @@ model TeacherAssignment {
 }
 
 model Chapter {
-  id         String     @id @default(cuid())
+  id         String        @id @default(cuid())
   classLevel Int
   part       String // CT | AI | EVS
   number     Int
@@ -117,42 +136,42 @@ model Chapter {
 }
 
 model Question {
-  id          String   @id @default(cuid())
-  code        String   @unique
-  classLevel  Int
-  chapterId   String
-  chapter     Chapter  @relation(fields: [chapterId], references: [id])
-  skills      String // comma-separated skill codes
-  type        String // MCQ | MULTI | TRUE_FALSE | NUMERIC | FILL_BLANK | ORDER
-  difficulty  Int // 1 easy, 2 medium, 3 hard
-  stem        String
-  options     String   @default("[]") // JSON string[]
-  figure      String? // JSON picture spec (src/lib/figures.ts)
+  id            String           @id @default(cuid())
+  code          String           @unique
+  classLevel    Int
+  chapterId     String
+  chapter       Chapter          @relation(fields: [chapterId], references: [id])
+  skills        String // comma-separated skill codes
+  type          String // MCQ | MULTI | TRUE_FALSE | NUMERIC | FILL_BLANK | ORDER
+  difficulty    Int // 1 easy, 2 medium, 3 hard
+  stem          String
+  options       String           @default("[]") // JSON string[]
+  figure        String? // JSON picture spec (src/lib/figures.ts)
   optionFigures String? // JSON (spec|null)[] parallel to options, for picture answers
-  answer      String // JSON: index | index[] | string | number | string[] (order)
-  solution    String
-  hint        String?
-  marks       Int      @default(1)
-  timeSec     Int      @default(60)
-  isPuzzle    Boolean  @default(false)
-  source      String   @default("AUTHORED") // AUTHORED | GENERATED (from a question family) | CBSE (CBSE handbook exercise)
-  family      String? // family id for generated items
-  sourceRef   String? // where an external question comes from, e.g. "CBSE CT & AI Student Handbook, Class 6 (2026-27) · CT Chapter 5 · Question 3"
-  status      String   @default("PUBLISHED") // DRAFT | IN_REVIEW | PUBLISHED | RETIRED
-  authorId    String?
-  reviewNote  String?
-  approval    String   @default("UNREVIEWED") // UNREVIEWED | APPROVED | REJECTED (quality sign-off by a reviewer or super-admin)
-  approvedById String?
-  approvedAt  DateTime?
-  version     Int      @default(1)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  items       AssessmentItem[]
-  responses   Response[]
+  answer        String // JSON: index | index[] | string | number | string[] (order)
+  solution      String
+  hint          String?
+  marks         Int              @default(1)
+  timeSec       Int              @default(60)
+  isPuzzle      Boolean          @default(false)
+  source        String           @default("AUTHORED") // AUTHORED | GENERATED (from a question family) | CBSE (CBSE handbook exercise)
+  family        String? // family id for generated items
+  sourceRef     String? // where an external question comes from, e.g. "CBSE CT & AI Student Handbook, Class 6 (2026-27) · CT Chapter 5 · Question 3"
+  status        String           @default("PUBLISHED") // DRAFT | IN_REVIEW | PUBLISHED | RETIRED
+  authorId      String?
+  reviewNote    String?
+  approval      String           @default("UNREVIEWED") // UNREVIEWED | APPROVED | REJECTED (quality sign-off by a reviewer or super-admin)
+  approvedById  String?
+  approvedAt    DateTime?
+  version       Int              @default(1)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @default(now()) @updatedAt
+  items         AssessmentItem[]
+  responses     Response[]
 }
 
 model Assessment {
-  id           String   @id @default(cuid())
+  id           String                 @id @default(cuid())
   schoolId     String?
   kind         String // PRACTICE | ASSIGNMENT | TEST | PUZZLE
   title        String
@@ -162,14 +181,14 @@ model Assessment {
   blueprint    String? // JSON of generator settings
   // Hitbullseye library items (schoolId null): CHAPTER_TEST | WORKSHEET | ASSIGNMENT | MONTHLY | TERM | MOCK
   libType      String?
-  code         String?  @unique
+  code         String?                @unique
   chapterId    String?
   libOrder     Int?
   coverage     String? // JSON: chapter ids covered
   sourceId     String? // for a teacher's copy: the library item it came from
   createdById  String?
-  createdBy    User?    @relation("createdBy", fields: [createdById], references: [id])
-  createdAt    DateTime @default(now())
+  createdBy    User?                  @relation("createdBy", fields: [createdById], references: [id])
+  createdAt    DateTime               @default(now())
   items        AssessmentItem[]
   tasks        AssignmentTask[]
   assignments  AssessmentAssignment[]
@@ -178,14 +197,14 @@ model Assessment {
 
 /// Hands-on / written activities inside an assignment (teacher-marked).
 model AssignmentTask {
-  id           String     @id @default(cuid())
+  id           String         @id @default(cuid())
   assessmentId String
-  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  assessment   Assessment     @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
   position     Int
   title        String
   prompt       String
-  responseType String     @default("ANY") // TEXT | FILE | ANY
-  marks        Int        @default(2)
+  responseType String         @default("ANY") // TEXT | FILE | ANY
+  marks        Int            @default(2)
   responses    TaskResponse[]
 }
 
@@ -229,34 +248,34 @@ model AssessmentAssignment {
 }
 
 model Attempt {
-  id           String     @id @default(cuid())
-  userId       String
-  user         User       @relation(fields: [userId], references: [id])
-  assessmentId String
-  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  startedAt    DateTime   @default(now())
-  submittedAt  DateTime?
-  score        Float?
-  maxScore     Float?
-  needsMarking Boolean    @default(false)
-  responses    Response[]
+  id            String         @id @default(cuid())
+  userId        String
+  user          User           @relation(fields: [userId], references: [id])
+  assessmentId  String
+  assessment    Assessment     @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  startedAt     DateTime       @default(now())
+  submittedAt   DateTime?
+  score         Float?
+  maxScore      Float?
+  needsMarking  Boolean        @default(false)
+  responses     Response[]
   taskResponses TaskResponse[]
 }
 
 model Response {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   attemptId  String
-  attempt    Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  attempt    Attempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
   questionId String
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question  @relation(fields: [questionId], references: [id])
   answer     String? // JSON
   correct    Boolean?
-  marks      Float    @default(0)
-  usedHint   Boolean  @default(false)
+  marks      Float     @default(0)
+  usedHint   Boolean   @default(false)
   timeSec    Int?
   feedback   String?
   markedAt   DateTime?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
 
   @@unique([attemptId, questionId])
 }
@@ -325,24 +344,24 @@ model Resource {
 }
 
 model StoredFile {
-  id        String   @id @default(cuid())
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id])
-  filename  String
-  mime      String
-  size      Int
-  path      String
-  createdAt DateTime @default(now())
-  resources Resource[]
+  id            String                @id @default(cuid())
+  ownerId       String
+  owner         User                  @relation(fields: [ownerId], references: [id])
+  filename      String
+  mime          String
+  size          Int
+  path          String
+  createdAt     DateTime              @default(now())
+  resources     Resource[]
   taskResponses TaskResponse[]
-  submissions MilestoneSubmission[]
+  submissions   MilestoneSubmission[]
 }
 
 // ---------- Projects ----------
 
 model ProjectKit {
-  id              String   @id @default(cuid())
-  code            String   @unique
+  id              String             @id @default(cuid())
+  code            String             @unique
   classLevel      Int
   title           String
   tagline         String
@@ -350,21 +369,21 @@ model ProjectKit {
   overview        String
   subjects        String // comma-separated subject codes
   skills          String // comma-separated skill codes
-  hours           Int      @default(20)
-  kind            String   @default("PROJECT") // PROJECT (multi-week) | ACTIVITY (1–3 periods)
+  hours           Int                @default(20)
+  kind            String             @default("PROJECT") // PROJECT (multi-week) | ACTIVITY (1–3 periods)
   chapterKey      String? // e.g. "4-CT-3" for activity kits tied to a chapter
   finalProduct    String
-  emoji           String   @default("🧪")
-  published       Boolean  @default(true)
+  emoji           String             @default("🧪")
+  published       Boolean            @default(true)
   milestones      ProjectMilestone[]
   criteria        RubricCriterion[]
   runs            ProjectRun[]
 }
 
 model ProjectMilestone {
-  id           String     @id @default(cuid())
+  id           String                @id @default(cuid())
   kitId        String
-  kit          ProjectKit @relation(fields: [kitId], references: [id], onDelete: Cascade)
+  kit          ProjectKit            @relation(fields: [kitId], references: [id], onDelete: Cascade)
   position     Int
   phase        String // DEFINE | COLLECT | EXPLORE | CREATE | PRESENT | REFLECT
   title        String
@@ -372,44 +391,44 @@ model ProjectMilestone {
   studentTask  String
   teacherGuide String
   deliverable  String
-  evidence     String     @default("ANY") // TEXT | FILE | ANY
+  evidence     String                @default("ANY") // TEXT | FILE | ANY
   submissions  MilestoneSubmission[]
 }
 
 model RubricCriterion {
-  id          String     @id @default(cuid())
-  kitId       String
-  kit         ProjectKit @relation(fields: [kitId], references: [id], onDelete: Cascade)
-  position    Int
-  name        String
-  levels      String // JSON string[4]: descriptors for levels 1..4
-  weight      Int        @default(1)
-  scores      RubricScore[]
+  id       String        @id @default(cuid())
+  kitId    String
+  kit      ProjectKit    @relation(fields: [kitId], references: [id], onDelete: Cascade)
+  position Int
+  name     String
+  levels   String // JSON string[4]: descriptors for levels 1..4
+  weight   Int           @default(1)
+  scores   RubricScore[]
 }
 
 model ProjectRun {
-  id        String       @id @default(cuid())
+  id        String        @id @default(cuid())
   kitId     String
-  kit       ProjectKit   @relation(fields: [kitId], references: [id])
+  kit       ProjectKit    @relation(fields: [kitId], references: [id])
   sectionId String
-  section   ClassSection @relation(fields: [sectionId], references: [id])
+  section   ClassSection  @relation(fields: [sectionId], references: [id])
   teacherId String
-  status    String       @default("ACTIVE") // ACTIVE | COMPLETED
-  startedAt DateTime     @default(now())
+  status    String        @default("ACTIVE") // ACTIVE | COMPLETED
+  startedAt DateTime      @default(now())
   dueAt     DateTime?
   teams     ProjectTeam[]
 }
 
 model ProjectTeam {
-  id          String       @id @default(cuid())
+  id          String                @id @default(cuid())
   runId       String
-  run         ProjectRun   @relation(fields: [runId], references: [id], onDelete: Cascade)
+  run         ProjectRun            @relation(fields: [runId], references: [id], onDelete: Cascade)
   name        String
   members     ProjectTeamMember[]
   submissions MilestoneSubmission[]
   scores      RubricScore[]
   reflections ProjectReflection[]
-  showcase    Boolean      @default(false)
+  showcase    Boolean               @default(false)
 }
 
 model ProjectTeamMember {
@@ -494,11 +513,11 @@ model MissionClaim {
 
 /// One 40-minute period in the yearly plan for a class (generated by src/lib/plan.ts).
 model Lesson {
-  id         String   @id @default(cuid())
+  id         String      @id @default(cuid())
   classLevel Int
   number     Int // period number in the year, 1..N
   chapterId  String?
-  chapter    Chapter? @relation(fields: [chapterId], references: [id])
+  chapter    Chapter?    @relation(fields: [chapterId], references: [id])
   kind       String // ORIENTATION | INTRODUCE | EXPLORE | PRACTISE | ACTIVITY | CHECK | REVISION | TERM_EXAM
   title      String
   objective  String
@@ -506,8 +525,8 @@ model Lesson {
   month      String
   week       Int
   term       Int
-  refs       String   @default("[]") // JSON [{type, id, label}] resources used in the period
-  homework   String   @default("[]") // JSON [{type, id, label}] set after the period
+  refs       String      @default("[]") // JSON [{type, id, label}] resources used in the period
+  homework   String      @default("[]") // JSON [{type, id, label}] set after the period
   logs       LessonLog[]
 
   @@unique([classLevel, number])
@@ -532,4 +551,50 @@ model Setting {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+/**
+ * A leaderboard group a student creates and shares with friends (same school only) by a join code.
+ */
+model StudentGroup {
+  id        String               @id @default(cuid())
+  name      String
+  code      String               @unique // join code, e.g. "K7P2QX"
+  emoji     String               @default("🚀")
+  schoolId  String
+  school    School               @relation(fields: [schoolId], references: [id])
+  ownerId   String
+  owner     User                 @relation(fields: [ownerId], references: [id])
+  createdAt DateTime             @default(now())
+  members   StudentGroupMember[]
+}
+
+model StudentGroupMember {
+  id       String       @id @default(cuid())
+  groupId  String
+  group    StudentGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User         @relation(fields: [userId], references: [id])
+  joinedAt DateTime     @default(now())
+
+  @@unique([groupId, userId])
+}
+
+/**
+ * One solved logic game (see src/lib/games).
+ */
+model GamePlay {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  game      String // SUDOKU | HANOI | LIGHTS | SLIDE | CODE | ...
+  level     Int // 0 (easiest) – 6 (hardest)
+  seed      String // the puzzle; the same seed cannot earn XP twice
+  moves     Int
+  timeSec   Int
+  xp        Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, game, seed])
+  @@index([userId, createdAt])
 }

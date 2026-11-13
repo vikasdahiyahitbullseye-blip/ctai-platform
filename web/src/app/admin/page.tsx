@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { topStudents } from "@/lib/missions";
 import { Card, PageHeader, Stat } from "@/components/ui";
 
 export default async function AdminHome() {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   const sections = await prisma.classSection.findMany({ where: { schoolId: user.schoolId }, include: { enrollments: true, teachers: { include: { user: true } } }, orderBy: [{ classLevel: "asc" }, { section: "asc" }] });
   const weekAgo = new Date(Date.now() - 7 * 86400000);
   const [students, teachers, attemptsWeek, questions, tests] = await Promise.all([

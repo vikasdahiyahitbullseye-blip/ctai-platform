@@ -3,7 +3,8 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { Card, PageHeader, Stat, Pill, btn } from "@/components/ui";
 import { CreateSchoolForm } from "./CreateSchoolForm";
-import { toggleSchool } from "@/app/actions/hq";
+import { toggleSchool, setSchoolGroup } from "@/app/actions/hq";
+import { CreateGroupForm, AddGroupAdminForm } from "./SchoolGroupForms";
 
 export default async function HqHome() {
   await requireUser("SUPERADMIN");
@@ -18,6 +19,7 @@ export default async function HqHome() {
       tests: await prisma.assessment.count({ where: { schoolId: s.id, kind: { in: ["TEST", "ASSIGNMENT"] } } }),
     })),
   );
+  const groups = await prisma.schoolGroup.findMany({ include: { schools: { select: { name: true } }, admins: { select: { name: true, username: true, active: true } } }, orderBy: { name: "asc" } });
   const qByStatus = await prisma.question.groupBy({ by: ["status"], _count: true });
   const awaiting = await prisma.question.count({ where: { status: "PUBLISHED", approval: "UNREVIEWED" } });
   const total = (k: keyof (typeof rows)[number]) => rows.reduce((a, r) => a + (r[k] as number), 0);
@@ -38,10 +40,26 @@ export default async function HqHome() {
         </div>
       )}
       <Card title="Add a school"><CreateSchoolForm /></Card>
+      <Card title="Groups of schools">
+        <p className="mb-3 text-sm text-ink-2">For a chain of schools under one management. A <strong>group admin</strong> sees all the group&apos;s schools side by side and can manage each school (classes, teachers, students, logins), like that school&apos;s own admin. Put schools in a group with the Group column below.</p>
+        {groups.length > 0 && (
+          <ul className="mb-4 space-y-2 text-sm">
+            {groups.map((g) => (
+              <li key={g.id} className="rounded-xl border border-line p-3">
+                <div className="font-semibold">{g.name}</div>
+                <div className="text-xs text-muted">Schools: {g.schools.map((x) => x.name).join(", ") || "none yet"}</div>
+                <div className="text-xs text-muted">Group admins: {g.admins.map((a) => `${a.name} (${a.username})${a.active ? "" : " – deactivated"}`).join(", ") || "none"}</div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <CreateGroupForm />
+        {groups.length > 0 && <div className="mt-5 border-t border-line pt-4"><AddGroupAdminForm groups={groups.map((g) => ({ id: g.id, name: g.name }))} /></div>}
+      </Card>
       <Card title="Schools">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px] text-sm">
-            <thead><tr className="text-left text-xs text-muted"><th className="py-2">School</th><th>Code</th><th className="text-right">Classes</th><th className="text-right">Students</th><th className="text-right">Teachers</th><th className="text-right">Active (7d)</th><th className="text-right">Tests</th><th className="text-right">Status</th></tr></thead>
+          <table className="w-full min-w-[860px] text-sm">
+            <thead><tr className="text-left text-xs text-muted"><th className="py-2">School</th><th>Code</th><th className="text-right">Classes</th><th className="text-right">Students</th><th className="text-right">Teachers</th><th className="text-right">Active (7d)</th><th className="text-right">Tests</th><th>Group</th><th className="text-right">Status</th></tr></thead>
             <tbody>
               {rows.map(({ s, students, teachers, active, tests }) => (
                 <tr key={s.id} className="border-t border-line">
@@ -52,6 +70,15 @@ export default async function HqHome() {
                   <td className="text-right tabular-nums">{teachers}</td>
                   <td className="text-right tabular-nums">{active}</td>
                   <td className="text-right tabular-nums">{tests}</td>
+                  <td>
+                    <form action={setSchoolGroup.bind(null, s.id)} className="flex items-center gap-1">
+                      <select name="groupId" defaultValue={s.groupId ?? ""} aria-label={`Group for ${s.name}`} className="max-w-40 rounded-lg border border-line bg-surface px-2 py-1 text-xs">
+                        <option value="">No group</option>
+                        {groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}
+                      </select>
+                      <button className="text-xs text-brand">Save</button>
+                    </form>
+                  </td>
                   <td className="text-right"><form action={toggleSchool.bind(null, s.id)} className="inline-flex items-center gap-2">{s.active ? <Pill tone="good">Active</Pill> : <Pill tone="bad">Suspended</Pill>}<button className="text-xs text-brand">{s.active ? "Suspend" : "Reactivate"}</button></form></td>
                 </tr>
               ))}

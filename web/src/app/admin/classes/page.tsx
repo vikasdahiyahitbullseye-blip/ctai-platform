@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { Card, PageHeader, Pill, btn, Empty } from "@/components/ui";
 import { AddSectionForm } from "../forms";
 import { assignTeacher, unassignTeacher, deleteSection } from "@/app/actions/admin";
@@ -7,7 +7,7 @@ import { assignTeacher, unassignTeacher, deleteSection } from "@/app/actions/adm
 const SUBJECT_LABEL: Record<string, string> = { CT: "CT (Maths/subject)", AI: "AI literacy", PROJECT: "Projects" };
 
 export default async function ClassesPage() {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   const [sections, teachers] = await Promise.all([
     prisma.classSection.findMany({ where: { schoolId: user.schoolId }, include: { _count: { select: { enrollments: true } }, teachers: { include: { user: true } } }, orderBy: [{ classLevel: "asc" }, { section: "asc" }] }),
     prisma.user.findMany({ where: { schoolId: user.schoolId, role: "TEACHER", active: true }, orderBy: { name: "asc" } }),

@@ -27,8 +27,8 @@ export async function getSessionUser() {
   try {
     const { payload } = await jwtVerify(token, secret());
     const user = await prisma.user.findUnique({ where: { id: String(payload.uid) }, include: { school: true } });
-    // Deactivated users and schools lose access immediately.
-    if (!user || !user.active || !user.school.active) return null;
+    // Deactivated users and schools lose access immediately. (A group admin's access comes from the group, not one school.)
+    if (!user || !user.active || (!user.school.active && user.role !== "GROUPADMIN")) return null;
     return user;
   } catch {
     return null;
@@ -48,6 +48,7 @@ export function homeFor(role: string) {
     case "STUDENT": return "/student";
     case "TEACHER": return "/teacher";
     case "ADMIN": return "/admin";
+    case "GROUPADMIN": return "/group";
     case "CONTENT": return "/studio";
     case "REVIEWER": return "/review";
     case "SUPERADMIN": return "/hq";
@@ -57,4 +58,25 @@ export function homeFor(role: string) {
 
 export async function audit(user: { id: string; schoolId: string }, action: string, detail?: string) {
   await prisma.auditLog.create({ data: { schoolId: user.schoolId, actorId: user.id, action, detail } });
+}
+
+/** Cookie holding the school a group admin is currently managing. */
+export const ACTING_SCHOOL = "ctai_acting_school";
+
+/**
+ * For the school-admin area. A school ADMIN manages their own school. A GROUPADMIN manages the school they picked on
+ * /group (any active school in their group): the returned user carries that school's id, so every
+ * admin page and action is scoped to it.
+ */
+export async function requireSchoolAdmin() {
+  const user = await getSessionUser();
+  if (!user) redirect("/login");
+  if (user.role === "ADMIN") return user;
+  if (user.role === "GROUPADMIN" && user.schoolGroupId) {
+    const id = (await cookies()).get(ACTING_SCHOOL)?.value;
+    const school = id ? await prisma.school.findFirst({ where: { id, groupId: user.schoolGroupId, isHq: false } }) : null;
+    if (!school || !school.active) redirect("/group");
+    return { ...user, schoolId: school.id, school };
+  }
+  redirect(homeFor(user.role));
 }

@@ -25,7 +25,7 @@ export default async function PlayPage({ params }: { params: Promise<{ id: strin
     return (
       <div>
         <PageHeader title={`Practice: ${attempt.assessment.title}`} />
-        <PracticePlayer attemptId={id} initial={q ? toClient(q, { withHint: true }) : null} answered={attempt.responses.length} total={total} mode="PRACTICE" big={big} />
+        <PracticePlayer attemptId={id} initial={q ? toClient(q, { withHint: true }) : null} answered={attempt.responses.length} total={total} mode="PRACTICE" big={big} skippedIds={attempt.responses.filter((r) => r.answer === null && r.correct === null).map((r) => r.questionId)} />
       </div>
     );
   }

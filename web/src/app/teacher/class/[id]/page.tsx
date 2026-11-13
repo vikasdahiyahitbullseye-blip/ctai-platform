@@ -6,6 +6,7 @@ import { MASTERY_LABEL } from "@/lib/mastery";
 import { Card, PageHeader, Stat, Pill, LinkButton, MASTERY_TONE, Empty } from "@/components/ui";
 import { ChapterChart } from "@/components/Charts";
 import { toggleLeaderboard } from "@/app/actions/teacher";
+import { staffDeleteGroup } from "@/app/actions/groups";
 import { createChallenge } from "@/app/actions/gamify";
 import { prisma } from "@/lib/db";
 import { challengeProgress } from "@/lib/missions";
@@ -20,6 +21,12 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
   const { section } = a;
   const challenges = await prisma.classChallenge.findMany({ where: { sectionId: id }, orderBy: { endsAt: "desc" }, take: 3 });
   const chProgress = await Promise.all(challenges.map((c) => challengeProgress(prisma, c)));
+  // Friend groups that any student of this class belongs to (for checking names and membership).
+  const groups = await prisma.studentGroup.findMany({
+    where: { schoolId: user.schoolId, members: { some: { user: { enrollments: { some: { sectionId: id } } } } } },
+    include: { owner: { select: { name: true } }, members: { include: { user: { select: { name: true } } } } },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="space-y-6">
@@ -110,10 +117,23 @@ export default async function ClassDashboard({ params }: { params: Promise<{ id:
           ) : <Empty>No tests assigned yet.</Empty>}
         </Card>
         <Card title="Gamification">
-          <p className="text-sm text-ink-2">Weekly leaderboard for this class is <strong>{section.leaderboard ? "on" : "off"}</strong>. {section.classLevel <= 5 && "For Classes 3–5 we recommend class team points instead of individual ranking."}</p>
+          <p className="text-sm text-ink-2">Class leaderboards (section, class and school boards on the student home page) are <strong>{section.leaderboard ? "on" : "off"}</strong> for this class. When off, these students are not ranked on any public board, but can still use friend groups.</p>
           <form action={toggleLeaderboard.bind(null, section.id)} className="mt-4">
             <button className="rounded-xl border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-2">{section.leaderboard ? "Turn leaderboard off" : "Turn leaderboard on"}</button>
           </form>
+          <div className="mt-5 border-t border-line pt-4">
+            <div className="mb-2 text-sm font-semibold">Friend groups ({groups.length})</div>
+            {groups.length ? (
+              <ul className="space-y-2 text-sm">
+                {groups.map((g) => (
+                  <li key={g.id} className="flex items-start justify-between gap-2">
+                    <div><span className="font-medium">{g.emoji} {g.name}</span> <span className="text-xs text-muted">by {g.owner.name} · {g.members.length} members</span><div className="text-xs text-muted">{g.members.map((m) => m.user.name).join(", ")}</div></div>
+                    <form action={staffDeleteGroup.bind(null, g.id, `/teacher/class/${id}`)}><button className="text-xs text-bad">Remove</button></form>
+                  </li>
+                ))}
+              </ul>
+            ) : <p className="text-xs text-muted">Students can create groups to compare XP with friends from this school. They will be listed here.</p>}
+          </div>
           <div className="mt-5 border-t border-line pt-4">
             <div className="mb-2 text-sm font-semibold">Class challenges</div>
             <ul className="mb-3 space-y-2 text-sm">

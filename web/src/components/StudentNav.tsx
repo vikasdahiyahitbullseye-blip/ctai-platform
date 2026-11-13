@@ -8,7 +8,9 @@ export const STUDENT_NAV = [
   { href: "/student/practice", label: "Practice", icon: "🎯" },
   { href: "/student/tests", label: "Homework", icon: "📝" },
   { href: "/student/projects", label: "Projects", icon: "🚀" },
-  { href: "/student/rewards", label: "Rewards", icon: "🏆" },
+  { href: "/student/games", label: "Games", icon: "🧩" },
+  { href: "/student/leaderboard", label: "Leaderboard", icon: "🏆" },
+  { href: "/student/rewards", label: "Rewards", icon: "🏅" },
   { href: "/student/me", label: "Me", icon: "🙂" },
 ];
 
@@ -32,7 +34,7 @@ export function SideNav() {
 
 export function BottomNav() {
   const path = usePathname();
-  const items = STUDENT_NAV.filter((n) => n.href !== "/student/rewards");
+  const items = STUDENT_NAV.filter((n) => n.href !== "/student/rewards" && n.href !== "/student/projects" && n.href !== "/student/leaderboard");
   return (
     <nav className="no-print fixed inset-x-0 bottom-0 z-30 border-t-2 border-line bg-surface/95 backdrop-blur lg:hidden" aria-label="Main">
       <div className="mx-auto flex max-w-xl justify-between px-1 pb-[env(safe-area-inset-bottom)]">

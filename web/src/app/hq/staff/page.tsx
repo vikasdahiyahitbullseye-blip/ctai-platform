@@ -4,7 +4,7 @@ import { Card, PageHeader, Pill, btn } from "@/components/ui";
 import { toggleStaff } from "@/app/actions/hq";
 import { CreateStaffForm } from "./CreateStaffForm";
 
-const ROLE_NAME: Record<string, string> = { SUPERADMIN: "Super-admin", REVIEWER: "Question reviewer", CONTENT: "Content team" };
+const ROLE_NAME: Record<string, string> = { SUPERADMIN: "Super-admin", REVIEWER: "Question reviewer", CONTENT: "Content team", GROUPADMIN: "School group admin" };
 
 export default async function StaffAccounts() {
   const me = await requireUser("SUPERADMIN");

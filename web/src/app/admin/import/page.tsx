@@ -1,9 +1,9 @@
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { Card, PageHeader } from "@/components/ui";
 import { ImportWizard } from "../forms";
 
 export default async function ImportPage() {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   return (
     <div className="space-y-6">
       <PageHeader title="Bulk import students" subtitle="Upload a class list from Excel. We check every row before creating any accounts." />

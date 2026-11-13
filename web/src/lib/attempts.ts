@@ -33,7 +33,9 @@ export async function saveAnswer(
   const at = opts.at ?? new Date();
 
   const existing = await db.response.findUnique({ where: { attemptId_questionId: { attemptId, questionId } } });
-  if (existing && instant) return { correct: existing.correct, solution: q.solution, answer: JSON.parse(q.answer) };
+  // An instant answer is final, except a skipped practice question, which can be answered later in the round.
+  const wasSkipped = existing && existing.answer === null && existing.correct === null && attempt.assessment.kind === "PRACTICE";
+  if (existing && instant && !wasSkipped) return { correct: existing.correct, solution: q.solution, answer: JSON.parse(q.answer) };
 
   const data = {
     answer: skip || blank ? null : JSON.stringify(answer),

@@ -1,13 +1,14 @@
 import { AppShell } from "@/components/AppShell";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { canUploadVideos } from "@/lib/videos";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   return (
     <AppShell
       user={user}
       nav={[
+        ...(user.role === "GROUPADMIN" ? [{ href: "/group", label: `← All schools (${user.school.name})` }] : []),
         { href: "/admin", label: "Overview" },
         { href: "/admin/classes", label: "Classes" },
         { href: "/admin/teachers", label: "Teachers" },

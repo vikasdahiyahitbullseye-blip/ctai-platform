@@ -2,14 +2,14 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { requireUser, audit } from "@/lib/auth";
+import { requireSchoolAdmin, audit } from "@/lib/auth";
 import { tempPassword, hashPassword, studentUsername, staffUsername } from "@/lib/accounts";
 import { parseCsvObjects } from "@/lib/csv";
 
 type Result = { ok?: boolean; error?: string; credentials?: { name: string; username: string; password: string; className?: string }[] };
 
 async function admin() {
-  return requireUser("ADMIN");
+  return requireSchoolAdmin();
 }
 
 async function ownSection(schoolId: string, sectionId: string) {
@@ -30,7 +30,7 @@ export async function addSection(_: unknown, form: FormData): Promise<Result> {
   if (!p.success) return { error: p.error.issues[0].message };
   const exists = await prisma.classSection.findFirst({ where: { schoolId: user.schoolId, ...p.data } });
   if (exists) return { error: `Class ${p.data.classLevel}-${p.data.section} already exists.` };
-  await prisma.classSection.create({ data: { schoolId: user.schoolId, ...p.data, leaderboard: p.data.classLevel >= 6 } });
+  await prisma.classSection.create({ data: { schoolId: user.schoolId, ...p.data, leaderboard: true } });
   await audit(user, "SECTION_CREATED", `${p.data.classLevel}-${p.data.section}`);
   revalidatePath("/admin/classes");
   return { ok: true };

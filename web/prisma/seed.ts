@@ -36,7 +36,7 @@ const LAST = ["Sharma", "Verma", "Iyer", "Khan", "Patel", "Reddy", "Singh", "Das
 
 async function main() {
   // Wipe in dependency order.
-  for (const m of ["lessonLog", "lesson", "missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "school"] as const) {
+  for (const m of ["gamePlay", "studentGroupMember", "studentGroup", "lessonLog", "lesson", "missionClaim", "classChallenge", "rubricScore", "projectReflection", "milestoneSubmission", "projectTeamMember", "projectTeam", "projectRun", "rubricCriterion", "projectMilestone", "projectKit", "taskResponse", "assignmentTask", "subjectLink", "resource", "storedFile", "auditLog", "observation", "userBadge", "xpEvent", "response", "attempt", "assessmentAssignment", "assessmentItem", "assessment", "question", "chapter", "teacherAssignment", "enrollment", "classSection", "user", "school", "schoolGroup"] as const) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)[m].deleteMany();
   }
@@ -150,10 +150,10 @@ async function main() {
   void admin;
 
   const sections = {
-    "3A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 3, section: "A", leaderboard: false } }),
+    "3A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 3, section: "A" } }),
     "6A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 6, section: "A" } }),
-    "4A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 4, section: "A", leaderboard: false } }),
-    "5A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 5, section: "A", leaderboard: false } }),
+    "4A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 4, section: "A" } }),
+    "5A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 5, section: "A" } }),
     "7A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 7, section: "A" } }),
     "8A": await db.classSection.create({ data: { schoolId: school.id, classLevel: 8, section: "A" } }),
   };
@@ -198,6 +198,13 @@ async function main() {
       const ability = demo ? 0.72 : Math.min(0.95, Math.max(0.2, 0.35 + rand() * 0.6));
       students.push({ id: u.id, cls: sec.classLevel, ability, demo });
     }
+  }
+
+  // A demo friend group made by Diya (student6) with classmates and one Class 7 friend; join code PUZZLE.
+  {
+    const c6 = students.filter((x) => x.cls === 6).slice(0, 5).map((x) => x.id);
+    const c7 = students.find((x) => x.cls === 7 && !x.demo)!.id;
+    await db.studentGroup.create({ data: { name: "Puzzle Pals", emoji: "🧠", code: "PUZZLE", schoolId: school.id, ownerId: c6[0], members: { create: [...c6, c7].map((userId) => ({ userId })) } } });
   }
 
   const chaptersWithQs = async (cls: number) =>
@@ -392,7 +399,7 @@ async function main() {
 
   const counts = await Promise.all([db.question.count(), db.attempt.count(), db.response.count(), db.userBadge.count()]);
   console.log(`Seeded: ${counts[0]} questions, ${counts[1]} attempts, ${counts[2]} responses, ${counts[3]} badges.`);
-  console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, content, reviewer, superadmin");
+  console.log("Logins (password demo123): teacher, rohan, student3–student8, admin, groupadmin, content, reviewer, superadmin");
 
   // CBSE handbook questions (answers and solutions from CBSE's Teacher Handbooks). Added last so the demo activity above
   // stays the same. They wait for a reviewer to check the transcription, but are usable meanwhile.
@@ -411,6 +418,29 @@ async function main() {
     });
   }
   console.log(`CBSE handbook questions: ${cbse.filter((q) => chapterId[q.chapterKey]).length}${missing.size ? ` (no chapter for ${[...missing].join(", ")})` : ""}`);
+
+  // A demo group of schools: Demo Public School plus a smaller second branch, with a group admin login.
+  {
+    const group = await db.schoolGroup.create({ data: { name: "Demo Group of Schools" } });
+    await db.school.update({ where: { id: school.id }, data: { groupId: group.id } });
+    const branch = await db.school.create({ data: { name: "Demo Public School, Noida", city: "Noida", code: "DPS-NOI", groupId: group.id } });
+    await db.user.create({ data: { schoolId: branch.id, role: "ADMIN", name: "Principal, Noida (Demo)", username: "admin2", passwordHash: hash } });
+    const t2 = await db.user.create({ data: { schoolId: branch.id, role: "TEACHER", name: "Ms. Kavya Menon", username: "teacher2", passwordHash: hash } });
+    for (const cls of [3, 6]) {
+      const sec = await db.classSection.create({ data: { schoolId: branch.id, classLevel: cls, section: "A" } });
+      await db.teacherAssignment.create({ data: { userId: t2.id, sectionId: sec.id, subject: "CT" } });
+      for (let i = 0; i < 6; i++) {
+        let name = "";
+        do name = `${pick(FIRST)} ${pick(LAST)}`; while (used.has(name));
+        used.add(name);
+        const u = await db.user.create({ data: { schoolId: branch.id, role: "STUDENT", name, username: `n${cls}a${String(i + 1).padStart(2, "0")}`, rollNo: String(i + 1), passwordHash: hash } });
+        await db.enrollment.create({ data: { userId: u.id, sectionId: sec.id } });
+        for (let d = 0; d < 10; d++) if (rand() < 0.6) await db.xpEvent.create({ data: { userId: u.id, amount: 10 + Math.floor(rand() * 60), reason: "Practice answer", createdAt: new Date(now - d * DAY - Math.floor(rand() * DAY / 2)) } });
+      }
+    }
+    await db.user.create({ data: { schoolId: hq.id, role: "GROUPADMIN", schoolGroupId: group.id, name: "Group Director (Demo)", username: "groupadmin", passwordHash: hash } });
+    console.log("School group: Demo Group of Schools (2 schools) · logins groupadmin, admin2, teacher2");
+  }
 }
 
 main().finally(() => db.$disconnect());

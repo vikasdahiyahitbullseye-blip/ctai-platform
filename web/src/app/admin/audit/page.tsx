@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { Card, PageHeader, Empty } from "@/components/ui";
 
 export default async function AuditPage() {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   const logs = await prisma.auditLog.findMany({ where: { schoolId: user.schoolId }, orderBy: { createdAt: "desc" }, take: 200 });
   const actors = new Map((await prisma.user.findMany({ where: { id: { in: [...new Set(logs.map((l) => l.actorId))] } } })).map((u) => [u.id, u.name]));
   return (

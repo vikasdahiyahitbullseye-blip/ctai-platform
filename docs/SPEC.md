@@ -375,3 +375,11 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Seeding: `generateCbseLevel(have, 40, 12)` tops each CT chapter up to 40 (at least 12 new items), `generateScenario(have, 40, 20)` each AI/EVS chapter. Logic-puzzle families are solved by brute force and kept only when the answer is unique.
 - Difficulty: help-book items get 3 for Thinking Spot or 45+ words, 1 for 12 words or fewer without a picture, else 2.
 - Known gaps: one help-book question (Class 8 Ch 3 Q9, symbol notation) was skipped; some maths lines are shown as images; Class 3 help-book stems are short (about 20 words) by design of the book.
+
+## 20. Skips, leaderboards, friend groups, logic games, groups of schools (v0.5)
+
+- **Skipping:** practice skips are `Response` rows with `answer = null` and `correct = null` (excluded from accuracy, mastery and adaptivity). A skipped practice question can be answered later in the same round (`skippedQuestion` action; `saveAnswer` replaces a skipped row). Tests/homework: unanswered = no answer; "Clear my answer"; submit sends all pending saves first.
+- **Leaderboards:** scopes `section | class | school | chain | group:<id>`, periods `week | all` (`src/lib/leaderboard.ts`). Public scopes include only sections with `ClassSection.leaderboard = true` (now the default for every class).
+- **Friend groups:** `StudentGroup` (name, emoji, unique 6-char `code`, `schoolId`, `ownerId`) and `StudentGroupMember`. Same-school only; limits 40 members, 6 groups per student; name filter; owner can remove/delete; staff can delete (`STUDENT_GROUP_DELETED` in the audit log).
+- **Logic games:** `GamePlay` (`game`, `level` 0–6, `seed`, `moves`, `timeSec`, `xp`; unique per user+game+seed). Generators and checkers in `src/lib/games` are shared by browser and server; `submitGame` verifies before awarding XP; 5 XP games a day.
+- **Groups of schools:** `SchoolGroup`; `School.groupId`; role `GROUPADMIN` with `User.schoolGroupId` (accounts live in the HQ school and are listed under Staff accounts). `/group` overview; the acting school is held in the `ctai_acting_school` cookie and `requireSchoolAdmin()` scopes every school-admin page and action to it. Opening a school is written to that school's activity log.

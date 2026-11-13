@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { Card, PageHeader, Pill } from "@/components/ui";
 import { AddTeacherForm, ResetPasswordButton } from "../forms";
 import { setActive } from "@/app/actions/admin";
 
 export default async function TeachersPage() {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   const staff = await prisma.user.findMany({ where: { schoolId: user.schoolId, role: { in: ["TEACHER", "ADMIN"] } }, include: { teaching: { include: { section: true } } }, orderBy: [{ role: "desc" }, { name: "asc" }] });
   return (
     <div className="space-y-6">

@@ -20,7 +20,9 @@ export default async function MePage() {
       </section>
       <div className="flex flex-wrap gap-3">
         <Link href="/student/progress" className="kbtn">📈 My skill progress</Link>
-        <Link href="/student/rewards" className="kbtn kbtn-ghost">🏆 Badges &amp; leaderboard</Link>
+        <Link href="/student/leaderboard" className="kbtn kbtn-ghost">🏆 Leaderboard &amp; groups</Link>
+        <Link href="/student/rewards" className="kbtn kbtn-ghost">🏅 Badges</Link>
+        <Link href="/student/projects" className="kbtn kbtn-ghost">🚀 Projects</Link>
         <Link href="/account" className="kbtn kbtn-ghost">🔑 Change password</Link>
       </div>
     </div>

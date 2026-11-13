@@ -57,6 +57,15 @@ export async function skipInstant(attemptId: string, questionId: string) {
   return { ok: true };
 }
 
+/** Reopens a question the student skipped earlier in this practice round. */
+export async function skippedQuestion(attemptId: string, questionId: string) {
+  const { attempt } = await ownAttempt(attemptId);
+  if (attempt.assessment.kind !== "PRACTICE" || attempt.submittedAt) return null;
+  const r = await prisma.response.findUnique({ where: { attemptId_questionId: { attemptId, questionId } }, include: { question: true } });
+  if (!r || r.answer !== null || r.correct !== null) return null;
+  return toClient(r.question, { withHint: true });
+}
+
 export async function saveTestAnswer(attemptId: string, questionId: string, answer: AnswerValue) {
   const { attempt } = await ownAttempt(attemptId);
   if (attempt.submittedAt) return { ok: false };

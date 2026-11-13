@@ -47,22 +47,36 @@ async function answerCurrent(page) {
   await page.click('button:has-text("Play this island")');
   await page.waitForURL(/\/student\/play\//);
   if ((await page.locator("text=/^1 \\/ 15$/").count()) !== 1) errors.push("practice rounds should have 15 questions");
+  // Q2 is skipped and answered later from the skipped tray; Q5 is skipped and left at the end-of-round screen.
   for (let i = 0; i < 40; i++) {
     await page.waitForSelector('button:has-text("Check answer")');
-    if (i === 1) {
-      // Skip the second question: the round moves on and counts it as skipped.
-      await page.click('button:has-text("Skip")');
-      await page.waitForSelector("text=/^1 skipped$/");
-      if ((await page.locator("text=/^3 \\/ 15$/").count()) !== 1) errors.push("skipping should move the round to question 3");
+    if (i === 1 || i === 4) {
+      await page.click('button:has-text("Skip ⏭")');
+      await page.waitForSelector('button:has-text("Go back to 1")');
+      if (i === 1 && (await page.locator("text=/^3 \\/ 15$/").count()) !== 1) errors.push("skipping should move the round to question 3");
       continue;
+    }
+    if (i === 2) {
+      await page.click('button:has-text("Go back to 1")');
+      await page.waitForSelector("text=You skipped this one earlier");
+      await shot(page, "02b-practice-skipped-tray");
     }
     await answerCurrent(page);
     await page.click('button:has-text("Check answer")');
     await page.waitForSelector('[role="status"]');
     if (i === 0) await shot(page, "02-practice-feedback");
-    const finish = page.locator('button:has-text("Finish")');
+    if (i === 2 && (await page.locator('button:has-text("Go back to")').count()) !== 0) errors.push("answered skipped question should leave the tray");
+    const finish = page.locator('button:text-is("Finish")');
     if (await finish.count()) {
       await Promise.all([page.waitForURL(/\/student\/result\//), finish.click()]);
+      break;
+    }
+    const cont = page.locator('button:has-text("Continue →")');
+    if (await cont.count()) {
+      await cont.click();
+      await page.waitForSelector("text=You reached the end of the round!");
+      await shot(page, "02c-practice-end-skipped");
+      await Promise.all([page.waitForURL(/\/student\/result\//), page.click('button:has-text("Finish and see results")')]);
       break;
     }
     await Promise.all([page.waitForSelector('button:has-text("Check answer")'), page.click('button:has-text("Next question")')]);

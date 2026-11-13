@@ -57,3 +57,49 @@ export async function toggleStaff(userId: string) {
   await audit(user, u.active ? "STAFF_DEACTIVATED" : "STAFF_REACTIVATED", u.username);
   revalidatePath("/hq/staff");
 }
+
+// ---------- Groups of schools ----------
+/** Creates a group of schools (a chain) and its group admin login. Schools are added to it on the Schools page. */
+export async function createSchoolGroup(_: unknown, form: FormData) {
+  const user = await requireUser("SUPERADMIN");
+  const p = z.object({
+    name: z.string().trim().min(3, "Group name is required"),
+    adminName: z.string().trim().min(3, "Group admin's name is required"),
+  }).safeParse(Object.fromEntries(form));
+  if (!p.success) return { error: p.error.issues[0].message };
+  const group = await prisma.schoolGroup.create({ data: { name: p.data.name } });
+  const username = await staffUsername(p.data.adminName);
+  const password = tempPassword();
+  // Group admins are Hitbullseye-managed logins (listed under Staff accounts); their access comes from the group.
+  await prisma.user.create({ data: { schoolId: user.schoolId, role: "GROUPADMIN", schoolGroupId: group.id, name: p.data.adminName, username, passwordHash: await hashPassword(password), mustChangePassword: true } });
+  await audit(user, "SCHOOL_GROUP_CREATED", p.data.name);
+  revalidatePath("/hq");
+  return { ok: true, credentials: [{ name: p.data.adminName, username, password, className: `Group admin · ${p.data.name}` }] };
+}
+
+/** Adds another admin login to an existing group. */
+export async function addGroupAdmin(_: unknown, form: FormData) {
+  const user = await requireUser("SUPERADMIN");
+  const p = z.object({ groupId: z.string().min(1, "Choose a group"), adminName: z.string().trim().min(3, "Name is required") }).safeParse(Object.fromEntries(form));
+  if (!p.success) return { error: p.error.issues[0].message };
+  const group = await prisma.schoolGroup.findUnique({ where: { id: p.data.groupId } });
+  if (!group) return { error: "Group not found." };
+  const username = await staffUsername(p.data.adminName);
+  const password = tempPassword();
+  await prisma.user.create({ data: { schoolId: user.schoolId, role: "GROUPADMIN", schoolGroupId: group.id, name: p.data.adminName, username, passwordHash: await hashPassword(password), mustChangePassword: true } });
+  await audit(user, "GROUP_ADMIN_CREATED", `${p.data.adminName} (${group.name})`);
+  revalidatePath("/hq");
+  return { ok: true, credentials: [{ name: p.data.adminName, username, password, className: `Group admin · ${group.name}` }] };
+}
+
+/** Puts a school in a group, or takes it out (empty groupId). */
+export async function setSchoolGroup(schoolId: string, form: FormData) {
+  const user = await requireUser("SUPERADMIN");
+  const groupId = String(form.get("groupId") ?? "") || null;
+  const school = await prisma.school.findUniqueOrThrow({ where: { id: schoolId } });
+  if (school.isHq) return;
+  if (groupId && !(await prisma.schoolGroup.findUnique({ where: { id: groupId } }))) return;
+  await prisma.school.update({ where: { id: schoolId }, data: { groupId } });
+  await audit(user, "SCHOOL_GROUP_SET", `${school.name} → ${groupId ?? "no group"}`);
+  revalidatePath("/hq");
+}

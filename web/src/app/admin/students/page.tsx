@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
+import { requireSchoolAdmin } from "@/lib/auth";
 import { Card, PageHeader, btn, Empty } from "@/components/ui";
 import { AddStudentForm, ResetPasswordButton } from "../forms";
 import { setActive, updateStudent } from "@/app/actions/admin";
 
 export default async function StudentsPage({ searchParams }: { searchParams: Promise<{ section?: string; q?: string }> }) {
-  const user = await requireUser("ADMIN");
+  const user = await requireSchoolAdmin();
   const sp = await searchParams;
   const sections = await prisma.classSection.findMany({ where: { schoolId: user.schoolId }, orderBy: [{ classLevel: "asc" }, { section: "asc" }] });
   const sectionId = sp.section ?? sections[0]?.id;
