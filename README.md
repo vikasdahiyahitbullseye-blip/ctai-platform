@@ -168,6 +168,13 @@ See `docs/SPEC.md` §14 for v0.2: school admin tools, content studio, super-admi
 
 **Groups of schools (chains):** HQ creates a *group of schools* and its **group admin** login (HQ → Groups of schools), and puts schools in the group (Group column of the schools table). The group admin (`/group`) sees every school side by side (students, teachers, students active in the last 7 days, tests set, average score, school admins), class-wise activity per school, and the top students across the group. **Manage →** opens any of the group's schools in the normal school-admin pages (classes, teachers, students, bulk import, activity log), scoped to that school (`requireSchoolAdmin` in `src/lib/auth.ts`); "← All schools" goes back. The group admin can also create principal (school admin) logins for each school. Group admins cannot open HQ, teacher or student pages. Demo: `groupadmin` manages *Demo Public School* and *Demo Public School, Noida* (`admin2`, `teacher2`, students `n3a01`…, `n6a01`…).
 
+**Editing people and schools:**
+- *School admin* (Students / Teachers pages → **Edit**, or click a name): students' name, username, class, roll number, admission number, date of birth, parent/guardian name and phone, email and phone; staff's name, username, role (teacher ↔ school admin), designation, email and phone. Password reset and deactivate are on the same page. An admin cannot change their own role or demote the school's only admin. Usernames must be unique; changing one keeps the password.
+- *Group admin*: the same, for any school they open from `/group`.
+- *HQ super-admin*: edit a school (name, city, code, session) from the Schools table, HQ staff logins (name, username, contact, reviewer ↔ content role, group admin's group) from Staff accounts, and rename groups of schools.
+- *Teachers and admins*: their own email and phone on the account page.
+- Every change is written to the school's activity log (which fields changed, not the values).
+
 **Teacher:** class dashboards (KPIs, student × skill mastery heatmap, chapter accuracy, students needing support), test generator (chapters, skills, types, difficulty mix, avoids recently used questions), swap/remove questions, assign online, printable Sets A/B/C with answer keys (PDF via print), Word export, item analysis, question bank browser, observation journal, leaderboard toggle.
 
 **Admin:** school overview (sections, teachers, weekly activity), now with full management (see v0.2).

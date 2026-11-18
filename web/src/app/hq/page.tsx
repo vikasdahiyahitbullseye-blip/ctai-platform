@@ -5,6 +5,7 @@ import { Card, PageHeader, Stat, Pill, btn } from "@/components/ui";
 import { CreateSchoolForm } from "./CreateSchoolForm";
 import { toggleSchool, setSchoolGroup } from "@/app/actions/hq";
 import { CreateGroupForm, AddGroupAdminForm } from "./SchoolGroupForms";
+import { RenameGroupForm } from "@/components/EditForms";
 
 export default async function HqHome() {
   await requireUser("SUPERADMIN");
@@ -47,6 +48,7 @@ export default async function HqHome() {
             {groups.map((g) => (
               <li key={g.id} className="rounded-xl border border-line p-3">
                 <div className="font-semibold">{g.name}</div>
+                <details className="mt-1 text-xs"><summary className="cursor-pointer text-brand">Rename</summary><div className="mt-2 max-w-sm"><RenameGroupForm group={{ id: g.id, name: g.name }} /></div></details>
                 <div className="text-xs text-muted">Schools: {g.schools.map((x) => x.name).join(", ") || "none yet"}</div>
                 <div className="text-xs text-muted">Group admins: {g.admins.map((a) => `${a.name} (${a.username})${a.active ? "" : " – deactivated"}`).join(", ") || "none"}</div>
               </li>
@@ -63,7 +65,7 @@ export default async function HqHome() {
             <tbody>
               {rows.map(({ s, students, teachers, active, tests }) => (
                 <tr key={s.id} className="border-t border-line">
-                  <td className="py-2 font-medium">{s.name}<div className="text-xs text-muted">{s.city}</div></td>
+                  <td className="py-2 font-medium"><Link href={`/hq/schools/${s.id}`} className="hover:text-brand hover:underline">{s.name}</Link> <Link href={`/hq/schools/${s.id}`} className="text-xs font-semibold text-brand">Edit</Link><div className="text-xs text-muted">{s.city}</div></td>
                   <td className="font-mono text-xs">{s.code}</td>
                   <td className="text-right tabular-nums">{s._count.sections}</td>
                   <td className="text-right tabular-nums">{students}</td>

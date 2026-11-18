@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { Card, PageHeader, Pill, btn } from "@/components/ui";
@@ -21,7 +22,7 @@ export default async function StaffAccounts() {
             <tbody>
               {staff.map((u) => (
                 <tr key={u.id} className="border-t border-line">
-                  <td className="py-2 font-medium">{u.name}</td>
+                  <td className="py-2 font-medium"><Link href={`/hq/staff/${u.id}`} className="hover:text-brand hover:underline">{u.name}</Link> <Link href={`/hq/staff/${u.id}`} className="text-xs font-semibold text-brand">Edit</Link></td>
                   <td><code className="font-mono text-xs">{u.username}</code></td>
                   <td>{ROLE_NAME[u.role] ?? u.role}</td>
                   <td className="text-right">{approvals.find((a) => a.approvedById === u.id)?._count ?? 0}</td>

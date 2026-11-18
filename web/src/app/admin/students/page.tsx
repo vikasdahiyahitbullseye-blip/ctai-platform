@@ -35,7 +35,7 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
                 {students.map((s) => (
                   <tr key={s.id} className={`border-t border-line ${s.active ? "" : "opacity-50"}`}>
                     <td className="py-2">{s.rollNo ?? "—"}</td>
-                    <td className="font-medium">{s.name}</td>
+                    <td className="font-medium"><Link href={`/admin/people/${s.id}`} className="hover:text-brand hover:underline">{s.name}</Link></td>
                     <td className="font-mono text-xs">{s.username}</td>
                     <td>
                       <form action={updateStudent.bind(null, s.id)} className="flex flex-wrap items-center gap-1">
@@ -46,6 +46,7 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
                       </form>
                     </td>
                     <td className="space-x-3 text-right">
+                      <Link href={`/admin/people/${s.id}`} className="text-xs font-semibold text-brand">Edit</Link>
                       <ResetPasswordButton userId={s.id} schoolName={user.school.name} />
                       <form action={setActive.bind(null, s.id, !s.active)} className="inline"><button className={`text-xs font-medium ${s.active ? "text-bad" : "text-good"}`}>{s.active ? "Deactivate" : "Reactivate"}</button></form>
                     </td>

@@ -60,6 +60,14 @@ model User {
   username           String               @unique
   passwordHash       String
   rollNo             String?
+  // Optional profile details, edited by the school admin (students and staff) or by staff themselves (contact).
+  admissionNo        String? // students
+  dateOfBirth        String? // students, YYYY-MM-DD
+  guardianName       String? // students
+  guardianPhone      String? // students
+  designation        String? // staff, e.g. "Computer teacher", "Vice principal"
+  email              String?
+  phone              String?
   active             Boolean              @default(true)
   mustChangePassword Boolean              @default(false)
   avatar             String               @default("{}") // JSON {animal, bg, accessory}

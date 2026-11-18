@@ -394,3 +394,9 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Library worksheets and assignments: 12 questions each (`QUESTIONS_PER_SET`); picture worksheets prefer picture questions and top up.
 - Help-book extraction fixes: skill-tag filter no longer drops right-side words (4th options, stem words); answer badges detected by colour; two-line and fraction options; headings excluded; crops fitted (grow while ink touches an edge, include light borders); text-only crops become stem text; book-clipped figures repaired (`hb_fix_clipped.py`). Result: 1,583 help-book questions (3 more), 633 pictures (was 722), 120 picture-option questions, no answer keys changed.
 - CBSE crops re-fitted where a drawing or option row was cut (`cbse_refit.py`, `cbse_extend.py`).
+
+## 23. Editing people and schools (v0.5.3)
+
+- `User` gains optional `admissionNo`, `dateOfBirth`, `guardianName`, `guardianPhone` (students), `designation` (staff), `email`, `phone`.
+- `/admin/people/[id]` (school admin or group admin): edit a student or staff member (`updatePerson`); `/hq/schools/[id]` (`updateSchool`), `/hq/staff/[id]` (`updateHqStaff`), group rename (`renameSchoolGroup`); `/account` contact details for non-students (`updateMyContact`). Validation with zod; activity log entries `STUDENT_UPDATED`, `STAFF_UPDATED`, `SCHOOL_UPDATED`, `SCHOOL_GROUP_RENAMED`.
+- Edit forms submit by hand (not via the form action) so typed values are kept after a validation error.
