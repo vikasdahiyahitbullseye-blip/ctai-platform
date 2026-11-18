@@ -123,6 +123,61 @@ log("changes verified (class move, new username, activity log)");
   await ctx.close();
 }
 
+// ---------- Bulk edit of teachers and admins ----------
+{
+  const { page, ctx } = await session("admin");
+  await page.goto(`${BASE}/admin/bulk-edit?kind=staff`);
+  const [dl] = await Promise.all([page.waitForEvent("download"), page.click('a:has-text("Download Excel file")')]);
+  const f = path.join(tmp, dl.suggestedFilename()); await dl.saveAs(f);
+  check(dl.suggestedFilename() === "teachers-and-staff.xlsx", `staff download name, got ${dl.suggestedFilename()}`);
+  const wb = new ExcelJS.Workbook(); await wb.xlsx.readFile(f); const ws = wb.worksheets[0];
+  const head = Array.from(ws.getRow(1).values, (v) => String(v ?? ""));
+  const col = (h) => head.findIndex((x) => (x ?? "").startsWith(h));
+  const rows = []; ws.eachRow((r, n) => { if (n > 1) rows.push(r); });
+  const by = (u) => rows.find((r) => r.getCell(col("Username")).value === u);
+  check(rows.length === 3, `3 staff expected, got ${rows.length}`);
+  check(String(by("teacher").getCell(col("Teaches")).value).includes("6-A CT"), "Teaches column should list classes");
+  by("rohan").getCell(col("Role")).value = "admin";
+  by("rohan").getCell(col("Designation")).value = "Computer teacher";
+  by("rohan").getCell(col("Teaches")).value = "6-A AI; 8-A CT";
+  by("teacher").getCell(col("Phone")).value = "+91 98765 43210";
+  by("admin").getCell(col("Role")).value = "teacher";          // error: own role
+  by("teacher").getCell(col("Teaches")).value = "3-A AI; 6-A CT"; // error: AI in Class 3
+  by("rohan").getCell(col("Teaches")).value = "6-A AI; 8-A CT; 9-Z";   // error: bad item
+  await wb.xlsx.writeFile(f);
+  await page.setInputFiles('input[type="file"]', f);
+  await page.click('button:has-text("Check changes")');
+  await page.waitForSelector("text=/with errors|no errors/");
+  check(await page.locator("td >> text=You cannot change your own role").count() === 1, "own role change should be refused");
+  check(await page.locator("text=/AI is taught in Classes 6–8/").count() === 1, "AI for Class 3 should be refused");
+  check(await page.locator('text=/"9-Z"|9-Z does not exist/').count() >= 1, "unknown class should be refused");
+  await page.screenshot({ path: `${SHOTS}/bulk-03-staff-errors.png`, fullPage: true });
+  by("admin").getCell(col("Role")).value = "admin";
+  by("teacher").getCell(col("Teaches")).value = "3-A CT; 6-A CT; 6-A AI";
+  by("rohan").getCell(col("Teaches")).value = "6-A AI; 8-A CT";
+  await wb.xlsx.writeFile(f);
+  await page.setInputFiles('input[type="file"]', f);
+  await page.click('button:has-text("Check changes")');
+  await page.waitForSelector("text=no errors");
+  await page.screenshot({ path: `${SHOTS}/bulk-04-staff-preview.png`, fullPage: true });
+  await page.click('button:has-text("Save changes for 2 people")');
+  await page.waitForSelector("text=Saved changes for 2 people");
+  await page.goto(`${BASE}/admin/teachers`);
+  check(await page.locator("tr:has-text('Rohan Iyer') >> text=Computer teacher").count() === 1, "designation saved");
+  check(await page.locator("tr:has-text('Rohan Iyer') >> text=Admin").count() === 1, "role saved");
+  check(await page.locator("tr:has-text('Rohan Iyer') >> text=8-A CT").count() === 1, "teaching assignments saved");
+  check(await page.locator("tr:has-text('Anjali Mehra') >> text=/3-A CT, 6-A CT, 6-A AI|3-A CT.*6-A/").count() === 1, "Anjali's classes saved");
+  // a students file on the staff tab is refused with a clear message
+  await page.goto(`${BASE}/admin/bulk-edit?kind=staff`);
+  await page.setInputFiles('input[type="file"]', file);
+  await page.click('button:has-text("Check changes")');
+  check(await page.waitForSelector("text=This looks like a students file", { timeout: 10000 }).then(() => true, () => false), "students file on the staff tab should be refused");
+  await page.goto(`${BASE}/admin/audit`);
+  check(await page.locator("text=STAFF_BULK_UPDATED").count() === 1, "activity log should record the staff bulk edit");
+  log("staff bulk edit: errors caught, 2 people saved (role, designation, phone, classes)");
+  await ctx.close();
+}
+
 await browser.close();
 if (errors.length) { console.log("\nERRORS:"); for (const e of errors) console.log(e); process.exit(1); }
 console.log("\nAll bulk-edit checks passed.");

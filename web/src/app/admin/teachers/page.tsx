@@ -10,7 +10,7 @@ export default async function TeachersPage() {
   const staff = await prisma.user.findMany({ where: { schoolId: user.schoolId, role: { in: ["TEACHER", "ADMIN"] } }, include: { teaching: { include: { section: true } } }, orderBy: [{ role: "desc" }, { name: "asc" }] });
   return (
     <div className="space-y-6">
-      <PageHeader title="Teachers & staff" subtitle="New staff get a temporary password and must choose their own at first sign-in." />
+      <PageHeader title="Teachers & staff" subtitle="New staff get a temporary password and must choose their own at first sign-in." action={<Link href="/admin/bulk-edit?kind=staff" className="rounded-xl border border-line px-3 py-2 text-sm font-semibold hover:bg-surface-2">✎ Bulk edit in Excel</Link>} />
       <Card title="Add a teacher or admin"><AddTeacherForm schoolName={user.school.name} /></Card>
       <Card>
         <div className="overflow-x-auto">

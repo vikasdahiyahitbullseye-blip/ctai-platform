@@ -1,10 +1,11 @@
 "use client";
 import { useActionState, useState, useTransition } from "react";
-import { previewBulkEdit, applyBulk, type BulkState } from "@/app/actions/bulkEdit";
+import { previewBulkEdit, applyBulk, type BulkState, type BulkKind } from "@/app/actions/bulkEdit";
 import { btn } from "@/components/ui";
 
-export function BulkEditWizard() {
-  const [checked, check, checking] = useActionState(previewBulkEdit, undefined);
+export function BulkEditWizard({ kind }: { kind: BulkKind }) {
+  const [checked, check, checking] = useActionState(previewBulkEdit.bind(null, kind), undefined);
+  const who = kind === "staff" ? ["person", "people"] : ["student", "students"];
   const [applied, setApplied] = useState<BulkState>(undefined);
   const [saving, start] = useTransition();
   const p = applied?.preview ?? checked?.preview;
@@ -12,8 +13,8 @@ export function BulkEditWizard() {
   if (applied?.done !== undefined) {
     return (
       <div className="rounded-2xl bg-good-soft p-4 text-sm" role="status">
-        <p className="font-semibold text-good">✓ Saved changes for {applied.done} student{applied.done === 1 ? "" : "s"}.</p>
-        <p className="mt-1">The changes are in the activity log. <a href="/admin/bulk-edit" className="font-semibold text-brand">Upload another file</a></p>
+        <p className="font-semibold text-good">✓ Saved changes for {applied.done} {applied.done === 1 ? who[0] : who[1]}.</p>
+        <p className="mt-1">The changes are in the activity log. <a href={`/admin/bulk-edit${kind === "staff" ? "?kind=staff" : ""}`} className="font-semibold text-brand">Upload another file</a></p>
       </div>
     );
   }
@@ -35,8 +36,8 @@ export function BulkEditWizard() {
               {p.withErrors ? <span className="font-semibold text-bad">{p.withErrors} with errors</span> : <span className="text-good">no errors</span>}
               <div className="mt-1 text-xs text-muted">Columns read: {p.columns.join(", ") || "none"}{p.ignored.length ? ` · ignored: ${p.ignored.join(", ")}` : ""}. Columns left out of the file are not changed.</div>
             </div>
-            <button className={btn.primary} disabled={!!p.withErrors || !p.changed || saving || !table} onClick={() => start(async () => setApplied(await applyBulk(table!)))}>
-              {saving ? "Saving…" : p.changed ? `Save changes for ${p.changed} student${p.changed === 1 ? "" : "s"}` : "Nothing to change"}
+            <button className={btn.primary} disabled={!!p.withErrors || !p.changed || saving || !table} onClick={() => start(async () => setApplied(await applyBulk(kind, table!)))}>
+              {saving ? "Saving…" : p.changed ? `Save changes for ${p.changed} ${p.changed === 1 ? who[0] : who[1]}` : "Nothing to change"}
             </button>
           </div>
           {applied?.error && <p className="mb-2 text-sm text-bad" role="alert">{applied.error}</p>}
@@ -44,7 +45,7 @@ export function BulkEditWizard() {
           {changedRows.length > 0 ? (
             <div className="max-h-[28rem] overflow-auto">
               <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-surface"><tr className="text-left text-xs text-muted"><th className="py-1 pr-2">Row</th><th className="pr-2">Student</th><th>Changes / problems</th></tr></thead>
+                <thead className="sticky top-0 bg-surface"><tr className="text-left text-xs text-muted"><th className="py-1 pr-2">Row</th><th className="pr-2">{kind === "staff" ? "Person" : "Student"}</th><th>Changes / problems</th></tr></thead>
                 <tbody>
                   {changedRows.map((r) => (
                     <tr key={r.line} className={`border-t border-line align-top ${r.errors.length ? "bg-bad-soft" : ""}`}>
