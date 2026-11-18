@@ -5,15 +5,9 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireSchoolAdmin, requireUser, audit } from "@/lib/auth";
+import { opt, phone, email, username, name, dob } from "@/lib/personFields";
 
 export type EditResult = { ok?: boolean; error?: string; message?: string } | undefined;
-
-const opt = (max: number) => z.string().trim().max(max).transform((v) => v || null);
-const phone = z.string().trim().refine((v) => !v || /^[+0-9][0-9 ()\-]{5,19}$/.test(v), "Phone: digits, spaces, + or - only (6–20 characters)").transform((v) => v || null);
-const email = z.string().trim().refine((v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), "Please enter a valid email address").transform((v) => v || null);
-const username = z.string().trim().toLowerCase().regex(/^[a-z0-9._-]{3,40}$/, "Username: 3–40 lowercase letters, numbers, dots, dashes or underscores");
-const name = z.string().trim().min(2, "Name is required").max(80);
-const dob = z.string().trim().refine((v) => !v || (/^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(v) < new Date() && v > "1900-01-01"), "Please enter a valid date of birth").transform((v) => v || null);
 
 async function usernameFree(u: string, exceptId: string) {
   const other = await prisma.user.findUnique({ where: { username: u } });

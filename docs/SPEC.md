@@ -400,3 +400,10 @@ New staff get a temporary password and must change it at first sign-in. Students
 - `User` gains optional `admissionNo`, `dateOfBirth`, `guardianName`, `guardianPhone` (students), `designation` (staff), `email`, `phone`.
 - `/admin/people/[id]` (school admin or group admin): edit a student or staff member (`updatePerson`); `/hq/schools/[id]` (`updateSchool`), `/hq/staff/[id]` (`updateHqStaff`), group rename (`renameSchoolGroup`); `/account` contact details for non-students (`updateMyContact`). Validation with zod; activity log entries `STUDENT_UPDATED`, `STAFF_UPDATED`, `SCHOOL_UPDATED`, `SCHOOL_GROUP_RENAMED`.
 - Edit forms submit by hand (not via the form action) so typed values are kept after a validation error.
+
+## 24. Bulk edit of students in Excel (v0.5.4)
+
+- `src/lib/spreadsheet.ts` reads .xlsx (first sheet, via exceljs) or .csv into rows keyed by normalised headings, and writes .xlsx (bold frozen header, text-formatted cells, notes on headings).
+- `src/lib/bulkEdit.ts`: export columns (`STUDENT_COLUMNS`, with heading aliases), `checkBulkEdit` (match by Student ID or username; per-row changes and errors using the shared `personFields` rules; class moves; status), `applyBulkEdit`. Dates: ISO, day-first (14/08/2015, 14-08-2015, 14.08.2015) or Excel serials.
+- `/api/admin/students-export?section=` downloads; `/admin/bulk-edit` uploads (`previewBulkEdit`, then `applyBulk`, which re-checks and is all-or-nothing). Activity log: `STUDENTS_BULK_UPDATED` with the changed fields.
+- Bulk import of new students accepts .xlsx; `/api/admin/students-template?format=xlsx`.

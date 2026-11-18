@@ -4,7 +4,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireSchoolAdmin, audit } from "@/lib/auth";
 import { tempPassword, hashPassword, studentUsername, staffUsername } from "@/lib/accounts";
-import { parseCsvObjects } from "@/lib/csv";
+import { parseCsvObjects, toCsv } from "@/lib/csv";
+import { readTable } from "@/lib/spreadsheet";
 
 type Result = { ok?: boolean; error?: string; credentials?: { name: string; username: string; password: string; className?: string }[] };
 
@@ -141,7 +142,13 @@ export async function previewImport(_: unknown, form: FormData): Promise<{ rows?
   const file = form.get("file");
   if (file instanceof File && file.size > 0) {
     if (file.size > 1_000_000) return { error: "File is larger than 1 MB." };
-    csv = await file.text();
+    if (/\.xlsx?$/i.test(file.name)) {
+      // Excel: read the sheet and continue as CSV with the same columns
+      try {
+        const t = await readTable(file);
+        csv = toCsv([["name", "class", "section", "roll"], ...t.map((r) => [r.name ?? r.studentname ?? "", r.class ?? "", r.section ?? "", r.roll ?? r.rollno ?? ""])]);
+      } catch (e) { return { error: e instanceof Error ? e.message : "Could not read the file." }; }
+    } else csv = await file.text();
   }
   const rows = parseCsvObjects(csv);
   if (!rows.length) return { error: "No rows found. The first row must be the header: name,class,section,roll" };

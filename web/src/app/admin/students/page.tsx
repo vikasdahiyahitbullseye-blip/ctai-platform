@@ -19,7 +19,7 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
   const sectionOpts = sections.map((s) => ({ id: s.id, label: `Class ${s.classLevel}-${s.section}` }));
   return (
     <div className="space-y-6">
-      <PageHeader title="Students" subtitle="Students don't need an email. Each gets a username and password you can print as a login slip." action={<Link href="/admin/import" className={btn.secondary}>⬆ Bulk import from Excel/CSV</Link>} />
+      <PageHeader title="Students" subtitle="Students don't need an email. Each gets a username and password you can print as a login slip." action={<span className="flex flex-wrap gap-2"><Link href="/admin/import" className={btn.secondary}>⬆ Bulk import (new students)</Link><Link href="/admin/bulk-edit" className={btn.secondary}>✎ Bulk edit in Excel</Link></span>} />
       <Card title="Add one student">{sections.length ? <AddStudentForm sections={sectionOpts} schoolName={user.school.name} /> : <Empty>Create a class first.</Empty>}</Card>
       <Card>
         <form className="mb-4 flex flex-wrap items-end gap-2">

@@ -71,8 +71,8 @@ export function ImportWizard({ schoolName }: { schoolName: string }) {
   return (
     <div className="space-y-4">
       <form action={action} className="space-y-3">
-        <label className="block text-sm font-medium">Upload a CSV file (save your Excel sheet as CSV)
-          <input type="file" name="file" accept=".csv,text/csv" className="mt-1 block text-sm" />
+        <label className="block text-sm font-medium">Upload an Excel (.xlsx) or CSV file
+          <input type="file" name="file" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" className="mt-1 block text-sm" />
         </label>
         <label className="block text-sm font-medium">…or paste rows here
           <textarea name="csv" rows={6} className={`${input} font-mono`} placeholder={"name,class,section,roll\nAarav Gupta,3,A,15\nIsha Rao,6,A,17"} />

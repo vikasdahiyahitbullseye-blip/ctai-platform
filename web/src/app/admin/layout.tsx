@@ -14,6 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { href: "/admin/teachers", label: "Teachers" },
         { href: "/admin/students", label: "Students" },
         { href: "/admin/import", label: "Bulk import" },
+        { href: "/admin/bulk-edit", label: "Bulk edit" },
         { href: "/admin/audit", label: "Activity log" },
         ...((await canUploadVideos(user)) ? [{ href: "/videos", label: "Concept videos" }] : []),
       ]}
