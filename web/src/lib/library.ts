@@ -7,6 +7,8 @@ import { MODULES, type ModuleData } from "../../prisma/content/library";
 import { generatePaper, type PoolItem } from "./generator";
 import { apportion, budget, defaultPeriods, schedule, MONTHLY_MONTHS, KIND_LABEL, type PlanChapter, type Slot, type Part } from "./plan";
 
+/** Every library worksheet and assignment has this many questions (all classes). */
+export const QUESTIONS_PER_SET = 12;
 export const LIBRARY_TARGETS = { WORKSHEET: 40, ASSIGNMENT: 24, MONTHLY: 8, TERM: 2, MOCK: 4, VIDEO: 20, KITS: 12, PRACTICE: 600 } as const;
 
 export const LIB_LABEL: Record<string, string> = {
@@ -105,9 +107,16 @@ export async function buildClassLibrary(db: PrismaClient, cls: number) {
   // ---------- Assessments (rebuilt from scratch: they hold no user data) ----------
   await db.assessment.deleteMany({ where: { classLevel: cls, libType: { not: null } } });
   const makeSet = async (data: { libType: string; code: string; title: string; chapterId?: string; coverage: string[]; count: number; mix: { 1: number; 2: number; 3: number }; durationMin: number; instructions: string; avoid?: string[]; picture?: boolean; order: number; tasks?: { title: string; prompt: string; responseType: string; marks: number }[]; sections?: boolean }) => {
-    let source = pool.filter((q) => data.coverage.includes(q.chapterId));
-    if (data.picture) { const pics = source.filter((q) => q.pic); if (pics.length >= Math.min(6, data.count)) source = pics; }
-    const gen = generatePaper(source, { chapterIds: data.coverage, count: data.count, difficultyMix: data.mix, avoidIds: data.avoid, seed: hash(data.code) });
+    const source = pool.filter((q) => data.coverage.includes(q.chapterId));
+    const bp = { chapterIds: data.coverage, difficultyMix: data.mix, avoidIds: data.avoid, seed: hash(data.code) };
+    let gen = generatePaper(source, { ...bp, count: data.count });
+    if (data.picture) {
+      // Picture worksheets: as many picture questions as the chapter has (up to the full count), topped up with others.
+      const pics = generatePaper(source.filter((q) => q.pic), { ...bp, count: data.count });
+      const rest = data.count - pics.items.length;
+      const others = rest > 0 ? generatePaper(source.filter((q) => !q.pic), { ...bp, count: rest }).items : [];
+      gen = { ...gen, items: [...pics.items, ...others] };
+    }
     const a = await db.assessment.create({
       data: {
         kind: "LIBRARY", libType: data.libType, code: data.code, title: data.title, classLevel: cls, chapterId: data.chapterId, libOrder: data.order,
@@ -133,7 +142,7 @@ export async function buildClassLibrary(db: PrismaClient, cls: number) {
     const list: Ref[] = [];
     for (let k = 0; k < wsCount[i]; k++) {
       const kind = WORKSHEET_KINDS[k % WORKSHEET_KINDS.length];
-      const w = await makeSet({ libType: "WORKSHEET", code: `C${cls}-${chCode(c)}-WS${k + 1}`, title: `Worksheet ${k + 1} · ${kind.name}: ${c.title}`, chapterId: c.id, coverage: [c.id], count: small || kind.picture ? 8 : 10, mix: kind.mix, picture: kind.picture, durationMin: small ? 20 : 25, instructions: `${kind.name} worksheet. Work on your own, then check with a partner.`, avoid: used, order: order++ });
+      const w = await makeSet({ libType: "WORKSHEET", code: `C${cls}-${chCode(c)}-WS${k + 1}`, title: `Worksheet ${k + 1} · ${kind.name}: ${c.title}`, chapterId: c.id, coverage: [c.id], count: QUESTIONS_PER_SET, mix: kind.mix, picture: kind.picture, durationMin: small ? 30 : 35, instructions: `${kind.name} worksheet. Work on your own, then check with a partner.`, avoid: used, order: order++ });
       used.push(...w.items);
       list.push({ type: "WORKSHEET", id: w.id, label: `Worksheet ${k + 1} · ${kind.name}` });
     }
@@ -144,7 +153,7 @@ export async function buildClassLibrary(db: PrismaClient, cls: number) {
     const list: Ref[] = [];
     for (let k = 0; k < hwCount[i]; k++) {
       const task = TASKS(c)[k % 3];
-      const a = await makeSet({ libType: "ASSIGNMENT", code: `C${cls}-${chCode(c)}-HW${k + 1}`, title: `Assignment ${k + 1}: ${c.title}`, chapterId: c.id, coverage: [c.id], count: 6, mix: { 1: 30, 2: 50, 3: 20 }, durationMin: 30, instructions: "Do the questions online or on paper, and complete the task.", order: order++, tasks: [task] });
+      const a = await makeSet({ libType: "ASSIGNMENT", code: `C${cls}-${chCode(c)}-HW${k + 1}`, title: `Assignment ${k + 1}: ${c.title}`, chapterId: c.id, coverage: [c.id], count: QUESTIONS_PER_SET, mix: { 1: 30, 2: 50, 3: 20 }, durationMin: 45, instructions: "Do the questions online or on paper, and complete the task.", order: order++, tasks: [task] });
       list.push({ type: "ASSIGNMENT", id: a.id, label: `Assignment ${k + 1}: ${c.title}` });
     }
     assignments.set(c.key, list);

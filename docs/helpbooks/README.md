@@ -26,25 +26,36 @@ The Classes 3–8 help books get a 1–2 page "Learn it" theory section before e
 
 ## Import the help-book questions into the platform
 
-The help-book questions in `web/prisma/content/helpbook/hb.json` and their pictures in `web/public/hb/` were extracted
-from the original help-book PDFs (not stored here) with three scripts. They need `poppler-utils` and `pip install pillow`.
+The help-book questions in `web/prisma/content/helpbook/hb.json` and their pictures in `web/public/hb/` are extracted
+from the original help-book PDFs (not stored here). Needs `poppler-utils` and `pip install pillow`.
 
 1. Extract each book (questions, options, answer keys, solutions and picture crops) into `out/`:
 
    ```bash
    mkdir -p out/img
-   python3 hb_extract.py CT_Class3_HelpBook.pdf 3 out
+   python3 -I hb_extract.py HB3.pdf 3 out
    ```
 
-   Repeat for Classes 4–8. Questions start at a numbered badge (`1`, `A1`, `P`); the skill tag is read from the right margin.
-   Picture crops have the question text and badge painted out.
+   Repeat for Classes 4–8 (`HB4.pdf` … `HB8.pdf`). What the extractor does:
+   - Questions start at a numbered badge (`1`, `A1`, `P`). The skill tag at the top right is removed only when its words spell a skill.
+   - Answer badges are recognised as white letters on a coloured circle, so a, b, c, d labels inside a drawing are not taken for options.
+   - Option text includes two-line options; a number written over a number becomes a fraction (`4/5`); section headings ("The Thinking Spot") are not option text. Options made only of numbers (small grids) are shown as pictures.
+   - Picture crops have the question text and number painted out with the surrounding background colour. Each crop is then *fitted*: it grows while the drawing touches an edge, and light borders and table shading next to the drawing are included.
+   - A crop that turns out to be only words (a sum, a sequence, bullet clues) is not kept as a picture: its text is added to the question.
+   - Table header and label rows (wide gaps between words) after the end of the question's sentence belong to the picture, not to the question text.
 
-2. Optional check: `python3 sheets.py /path/to/font.ttf 3 0` writes a contact sheet of 16 picture crops (class 3, from item 0).
+2. Repair the eight figures that are clipped in the books themselves (a drawing runs under the answer cards or the question text; the hidden labels are taken from the PDF text):
 
-3. Convert to the platform format (run from the folder that holds `out/`):
+   ```bash
+   python3 -I hb_fix_clipped.py . out
+   ```
+
+3. Check: `python3 -I edgecheck.py edges.json out/img/*.png` lists pictures whose drawing touches an edge (frame lines along an edge are ignored). `python3 sheets.py /path/to/font.ttf 3 0` writes a contact sheet of 16 crops.
+
+4. Convert to the platform format (run from the folder that holds `out/`):
 
    ```bash
    python3 hb_convert.py /path/to/ctai-platform/web
    ```
 
-   This writes `hb.json` and the WebP pictures. Then run `npm run seed` (or `npm run db:setup`) in `web/`.
+   This writes `hb.json` and the WebP pictures (delete the old `web/public/hb/*.webp` first). Then run `npm run db:setup` in `web/`.

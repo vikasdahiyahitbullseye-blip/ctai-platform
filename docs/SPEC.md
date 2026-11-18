@@ -388,3 +388,9 @@ New staff get a temporary password and must change it at first sign-in. Students
 - The 18 EVS themes for Classes 3–5 (not in the handbooks) were removed with their questions, modules, picture plans, subject-link entries and year-plan periods. The Classes 3–5 year plans keep 75 periods, now shared by the CT chapters. "EVS" remains only as a *subject* that chapters connect to.
 - The help-book questions use the same chapter numbers as the handbooks.
 - `content.test.ts` fails if the chapter list stops matching the handbooks.
+
+## 22. Set sizes and picture quality (v0.5.2)
+
+- Library worksheets and assignments: 12 questions each (`QUESTIONS_PER_SET`); picture worksheets prefer picture questions and top up.
+- Help-book extraction fixes: skill-tag filter no longer drops right-side words (4th options, stem words); answer badges detected by colour; two-line and fraction options; headings excluded; crops fitted (grow while ink touches an edge, include light borders); text-only crops become stem text; book-clipped figures repaired (`hb_fix_clipped.py`). Result: 1,583 help-book questions (3 more), 633 pictures (was 722), 120 picture-option questions, no answer keys changed.
+- CBSE crops re-fitted where a drawing or option row was cut (`cbse_refit.py`, `cbse_extend.py`).

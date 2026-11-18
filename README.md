@@ -195,6 +195,10 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 **Chapters:** exactly the chapters of the CBSE CT & AI handbooks, 80 in all: Classes 3–5 have CT chapters only (14, 14, 15), and Classes 6–8 have CT (10, 8, 7) and 4 AI chapters each. CBSE teaches Classes 3–5 CT inside the Maths and The World Around Us (EVS) periods, but there are **no separate EVS chapters**; the EVS themes that earlier versions added were removed (a unit test now checks the chapter list against the handbooks).
 
+**Library sets:** every worksheet and every assignment has **12 questions** (all classes; `QUESTIONS_PER_SET` in `src/lib/library.ts`). Picture worksheets use as many picture questions as the chapter has and top up with others. Teachers' own homework defaults to 12 questions.
+
+**Pictures in questions** were all checked (help books: 633, CBSE handbooks: 418). Help-book crops are fitted to the whole drawing; option rows that had been saved as pictures are now real text options (95 questions, and about 80 questions whose 4th option was cut short, e.g. "Rs." for "Rs. 9", are corrected); text-only "pictures" became question text; tables are complete pictures; 8 figures that are clipped in the books themselves were redrawn with the hidden labels. CBSE crops that cut a drawing or an option row were re-fitted. See `docs/helpbooks/README.md` and `docs/cbse/README.md`.
+
 **Current bank (v0.4, raised to CBSE handbook level): 3,728 live questions. Every CT chapter has 42–63 practice items and every AI chapter has 40.**
 
 | Class | Help book | Help-book Thinking Spot puzzles | New CBSE-level CT | AI scenarios | CBSE handbook | Live total |

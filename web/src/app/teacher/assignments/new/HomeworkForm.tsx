@@ -30,7 +30,7 @@ export function HomeworkForm({ sections, chapters, preselect }: { sections: { id
         </div>
         <div className="rounded-2xl border border-line bg-surface p-5">
           <div className="font-semibold">Questions (auto-marked)</div>
-          <label className="mt-2 block text-sm font-medium">How many<input type="number" name="count" min={0} max={20} defaultValue={5} className={`${input} w-28`} /></label>
+          <label className="mt-2 block text-sm font-medium">How many<input type="number" name="count" min={0} max={20} defaultValue={12} className={`${input} w-28`} /></label>
           <div className="mt-3 grid max-h-64 gap-1.5 overflow-auto sm:grid-cols-2">
             {chapters.filter((c) => c.classLevel === cls).map((c) => (
               <label key={c.id} className={`flex items-center gap-2 rounded-lg border border-line px-2 py-1.5 text-xs ${c.n ? "" : "opacity-50"}`}>

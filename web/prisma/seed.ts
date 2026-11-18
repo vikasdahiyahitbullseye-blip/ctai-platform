@@ -353,7 +353,7 @@ async function main() {
 
   // Homework with an activity task (teacher-marked) for 3-A and 6-A.
   const makeHomework = async (cls: number, sectionId: string, title: string, qFilter: object, task: { title: string; prompt: string }, daysAgo: number, dueIn: number) => {
-    const qs = await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, ...qFilter }, take: 4, orderBy: { code: "asc" } });
+    const qs = await db.question.findMany({ where: { classLevel: cls, isPuzzle: false, status: "PUBLISHED", ...qFilter }, take: 12, orderBy: { code: "asc" } });
     const hw = await db.assessment.create({
       data: {
         kind: "ASSIGNMENT", title, classLevel: cls, schoolId: school.id, createdById: teacher.id, createdAt: new Date(now - daysAgo * DAY),
