@@ -601,6 +601,7 @@ model GamePlay {
   moves     Int
   timeSec   Int
   xp        Int      @default(0)
+  tidy      Boolean  @default(false) // solved in the fewest moves / blocks (or a "tidy" solution)
   createdAt DateTime @default(now())
 
   @@unique([userId, game, seed])

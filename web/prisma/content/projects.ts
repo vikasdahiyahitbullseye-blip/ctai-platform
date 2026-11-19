@@ -13,7 +13,9 @@ const STANDARD_RUBRIC = {
   communication: { name: "Communication", levels: ["Message unclear", "Main idea shared but hard to follow", "Clear, organised presentation with visuals", "Engaging, well-organised, answers questions confidently"] as [string, string, string, string] },
 };
 
-export const PROJECT_KITS: Kit[] = [
+import { MORE_PROJECT_KITS } from "./projects2";
+
+const BASE_KITS: Kit[] = [
   {
     code: "P3-ROUTINE", classLevel: 3, emoji: "⏰", title: "My Morning Robot", tagline: "Write the perfect morning routine — so clear that a robot could follow it!",
     drivingQuestion: "Can we write instructions for getting ready for school that a robot could follow without mistakes?",
@@ -119,3 +121,6 @@ export const PROJECT_KITS: Kit[] = [
     ],
   },
 ];
+
+/** All project kits: the first five plus the additional ones, so each class has four. */
+export const PROJECT_KITS: Kit[] = [...BASE_KITS, ...MORE_PROJECT_KITS];

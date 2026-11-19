@@ -75,7 +75,10 @@ describe("seed content integrity", () => {
     for (const c of counts.slice(0, 4)) expect(c / mcq).toBeLessThan(0.4);
   });
   it("project kits are complete", () => {
+    for (const c of [3, 4, 5, 6, 7, 8]) expect(PROJECT_KITS.filter((k) => k.classLevel === c).length, `class ${c} projects`).toBeGreaterThanOrEqual(4);
+    expect(new Set(PROJECT_KITS.map((k) => k.code)).size).toBe(PROJECT_KITS.length);
     for (const k of PROJECT_KITS) {
+      k.skills.forEach((s) => expect(Object.keys(SKILLS), s).toContain(s));
       expect(k.milestones.length).toBeGreaterThanOrEqual(3);
       expect(k.rubric.every((r) => r.levels.length === 4)).toBe(true);
       if (k.classLevel >= 6) expect(k.milestones.reduce((s, m) => s + m.sessions, 0)).toBe(20);

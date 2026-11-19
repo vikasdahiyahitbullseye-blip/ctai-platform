@@ -7,6 +7,7 @@ import {
 } from "@/lib/games";
 import { submitGame, type GameResult } from "@/app/actions/games";
 import { Confetti, Mascot } from "@/components/kid";
+import { RobotBoard, NonogramBoard, JugsBoard, TargetBoard, MagicBoard } from "./MoreBoards";
 
 type Solved = (solution: unknown, moves: number) => void;
 
@@ -19,6 +20,7 @@ export function GamePlayer({ game, tier, level, xpGamesLeft }: { game: GameId; t
   const [lost, setLost] = useState<string | null>(null);
   const [pending, start] = useTransition();
   const info = GAMES[game];
+  const timeOnly = game === "SUDOKU" || game === "NONOGRAM" || game === "MAGIC";
 
   const fresh = () => {
     setSeed(newSeed());
@@ -52,9 +54,9 @@ export function GamePlayer({ game, tier, level, xpGamesLeft }: { game: GameId; t
             <Confetti fire={1} />
             <Mascot size={72} mood="cheer" />
             <p className="mt-2 text-3xl font-extrabold text-good">Solved! 🎉</p>
-            <p className="mt-1 font-bold">{game === "SUDOKU" ? `${secs} seconds` : `${result.moves} moves · ${secs} seconds`}{result.onPar && game !== "SUDOKU" ? " · ⭐ tidy solution" : ""}</p>
+            <p className="mt-1 font-bold">{timeOnly ? `${secs} seconds` : game === "TARGET" ? `${result.moves} cards used · ${secs} seconds` : `${result.moves} ${game === "ROBOT" ? "blocks" : "moves"} · ${secs} seconds`}{result.onPar && !timeOnly ? " · ⭐ tidy solution" : ""}</p>
             <p className="mt-2 text-xl font-extrabold text-brand">{result.xp ? `+${result.xp} XP` : "No XP this time — you have used today's 5 XP games. Keep practising for fun!"}</p>
-            {result.best !== null && game !== "SUDOKU" && <p className="mt-1 text-sm text-muted">Your best at this level: {Math.min(result.best, result.moves)} moves</p>}
+             {result.best !== null && !timeOnly && game !== "TARGET" && <p className="mt-1 text-sm text-muted">Your best at this level: {Math.min(result.best, result.moves)} moves</p>}
             <div className="mt-5 flex flex-wrap justify-center gap-3">
               <button className="kbtn" onClick={fresh}>Play again</button>
               <Link href="/student/games" className="kbtn kbtn-ghost">All games</Link>
@@ -74,6 +76,11 @@ export function GamePlayer({ game, tier, level, xpGamesLeft }: { game: GameId; t
             {game === "LIGHTS" && <LightsBoard seed={seed} level={level} onSolved={onSolved} />}
             {game === "SLIDE" && <SlideBoard seed={seed} level={level} onSolved={onSolved} />}
             {game === "CODE" && <CodeBoard seed={seed} level={level} onSolved={onSolved} onLost={setLost} />}
+            {game === "ROBOT" && <RobotBoard seed={seed} level={level} onSolved={onSolved} />}
+            {game === "NONOGRAM" && <NonogramBoard seed={seed} level={level} onSolved={onSolved} />}
+            {game === "JUGS" && <JugsBoard seed={seed} level={level} onSolved={onSolved} />}
+            {game === "TARGET" && <TargetBoard seed={seed} level={level} onSolved={onSolved} />}
+            {game === "MAGIC" && <MagicBoard seed={seed} level={level} onSolved={onSolved} />}
             {result && !result.ok && <p className="mt-3 text-center font-bold text-bad" role="alert">{result.error}</p>}
             {pending && <p className="mt-3 text-center font-bold text-muted">Checking…</p>}
           </div>

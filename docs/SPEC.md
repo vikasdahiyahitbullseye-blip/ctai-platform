@@ -408,3 +408,9 @@ New staff get a temporary password and must change it at first sign-in. Students
 - `/api/admin/students-export?section=` downloads; `/admin/bulk-edit` uploads (`previewBulkEdit`, then `applyBulk`, which re-checks and is all-or-nothing). Activity log: `STUDENTS_BULK_UPDATED` with the changed fields.
 - Bulk import of new students accepts .xlsx; `/api/admin/students-template?format=xlsx`.
 - Staff bulk edit (v0.5.5): `STAFF_COLUMNS`, `exportStaffRows`, `checkStaffBulkEdit` (own role/status protected; at least one active admin after the update; Teaches parsed as `<class>-<section> <CT|AI>` items and replaces `TeacherAssignment` rows), `applyStaffBulkEdit`; `/api/admin/staff-export`; `/admin/bulk-edit?kind=staff`. Activity log: `STAFF_BULK_UPDATED`. A file of the wrong kind is refused with a clear message.
+
+## 25. More games, badges and projects (v0.6)
+
+- Games: `src/lib/games/more.ts` adds ROBOT, NONOGRAM, JUGS, TARGET, MAGIC (generators, BFS-computed par for Robot Coder and Water Jugs, safe expression evaluator for Make the Number); boards in `src/components/games/MoreBoards.tsx`; `GamePlay.tidy`. Tests: `games2.test.ts` solves every level with several seeds.
+- Badges: 17 new (31 in all); `evaluateBadges` now also runs after every solved game and when joining or creating a friend group.
+- Projects: `projects2.ts` adds 19 kits (4 per class); `content.test.ts` checks four per class, unique codes, valid skills and 20 sessions for Classes 6–8.

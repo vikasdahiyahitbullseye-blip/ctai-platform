@@ -22,10 +22,8 @@ export async function submitGame(game: string, tier: string, seed: string, solut
   const rewardedToday = await prisma.gamePlay.count({ where: { userId: user.id, createdAt: { gte: dayStart }, xp: { gt: 0 } } });
   const xp = rewardedToday < DAILY_XP_GAMES ? gameXp(level, check.onPar) : 0;
   const best = await prisma.gamePlay.findFirst({ where: { userId: user.id, game, level }, orderBy: [{ moves: "asc" }, { timeSec: "asc" }] });
-  await prisma.gamePlay.create({ data: { userId: user.id, game, level, seed, moves: check.moves, timeSec: Math.max(0, Math.min(86400, Math.round(Number(timeSec) || 0))), xp } });
-  if (xp) {
-    await addXp(prisma, user.id, xp, `Logic game: ${GAMES[game].name}`);
-    await evaluateBadges(prisma, user.id);
-  }
+  await prisma.gamePlay.create({ data: { userId: user.id, game, level, seed, moves: check.moves, tidy: check.onPar && !["SUDOKU", "NONOGRAM", "MAGIC"].includes(game), timeSec: Math.max(0, Math.min(86400, Math.round(Number(timeSec) || 0))), xp } });
+  if (xp) await addXp(prisma, user.id, xp, `Logic game: ${GAMES[game].name}`);
+  await evaluateBadges(prisma, user.id); // game badges count every solved puzzle, also after the daily XP limit
   return { ok: true, xp, moves: check.moves, onPar: check.onPar, xpGamesLeft: Math.max(0, DAILY_XP_GAMES - rewardedToday - (xp ? 1 : 0)), best: best?.moves ?? null };
 }

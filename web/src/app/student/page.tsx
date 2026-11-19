@@ -131,7 +131,7 @@ export default async function StudentHome({ searchParams }: { searchParams: Prom
       </section>
 
       <Link href="/student/games" className="flex flex-wrap items-center justify-between gap-3 rounded-[2rem] border-2 border-line bg-gradient-to-r from-[#fff4d6] to-[#ffe3ef] p-5 shadow-sm dark:from-[#3a2c10] dark:to-[#3a1626]">
-        <span><span className="text-2xl font-extrabold">🧩 Logic games</span><span className="block text-sm font-bold text-ink-2">Sudoku · Tower of Hanoi · Lights Out · Sliding tiles · Code breaker — levels for Class {section.classLevel}</span></span>
+        <span><span className="text-2xl font-extrabold">🧩 Logic games</span><span className="block text-sm font-bold text-ink-2">10 games: Robot Coder, Sudoku, Picture Logic, Tower of Hanoi, Water Jugs, Make the Number and more — levels for Class {section.classLevel}</span></span>
         <span className="kbtn kbtn-accent">Play →</span>
       </Link>
 

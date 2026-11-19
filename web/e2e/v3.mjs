@@ -35,7 +35,7 @@ let code;
   check(await board.locator("text=(you)").count() === 1, "home leaderboard should show the student's own row");
   await shot(page, "v3-01-home-leaderboard");
   await Promise.all([page.waitForURL(/board=chain/), board.locator('[role="tab"]:has-text("All our schools")').click()]);
-  check(await page.locator("#leaderboard >> text=Demo Public School, Noida").count() > 0, "group-of-schools board should include the Noida branch");
+  check(await page.locator("#leaderboard li >> text=/Demo Public School( |, Noida ).*· [0-9]-A/").count() > 0, "group-of-schools board should label students with their school");
   await Promise.all([page.waitForURL(/period=all/), page.locator('#leaderboard a:has-text("All time")').click()]);
   check(await page.locator('#leaderboard a[aria-current="true"]:has-text("All time")').count() === 1, "period switch should stick");
   log("home leaderboard ok");
@@ -86,9 +86,9 @@ let code;
 {
   const { page, ctx } = await session("student6");
   await page.goto(`${BASE}/student/games`);
-  check(await page.locator("h2").filter({ hasText: /Sudoku|Tower of Hanoi|Lights Out|Sliding tiles|Code breaker/ }).count() === 5, "five games should be listed");
+  check(await page.locator("ul > li h2").count() === 10, "ten games should be listed");
   await shot(page, "v3-05-games");
-  for (const g of ["sudoku", "lights", "slide", "code"]) {
+  for (const g of ["sudoku", "lights", "slide", "code", "robot", "nonogram", "jugs", "target", "magic"]) {
     await page.goto(`${BASE}/student/games/${g}?tier=normal`);
     await page.waitForSelector("text=How to play");
     await page.waitForFunction(() => !document.body.innerText.includes("Making a puzzle"));
@@ -110,6 +110,22 @@ let code;
   await page.waitForSelector("text=fewest possible: 15");
   await peg(0).click(); await peg(1).click(); await peg(0).click(); await peg(1).click();
   check(await page.locator("text=A bigger disc cannot go on a smaller one.").count() === 1, "illegal Hanoi move should be refused");
+  // Water Jugs: read the puzzle from the screen, solve it, and play the moves
+  await page.goto(`${BASE}/student/games/jugs?tier=normal`);
+  await page.waitForSelector("text=Get exactly");
+  const capA = Number((await page.locator("text=/^Jug A · \\d+ L$/").textContent()).match(/(\d+) L/)[1]);
+  const capB = Number((await page.locator("text=/^Jug B · \\d+ L$/").textContent()).match(/(\d+) L/)[1]);
+  const target = Number((await page.locator("p:has-text('Get exactly') span").first().textContent()).match(/\d+/)[0]);
+  const step = ([a, b], m) => m === "Fill A" ? [capA, b] : m === "Fill B" ? [a, capB] : m === "Empty A" ? [0, b] : m === "Empty B" ? [a, 0] : m === "Pour A → B" ? [a - Math.min(a, capB - b), b + Math.min(a, capB - b)] : [a + Math.min(b, capA - a), b - Math.min(b, capA - a)];
+  const prev = new Map([["0,0", null]]); const q = [[0, 0]]; let end = null;
+  while (q.length && !end) { const s = q.shift(); if (s[0] === target || s[1] === target) { end = s; break; } for (const m of ["Fill A", "Fill B", "Empty A", "Empty B", "Pour A → B", "Pour B → A"]) { const t = step(s, m); if (!prev.has(t.join())) { prev.set(t.join(), [s.join(), m]); q.push(t); } } }
+  const plan = []; for (let c = end.join(); prev.get(c); c = prev.get(c)[0]) plan.unshift(prev.get(c)[1]);
+  for (const m of plan) await page.click(`button:text-is("${m}")`);
+  await page.waitForSelector("text=Solved!");
+  check(await page.locator("text=⭐ tidy solution").count() === 1, "shortest jug solution should be tidy");
+  await page.screenshot({ path: `${SHOTS}/v3-07b-jugs-solved.png`, fullPage: true });
+  await page.goto(`${BASE}/student/rewards`);
+  check(await page.locator("li:has-text('Game On') >> text=Earned").count() === 1, "Game On badge should be earned");
   log("games ok");
   await ctx.close();
 }

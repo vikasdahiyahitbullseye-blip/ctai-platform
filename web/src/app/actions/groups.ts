@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { cleanGroupName, newGroupCode, GROUP_LIMITS, GROUP_EMOJI } from "@/lib/leaderboard";
+import { evaluateBadges } from "@/lib/progress";
 
 const back = (msg: string, scope?: string) => redirect(`/student/leaderboard?${scope ? `board=${encodeURIComponent(scope)}&` : ""}msg=${encodeURIComponent(msg)}`);
 
@@ -20,6 +21,7 @@ export async function createGroup(form: FormData) {
   let code = newGroupCode();
   while (await prisma.studentGroup.findUnique({ where: { code } })) code = newGroupCode();
   const g = await prisma.studentGroup.create({ data: { name, emoji, code, schoolId: user.schoolId, ownerId: user.id, members: { create: { userId: user.id } } } });
+  await evaluateBadges(prisma, user.id);
   back(`Group created! Share the code ${code} with your friends so they can join.`, `group:${g.id}`);
 }
 
@@ -33,6 +35,7 @@ export async function joinGroup(form: FormData) {
   if (g._count.members >= GROUP_LIMITS.maxMembers) return back(`This group is full (${GROUP_LIMITS.maxMembers} members).`);
   if ((await myGroupCount(user.id)) >= GROUP_LIMITS.maxGroupsPerStudent) return back(`You can be in up to ${GROUP_LIMITS.maxGroupsPerStudent} groups. Leave one first.`);
   await prisma.studentGroupMember.create({ data: { groupId: g.id, userId: user.id } });
+  await evaluateBadges(prisma, user.id);
   back(`You joined ${g.emoji} ${g.name}!`, `group:${g.id}`);
 }
 

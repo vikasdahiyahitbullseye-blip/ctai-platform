@@ -72,6 +72,27 @@ export const BADGES: Record<string, { name: string; description: string; icon: s
   TEAM_PLAYER: { name: "Team Player", description: "Your project team's first milestone was approved", icon: "🤝" },
   SHOWCASE: { name: "Showcase Star", description: "Your team's project was chosen for the showcase", icon: "🌟" },
   HOMEWORK_HERO: { name: "Homework Hero", description: "Submitted 3 homework assignments", icon: "📝" },
+  // Logic games
+  GAME_ON: { name: "Game On", description: "Solved your first logic game", icon: "🎮" },
+  GAME_MASTER: { name: "Game Master", description: "Solved 25 logic games", icon: "🕹️" },
+  GAME_EXPLORER: { name: "Game Explorer", description: "Solved every kind of logic game", icon: "🧭" },
+  CHALLENGER: { name: "Challenger", description: "Solved a logic game at Challenge level", icon: "⚔️" },
+  TIDY_THINKER: { name: "Tidy Thinker", description: "Found the tidiest solution in 5 logic games", icon: "✨" },
+  // Practice and consistency
+  CENTURY: { name: "Century", description: "100 answers correct", icon: "💯" },
+  MARATHON: { name: "Brain Marathon", description: "Answered 500 questions", icon: "🏃" },
+  SHARP_SHOOTER: { name: "Sharp Shooter", description: "90% or more in a practice set of at least 10 questions", icon: "🎯" },
+  CBSE_SCHOLAR: { name: "CBSE Scholar", description: "Completed a CBSE book-questions round", icon: "📗" },
+  STAR_COLLECTOR: { name: "Star Collector", description: "Earned 3 stars on 5 islands of the adventure map", icon: "🌟" },
+  PUZZLE_MASTER: { name: "Puzzle Master", description: "Solved 20 Puzzles of the Day", icon: "🧠" },
+  HOMEWORK_CHAMPION: { name: "Homework Champion", description: "Submitted 10 homework assignments", icon: "📚" },
+  STREAK_30: { name: "Unstoppable", description: "30-day activity streak", icon: "🌋" },
+  // Friends and leaderboards
+  SQUAD_UP: { name: "Squad Up", description: "Joined or created a friend group", icon: "👫" },
+  PODIUM: { name: "Weekly Champion", description: "Top of your section's weekly leaderboard, with 150+ XP that week", icon: "🥇" },
+  // More skills
+  DATA_DETECTIVE: { name: "Data Detective", description: "Proficient in Data Literacy", icon: "📊" },
+  ETHICS_GUARDIAN: { name: "Ethics Guardian", description: "Proficient in Ethics & Safety", icon: "🛡️" },
 };
 
 export const SKILL_BADGE: Record<string, string> = {
@@ -80,4 +101,6 @@ export const SKILL_BADGE: Record<string, string> = {
   ALGORITHMIC: "ALGORITHM_ACE",
   ABSTRACT: "BIG_PICTURE",
   AI_CONCEPT: "AI_EXPLORER",
+  DATA: "DATA_DETECTIVE",
+  ETHICS: "ETHICS_GUARDIAN",
 };

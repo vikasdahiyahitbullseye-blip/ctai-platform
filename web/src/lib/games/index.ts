@@ -1,7 +1,7 @@
 // Logic games: puzzle generators and solution checkers. Pure functions, shared by the browser (to play) and the
 // server (to rebuild the puzzle from its seed and check the solution before giving XP).
 
-export type GameId = "SUDOKU" | "HANOI" | "LIGHTS" | "SLIDE" | "CODE";
+export type GameId = "SUDOKU" | "HANOI" | "LIGHTS" | "SLIDE" | "CODE" | "ROBOT" | "NONOGRAM" | "JUGS" | "TARGET" | "MAGIC";
 export type Tier = "easy" | "normal" | "challenge";
 
 export const GAMES: Record<GameId, { name: string; icon: string; blurb: string; skill: string; how: string[] }> = {
@@ -40,6 +40,41 @@ export const GAMES: Record<GameId, { name: string; icon: string; blurb: string; 
     skill: "Deduction",
     how: ["The secret code uses different digits (no digit twice).", "After each guess: 🟢 = right digit in the right place, 🟡 = right digit in the wrong place.", "Use the clues from all your guesses to work out the code before you run out of tries."],
   },
+  ROBOT: {
+    name: "Robot Coder",
+    icon: "🤖",
+    blurb: "Program a robot to reach the star without hitting a wall.",
+    skill: "Algorithmic thinking",
+    how: ["Build a program from blocks: ⬆ Forward, ↺ Turn left, ↻ Turn right. The robot starts facing right (→).", "Press Run to watch it. If it crashes, fix your program and run it again.", "From level 3 a block can repeat (Forward ×3). Use as few blocks as you can for a tidy solution."],
+  },
+  NONOGRAM: {
+    name: "Picture Logic",
+    icon: "🖼️",
+    blurb: "Shade squares so the number clues match and a picture appears.",
+    skill: "Logical reasoning",
+    how: ["The numbers by each row and column tell you how many shaded squares are next to each other, in order. 3 1 means a block of 3, a gap, then 1.", "Tap a square to shade it; tap again to mark it ✕ (sure it is empty); tap again to clear.", "Start with the rows or columns that have the biggest numbers."],
+  },
+  JUGS: {
+    name: "Water Jugs",
+    icon: "🫗",
+    blurb: "Measure an exact amount of water using two jugs with no markings.",
+    skill: "Decomposition",
+    how: ["You have two jugs of different sizes and a tap. Get the target amount in either jug.", "You can fill a jug to the top, empty it, or pour from one jug into the other until one is empty or the other is full.", "Think backwards: what must be in the jugs one step before the end?"],
+  },
+  TARGET: {
+    name: "Make the Number",
+    icon: "🎯",
+    blurb: "Combine the numbers with + − × ÷ to hit the target.",
+    skill: "Number sense",
+    how: ["Use the number cards and the operation buttons to make the target. Each card can be used once.", "Brackets are worked out first; × and ÷ come before + and −. Division must come out exactly.", "Using every card gives a tidy-solution bonus."],
+  },
+  MAGIC: {
+    name: "Magic Square",
+    icon: "✨",
+    blurb: "Fill the square so every row, column and diagonal has the same total.",
+    skill: "Pattern recognition",
+    how: ["Use each number once (1–9 in a 3×3 square, 1–16 in a 4×4 square).", "Every row, every column and both diagonals must add up to the magic total shown.", "Tip: in a 3×3 square, the middle number is always 5."],
+  },
 };
 
 export const TIERS: Record<Tier, { label: string; shift: number }> = { easy: { label: "Easy", shift: -1 }, normal: { label: "Normal", shift: 0 }, challenge: { label: "Challenge", shift: 1 } };
@@ -64,20 +99,10 @@ export function gameXp(level: number, onPar: boolean) {
 export const DAILY_XP_GAMES = 5;
 
 // ---------- Seeded random numbers ----------
-export function rng(seed: string) {
-  let h = 1779033703 ^ seed.length;
-  for (let i = 0; i < seed.length; i++) {
-    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353);
-    h = (h << 13) | (h >>> 19);
-  }
-  let a = h >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+import { rng } from "./rng";
+import { checkRobot, checkNonogram, checkJugs, checkTarget, checkMagic } from "./more";
+export { rng };
+export * from "./more";
 const shuffle = <T,>(a: T[], r: () => number) => {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(r() * (i + 1));
@@ -274,9 +299,14 @@ export const codePar = (level: number) => Math.ceil(LEVELS.CODE[level].tries / 2
 /** Checks a submitted solution. Returns the number of moves, or null if it does not solve the puzzle. */
 export function verifyGame(game: GameId, seed: string, level: number, solution: unknown): { moves: number; onPar: boolean } | null {
   if (!(level >= 0 && level <= 6) || typeof seed !== "string" || seed.length < 6 || seed.length > 40) return null;
+  if (game === "TARGET") return checkTarget(seed, level, solution);
   const arr = Array.isArray(solution) ? solution : null;
   if (!arr) return null;
   switch (game) {
+    case "ROBOT": return checkRobot(seed, level, solution);
+    case "NONOGRAM": return checkNonogram(seed, level, solution);
+    case "JUGS": return checkJugs(seed, level, solution);
+    case "MAGIC": return checkMagic(seed, level, solution);
     case "SUDOKU": {
       const p = makeSudoku(seed, level);
       return checkSudoku(p, arr as number[]) ? { moves: p.givens.filter((g) => !g).length, onPar: true } : null;
