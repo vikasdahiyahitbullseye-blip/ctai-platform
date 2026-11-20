@@ -408,6 +408,7 @@ New staff get a temporary password and must change it at first sign-in. Students
 - `/api/admin/students-export?section=` downloads; `/admin/bulk-edit` uploads (`previewBulkEdit`, then `applyBulk`, which re-checks and is all-or-nothing). Activity log: `STUDENTS_BULK_UPDATED` with the changed fields.
 - Bulk import of new students accepts .xlsx; `/api/admin/students-template?format=xlsx`.
 - Staff bulk edit (v0.5.5): `STAFF_COLUMNS`, `exportStaffRows`, `checkStaffBulkEdit` (own role/status protected; at least one active admin after the update; Teaches parsed as `<class>-<section> <CT|AI>` items and replaces `TeacherAssignment` rows), `applyStaffBulkEdit`; `/api/admin/staff-export`; `/admin/bulk-edit?kind=staff`. Activity log: `STAFF_BULK_UPDATED`. A file of the wrong kind is refused with a clear message.
+- Staff bulk import (v0.5.7): `/admin/import?kind=staff`; `src/lib/staffImport.ts` (`STAFF_IMPORT_COLUMNS`, `checkStaffImport`, `createStaff`), actions in `src/app/actions/staffImport.ts`, template at `/api/admin/staff-template[?format=xlsx]`. Teaches parsing is shared with bulk edit (`parseTeaches` in `bulkEdit.ts`). Duplicate names are matched ignoring titles (Ms., Dr.) and spacing: an error within the file, a warning against existing staff. Existing emails are an error. Usernames come from `staffUsername(name, taken)` (unique within the batch); all users and their `TeacherAssignment` rows are created in one transaction with `mustChangePassword`. Activity log: `STAFF_IMPORTED`.
 
 ## 25. More games, badges and projects (v0.6)
 

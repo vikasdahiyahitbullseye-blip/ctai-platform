@@ -1,3 +1,4 @@
+// Bulk edit of students and staff through Excel, and bulk import of new teachers.
 // Bulk edit of students through Excel: download, edit, upload, preview, apply. Also: Excel bulk import of new students.
 // Run against a freshly seeded server: NODE_PATH=$(npm root -g) node e2e/bulk.mjs [baseUrl] [screenshotDir]
 import { createRequire } from "node:module";
@@ -176,6 +177,86 @@ log("changes verified (class move, new username, activity log)");
   check(await page.locator("text=STAFF_BULK_UPDATED").count() === 1, "activity log should record the staff bulk edit");
   log("staff bulk edit: errors caught, 2 people saved (role, designation, phone, classes)");
   await ctx.close();
+}
+
+// ---------- Bulk import of new teachers ----------
+{
+  const { page, ctx } = await session("admin");
+  await page.goto(`${BASE}/admin/teachers`);
+  await Promise.all([page.waitForURL(/import\?kind=staff/), page.click('a:has-text("Import new staff from Excel")')]);
+  const [dl] = await Promise.all([page.waitForEvent("download"), page.click('a:has-text("Download a template (Excel)")')]);
+  const f = path.join(tmp, dl.suggestedFilename());
+  await dl.saveAs(f);
+  check(dl.suggestedFilename() === "teachers_template.xlsx", `template name, got ${dl.suggestedFilename()}`);
+  const wb = new ExcelJS.Workbook();
+  await wb.xlsx.readFile(f);
+  const ws = wb.worksheets[0];
+  check(ws.getRow(1).getCell(1).value === "Name" && ws.getRow(1).getCell(6).value === "Teaches", "template headings");
+  // keep the sample "Anjali Mehra" row (she already exists → warning); add rows with mistakes
+  ws.addRow(["Kiran Bedi", "teacher", "PRT", "not-an-email", "", "3-A AI"]);
+  ws.addRow(["Kiran Bedi", "", "", "", "", ""]);
+  ws.addRow(["Suresh Nair", "cook", "", "", "", "9-Z CT"]);
+  await wb.xlsx.writeFile(f);
+  await page.setInputFiles('input[type="file"]', f);
+  await page.click('button:has-text("Check file")');
+  await page.waitForSelector('[data-testid="staff-import-summary"]');
+  check(await page.locator("text=/valid email/").count() === 1, "bad email should be flagged");
+  check(await page.locator("text=/AI is taught in Classes 6–8/").count() === 1, "AI for Class 3 should be flagged");
+  check(await page.locator("text=/also on row/").count() === 1, "repeated name should be flagged");
+  check(await page.locator("text=Role: write teacher or admin").count() === 1, "unknown role should be flagged");
+  check(await page.locator("text=/9-Z does not exist/").count() === 1, "unknown class should be flagged");
+  check(await page.locator("text=/called Anjali Mehra already exists/").count() === 1, "existing name should be a warning");
+  check(await page.locator('button:has-text("Create 6 staff accounts")').isDisabled(), "import must be blocked while rows have errors");
+  await page.screenshot({ path: `${SHOTS}/bulk-05-staff-import-errors.png`, fullPage: true });
+  // fix: remove the bad rows, drop the Anjali duplicate, add a clean teacher
+  ws.spliceRows(2, 1); // Anjali (sample row 1)
+  for (let n = ws.rowCount; n >= 2; n--) if (["Kiran Bedi", "Suresh Nair"].includes(ws.getRow(n).getCell(1).value)) ws.spliceRows(n, 1);
+  ws.addRow(["Kiran Bedi", "Teacher", "TGT Computer Science", "kiran.bedi@example.com", "+91 98111 22233", "6-A CT; 6-A AI"]);
+  await wb.xlsx.writeFile(f);
+  await page.setInputFiles('input[type="file"]', f);
+  await page.click('button:has-text("Check file")');
+  await page.waitForSelector("text=no errors");
+  check(await page.locator('[data-testid="staff-import-summary"]').innerText().then((t) => t.includes("3 people (2 teachers, 1 admin)")), "summary should count teachers and admins");
+  await page.click('button:has-text("Create 3 staff accounts")');
+  await page.waitForSelector("text=3 logins created");
+  const slip = page.locator("tr:has-text('Kiran Bedi')");
+  const user = (await slip.locator("td").nth(2).textContent()).trim();
+  const pass = (await slip.locator("td").nth(3).textContent()).trim();
+  check(user === "kiran.bedi", `username should be kiran.bedi, got ${user}`);
+  check(await page.locator("tr:has-text('Neha Kapoor') >> text=School admin").count() === 1, "role should show on the slip");
+  await page.screenshot({ path: `${SHOTS}/bulk-06-staff-import-done.png`, fullPage: true });
+  await page.goto(`${BASE}/admin/teachers`);
+  check(await page.locator("tr:has-text('Kiran Bedi') >> text=TGT Computer Science").count() === 1, "designation saved on import");
+  check(await page.locator("tr:has-text('Kiran Bedi') >> text=/6-A AI/").count() === 1, "classes saved on import");
+  check(await page.locator("tr:has-text('Neha Kapoor') >> text=Admin").count() === 1, "admin role saved on import");
+  // the same file again: the email is now taken
+  await page.goto(`${BASE}/admin/import?kind=staff`);
+  await page.setInputFiles('input[type="file"]', f);
+  await page.click('button:has-text("Check file")');
+  check(await page.waitForSelector("text=/Email already belongs to kiran.bedi/", { timeout: 10000 }).then(() => true, () => false), "re-importing should catch the existing email");
+  // a bulk-edit file on the import tab is refused
+  const [dl2] = await Promise.all([page.waitForEvent("download"), page.goto(`${BASE}/admin/bulk-edit?kind=staff`).then(() => page.click('a:has-text("Download Excel file")'))]);
+  const f2 = path.join(tmp, "existing-staff.xlsx");
+  await dl2.saveAs(f2);
+  await page.goto(`${BASE}/admin/import?kind=staff`);
+  await page.setInputFiles('input[type="file"]', f2);
+  await page.click('button:has-text("Check file")');
+  check(await page.waitForSelector("text=/list of existing staff/", { timeout: 10000 }).then(() => true, () => false), "existing-staff file should be refused on import");
+  await page.goto(`${BASE}/admin/audit`);
+  check(await page.locator("text=STAFF_IMPORTED").count() === 1, "activity log should record the import");
+  await ctx.close();
+
+  // the new teacher signs in with the temporary password and must choose a new one
+  const c2 = await browser.newContext();
+  const p2 = await c2.newPage();
+  p2.on("pageerror", (e) => errors.push(`kiran at ${p2.url()}: ${e.message}`));
+  await p2.goto(`${BASE}/login`);
+  await p2.fill('input[name="username"]', user);
+  await p2.fill('input[name="password"]', pass);
+  await Promise.all([p2.waitForURL((u) => !u.pathname.startsWith("/login")), p2.click('button:has-text("Sign in")')]);
+  check(/account\?first=1/.test(p2.url()), `new teacher should be asked to change password, got ${p2.url()}`);
+  await c2.close();
+  log("teacher import: errors caught, 3 accounts created with classes, login works");
 }
 
 await browser.close();

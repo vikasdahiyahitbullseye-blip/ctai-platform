@@ -40,7 +40,7 @@ export default async function BulkEditPage({ searchParams }: { searchParams: Pro
             <li><strong>Teaches</strong>: the classes and subjects, separated by semicolons, e.g. <code className="font-mono">6-A CT; 7-A AI; 3-B CT</code>. AI is for Classes 6–8. The list replaces the person&apos;s current classes; an empty cell removes them all. The classes must already exist.</li>
             <li><strong>Do not change the Staff ID column</strong> — it matches each row to the person. Delete rows or whole columns you don&apos;t want to change.</li>
             <li>You cannot change your own role or deactivate yourself, and the school must keep at least one active admin.</li>
-            <li>Changing a username changes how the person signs in; the password stays the same. New teachers are added on the <a href="/admin/teachers" className="font-semibold text-brand">Teachers</a> page.</li>
+            <li>Changing a username changes how the person signs in; the password stays the same. New teachers are added on the <a href="/admin/teachers" className="font-semibold text-brand">Teachers</a> page, or many at once with <a href="/admin/import?kind=staff" className="font-semibold text-brand">Bulk import</a>.</li>
           </ul>
         ) : (
           <ul className="list-disc space-y-1 pl-5 text-sm text-ink-2">

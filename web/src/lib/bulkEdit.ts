@@ -187,6 +187,23 @@ const STAFF_ALIASES: Record<string, string> = {
 const STAFF_LABEL: Record<string, string> = Object.fromEntries(STAFF_COLUMNS.map((c) => [c.key, c.header.replace(/ \(.*\)$/, "")]));
 const STAFF_RULES: Record<StaffField, ZodType<string | null>> = { username: usernameRule, name: nameRule, designation: opt(60), email, phone };
 
+type SectionLite = { id: string; classLevel: number; section: string };
+/** Reads a "Teaches" cell such as "6-A CT; 7-A AI" against the school's sections. The subject defaults to CT. */
+export function parseTeaches(raw: string, sections: SectionLite[]) {
+  const errors: string[] = [];
+  const parsed: { sectionId: string; subject: string; label: string }[] = [];
+  for (const it of raw.split(/[;,\n]+/).map((x) => x.trim()).filter(Boolean)) {
+    const m = it.toUpperCase().match(/^(?:CLASS\s*)?(\d)\s*-?\s*([A-Z]{1,3})(?:\s+(CT|AI))?$/);
+    const sec = m && sections.find((x) => x.classLevel === Number(m[1]) && x.section === m[2]);
+    if (!m) { errors.push(`Teaches: "${it}" — write it like 6-A CT`); continue; }
+    if (!sec) { errors.push(`Teaches: Class ${m[1]}-${m[2]} does not exist — create it first on the Classes page`); continue; }
+    const subject = m[3] ?? "CT";
+    if (subject === "AI" && sec.classLevel < 6) { errors.push(`Teaches: AI is taught in Classes 6–8, not ${m[1]}-${m[2]}`); continue; }
+    if (!parsed.some((p) => p.sectionId === sec.id && p.subject === subject)) parsed.push({ sectionId: sec.id, subject, label: `${sec.classLevel}-${sec.section} ${subject}` });
+  }
+  return { parsed, errors };
+}
+
 const teachList = (t: { section: { classLevel: number; section: string }; subject: string }[]) =>
   [...new Set(t.map((a) => `${a.section.classLevel}-${a.section.section} ${a.subject}`))].sort().join("; ");
 
@@ -273,17 +290,8 @@ export async function checkStaffBulkEdit(schoolId: string, meId: string, table: 
     }
     let teaches: StaffUpdate["teaches"];
     if (present.has("teaches")) {
-      const items = (r.teaches ?? "").split(/[;\n]+/).map((x) => x.trim()).filter(Boolean);
-      const parsed: { sectionId: string; subject: string; label: string }[] = [];
-      for (const it of items) {
-        const m = it.toUpperCase().match(/^(?:CLASS\s*)?(\d)\s*-?\s*([A-Z]{1,3})(?:\s+(CT|AI))?$/);
-        const sec = m && sections.find((x) => x.classLevel === Number(m[1]) && x.section === m[2]);
-        if (!m) { errors.push(`Teaches: "${it}" — write it like 6-A CT`); continue; }
-        if (!sec) { errors.push(`Teaches: Class ${m[1]}-${m[2]} does not exist — create it first on the Classes page`); continue; }
-        const subject = m[3] ?? "CT";
-        if (subject === "AI" && sec.classLevel < 6) { errors.push(`Teaches: AI is taught in Classes 6–8, not ${m[1]}-${m[2]}`); continue; }
-        if (!parsed.some((p) => p.sectionId === sec.id && p.subject === subject)) parsed.push({ sectionId: sec.id, subject, label: `${sec.classLevel}-${sec.section} ${subject}` });
-      }
+      const { parsed, errors: tErrors } = parseTeaches(r.teaches ?? "", sections);
+      errors.push(...tErrors);
       const before = teachList(s.teaching), after = parsed.map((p) => p.label).sort().join("; ");
       if (before !== after) { teaches = parsed.map(({ sectionId, subject }) => ({ sectionId, subject })); changes.push({ label: "Teaches", from: before, to: after }); }
     }
