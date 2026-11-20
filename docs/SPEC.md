@@ -415,3 +415,10 @@ New staff get a temporary password and must change it at first sign-in. Students
 - Games: `src/lib/games/more.ts` adds ROBOT, NONOGRAM, JUGS, TARGET, MAGIC (generators, BFS-computed par for Robot Coder and Water Jugs, safe expression evaluator for Make the Number); boards in `src/components/games/MoreBoards.tsx`; `GamePlay.tidy`. Tests: `games2.test.ts` solves every level with several seeds.
 - Badges: 17 new (31 in all); `evaluateBadges` now also runs after every solved game and when joining or creating a friend group.
 - Projects: `projects2.ts` adds 19 kits (4 per class); `content.test.ts` checks four per class, unique codes, valid skills and 20 sessions for Classes 6–8.
+
+## 26. Balanced question bank (v0.7)
+- Targets per chapter (all 80): Easy = Medium = Hard (≥ 40 each); each chapter skill ≥ total/4 (CT: ABSTRACT, PATTERN, DECOMPOSITION, ALGORITHMIC) or ≥ total/3 (AI: AI_CONCEPT, DATA, ETHICS); TRUE_FALSE ≥ 16, FILL_BLANK ≥ 16, NUMERIC ≥ 14, rest 4-option MCQ; pictures ≥ 45% (CT) / 40% (AI); AI chapters ≥ 10 SHORT. Constants in `prisma/content/gen/v3/index.ts`.
+- Engines (`prisma/content/gen/v3/*.ts`) return a `Problem` (story, question, sentence with a blank, computed answer, wrong answers, optional figure); `render()` turns it into MCQ / TRUE_FALSE / FILL_BLANK / NUMERIC. A true/false or fill-in version is refused when a fact appears only in the question line. True/false statements are about half true.
+- The seed counts the live bank per chapter (after the help-book, CBSE, CBSE-level and scenario questions) and calls `generateBalanced`. New questions are GENERATED, PUBLISHED and awaiting approval.
+- Checks: `npm run bank:check` = `scripts/audit-bank.ts` (structure and consistency), `scripts/verify-v3.ts` (independent re-solve from figure data and text), `scripts/bank-coverage.ts` (≥ 10 per filter choice per chapter). Unit tests: `src/lib/__tests__/bankV3.test.ts`.
+- Teacher question bank: live questions only; counts beside each filter choice; skills limited to the class/chapter; types limited to those present; Pictures filter.

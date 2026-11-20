@@ -173,7 +173,7 @@ export function draw(fig: Fig): { w: number; h: number; body: React.ReactNode } 
     case "bars": {
       const n = fig.values.length, max = Math.ceil(Math.max(...fig.values) / fig.step) * fig.step;
       const left = 44, top = 34, ch = 190, bw = 46, gap = 26;
-      const w = left + n * (bw + gap) + 10, h = top + ch + 46;
+      const w = Math.max(left + n * (bw + gap) + 10, Math.ceil(fig.title.length * 8.4) + 24), h = top + ch + 46; // wide enough for the title
       const y = (v: number) => top + ch - (v / max) * ch;
       const colours = Object.values(PALETTE);
       return {
@@ -541,6 +541,7 @@ function drawMore(fig: More): { w: number; h: number; body: React.ReactNode } {
     case "lines": {
       const col = PALETTE[fig.colour];
       const others = ["#3b82f6", "#f97316"];
+      if (fig.mono) return { w: 220, h: 220, body: <g>{fig.segs.map(([a, b, c, d], i) => <line key={i} x1={10 + a * 2} y1={10 + b * 2} x2={10 + c * 2} y2={10 + d * 2} stroke={col} strokeWidth={4} strokeLinecap="round" />)}</g> };
       return { w: 120, h: 120, body: <g>{fig.segs.map(([a, b, c, d], i) => <line key={i} x1={10 + a} y1={10 + b} x2={10 + c} y2={10 + d} stroke={i === 0 ? col : others[(i - 1) % 2]} strokeWidth={6} strokeLinecap="round" />)}</g> };
     }
     case "calendar": {

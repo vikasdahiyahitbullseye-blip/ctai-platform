@@ -3,36 +3,51 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { formatAnswer } from "@/lib/scoring";
 import { skillName, parseSkills } from "@/lib/progress";
-import { SKILLS, QUESTION_TYPES, DIFFICULTY } from "@/lib/constants";
+import { SKILLS, QUESTION_TYPES, DIFFICULTY, dashboardSkills } from "@/lib/constants";
 import { Markdown } from "@/components/Markdown";
 import { StemFigure, OptionList } from "@/components/QuestionFigures";
 import { Card, PageHeader, Pill, btn, Empty } from "@/components/ui";
 
-type SP = { cls?: string; ch?: string; skill?: string; type?: string; d?: string; q?: string; source?: string };
+type SP = { cls?: string; ch?: string; skill?: string; type?: string; d?: string; q?: string; source?: string; pic?: string };
 
 export default async function QuestionBank({ searchParams }: { searchParams: Promise<SP> }) {
   await requireUser("TEACHER", "ADMIN");
   const sp = await searchParams;
   const cls = Number(sp.cls ?? 3);
-  const chapters = await prisma.chapter.findMany({ where: { classLevel: cls }, orderBy: [{ part: "desc" }, { number: "asc" }], include: { _count: { select: { questions: true } } } });
+  // Only the live bank (retired first-generation questions are kept for history but not shown).
+  const live = { classLevel: cls, status: "PUBLISHED" };
+  const chapters = await prisma.chapter.findMany({ where: { classLevel: cls }, orderBy: [{ part: "desc" }, { number: "asc" }], include: { _count: { select: { questions: { where: { status: "PUBLISHED" } } } } } });
+  const chapter = chapters.find((c) => c.id === sp.ch);
+  const picWhere = sp.pic === "yes" ? { OR: [{ figure: { not: null } }, { optionFigures: { not: null } }] } : sp.pic === "no" ? { figure: null, optionFigures: null } : {};
   const where = {
-    classLevel: cls,
+    ...live,
     ...(sp.ch ? { chapterId: sp.ch } : {}),
     ...(sp.skill ? { skills: { contains: sp.skill } } : {}),
     ...(sp.type ? { type: sp.type } : {}),
     ...(sp.d ? { difficulty: Number(sp.d) } : {}),
     ...(sp.q ? { stem: { contains: sp.q } } : {}),
     ...(sp.source === "CBSE" ? { source: "CBSE" } : sp.source === "OURS" ? { source: { not: "CBSE" } } : {}),
+    ...picWhere,
   };
-  const [questions, total] = await Promise.all([
+  // Counts for each filter choice, within the chosen chapter (or the whole class).
+  const scope = { ...live, ...(sp.ch ? { chapterId: sp.ch } : {}) };
+  const [questions, total, matching, byType, byDiff, scoped] = await Promise.all([
     prisma.question.findMany({ where, include: { chapter: true, _count: { select: { responses: true } }, responses: { select: { correct: true }, where: { correct: { not: null } } } }, orderBy: { code: "asc" }, take: 100 }),
-    prisma.question.count({ where: { classLevel: cls } }),
+    prisma.question.count({ where: live }),
+    prisma.question.count({ where }),
+    prisma.question.groupBy({ by: ["type"], where: scope, _count: true }),
+    prisma.question.groupBy({ by: ["difficulty"], where: scope, _count: true }),
+    prisma.question.findMany({ where: scope, select: { skills: true, figure: true, optionFigures: true } }),
   ]);
+  const skillCount = (k: string) => scoped.filter((q) => q.skills.split(",").includes(k)).length;
+  const withPic = scoped.filter((q) => q.figure || q.optionFigures).length;
+  const skillChoices = chapter ? (chapter.part === "AI" ? ["AI_CONCEPT", "DATA", "ETHICS"] : ["ABSTRACT", "PATTERN", "DECOMPOSITION", "ALGORITHMIC"]) : dashboardSkills(cls);
+  const typeChoices = (Object.keys(QUESTION_TYPES) as (keyof typeof QUESTION_TYPES)[]).filter((k) => byType.some((t) => t.type === k));
   const sel = "rounded-xl border border-line bg-surface px-3 py-2 text-sm";
 
   return (
     <div>
-      <PageHeader title="Question bank" subtitle={`${total} original questions for Class ${cls}. Each has a worked solution and CBSE CT-skill tags.`} />
+      <PageHeader title="Question bank" subtitle={`${total.toLocaleString("en-IN")} questions for Class ${cls}. Each has a worked solution and CBSE skill tags. The numbers in brackets show how many questions each choice has${chapter ? " in this chapter" : ""}.`} />
       <Card className="mb-6">
         <form className="flex flex-wrap items-end gap-3">
           <label className="text-xs text-muted">Class<br />
@@ -45,16 +60,19 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
             </select>
           </label>
           <label className="text-xs text-muted">Skill<br />
-            <select name="skill" defaultValue={sp.skill ?? ""} className={sel}><option value="">Any</option>{Object.entries(SKILLS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
+            <select name="skill" defaultValue={sp.skill ?? ""} className={sel}><option value="">Any</option>{skillChoices.map((k) => <option key={k} value={k}>{SKILLS[k as keyof typeof SKILLS]} ({skillCount(k)})</option>)}</select>
           </label>
           <label className="text-xs text-muted">Type<br />
-            <select name="type" defaultValue={sp.type ?? ""} className={sel}><option value="">Any</option>{Object.entries(QUESTION_TYPES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
+            <select name="type" defaultValue={sp.type ?? ""} className={sel}><option value="">Any</option>{typeChoices.map((k) => <option key={k} value={k}>{QUESTION_TYPES[k]} ({byType.find((t) => t.type === k)?._count ?? 0})</option>)}</select>
           </label>
           <label className="text-xs text-muted">Difficulty<br />
-            <select name="d" defaultValue={sp.d ?? ""} className={sel}><option value="">Any</option>{Object.entries(DIFFICULTY).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
+            <select name="d" defaultValue={sp.d ?? ""} className={sel}><option value="">Any</option>{Object.entries(DIFFICULTY).map(([k, v]) => <option key={k} value={k}>{v} ({byDiff.find((x) => x.difficulty === Number(k))?._count ?? 0})</option>)}</select>
           </label>
           <label className="text-xs text-muted">From<br />
             <select name="source" defaultValue={sp.source ?? ""} className={sel}><option value="">All questions</option><option value="OURS">Our question bank</option><option value="CBSE">CBSE handbook</option></select>
+          </label>
+          <label className="text-xs text-muted">Pictures<br />
+            <select name="pic" defaultValue={sp.pic ?? ""} className={sel}><option value="">Any</option><option value="yes">With a picture ({withPic})</option><option value="no">Text only ({scoped.length - withPic})</option></select>
           </label>
           <label className="text-xs text-muted">Search<br />
             <input name="q" defaultValue={sp.q ?? ""} placeholder="Words in question" className={sel} />
@@ -63,6 +81,7 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
           <Link href="/teacher/questions" className={btn.ghost}>Reset</Link>
         </form>
       </Card>
+      <p className="mb-3 text-sm text-muted">{matching.toLocaleString("en-IN")} matching question{matching === 1 ? "" : "s"}{matching > questions.length ? ` — showing the first ${questions.length}` : ""}.</p>
       {questions.length === 0 ? <Empty>No questions match. Content for this class/chapter is still being authored.</Empty> : (
         <ul className="space-y-4">
           {questions.map((q) => {

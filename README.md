@@ -143,7 +143,13 @@ npm run build
 npm run start &                            # then, with Playwright available:
 node e2e/smoke.mjs http://localhost:3000   # core student + teacher flows (run on freshly seeded data)
 node e2e/v2.mjs http://localhost:3000      # admin, content review, homework marking, projects, avatars (fresh data)
+npm run bank:check                         # question bank: audit, independent re-solve, coverage (after seeding)
 ```
+
+`npm run bank:check` runs three checks on the seeded database:
+- `scripts/audit-bank.ts` — every question: valid answer key, 4 distinct options, solution agrees with the key, numeric and true/false keys, figures valid (and image files present), no duplicates or leftover template text.
+- `scripts/verify-v3.ts` — re-solves every balanced-bank question **independently**, from its picture data and question text, with separate code, and compares the result with the stored key.
+- `scripts/bank-coverage.ts` — for every chapter, the number of questions per difficulty, skill, type and with/without picture; fails if any choice has fewer than 10.
 
 ## What's in v0.2
 
@@ -214,7 +220,23 @@ Uploaded files are stored in `web/storage/uploads` (set `STORAGE_DIR` to change)
 
 **Pictures in questions** were all checked (help books: 633, CBSE handbooks: 418). Help-book crops are fitted to the whole drawing; option rows that had been saved as pictures are now real text options (95 questions, and about 80 questions whose 4th option was cut short, e.g. "Rs." for "Rs. 9", are corrected); text-only "pictures" became question text; tables are complete pictures; 8 figures that are clipped in the books themselves were redrawn with the hidden labels. CBSE crops that cut a drawing or an option row were re-fitted. See `docs/helpbooks/README.md` and `docs/cbse/README.md`.
 
-**Current bank (v0.4, raised to CBSE handbook level): 3,728 live questions. Every CT chapter has 42–63 practice items and every AI chapter has 40.**
+**Current bank (v0.7, balanced): about 9,960 live questions — at least 120 practice questions in every one of the 80 chapters (was about 43).** In every chapter:
+
+| Filter | What every chapter has |
+|---|---|
+| Difficulty | Easy, Medium and Hard **equal** (at least 40 each) |
+| Skill | CT chapters: Abstraction, Pattern Recognition, Decomposition and Algorithmic Thinking about equal (each at least 30); AI chapters: AI Concepts, Data Literacy, Ethics & Safety (each at least 48) |
+| Type | Multiple choice with 4 options (about 65%, as in the CBSE handbooks), True/False (16+), Fill in the blank (16+), Numeric (14+); AI chapters also 10+ short answers, as in the CBSE AI exercises |
+| Pictures | 46–73% of questions have a picture (CBSE handbooks: about 50%) |
+| Length | the median question is as long as the CBSE handbook questions of that class (Class 3: 155 vs 147 characters; Class 8: 201 vs 217) |
+
+`npm run bank:check` prints the full table for every chapter. The teacher **Question bank** shows the count for every filter choice, offers only the skills taught in that class (or chapter) and the question types that exist, has a *Pictures* filter (with / text only), and shows only live questions.
+
+**Balanced questions** (`prisma/content/gen/v3/`, 48 engines, family `v3-…`): each engine builds a problem in a chapter's setting (`themes.ts`: the Surajkund Fair, the dairy farm, the AI project team, …) with a computed answer, plausible wrong answers and usually a picture — growing dot and matchstick patterns, bead strings, calendars, number grids, clocks, pictographs, bar graphs, Venn diagrams, money, rulers, jugs, balances, abacus, fractions, area models, L-shaped tile areas, grid maps, robot turns, number lines, sorting passes, decision rules, nearest-neighbour labels, accuracy by group, training-data bias, and more. The same problem can be asked as multiple choice, true/false, fill-in or numeric. `index.ts` tops every chapter up until the targets above are met, spreading engines so no engine gives more than about 12% of a chapter. Answers are computed, and `scripts/verify-v3.ts` re-solves them independently.
+
+**Accuracy check (v0.7).** The whole live bank was audited. Fixed: two generator bugs found by the independent re-solve (a nearest-neighbour rule that measured weight in different units from the question, and a percentage that was rounded before checking it was a whole number), impossible values in AI decision-rule questions (negative "books borrowed"), a help-book question with garbled options ("₹ Lost 5" → "Lost ₹5"), help-book solutions that showed raw lists, and help-book solutions that did not state the final answer (all now end with it). Bar-graph titles are no longer cut off on narrow charts. CBSE handbook questions are kept as printed.
+
+Earlier bank (v0.4) for reference: 3,728 live questions, 42–63 per CT chapter and 40 per AI chapter:
 
 | Class | Help book | Help-book Thinking Spot puzzles | New CBSE-level CT | AI scenarios | CBSE handbook | Live total |
 |---|---|---|---|---|---|---|

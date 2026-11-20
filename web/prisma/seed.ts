@@ -21,9 +21,10 @@ import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
 import { generateBank, generateCbseLevel, generateScenario } from "./content/gen";
+import { generateBalanced, type ChapterStats } from "./content/gen/v3";
 import { buildClassLibrary } from "../src/lib/library";
 import { cbseQuestions } from "./content/cbse";
-import { HELPBOOK, helpbookRef } from "./content/helpbook";
+import { HELPBOOK, helpbookRef, solutionWithAnswer } from "./content/helpbook";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -118,7 +119,7 @@ async function main() {
     await db.question.create({
       data: {
         code: `HB-${r.c}-CT-${String(r.ch).padStart(2, "0")}-${r.label}`, classLevel: r.c, chapterId: chapterId[key], skills: r.skills.join(","), type: "MCQ",
-        difficulty: r.d, stem: r.stem, options: JSON.stringify(r.options), answer: JSON.stringify(r.answer), solution: r.solution,
+        difficulty: r.d, stem: r.stem, options: JSON.stringify(r.options), answer: JSON.stringify(r.answer), solution: solutionWithAnswer(r),
         marks: r.d === 3 ? 2 : 1, timeSec: 60 + r.d * 30, isPuzzle: r.label.startsWith("P"),
         figure: r.fig ? JSON.stringify({ kind: "image", src: r.fig[0], w: r.fig[1], h: r.fig[2], alt: `Figure for: ${r.stem.slice(0, 120)}` }) : null,
         source: "AUTHORED", family: "HELPBOOK", sourceRef: helpbookRef(r), approval: "APPROVED", approvedAt: new Date(),
@@ -133,6 +134,37 @@ async function main() {
   const cbseLevel = generateCbseLevel(have);
   for (const [cls, list] of Object.entries(cbseLevel)) await addQuestions(Number(cls), list, "GENERATED", true);
   for (const [cls, list] of Object.entries(generateScenario(have))) await addQuestions(Number(cls), list, "GENERATED", true);
+
+  // CBSE handbook questions (before the balanced top-up, which counts them).
+  const cbse = cbseQuestions();
+  const missing = new Set<string>();
+  for (const q of cbse) {
+    const ch = chapterId[q.chapterKey];
+    if (!ch) { missing.add(q.chapterKey); continue; }
+    await db.question.create({
+      data: {
+        code: q.code, classLevel: q.classLevel, chapterId: ch, skills: q.skills.join(","), type: q.type, difficulty: q.difficulty,
+        stem: q.stem, options: JSON.stringify(q.options), answer: JSON.stringify(q.answer), solution: q.solution,
+        marks: q.type === "SHORT" ? 2 : 1, timeSec: q.type === "SHORT" ? 180 : 90, figure: q.figure ? JSON.stringify(q.figure) : null,
+        source: "CBSE", sourceRef: q.sourceRef, approval: "UNREVIEWED",
+      },
+    });
+  }
+  console.log(`CBSE handbook questions: ${cbse.filter((q) => chapterId[q.chapterKey]).length}${missing.size ? ` (no chapter for ${[...missing].join(", ")})` : ""}`);
+
+  // Balanced bank (v3): top every chapter up so that Easy / Medium / Hard are equal, every skill has its share,
+  // True/False, Fill-in and Numeric questions reach their minimums and plenty of questions have pictures.
+  const stats: Record<string, ChapterStats> = {};
+  const chapterKey = Object.fromEntries(Object.entries(chapterId).map(([k, v]) => [v, k]));
+  for (const q of await db.question.findMany({ where: { status: "PUBLISHED", isPuzzle: false }, select: { chapterId: true, difficulty: true, skills: true, type: true, figure: true, optionFigures: true } })) {
+    const s = (stats[chapterKey[q.chapterId]] ??= { d: {}, skills: {}, types: {}, pics: 0, short: 0 });
+    if (q.type === "SHORT") { s.short++; continue; }
+    s.d[q.difficulty] = (s.d[q.difficulty] ?? 0) + 1;
+    for (const k of q.skills.split(",")) s.skills[k] = (s.skills[k] ?? 0) + 1;
+    s.types[q.type] = (s.types[q.type] ?? 0) + 1;
+    if (q.figure || q.optionFigures) s.pics++;
+  }
+  for (const [cls, list] of Object.entries(generateBalanced(stats))) await addQuestions(Number(cls), list, "GENERATED", true);
 
   // School and people
   const hash = await bcrypt.hash("demo123", 10);
@@ -402,22 +434,6 @@ async function main() {
 
   // CBSE handbook questions (answers and solutions from CBSE's Teacher Handbooks). Added last so the demo activity above
   // stays the same. They wait for a reviewer to check the transcription, but are usable meanwhile.
-  const cbse = cbseQuestions();
-  const missing = new Set<string>();
-  for (const q of cbse) {
-    const ch = chapterId[q.chapterKey];
-    if (!ch) { missing.add(q.chapterKey); continue; }
-    await db.question.create({
-      data: {
-        code: q.code, classLevel: q.classLevel, chapterId: ch, skills: q.skills.join(","), type: q.type, difficulty: q.difficulty,
-        stem: q.stem, options: JSON.stringify(q.options), answer: JSON.stringify(q.answer), solution: q.solution,
-        marks: q.type === "SHORT" ? 2 : 1, timeSec: q.type === "SHORT" ? 180 : 90, figure: q.figure ? JSON.stringify(q.figure) : null,
-        source: "CBSE", sourceRef: q.sourceRef, approval: "UNREVIEWED",
-      },
-    });
-  }
-  console.log(`CBSE handbook questions: ${cbse.filter((q) => chapterId[q.chapterKey]).length}${missing.size ? ` (no chapter for ${[...missing].join(", ")})` : ""}`);
-
   // A demo group of schools: Demo Public School plus a smaller second branch, with a group admin login.
   {
     const group = await db.schoolGroup.create({ data: { name: "Demo Group of Schools" } });
