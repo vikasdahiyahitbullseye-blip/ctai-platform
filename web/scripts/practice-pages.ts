@@ -32,8 +32,6 @@ const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 const emoji = (s: string) => s.replace(/\p{Extended_Pictographic}️?/gu, (e) => { const img = EMO[e] ?? EMO[e.replace(/️/g, "")]; return img ? `<img class="emo" src="data:image/png;base64,${img}">` : e; });
 const md = (s: string) => emoji(esc(s).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/____/g, '<span class="blank"></span>'));
 const svg = (f: Fig, max: number) => { const { svg: s, w } = figureSvg(f); return `<div class="fig" style="width:${Math.min(w, max)}px">${s.replace(/^<svg /, '<svg style="width:100%;height:auto;display:block" ')}</div>`; };
-const LEVEL: Record<number, string> = { 1: "Easy", 2: "Medium", 3: "Hard" };
-const dots = (d: number) => `<span class="dots">${[1, 2, 3].map((k) => `<i class="${k <= d ? "on" : ""}"></i>`).join("")}</span>`;
 const letter = (i: number) => String.fromCharCode(97 + i);
 
 function questionHtml(q: Q, n: number) {
@@ -52,7 +50,7 @@ function questionHtml(q: Q, n: number) {
       : `<div class="opts ${q.options.some((o) => o.length > 34) ? "one" : ""}">${q.options.map((o, i) => `<div><span class="badge">${letter(i)}</span>${md(o)}</div>`).join("")}</div>`;
   }
   const fig = q.figure ? `<div class="figrow">${svg(q.figure, 330)}</div>` : "";
-  return `<section class="q"><div class="qhead"><span class="qn">${n}</span><span class="tags">${dots(q.difficulty)} ${LEVEL[q.difficulty]} · ${SKILLS[q.skills[0] as keyof typeof SKILLS]}</span></div>
+  return `<section class="q"><div class="qhead"><span class="qn">${n}</span><span class="tags">${SKILLS[q.skills[0] as keyof typeof SKILLS]}</span></div>
   <div class="body">${lead}${fig}<p class="ask">${kind ? `<i>${kind}</i> ` : ""}${md(ask)}</p>${opts}${tail}</div></section>`;
 }
 
@@ -81,7 +79,6 @@ function style(cls: number) {
   .q { border: 1px solid #e2e8f0; border-radius: 12px; padding: 9px 14px 10px; margin: 0 0 9px; break-inside: avoid; background: #fff; }
   .qhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
   .qn { display: inline-flex; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: #4f46e5; color: #fff; font-weight: 800; align-items: center; justify-content: center; font-family: ${head}; }
-  .dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; border: 1.3px solid #f97316; margin-right: 2px; vertical-align: 0; } .dots i.on { background: #f97316; }
   .tags { font-size: 10px; font-weight: 700; color: #64748b; letter-spacing: .02em; }
   p { margin: 0 0 4px; } .ask { font-weight: 600; margin-top: 4px; } .ask i { color: #f97316; font-style: normal; font-weight: 800; }
   .figrow { display: flex; justify-content: center; margin: 5px 0; } .fig { background: #fff; }
@@ -97,16 +94,15 @@ function style(cls: number) {
   </style>`;
 }
 
-function practiceHtml(cls: number, n: number, title: string, qs: Q[]) {
+function practiceHtml(cls: number, n: number, title: string, qs: Q[], part: "CT" | "AI") {
   return `<!doctype html><html><head>${style(cls)}</head><body>
-  <div class="band"><div class="chip"><small>CHAPTER</small><b>${n}</b></div><div><div class="kicker">More practice · ${qs.length} new questions</div><h1>${esc(title)}</h1>
-  <p class="intro">Easy (one dot), Medium (two dots) and Hard (three dots) questions for every thinking skill: choose the right option, decide true or false, fill in the blank or write the number. Answers are in the answer key after the chapter's answer key.</p></div></div>
+  <div class="band"><div class="chip"><small>${part === "AI" ? "AI CHAPTER" : "CHAPTER"}</small><b>${n}</b></div><div><div class="kicker">${part === "AI" ? "Practice" : "More practice"}</div><h1>${esc(title)}</h1></div></div>
   ${qs.map((q, i) => questionHtml(q, i + 1)).join("")}</body></html>`;
 }
 
-function answersHtml(cls: number, n: number, title: string, qs: Q[]) {
+function answersHtml(cls: number, n: number, title: string, qs: Q[], part: "CT" | "AI") {
   return `<!doctype html><html><head>${style(cls)}</head><body>
-  <div class="band"><div class="chip"><small>CHAPTER</small><b>${n}</b></div><div><div class="kicker">Answer key · More practice</div><h1>${esc(title)}</h1></div></div>
+  <div class="band"><div class="chip"><small>${part === "AI" ? "AI CHAPTER" : "CHAPTER"}</small><b>${n}</b></div><div><div class="kicker">Answer key · ${part === "AI" ? "Practice" : "More practice"}</div><h1>${esc(title)}</h1></div></div>
   <table><tr><th>Q</th><th>Answer</th><th>Solution</th></tr>${qs.map((q, i) => `<tr><td class="n">${i + 1}</td><td class="a">${answerText(q)}</td><td>${md(q.solution.replace(/\n+/g, " "))}</td></tr>`).join("")}</table></body></html>`;
 }
 
@@ -116,18 +112,18 @@ function answersHtml(cls: number, n: number, title: string, qs: Q[]) {
   const summary: Record<string, unknown> = {};
   const chosen: Record<string, string[]> = {};
   for (const cls of classes.length ? classes : [3, 4, 5, 6, 7, 8]) {
-    const titles = CURRICULUM[cls].CT;
-    for (const [i, title] of titles.entries()) {
-      const n = i + 1;
-      const rows = (await db.question.findMany({ where: { classLevel: cls, status: "PUBLISHED", sourceRef: { contains: `Class ${cls} · Chapter ${n} · More practice Q` } } }))
+    const list = [...CURRICULUM[cls].CT.map((title, i) => ({ part: "CT" as const, n: i + 1, title })), ...(CURRICULUM[cls].AI ?? []).map((title, i) => ({ part: "AI" as const, n: i + 1, title }))];
+    for (const { part, n, title } of list) {
+      const label = part === "AI" ? `AI Chapter ${n} · Practice Q` : `Chapter ${n} · More practice Q`;
+      const rows = (await db.question.findMany({ where: { classLevel: cls, status: "PUBLISHED", sourceRef: { contains: `Class ${cls} · ${label}` } } }))
         .sort((x, y) => Number(x.sourceRef!.split("Q").pop()) - Number(y.sourceRef!.split("Q").pop()));
       const cands: Q[] = rows.map((r) => ({ code: r.code, stem: r.stem, type: r.type, difficulty: r.difficulty, skills: r.skills.split(","), options: JSON.parse(r.options), answer: JSON.parse(r.answer), solution: r.solution, figure: r.figure ? JSON.parse(r.figure) : null, optionFigures: r.optionFigures ? JSON.parse(r.optionFigures) : null, family: r.family! }));
       const qs = cands;
-      if (qs.length !== PER_CHAPTER) throw new Error(`Class ${cls} chapter ${n}: only ${qs.length} questions`);
-      chosen[`${cls}-CT-${n}`] = qs.map((q) => q.code);
-      const tag = `c${cls}-ch${String(n).padStart(2, "0")}`;
+      if (qs.length !== PER_CHAPTER) throw new Error(`Class ${cls} ${part} chapter ${n}: only ${qs.length} questions`);
+      chosen[`${cls}-${part}-${n}`] = qs.map((q) => q.code);
+      const tag = `c${cls}-${part === "AI" ? "ai" : "ch"}${String(n).padStart(2, "0")}`;
       const pages: Record<string, number> = {};
-      for (const [kind, html] of [["practice", practiceHtml(cls, n, title, qs)], ["answers", answersHtml(cls, n, title, qs)]] as const) {
+      for (const [kind, html] of [["practice", practiceHtml(cls, n, title, qs, part)], ["answers", answersHtml(cls, n, title, qs, part)]] as const) {
         await page.setContent(html, { waitUntil: "networkidle" });
         await page.evaluate(() => document.fonts.ready);
         const file = path.join(out, `${tag}-${kind}.pdf`);
@@ -135,8 +131,22 @@ function answersHtml(cls: number, n: number, title: string, qs: Q[]) {
         pages[kind] = Number(/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [file]).toString())![1]);
       }
       const count = (f: (q: Q) => string | number | boolean) => qs.reduce<Record<string, number>>((m, q) => { const k = String(f(q)); m[k] = (m[k] ?? 0) + 1; return m; }, {});
-      summary[`${cls}-${n}`] = { ...pages, d: count((q) => q.difficulty), skill: count((q) => q.skills[0]), type: count((q) => q.type), pics: qs.filter((q) => q.figure || q.optionFigures).length };
+      summary[`${cls}-${part}-${n}`] = { ...pages, d: count((q) => q.difficulty), skill: count((q) => q.skills[0]), type: count((q) => q.type), pics: qs.filter((q) => q.figure || q.optionFigures).length };
     }
+  }
+  // Opening page of the Artificial Intelligence part (Classes 6–8).
+  for (const cls of (classes.length ? classes : [3, 4, 5, 6, 7, 8]).filter((c) => CURRICULUM[c].AI)) {
+    const ai = CURRICULUM[cls].AI!;
+    await page.setContent(`<!doctype html><html><head>${style(cls)}<style>
+      .part { margin-top: 120px; text-align: center; } .part .kicker { font-size: 13px; } .part h1 { font-size: 40px; margin: 8px 0 10px; }
+      .part p { max-width: 430px; margin: 0 auto 28px; color: #3b3f5c; font-size: 13px; }
+      .list { max-width: 440px; margin: 0 auto; text-align: left; } .row { display: flex; gap: 14px; align-items: center; padding: 10px 14px; border-radius: 12px; background: #eef0ff; margin-bottom: 10px; font-weight: 700; }
+      .row .chip { min-width: 58px; padding: 6px 8px; } .row .chip b { font-size: 20px; }
+    </style></head><body><div class="part"><div class="kicker">Part 2</div><h1>Artificial Intelligence</h1>
+      <p>Learn how machines learn from data, where AI is used, and how to use it fairly and safely. Each chapter has a Learn it section, practice questions and an answer key.</p>
+      <div class="list">${ai.map((t, i) => `<div class="row"><div class="chip"><small>AI CHAPTER</small><b>${i + 1}</b></div><div>${esc(t)}</div></div>`).join("")}</div></div></body></html>`, { waitUntil: "networkidle" });
+    await page.evaluate(() => document.fonts.ready);
+    await page.pdf({ path: path.join(out, `c${cls}-ai-part.pdf`), format: "A4", printBackground: true, preferCSSPageSize: true });
   }
   fs.writeFileSync(path.join(out, "practice.json"), JSON.stringify({ summary, chosen }, null, 1));
   console.log(JSON.stringify(summary));

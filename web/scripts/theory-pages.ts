@@ -41,8 +41,8 @@ function conceptHtml(c: Concept, i: number) {
   return `<section class="card" style="--accent:${ACCENTS[i % ACCENTS.length]}"><h2><span class="num">${i + 1}</span>${md(c.title)}</h2>${layout}${ex}${rem}</section>`;
 }
 
-function chapterHtml(cls: number, n: number, title: string) {
-  const t = THEORY[`${cls}-CT-${n}`];
+function chapterHtml(cls: number, n: number, title: string, part: "CT" | "AI" = "CT") {
+  const t = THEORY[`${cls}-${part}-${n}`];
   const kid = cls === 3;
   const fonts = kid
     ? `<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">`
@@ -83,7 +83,7 @@ function chapterHtml(cls: number, n: number, title: string) {
   .tip { break-inside: avoid; break-before: avoid; background: #4f46e5; color: #fff; border-radius: 12px; padding: 10px 16px; margin-top: 4px; }
   .tip b { font-family: ${head}; }
   </style></head><body>
-  <div class="band"><div class="chip"><small>CHAPTER</small><b>${n}</b></div><div><div class="kicker">Learn it · before the questions</div><h1>${esc(title)}</h1><p class="intro">${md(t.intro)}</p></div></div>
+  <div class="band"><div class="chip"><small>${part === "AI" ? "AI CHAPTER" : "CHAPTER"}</small><b>${n}</b></div><div><div class="kicker">Learn it · ${part === "AI" ? "Artificial Intelligence" : "before the questions"}</div><h1>${esc(title)}</h1><p class="intro">${md(t.intro)}</p></div></div>
   ${t.concepts.map(conceptHtml).join("")}
   <div class="tip"><b>💡 Thinking tip:</b> ${md(t.tip)}</div>
   </body></html>`;
@@ -93,13 +93,12 @@ function chapterHtml(cls: number, n: number, title: string) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   const summary: Record<string, number> = {};
-  for (const cls of classes.length ? classes : [3, 4, 5]) {
-    const titles = CURRICULUM[cls].CT;
-    for (const [i, title] of titles.entries()) {
-      const n = i + 1;
-      await page.setContent(chapterHtml(cls, n, title), { waitUntil: "networkidle" });
+  for (const cls of classes.length ? classes : [3, 4, 5, 6, 7, 8]) {
+    const list = [...CURRICULUM[cls].CT.map((title, i) => ({ part: "CT" as const, n: i + 1, title })), ...(CURRICULUM[cls].AI ?? []).map((title, i) => ({ part: "AI" as const, n: i + 1, title }))];
+    for (const { part, n, title } of list) {
+      await page.setContent(chapterHtml(cls, n, title, part), { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
-      const file = path.join(out, `c${cls}-ch${String(n).padStart(2, "0")}.pdf`);
+      const file = path.join(out, `c${cls}-${part === "AI" ? "ai" : "ch"}${String(n).padStart(2, "0")}.pdf`);
       const pageCount = () => Number(/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [file]).toString())![1]);
       const lastPageWords = (p: number) => execFileSync("pdftotext", ["-f", String(p), "-l", String(p), file, "-"]).toString().split(/\s+/).filter(Boolean).length;
       // If only a few lines spill onto an extra page, shrink slightly (not below 86%) to keep the chapter tidy.
@@ -110,7 +109,7 @@ function chapterHtml(cls: number, n: number, title: string) {
         if (pages === 1 || lastPageWords(pages) >= 70) break;
       }
       if (pages > 1 && lastPageWords(pages) < 70) await page.pdf({ path: file, format: "A4", printBackground: true, preferCSSPageSize: true });
-      summary[`${cls}-${n}`] = pageCount();
+      summary[`${cls}-${part}-${n}`] = pageCount();
     }
   }
   fs.writeFileSync(path.join(out, "pages.json"), JSON.stringify(summary, null, 1));

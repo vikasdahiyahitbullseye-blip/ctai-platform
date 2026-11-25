@@ -61,7 +61,7 @@ def answer_key_pages(path, n):
     return keys
 
 
-def overlay(w, h, number, with_footer_text, badge=False):
+def overlay(w, h, number, with_footer_text, badge=False, footer=None):
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=(w, h))
     r, g, b = STYLE["color"]
@@ -73,9 +73,10 @@ def overlay(w, h, number, with_footer_text, badge=False):
     c.setFont("InterR", 6)
     c.drawRightString(STYLE["num_right"], baseline, str(number))
     if with_footer_text:
-        c.drawString(STYLE["footer_x"], baseline, FOOTER)
+        c.drawString(STYLE["footer_x"], baseline, footer or FOOTER)
     if badge:
-        text = ("NEW in this edition: 'Learn it' theory before every chapter + 20 'More practice' questions after it" if practice_dir
+        text = (("NEW in this edition: 'Learn it' theory, 'More practice' questions and an Artificial Intelligence part" if cls >= 6
+                 else "NEW in this edition: 'Learn it' theory before every chapter and 'More practice' questions after it") if practice_dir
                 else "NEW in this edition: a 'Learn it' theory page before every chapter")
         tw = pdfmetrics.stringWidth(text, "InterB", 10)
         y = h - STYLE["badge_top"]
@@ -138,6 +139,81 @@ def correction_overlay(path, page_index, w, h):
     return PdfReader(buf).pages[0], len(todo)
 
 
+AI_TITLES = {
+    6: ["Introduction to Artificial Intelligence and Everyday Examples", "Basic Data Concepts", "Simple Pattern Recognition and Decision Making", "Ethics and Digital Responsibility"],
+    7: ["AI Domains and Applications", "AI in Industries", "Data Visualization and Analysis", "Ethics and AI Bias Awareness"],
+    8: ["AI Project Lifecycle", "Artificial Intelligence and Its Applications", "Data and Fairness in AI", "Ethics and Responsible AI"],
+}
+
+
+def page_blocks(path, page_index):
+    xml = subprocess.run(["pdftotext", "-bbox-layout", "-f", str(page_index), "-l", str(page_index), path, "-"], capture_output=True, text=True).stdout
+    out = []
+    for a, b, c2, d, body in re.findall(r'<block xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">(.*?)</block>', xml, re.S):
+        attrs = (float(a), float(b), float(c2), float(d))
+        words = [(float(a), float(b), float(c), float(d), html.unescape(t)) for a, b, c, d, t in re.findall(r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">(.*?)</word>', body)]
+        out.append((attrs, " ".join(x[4] for x in words), words))
+    return out
+
+
+def student_overlay(path, page_index, w, h):
+    """Student edition: hides notes for teachers and question counts; lists the AI chapters (Classes 6–8)."""
+    if page_index > 3 and not any(p == page_index for p in starts.values()):
+        return None
+    blocks = page_blocks(path, page_index)
+    targets = [b for b in blocks if b[1].startswith("For teachers:") or b[1].startswith("Twice as many questions") or re.fullmatch(r"\d+ questions", b[1])]
+    edition = next((b for b in blocks if b[1].startswith("Complete edition:")), None) if cls >= 6 else None
+    contents = [b for b in blocks if re.fullmatch(r"\d+ questions", b[1])] if page_index == 2 else []
+    if not targets and not edition:
+        return None
+    png = subprocess.run(["pdftoppm", "-r", "72", "-f", str(page_index), "-l", str(page_index), "-png", path], capture_output=True).stdout
+    img = Image.open(io.BytesIO(png)).convert("RGB")
+    px = lambda x, y: img.getpixel((min(img.width - 1, max(0, int(x))), min(img.height - 1, max(0, int(y)))))
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=(w, h))
+    for (x0, y0, x1, y1), text, _ in targets:
+        pill = re.fullmatch(r"\d+ questions", text) and page_index != 2
+        pad = 7 if pill else 1.5
+        bg = px(x1 + 12, (y0 + y1) / 2) if pill else px(x1 + 6, (y0 + y1) / 2) if re.fullmatch(r"\d+ questions", text) else px(x0 - 4, y0 - 3)
+        c.setFillColorRGB(*[v / 255 for v in bg])
+        c.rect(x0 - pad, h - y1 - (3 if pill else 1), x1 - x0 + 2 * pad, y1 - y0 + (6 if pill else 2), stroke=0, fill=1)
+    if edition:
+        (x0, y0, x1, y1), text, words = edition
+        bg = px(x0 - 6, (y0 + y1) / 2)
+        c.setFillColorRGB(*[v / 255 for v in bg])
+        c.rect(x0 - 2, h - y1, x1 - x0 + 4, y1 - y0, stroke=0, fill=1)
+        ink = min((px(xx, yy) for xx in range(int(x0), int(x1)) for yy in range(int(y0), int(y1))), key=sum)
+        size = (x1 - x0) / pdfmetrics.stringWidth(text, "InterB", 1)
+        new = f"{text} and AI Chapters 1 to 4"
+        c.setFillColorRGB(*[v / 255 for v in ink])
+        c.setFont("InterB", size)
+        c.drawCentredString((x0 + x1) / 2, h - (y0 + (y1 - y0) * 0.72), new)
+    if contents and cls >= 6:
+        # Add the AI chapters under the chapter list, in the same row style.
+        rows = sorted(b[0][1] for b in contents)
+        step = rows[-1] - rows[-2]
+        last = next(b for b in blocks if b[1] == "The Other Side of Zero" or (abs(b[0][1] - rows[-1]) < 1 and b[0][0] < 300 and b[0][0] > 60))
+        num_x = min(b[0][0] for b in blocks if abs(b[0][1] - rows[-1]) < 1)
+        title_x = last[0][0]
+        size = (last[0][2] - last[0][0]) / pdfmetrics.stringWidth(last[1], "InterR", 1)
+        ink = min((px(xx, yy) for xx in range(int(title_x), int(last[0][2])) for yy in range(int(last[0][1]), int(last[0][3]))), key=sum)
+        y = rows[-1] + step + 6
+        c.setFillColorRGB(*[v / 255 for v in ink])
+        c.setFont("InterB", size + 1)
+        c.drawString(num_x, h - (y + step * 0.6), "Artificial Intelligence")
+        for k, title in enumerate(AI_TITLES[cls]):
+            yy = y + step * (k + 1)
+            c.setStrokeColor(HexColor("#e2e8f0"))
+            c.setLineWidth(0.6)
+            c.line(num_x, h - yy + 1, 550, h - yy + 1)
+            c.setFont("InterR", size)
+            c.drawString(num_x, h - (yy + step * 0.6), f"AI {k + 1}")
+            c.drawString(title_x, h - (yy + step * 0.6), title)
+    c.save()
+    buf.seek(0)
+    return PdfReader(buf).pages[0]
+
+
 orig = PdfReader(src)
 n, starts = chapter_starts(src)
 assert sorted(starts) == list(range(1, len(starts) + 1)), f"chapter starts not found cleanly: {starts}"
@@ -148,16 +224,16 @@ if practice_dir:
 ends = {ch: (starts[ch + 1] - 1 if ch + 1 in starts else n) for ch in starts}
 writer = PdfWriter()
 page_no = 0
-inserted = {"theory": 0, "practice": 0, "answers": 0, "corrections": 0}
+inserted = {"theory": 0, "practice": 0, "answers": 0, "corrections": 0, "ai": 0}
 
 
-def add_new(path, kind):
+def add_new(path, kind, footer=None):
     global page_no
     for tp in PdfReader(path).pages:
         page_no += 1
         inserted[kind] += 1
         w, h = float(tp.mediabox.width), float(tp.mediabox.height)
-        tp.merge_page(overlay(w, h, page_no, with_footer_text=True))
+        tp.merge_page(overlay(w, h, page_no, with_footer_text=True, footer=footer))
         writer.add_page(tp)
 
 
@@ -170,6 +246,9 @@ for i, page in enumerate(orig.pages, start=1):
         add_new(f"{practice_dir}/c{cls}-ch{key_of:02d}-practice.pdf", "practice")
     page_no += 1
     w, h = float(page.mediabox.width), float(page.mediabox.height)
+    clean = student_overlay(src, i, w, h) if practice_dir else None
+    if clean:
+        page.merge_page(clean)
     fix, nfix = correction_overlay(src, i, w, h)
     if fix:
         page.merge_page(fix)
@@ -180,6 +259,15 @@ for i, page in enumerate(orig.pages, start=1):
     if practice_dir and end_of:
         add_new(f"{practice_dir}/c{cls}-ch{end_of:02d}-answers.pdf", "answers")
 
+# The Artificial Intelligence part (Classes 6–8): a part page, then for each AI chapter its theory, practice and answers.
+if practice_dir and cls >= 6:
+    ai_footer = f"Artificial Intelligence · Help Book · Class {cls}"
+    add_new(f"{practice_dir}/c{cls}-ai-part.pdf", "ai", ai_footer)
+    for k in range(1, 5):
+        add_new(f"{theory_dir}/c{cls}-ai{k:02d}.pdf", "ai", ai_footer)
+        add_new(f"{practice_dir}/c{cls}-ai{k:02d}-practice.pdf", "ai", ai_footer)
+        add_new(f"{practice_dir}/c{cls}-ai{k:02d}-answers.pdf", "ai", ai_footer)
+
 # Merging page overlays copies shared fonts and images onto each page; de-duplicate them again.
 for pg in writer.pages:
     pg.compress_content_streams()
@@ -187,4 +275,4 @@ writer.compress_identical_objects(remove_duplicates=True, remove_unreferenced=Tr
 writer.add_metadata({"/Title": f"Think, Play & Solve · Help Book · Class {cls} ({'new edition: Learn it theory and More practice' if practice_dir else 'with Learn it theory'})"})
 with open(out, "wb") as f:
     writer.write(f)
-print(f"Class {cls}: {n} original + {inserted['theory']} theory + {inserted['practice']} practice + {inserted['answers']} answer-key pages = {page_no} pages ({inserted['corrections']} corrected lines) -> {out}")
+print(f"Class {cls}: {n} original + {inserted['theory']} theory + {inserted['practice']} practice + {inserted['answers']} answer-key pages + {inserted['ai']} AI-part pages = {page_no} pages ({inserted['corrections']} corrected lines) -> {out}")

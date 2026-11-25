@@ -1,9 +1,15 @@
 # Help books: new edition (Classes 3–8)
 
-The new edition of every Classes 3–8 help book has, for each chapter:
+The new edition is a **student edition**: notes for teachers, the "Twice as many questions…" line and every
+"N questions" count (contents list and chapter openers) are covered over, and the More practice pages show no
+difficulty marks. Classes 6–8 books end with **Part 2: Artificial Intelligence** — for each of the 4 AI chapters a
+Learn it section (`web/prisma/content/theory/ai.ts`), 20 practice questions (7 AI concepts, 7 data, 6 ethics; same
+difficulty and type mix as below) and an answer key; the AI chapters are added to the contents list and the cover.
+
+For each CT chapter, the new edition has:
 1. **Learn it** theory pages before the chapter;
 2. the chapter's original questions and Thinking Spot;
-3. **More practice**: 20 new questions — 7 Easy, 7 Medium, 6 Hard; 5 for each CBSE skill (Abstraction, Pattern
+3. **More practice**: 20 new questions — 7 Easy, 7 Medium, 6 Hard (Easy first; no difficulty marks are printed); 5 for each CBSE skill (Abstraction, Pattern
    Recognition, Decomposition, Algorithmic Thinking); 12 multiple choice, 3 true/false, 3 fill in the blank and
    2 number answers; at least 10 with a picture;
 4. the chapter's original answer key, then the answer key (with solutions) for More practice.
