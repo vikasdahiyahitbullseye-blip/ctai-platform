@@ -54,3 +54,20 @@ describe("balanced bank (v3)", () => {
     expect(render(p, "MCQ")).not.toBeNull();
   });
 });
+
+import { generateBookSets, BOOK_PER_CHAPTER } from "../../../prisma/content/gen/v3/book";
+describe("help-book 'More practice' sets", () => {
+  const sets = generateBookSets();
+  it("gives every CT chapter of Classes 3–8 exactly the planned mix", () => {
+    for (const t of themes().filter((x) => x.part === "CT")) {
+      const qs = (sets[t.cls] ?? []).filter((q) => q.ch === t.ch);
+      expect(qs, t.key).toHaveLength(BOOK_PER_CHAPTER);
+      const count = (f: (q: (typeof qs)[number]) => string | number) => qs.reduce<Record<string, number>>((m, q) => ({ ...m, [f(q)]: (m[f(q)] ?? 0) + 1 }), {});
+      expect(count((q) => q.d), t.key).toEqual({ 1: 7, 2: 7, 3: 6 });
+      expect(count((q) => q.skills[0]), t.key).toEqual({ ABSTRACT: 5, PATTERN: 5, DECOMPOSITION: 5, ALGORITHMIC: 5 });
+      expect(count((q) => q.type), t.key).toEqual({ MCQ: 12, TRUE_FALSE: 3, FILL_BLANK: 3, NUMERIC: 2 });
+      expect(qs.filter((q) => q.figure || q.optionFigures).length, t.key).toBeGreaterThanOrEqual(10);
+      expect(qs.map((q) => q.ref)).toEqual(qs.map((_, i) => expect.stringContaining(`Chapter ${t.ch} · More practice Q${i + 1}`)));
+    }
+  });
+});

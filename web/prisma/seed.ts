@@ -22,6 +22,7 @@ import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
 import { generateBank, generateCbseLevel, generateScenario } from "./content/gen";
 import { generateBalanced, type ChapterStats } from "./content/gen/v3";
+import { generateBookSets } from "./content/gen/v3/book";
 import { buildClassLibrary } from "../src/lib/library";
 import { cbseQuestions } from "./content/cbse";
 import { HELPBOOK, helpbookRef, solutionWithAnswer } from "./content/helpbook";
@@ -94,6 +95,7 @@ async function main() {
           approval: source === "GENERATED" ? "UNREVIEWED" : "APPROVED",
           approvedAt: source === "GENERATED" ? null : new Date(),
           family: q.family ?? null,
+          sourceRef: q.ref ?? null,
         },
       });
     }
@@ -154,6 +156,8 @@ async function main() {
 
   // Balanced bank (v3): top every chapter up so that Easy / Medium / Hard are equal, every skill has its share,
   // True/False, Fill-in and Numeric questions reach their minimums and plenty of questions have pictures.
+  // First the help books' "More practice" sets (20 per CT chapter, printed in the new edition), then the top-up.
+  for (const [cls, list] of Object.entries(generateBookSets())) await addQuestions(Number(cls), list, "GENERATED", true);
   const stats: Record<string, ChapterStats> = {};
   const chapterKey = Object.fromEntries(Object.entries(chapterId).map(([k, v]) => [v, k]));
   for (const q of await db.question.findMany({ where: { status: "PUBLISHED", isPuzzle: false }, select: { chapterId: true, difficulty: true, skills: true, type: true, figure: true, optionFigures: true } })) {

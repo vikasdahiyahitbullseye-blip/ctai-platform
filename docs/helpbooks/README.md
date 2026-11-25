@@ -1,4 +1,33 @@
-# Help books with "Learn it" theory (Classes 3–8)
+# Help books: new edition (Classes 3–8)
+
+The new edition of every Classes 3–8 help book has, for each chapter:
+1. **Learn it** theory pages before the chapter;
+2. the chapter's original questions and Thinking Spot;
+3. **More practice**: 20 new questions — 7 Easy, 7 Medium, 6 Hard; 5 for each CBSE skill (Abstraction, Pattern
+   Recognition, Decomposition, Algorithmic Thinking); 12 multiple choice, 3 true/false, 3 fill in the blank and
+   2 number answers; at least 10 with a picture;
+4. the chapter's original answer key, then the answer key (with solutions) for More practice.
+
+The More practice questions come from `web/prisma/content/gen/v3/book.ts`. They are also in the platform bank
+(source "Think, Play & Solve Help Book (new edition) · More practice Qn"), so `npm run bank:check` audits them
+and re-solves them independently. Eight answer-key lines in the Class 4 and Class 6 books that printed raw lists
+like "[1, 3, 4, 6, 7]" are reprinted as "1, 3, 4, 6 and 7" (`CORRECTIONS` in `merge_helpbook.py`).
+
+To build the new edition: seed the database (`npm run db:setup`), render the theory pages (step 1 below) and the
+More practice pages:
+
+```bash
+cd web
+NODE_PATH=$(npm root -g) npx tsx scripts/practice-pages.ts ../out/practice
+```
+
+then merge with the practice folder as the last argument:
+
+```bash
+python3 docs/helpbooks/merge_helpbook.py 3 CT_Class3_HelpBook_Complete.pdf out/theory out/CT_Class3_HelpBook_New_Edition.pdf Inter-Regular.ttf Inter-Bold.ttf out/practice
+```
+
+## Help books with "Learn it" theory (Classes 3–8)
 
 The Classes 3–8 help books get a 1–2 page "Learn it" theory section before every chapter. The theory text is in
 `web/prisma/content/theory/` (the same content the platform shows in modules and class slides). The original help-book PDFs are not stored in this repository.

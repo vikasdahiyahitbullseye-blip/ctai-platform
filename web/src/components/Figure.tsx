@@ -541,7 +541,12 @@ function drawMore(fig: More): { w: number; h: number; body: React.ReactNode } {
     case "lines": {
       const col = PALETTE[fig.colour];
       const others = ["#3b82f6", "#f97316"];
-      if (fig.mono) return { w: 220, h: 220, body: <g>{fig.segs.map(([a, b, c, d], i) => <line key={i} x1={10 + a * 2} y1={10 + b * 2} x2={10 + c * 2} y2={10 + d * 2} stroke={col} strokeWidth={4} strokeLinecap="round" />)}</g> };
+      if (fig.mono) {
+        // Fit the box to the drawing (a strip of boxes should not sit in a tall empty square).
+        const ys = fig.segs.flatMap(([, b, , d]) => [b, d]), xs = fig.segs.flatMap(([a, , c]) => [a, c]);
+        const x0 = Math.min(...xs), y0 = Math.min(...ys), w = (Math.max(...xs) - x0) * 2 + 20, h = (Math.max(...ys) - y0) * 2 + 20;
+        return { w, h, body: <g>{fig.segs.map(([a, b, c, d], i) => <line key={i} x1={10 + (a - x0) * 2} y1={10 + (b - y0) * 2} x2={10 + (c - x0) * 2} y2={10 + (d - y0) * 2} stroke={col} strokeWidth={4} strokeLinecap="round" />)}</g> };
+      }
       return { w: 120, h: 120, body: <g>{fig.segs.map(([a, b, c, d], i) => <line key={i} x1={10 + a} y1={10 + b} x2={10 + c} y2={10 + d} stroke={i === 0 ? col : others[(i - 1) % 2]} strokeWidth={6} strokeLinecap="round" />)}</g> };
     }
     case "calendar": {

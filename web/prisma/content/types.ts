@@ -13,6 +13,7 @@ export type SeedQuestion = {
   hint?: string;
   puzzle?: boolean;
   family?: string; // set on generated items
+  ref?: string; // where the question appears in print, e.g. the help book
   figure?: Fig;
   optionFigures?: (Fig | null)[];
 };
