@@ -41,12 +41,12 @@ export async function nextQuestion(attemptId: string) {
 export async function answerInstant(attemptId: string, questionId: string, answer: AnswerValue, usedHint: boolean) {
   const { attempt } = await ownAttempt(attemptId);
   if (attempt.assessment.kind !== "PRACTICE" && attempt.assessment.kind !== "PUZZLE") throw new Error("Not an instant-feedback attempt");
-  const res = (await saveAnswer(prisma, attemptId, questionId, answer, { usedHint })) as { correct: boolean; solution: string; answer: AnswerValue };
+  const res = (await saveAnswer(prisma, attemptId, questionId, answer, { usedHint })) as { correct: boolean; solution: string; solutionFigures: string | null; answer: AnswerValue };
   const q = await prisma.question.findUniqueOrThrow({ where: { id: questionId } });
   const xp = attempt.assessment.kind === "PUZZLE"
     ? (res.correct ? XP.PUZZLE_SOLVED : 0)
     : XP.PRACTICE_ATTEMPT + (res.correct ? (usedHint ? XP.PRACTICE_CORRECT_WITH_HINT : XP.PRACTICE_CORRECT) : 0);
-  return { correct: res.correct, solution: res.solution, correctText: formatAnswer(q.type, JSON.parse(q.options), res.answer), xp };
+  return { correct: res.correct, solution: res.solution, solutionFigures: res.solutionFigures, correctText: formatAnswer(q.type, JSON.parse(q.options), res.answer), xp };
 }
 
 /** Skips a practice question: it counts towards the round but not as right or wrong, and earns no XP. */

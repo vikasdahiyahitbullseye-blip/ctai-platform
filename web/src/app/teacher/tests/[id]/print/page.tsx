@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/auth";
+import { SolutionView } from "@/components/SolutionView";
 import { requirePaperAccess } from "@/lib/teacher";
 import { prisma } from "@/lib/db";
 import { buildPaper, instructionFor, VERSION_NAMES } from "@/lib/paper";
@@ -67,7 +68,7 @@ export default async function PrintView({ params, searchParams }: { params: Prom
                     {isKey && (
                       <div className="mt-2 rounded border border-black/20 p-2">
                         <div><strong>Answer:</strong> {it.answerText}</div>
-                        <div className="mt-1 text-[13px] text-black/80"><strong>Solution:</strong> <Markdown text={it.solution} className="inline" /></div>
+                        <div className="mt-1 text-[13px] text-black/80"><strong>Solution:</strong> <SolutionView text={it.solution} figures={it.solutionFigures} className="mt-1" /></div>
                       </div>
                     )}
                   </div>

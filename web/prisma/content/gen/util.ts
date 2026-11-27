@@ -42,3 +42,11 @@ export const NAMES = ["Aarav", "Diya", "Kabir", "Ananya", "Vihaan", "Ishita", "R
 export const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 export const DIRS = ["North", "East", "South", "West"];
+
+/**
+ * A worked solution in the CBSE Teacher Handbook style: short paragraphs, steps as a list, pictures with "[fig:n]".
+ * Pass strings for paragraphs and string arrays for lists of steps.
+ */
+export function sol(...parts: (string | string[] | false | null | undefined)[]): string {
+  return parts.filter(Boolean).map((p) => (Array.isArray(p) ? p.map((x) => `- ${x}`).join("\n") : p)).join("\n\n");
+}

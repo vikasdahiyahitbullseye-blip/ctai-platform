@@ -1,7 +1,7 @@
 // CBSE-level question families: multi-clue, multi-step questions written in the style and length of the CBSE CT
 // handbook questions (30–60 words, four options). Every answer is computed (logic puzzles are solved by brute force and
 // only kept when the clues give exactly one answer), so the keys are correct by construction.
-import { type Family, type D, type Item, int, pick, sample, fmt, NAMES } from "./util";
+import { type Family, type D, type Item, int, pick, sample, fmt, NAMES, sol } from "./util";
 
 // ---------- helpers ----------
 const ord = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] ?? "th"}`;
@@ -37,6 +37,20 @@ const THEMES: Theme[] = [
 const COLOURS = ["Red", "Blue", "Green", "Yellow", "White"];
 
 /** Ordering puzzle: entities ranked 1 (least) … n (most), optionally each with a colour. Clues are added until one answer remains. */
+/** A clue of an ordering puzzle written as a short relation, e.g. "Tower A is taller than tower D" → "A > D". */
+function relation(text: string, t: Theme): string {
+  const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const N = `(?:${esc(t.noun)}|${esc(t.noun[0].toUpperCase() + t.noun.slice(1))}) ([A-E])`;
+  let m = text.match(new RegExp(`^${N} is ${esc(t.more)} than ${N} but ${esc(t.less)} than ${N}$`));
+  if (m) return `${m[3]} > ${m[1]} > ${m[2]}`;
+  if ((m = text.match(new RegExp(`^${N} is ${esc(t.more)} than ${N}$`)))) return `${m[1]} > ${m[2]}`;
+  if ((m = text.match(new RegExp(`^${N} is not the ${esc(t.most)}$`)))) return `${m[1]} is not 1st`;
+  if ((m = text.match(new RegExp(`^${N} is the ${esc(t.most)}$`)))) return `${m[1]} is 1st`;
+  if ((m = text.match(new RegExp(`^${N} is the ${esc(t.least)}$`)))) return `${m[1]} is last`;
+  if ((m = text.match(new RegExp(`^Exactly one ${esc(t.noun)} is between ${N} and ${N} in order$`)))) return `one place between ${m[1]} and ${m[2]}`;
+  return "";
+}
+
 export const orderClues: Family = {
   id: "c-order-clues", ds: [2, 3],
   make(c, d) {
@@ -99,7 +113,7 @@ export const orderClues: Family = {
       : `There are ${n} ${t.nouns} ${ids.join(", ").replace(/, (\w)$/, " and $1")}, and no two ${t.nouns} are equally ${t.adj}.`;
     const stem = `${intro}\n${clues.map((x) => `- ${x[0]}`).join("\n")}\n\n${q}`;
     const orderText = [...Array(n).keys()].sort((a, b) => s.rk[b] - s.rk[a]).map((i) => `${ids[i]}${withColour ? ` (${s.cl[i]})` : ""}`).join(", ");
-    return item(d, ["DECOMPOSITION", "ABSTRACT"], stem, mcq(ans, wrong), `Use the clues one at a time and keep only the orders that fit all of them. From ${t.most} to ${t.least}, the only order that works is ${orderText}. So the answer is ${ans}.`, "Write the names in a row and move them as each clue tells you.");
+    return item(d, ["DECOMPOSITION", "ABSTRACT"], stem, mcq(ans, wrong), sol(`Write each clue in short form (">" means "${t.more} than"):`, clues.map((x) => { const r = relation(x[0], t); return r ? `${x[0]} → ${r}` : `${x[0]}.`; }), `Put the relations together. Each clue leaves fewer possible orders, and only one order of the ${t.nouns} fits every clue. From ${t.most} to ${t.least}: ${orderText}.`, `So, the answer is ${ans}.`), "Write the names in a row and move them as each clue tells you.");
   },
 };
 
@@ -145,7 +159,7 @@ export const matchJobs: Family = {
     const wrong = [fmtA(t, J, S.map((x) => (x + 1) % 4)), `${jobs[(J[t] + 1) % 4]}, ₹${fmt(sal[S[t]])}`, `${jobs[(J[t] + 2) % 4]}, ₹${fmt(sal[(S[t] + 2) % 4])}`];
     const stem = `${people.slice(0, 3).join(", ")} and ${people[3]} have different jobs (${jobs.join(", ")}) and earn different yearly salaries (${sal.map((x) => `₹${fmt(x)}`).join(", ")}) in some order.\n${clues.map((x) => `- ${x[0]}`).join("\n")}\n\nWhat are ${people[t]}'s job and salary?`;
     const table = [0, 1, 2, 3].map((p) => `${people[p]}: ${jobs[J[p]]}, ₹${fmt(sal[S[p]])}`).join("; ");
-    return item(d, ["DECOMPOSITION"], stem, mcq(ans, wrong), `Make a table of people, jobs and salaries and use the clues that fix positions first (earns the least / most), then the comparisons. The only arrangement that fits every clue is: ${table}.`, "Start with the clues about the highest and lowest salaries.");
+    return item(d, ["DECOMPOSITION"], stem, mcq(ans, wrong), sol(`Make a table with the people, their jobs and their salaries. Use the clues that fix a position first (earns the least or the most), then the comparisons, and cross out what is not possible:`, clues.map((x) => `${x[0]}.`), `Only one arrangement fits every clue:`, [0, 1, 2, 3].map((p) => `${people[p]}: ${jobs[J[p]]}, ₹${fmt(sal[S[p]])}`), `So, ${people[t]} is the ${jobs[J[t]].toLowerCase()} and earns ₹${fmt(sal[S[t]])}.`), "Start with the clues about the highest and lowest salaries.");
   },
 };
 
@@ -166,7 +180,7 @@ export const wrongTerm: Family = {
     if (bad <= a[at - 1] && kind !== "alt") return null;
     const shown = a.map((v, i) => (i === at ? bad : v));
     const others = sample(c.r, shown.filter((_, i) => i !== at && i > 0), 3);
-    return item(d, ["PATTERN"], `The following number series is based on a pattern, but one term is incorrect. Identify the incorrect term.\n\n${shown.map(fmt).join(", ")}`, mcq(fmt(bad), others.map(fmt)), `The rule is: ${rule}. Following it, the ${ord(at + 1)} term should be ${fmt(right)}, not ${fmt(bad)}. All the other terms fit the rule.`, "Find a rule that fits most of the terms, then check every term against it.");
+    return item(d, ["PATTERN"], `The following number series is based on a pattern, but one term is incorrect. Identify the incorrect term.\n\n${shown.map(fmt).join(", ")}`, mcq(fmt(bad), others.map(fmt)), sol(`Find the rule using the first few terms: ${rule}.`, `Check each term against the rule:`, a.map((v, i) => (i === at ? `${ord(i + 1)} term: should be ${fmt(right)}, but it is written as ${fmt(bad)} — incorrect` : `${ord(i + 1)} term: ${fmt(v)} — fits`)), `So, the incorrect term is ${fmt(bad)}; it should be ${fmt(right)}.`), "Find a rule that fits most of the terms, then check every term against it.");
   },
 };
 
@@ -184,7 +198,7 @@ export const repeatCount: Family = {
     if (!cand.length) return null;
     const x = pick(c.r, cand);
     const ans = counts.get(x)!;
-    return item(d, ["PATTERN", "ALGORITHMIC"], `The following series follows a fixed pattern:\n\n${seq.slice(0, shownLen).join(", ")}, …\n\nIf the pattern continues, how many times does the number ${x} appear in the NEXT 20 terms (after the terms shown)?`, numMcq(c.r, ans, [ans + 1, ans - 1, x - shift, x, ans + 2].filter((v) => v > 0)), `Each number v appears (v − ${shift}) times. Writing the next 20 terms: ${next.join(", ")}. The number ${x} appears ${ans} times in them.`);
+    return item(d, ["PATTERN", "ALGORITHMIC"], `The following series follows a fixed pattern:\n\n${seq.slice(0, shownLen).join(", ")}, …\n\nIf the pattern continues, how many times does the number ${x} appear in the NEXT 20 terms (after the terms shown)?`, numMcq(c.r, ans, [ans + 1, ans - 1, x - shift, x, ans + 2].filter((v) => v > 0)), sol(`Look at how many times each number appears in the series shown: each number v appears (v − ${shift}) times${shift ? "" : ", that is, v times"}.`, `Continue the pattern and write the next 20 terms:`, [next.join(", ")], `Count the ${x}s among them: ${ans}.`, `So, the number ${x} appears ${ans} times in the next 20 terms.`));
   },
 };
 
@@ -203,7 +217,7 @@ export const blockFirst: Family = {
     const N = kd.f(firstK) - int(c.r, 1, Math.max(1, kd.f(firstK) - kd.f(firstK - 1) - 1));
     if (kd.f(firstK - 1) > N) return null;
     const vals = [firstK - 2, firstK - 1, firstK, firstK + 1].map((k) => `${k}: ${kd.f(k)}`);
-    return item(d, ["PATTERN", "ABSTRACT"], `The first terms of a block series are shown in a book. ${kd.desc}. If the pattern continues, which term will be the first to contain more than ${N} blocks?`, mcq(`${ord(firstK)} term`, [firstK - 1, firstK + 1, firstK - 2, firstK + 2].map((k) => `${ord(k)} term`)), `Term k has ${kd.why} blocks. Blocks in terms ${vals.join(", ")}. The ${ord(firstK - 1)} term has ${kd.f(firstK - 1)} (not more than ${N}) and the ${ord(firstK)} term has ${kd.f(firstK)}, so the ${ord(firstK)} term is the first.`, "Write a rule for the number of blocks in term k.");
+    return item(d, ["PATTERN", "ABSTRACT"], `The first terms of a block series are shown in a book. ${kd.desc}. If the pattern continues, which term will be the first to contain more than ${N} blocks?`, mcq(`${ord(firstK)} term`, [firstK - 1, firstK + 1, firstK - 2, firstK + 2].map((k) => `${ord(k)} term`)), sol(`Find the rule: term k has ${kd.why} blocks.`, `Work out the number of blocks term by term near ${N}:`, [firstK - 2, firstK - 1, firstK, firstK + 1].map((k) => `${ord(k)} term: ${kd.f(k)} blocks`), `The ${ord(firstK - 1)} term has ${kd.f(firstK - 1)} blocks, which is not more than ${N}. The ${ord(firstK)} term has ${kd.f(firstK)} blocks, which is more than ${N}.`, `So, the ${ord(firstK)} term is the first with more than ${N} blocks.`), "Write a rule for the number of blocks in term k.");
   },
 };
 
@@ -213,7 +227,7 @@ export const circleSteps: Family = {
     if (d === 2) {
       const n = pick(c.r, [12, 14, 15, 16, 18, 20, 24]), k = int(c.r, 2, n - 2), s = int(c.r, 1, n);
       const steps = n / gcd(n, k);
-      return item(d, ["PATTERN", "ALGORITHMIC"], `A circle has ${n} equally spaced points numbered 1 to ${n}. Start at point ${s} and keep adding ${k}, joining each point to the next one you reach (after point ${n} you go round to point 1 again), until you arrive back at point ${s}. How many steps are needed?`, numMcq(c.r, steps, [n, k, n / k > 1 ? Math.round(n / k) : n - 1, steps * 2, n - steps]), `Steps = number of points ÷ the biggest number that divides both ${n} and ${k}. HCF(${n}, ${k}) = ${gcd(n, k)}, so ${n} ÷ ${gcd(n, k)} = ${steps} steps.`);
+      return item(d, ["PATTERN", "ALGORITHMIC"], `A circle has ${n} equally spaced points numbered 1 to ${n}. Start at point ${s} and keep adding ${k}, joining each point to the next one you reach (after point ${n} you go round to point 1 again), until you arrive back at point ${s}. How many steps are needed?`, numMcq(c.r, steps, [n, k, n / k > 1 ? Math.round(n / k) : n - 1, steps * 2, n - steps]), sol(`Start at point ${s} and add ${k} each time, going round the circle. You come back to the start after a number of steps that depends on the biggest number that divides both ${n} and ${k} (their HCF).`, [`HCF(${n}, ${k}) = ${gcd(n, k)}`, `Steps = ${n} ÷ ${gcd(n, k)} = ${steps}`], `(You can check by listing the points: the path visits ${steps} different points before it returns to point ${s}.)`, `So, it takes ${steps} steps to come back to the start.`));
     }
     const shapes: Record<number, string> = { 3: "a triangle (3 steps)", 4: "a square (4 steps)", 5: "a pentagon (5 steps)", 6: "a hexagon (6 steps)" };
     const target = pick(c.r, [3, 4, 5, 6]);
@@ -226,7 +240,7 @@ export const circleSteps: Family = {
     }
     if (opts.length < 4) return null;
     const lab = opts.map(([n, k]) => `The ${n}-point circle, adding ${k}`);
-    return item(d, ["PATTERN", "ALGORITHMIC"], `Some circles have equally spaced numbered points. Starting at any point, you keep adding the same number and join the points you reach until you come back to the start. Which of these will make ${shapes[target]}?`, mcq(lab[0], lab.slice(1)), `The number of steps is (points) ÷ HCF(points, number added). ${opts.map(([n, k]) => `${n} ÷ HCF(${n}, ${k}) = ${n / gcd(n, k)}`).join("; ")}. Only the first gives ${target} steps.`);
+    return item(d, ["PATTERN", "ALGORITHMIC"], `Some circles have equally spaced numbered points. Starting at any point, you keep adding the same number and join the points you reach until you come back to the start. Which of these will make ${shapes[target]}?`, mcq(lab[0], lab.slice(1)), sol(`On a circle with n points, adding k each time brings you back to the start after n ÷ HCF(n, k) steps. A ${shapes[target]} needs exactly ${target} steps.`, `Check each option:`, opts.map(([n, k]) => `${n} points, adding ${k}: ${n} ÷ HCF(${n}, ${k}) = ${n} ÷ ${gcd(n, k)} = ${n / gcd(n, k)} steps`), `Only the first one gives ${target} steps.`, `So, the ${opts[0][0]}-point circle, adding ${opts[0][1]}, makes ${shapes[target]}.`));
   },
 };
 
@@ -255,10 +269,10 @@ export const circleSeats: Family = {
     const diff = pos[target];
     if (c.r() < 0.5) {
       const ans = Math.min(diff * 45, 360 - diff * 45);
-      return item(d, ["ABSTRACT", "ALGORITHMIC"], `Eight friends A, B, C, D, E, F, G and H sit at equal gaps around a round table, each facing the centre. A faces ${DIR8[start]}.\n${clues.map((x) => `- ${x}`).join("\n")}\n\nWhat is the smaller angle between the directions in which A and ${target} face?`, mcq(`${ans}°`, [45, 90, 135, 180].filter((x) => x !== ans).map((x) => `${x}°`)), `Facing the centre, a person's left is the next seat clockwise (seen from above). Going clockwise from A: ${Object.entries(pos).map(([k, v]) => `${k} is ${v} seat${v === 1 ? "" : "s"} round`).join(", ")}. With 8 seats each seat turns the facing direction by 360° ÷ 8 = 45°, so ${target} faces ${diff} × 45° = ${diff * 45}° round from A. The smaller angle is ${ans}°.`, "Draw 8 seats and mark A first.");
+      return item(d, ["ABSTRACT", "ALGORITHMIC"], `Eight friends A, B, C, D, E, F, G and H sit at equal gaps around a round table, each facing the centre. A faces ${DIR8[start]}.\n${clues.map((x) => `- ${x}`).join("\n")}\n\nWhat is the smaller angle between the directions in which A and ${target} face?`, mcq(`${ans}°`, [45, 90, 135, 180].filter((x) => x !== ans).map((x) => `${x}°`)), sol(`Everyone faces the centre, so a person's left is the next seat clockwise when we look down from above. With 8 equal seats, each seat turns the facing direction by 360° ÷ 8 = 45°.`, `Place the friends using the clues (counting seats clockwise from A):`, clues.map((x) => `${x}.`), `${target} is ${diff} seat${diff === 1 ? "" : "s"} clockwise from A, so ${target} faces ${diff} × 45° = ${diff * 45}° round from A.`, `The smaller angle is ${diff * 45 <= 180 ? `${diff * 45}°` : `360° − ${diff * 45}° = ${ans}°`}.`, `So, the smaller angle between the directions of A and ${target} is ${ans}°.`), "Draw 8 seats and mark A first.");
     }
     const ans = DIR8[(start + diff) % 8];
-    return item(d, ["ABSTRACT", "ALGORITHMIC"], `Eight friends A, B, C, D, E, F, G and H sit at equal gaps around a round table, each facing the centre. A faces ${DIR8[start]}.\n${clues.map((x) => `- ${x}`).join("\n")}\n\nIn which direction does ${target} face?`, mcq(ans, sample(c.r, DIR8.filter((x) => x !== ans), 3)), `A person's left is the next seat clockwise when everyone faces the centre. ${target} is ${diff} seat${diff === 1 ? "" : "s"} clockwise from A, and each seat turns the facing direction by 45° clockwise. ${DIR8[start]} turned by ${diff * 45}° is ${ans}.`, "Each seat round the table turns the direction by 45°.");
+    return item(d, ["ABSTRACT", "ALGORITHMIC"], `Eight friends A, B, C, D, E, F, G and H sit at equal gaps around a round table, each facing the centre. A faces ${DIR8[start]}.\n${clues.map((x) => `- ${x}`).join("\n")}\n\nIn which direction does ${target} face?`, mcq(ans, sample(c.r, DIR8.filter((x) => x !== ans), 3)), sol(`Everyone faces the centre, so a person's left is the next seat clockwise when we look down from above. With 8 equal seats, each seat turns the facing direction by 45° clockwise.`, `Place the friends using the clues (counting seats clockwise from A):`, clues.map((x) => `${x}.`), `${target} is ${diff} seat${diff === 1 ? "" : "s"} clockwise from A. A faces ${DIR8[start]}; turning ${diff} × 45° = ${diff * 45}° clockwise gives ${ans}.`, `So, ${target} faces ${ans}.`), "Each seat round the table turns the direction by 45°.");
   },
 };
 
@@ -275,7 +289,7 @@ export const clockArrival: Family = {
     const first = h1 + 0.5 < h2 ? p : q;
     const ans = h1 + 0.5 < h2 ? `${p} came first, at ${timeStr(h1, 30)}` : `${q} came first, at ${timeStr(h2, 0)}`;
     const wrong = [h1 + 0.5 < h2 ? `${q} came first, at ${timeStr(h2, 0)}` : `${p} came first, at ${timeStr(h1, 30)}`, `${first} came first, at ${timeStr(first === p ? h1 : h2, first === p ? 0 : 30)}`, "They arrived at the same time"];
-    return item(d, ["ABSTRACT", "DECOMPOSITION"], `${p} and ${q} visit a library in the afternoon or evening (PM).\n- When ${p} arrived, the minute hand pointed at 6 and the hour hand was ${x}° clockwise from the minute hand.\n- When ${q} arrived, the minute hand pointed at 12 and the hour hand was ${y}° clockwise from it.\n\nWhich statement is correct?`, mcq(ans, wrong), `${p}: the minute hand is at 180° (pointing at 6), so the hour hand is at 180° + ${x}° = ${(180 + x) % 360}°. At half past an hour h the hour hand is at 30h + 15°, so h = ${h1}: ${timeStr(h1, 30)}. ${q}: the hour hand at ${y}° with the minute hand at 12 means ${h2}:00, i.e. ${timeStr(h2, 0)}. So: ${ans}.`);
+    return item(d, ["ABSTRACT", "DECOMPOSITION"], `${p} and ${q} visit a library in the afternoon or evening (PM).\n- When ${p} arrived, the minute hand pointed at 6 and the hour hand was ${x}° clockwise from the minute hand.\n- When ${q} arrived, the minute hand pointed at 12 and the hour hand was ${y}° clockwise from it.\n\nWhich statement is correct?`, mcq(ans, wrong), sol(`Work out each arrival time from the clock hands.`, [`${p}: the minute hand points at 6, so the time is half past an hour. The minute hand is at 180°, so the hour hand is at 180° + ${x}° = ${(180 + x) % 360}°. At half past h, the hour hand is at 30 × h + 15°, so h = ${h1}. ${p} arrived at ${timeStr(h1, 30)}.`, `${q}: the minute hand points at 12, so it is an exact hour. The hour hand is at ${y}° = ${h2} × 30°, so ${q} arrived at ${timeStr(h2, 0)}.`], `Compare the two times: ${h1 + 0.5 < h2 ? `${timeStr(h1, 30)} is earlier than ${timeStr(h2, 0)}` : `${timeStr(h2, 0)} is earlier than ${timeStr(h1, 30)}`}.`, `So, ${ans}.`));
   },
 };
 
@@ -292,7 +306,7 @@ export const clockRightAngles: Family = {
     times.sort((x, y) => x - y);
     const ans = times.length;
     const show = times.map((t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`).join(", ");
-    return item(d, ["ABSTRACT", "ALGORITHMIC"], `The hour hand and the minute hand of a clock move continuously. How many times are the two hands at ${what === "right" ? "a right angle (90°) to each other" : "a straight line pointing in opposite directions (180°)"} from ${a}:00 to just before ${b}:00?`, numMcq(c.r, ans, [ans + 1, ans - 1, (b - a) * (what === "right" ? 2 : 1), ans + 2].filter((v) => v > 0)), `The minute hand gains 5.5° per minute on the hour hand, so the hands make ${what === "right" ? "a right angle twice" : "a straight line once"} in every 65 5/11 minutes (one full lap of the minute hand over the hour hand). Between ${a}:00 and ${b}:00 this happens at about ${show}, which is ${ans} time${ans === 1 ? "" : "s"}.`);
+    return item(d, ["ABSTRACT", "ALGORITHMIC"], `The hour hand and the minute hand of a clock move continuously. How many times are the two hands at ${what === "right" ? "a right angle (90°) to each other" : "a straight line pointing in opposite directions (180°)"} from ${a}:00 to just before ${b}:00?`, numMcq(c.r, ans, [ans + 1, ans - 1, (b - a) * (what === "right" ? 2 : 1), ans + 2].filter((v) => v > 0)), sol(`The minute hand moves 6° per minute and the hour hand moves 0.5° per minute, so the minute hand gains 5.5° on the hour hand every minute.`, `The hands are ${what === "right" ? "at a right angle when the gap between them is 90° or 270°" : "in a straight line (opposite) when the gap is 180°"}. Find the times between ${a}:00 and ${b}:00 when this happens:`, [show], `Count them: ${ans}.`, `So, the hands are ${what === "right" ? "at a right angle" : "in a straight line"} ${ans} time${ans === 1 ? "" : "s"} between ${a}:00 and ${b}:00.`));
   },
 };
 

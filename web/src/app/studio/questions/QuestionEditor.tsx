@@ -3,6 +3,7 @@ import { useActionState, useMemo, useState } from "react";
 import { saveQuestion } from "@/app/actions/studio";
 import { QUESTION_TYPES, SKILLS, DIFFICULTY } from "@/lib/constants";
 import { QuestionInput } from "@/components/QuestionInput";
+import { SolutionView } from "@/components/SolutionView";
 import { Markdown } from "@/components/Markdown";
 import { btn } from "@/components/ui";
 import type { AnswerValue } from "@/lib/scoring";
@@ -85,7 +86,7 @@ export function QuestionEditor({ id, chapters, initial }: { id: string | null; c
         <div className="rounded-2xl border border-line bg-surface p-5 lg:sticky lg:top-24">
           <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted">Student preview</div>
           <QuestionInput q={pq} value={preview} onChange={setPreview} big={v.classLevel <= 5} />
-          <div className="mt-5 rounded-xl bg-surface-2 p-3 text-sm"><div className="mb-1 font-semibold">Solution</div><Markdown text={v.solution || "—"} /></div>
+          <div className="mt-5 rounded-xl bg-surface-2 p-3 text-sm"><div className="mb-1 font-semibold">Solution</div><SolutionView text={v.solution || "—"} /></div>
         </div>
       </div>
     </form>

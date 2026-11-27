@@ -1,6 +1,6 @@
 // CBSE-level question families, part 3 (mostly Classes 7–8): expressions, decimals, lines and triangles, powers,
 // number systems, quadrilaterals, the distributive law and ratios. Every answer is computed.
-import { type Family, type D, type Item, int, pick, sample, fmt, NAMES } from "./util";
+import { type Family, type D, type Item, int, pick, sample, fmt, NAMES, sol } from "./util";
 
 const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : Math.abs(a));
 function mcq(answer: string, wrong: (string | number)[]) {
@@ -47,7 +47,7 @@ export const operatorSwap: Family = {
     valid.sort((a, b) => (target === "max" ? b[0] - a[0] : a[0] - b[0]));
     if (valid[0][0] === valid[1][0]) return null;
     const lab = (i: number) => `${pairs[i][0]} and ${pairs[i][1]}`;
-    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `In the expression ${show(nums, ops)}, exactly two operators are to be interchanged (every place with one of them gets the other). The usual order of operations is followed (× and ÷ before + and −). Which two operators should be interchanged to get the ${target === "max" ? "MAXIMUM" : "MINIMUM"} possible value?`, mcq(lab(valid[0][1]), valid.slice(1).map((x) => lab(x[1]))), `The expression is ${neg(orig)} as written. Interchanging each pair gives: ${valid.map(([v, i]) => `${lab(i)} → ${neg(v)}`).join("; ")}. The ${target === "max" ? "largest" : "smallest"} value, ${neg(valid[0][0])}, comes from interchanging ${lab(valid[0][1])}.`);
+    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `In the expression ${show(nums, ops)}, exactly two operators are to be interchanged (every place with one of them gets the other). The usual order of operations is followed (× and ÷ before + and −). Which two operators should be interchanged to get the ${target === "max" ? "MAXIMUM" : "MINIMUM"} possible value?`, mcq(lab(valid[0][1]), valid.slice(1).map((x) => lab(x[1]))), sol(`As written, the expression is ${neg(orig)}. Work out the value after each possible interchange:`, valid.map(([v, i]) => `Interchange ${lab(i)} → ${neg(v)}`), `The ${target === "max" ? "largest" : "smallest"} value is ${neg(valid[0][0])}, from interchanging ${lab(valid[0][1])}.`, `So, the answer is ${lab(valid[0][1])}.`));
   },
 };
 
@@ -68,7 +68,7 @@ export const workBackwards: Family = {
     ns.sort((a, b) => a[0] - b[0]);
     const [n, p] = ns[0];
     const lab = (s: string) => (s === "×" ? `×${k}` : `−${m}`);
-    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `In the expression ((n ___ ) ___ ) ___ = ${res}, every blank must be filled with either "×${k}" or "−${m}", and the operations are done from left to right. If n is a whole number, what is the SMALLEST possible value of n?`, numMcq(c.r, n, ns.slice(1).map((x) => x[0]).concat([n + m, n + k])), `Work backwards from ${res}: undo "×${k}" by dividing by ${k} and undo "−${m}" by adding ${m}. Trying all 8 ways of filling the blanks gives these whole-number values of n: ${ns.map((x) => x[0]).join(", ")}. The smallest is ${n}, using ${p.map(lab).join(", ")}.`);
+    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `In the expression ((n ___ ) ___ ) ___ = ${res}, every blank must be filled with either "×${k}" or "−${m}", and the operations are done from left to right. If n is a whole number, what is the SMALLEST possible value of n?`, numMcq(c.r, n, ns.slice(1).map((x) => x[0]).concat([n + m, n + k])), sol(`Work backwards from ${res}: undo "×${k}" by dividing by ${k}, and undo "−${m}" by adding ${m}.`, `Try all 8 ways of filling the blanks and keep only those that give a whole number for n:`, ns.map((x) => `n = ${x[0]}`), `The smallest of these is ${n}, using ${p.map(lab).join(", ")}.`, `So, the least possible value of n is ${n}.`));
   },
 };
 
@@ -82,7 +82,7 @@ export const decimalShift: Family = {
     const diff = Math.round(small * f * 1000) / 1000;
     const ans = small;
     const s = (x: number) => String(Math.round(x * 1000) / 1000);
-    return item(d, ["ALGORITHMIC", "ABSTRACT"], `Two decimal numbers differ by ${s(diff)}. When the decimal point of the SMALLER number is moved ${places === 1 ? "one place" : "two places"} to the right, the two numbers become equal. What was the smaller number before the point was moved?`, mcq(s(ans), [s(ans * 10), s(diff / 10), s(ans + 0.1), s(diff / (f + 2))]), `Moving the point ${places === 1 ? "one place" : "two places"} to the right multiplies a number by ${places === 1 ? 10 : 100}, so the larger number is ${places === 1 ? 10 : 100} × (smaller). The difference is ${places === 1 ? 10 : 100} × smaller − smaller = ${f} × smaller = ${s(diff)}. So the smaller number is ${s(diff)} ÷ ${f} = ${s(ans)}.`);
+    return item(d, ["ALGORITHMIC", "ABSTRACT"], `Two decimal numbers differ by ${s(diff)}. When the decimal point of the SMALLER number is moved ${places === 1 ? "one place" : "two places"} to the right, the two numbers become equal. What was the smaller number before the point was moved?`, mcq(s(ans), [s(ans * 10), s(diff / 10), s(ans + 0.1), s(diff / (f + 2))]), sol(`Moving the decimal point ${places === 1 ? "one place" : "two places"} to the right multiplies a number by ${places === 1 ? 10 : 100}. So the larger number is ${places === 1 ? 10 : 100} × (the smaller number).`, [`Difference = ${places === 1 ? 10 : 100} × smaller − smaller = ${f} × smaller`, `${f} × smaller = ${s(diff)}`, `smaller = ${s(diff)} ÷ ${f} = ${s(ans)}`], `So, the smaller number is ${s(ans)}.`));
   },
 };
 
@@ -94,7 +94,7 @@ export const decimalSeries: Family = {
     const seq = [a]; for (let i = 0; i < 7; i++) seq.push(seq[i] + (i % 2 === 0 ? (down ? -p : p) : (down ? q : -q)));
     const r1 = (x: number) => Math.round(x * 100) / 100;
     const shown = seq.slice(0, 7).map(r1), ans = r1(seq[7]);
-    return item(d, ["PATTERN"], `Find the next term in the series:\n\n${shown.join(", ")}, ___`, mcq(String(ans), [String(r1(ans + p)), String(r1(ans - q)), String(r1(seq[6] + (down ? -p : p))), String(r1(ans + q + q))]), `The differences alternate: ${down ? "−" : "+"}${p}, ${down ? "+" : "−"}${q}, ${down ? "−" : "+"}${p}, ${down ? "+" : "−"}${q}, … The last change shown was ${down ? "+" : "−"}${q}, so the next change is ${down ? "−" : "+"}${p}: ${shown[6]} ${down ? "−" : "+"} ${p} = ${ans}.`);
+    return item(d, ["PATTERN"], `Find the next term in the series:\n\n${shown.join(", ")}, ___`, mcq(String(ans), [String(r1(ans + p)), String(r1(ans - q)), String(r1(seq[6] + (down ? -p : p))), String(r1(ans + q + q))]), sol(`Find the change between neighbouring terms: the changes alternate ${down ? "−" : "+"}${p}, ${down ? "+" : "−"}${q}, ${down ? "−" : "+"}${p}, ${down ? "+" : "−"}${q}, …`, `The last change shown was ${down ? "+" : "−"}${q}, so the next change is ${down ? "−" : "+"}${p}.`, [`${shown[6]} ${down ? "−" : "+"} ${p} = ${ans}`], `So, the next term is ${ans}.`));
   },
 };
 
@@ -106,14 +106,14 @@ export const agesSum: Family = {
       const n = int(c.r, 3, 5), t = int(c.r, 3, 8), now = int(c.r, 30, 90);
       if (now - n * t < n) return null;
       const ans = now - n * t;
-      return item(d, ["ALGORITHMIC", "ABSTRACT"], `The sum of the present ages of ${n} cousins is ${now} years. What was the sum of their ages ${t} years ago? (Every cousin was already born then.)`, numMcq(c.r, ans, [now - t, now - (n - 1) * t, ans + t, now + n * t]), `Each cousin was ${t} years younger, so the sum was ${n} × ${t} = ${n * t} years less: ${now} − ${n * t} = ${ans}.`);
+      return item(d, ["ALGORITHMIC", "ABSTRACT"], `The sum of the present ages of ${n} cousins is ${now} years. What was the sum of their ages ${t} years ago? (Every cousin was already born then.)`, numMcq(c.r, ans, [now - t, now - (n - 1) * t, ans + t, now + n * t]), sol(`${t} years ago, each of the ${n} cousins was ${t} years younger.`, [`The sum of their ages was ${n} × ${t} = ${n * t} years less`, `${now} − ${n * t} = ${ans}`], `So, the sum of their ages was ${ans}.`));
     }
     const [p] = who(c.r, 1);
     const kid = int(c.r, 6, 14), mult = pick(c.r, [3, 4]), mom = kid * mult;
     const years = int(c.r, 4, 12);
     const sum = mom + kid;
     // in `years` years the mother will be how many times... ask the daughter's age from sum and ratio now
-    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `The sum of the ages of a mother and her daughter ${p} is ${sum} years. The mother is ${mult} times as old as ${p}. How old will ${p} be ${years} years from now?`, numMcq(c.r, kid + years, [kid, mom + years, kid + years + mult, sum / 2]), `Let ${p}'s age be a. Then the mother is ${mult}a, and a + ${mult}a = ${mult + 1}a = ${sum}, so a = ${kid}. In ${years} years ${p} will be ${kid + years}.`);
+    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `The sum of the ages of a mother and her daughter ${p} is ${sum} years. The mother is ${mult} times as old as ${p}. How old will ${p} be ${years} years from now?`, numMcq(c.r, kid + years, [kid, mom + years, kid + years + mult, sum / 2]), sol(`Let ${p}'s age be a. The mother is ${mult} times as old, so her age is ${mult}a.`, [`a + ${mult}a = ${sum}`, `${mult + 1}a = ${sum}`, `a = ${sum} ÷ ${mult + 1} = ${kid}`], `In ${years} years, ${p} will be ${kid} + ${years} = ${kid + years}.`, `So, the answer is ${kid + years}.`));
   },
 };
 
@@ -125,11 +125,11 @@ export const lineIntersections: Family = {
       const g1 = int(c.r, 3, 5), g2 = int(c.r, 2, 4), single = int(c.r, 1, 3);
       const n = g1 + g2 + single;
       const ans = (n * (n - 1)) / 2 - (g1 * (g1 - 1)) / 2 - (g2 * (g2 - 1)) / 2;
-      return item(d, ["ABSTRACT", "DECOMPOSITION"], `${n} straight lines are drawn on a page. ${g1} of them are parallel to each other, another ${g2} are parallel to each other, and no other two lines are parallel. No three lines pass through the same point. How many points of intersection are there?`, numMcq(c.r, ans, [(n * (n - 1)) / 2, ans + g2, ans - g1, ans + 1]), `If no lines were parallel, every pair would meet: ${n} × ${n - 1} ÷ 2 = ${(n * (n - 1)) / 2} points. Parallel lines never meet: subtract the pairs inside each group, ${(g1 * (g1 - 1)) / 2} and ${(g2 * (g2 - 1)) / 2}. Total = ${ans}.`);
+      return item(d, ["ABSTRACT", "DECOMPOSITION"], `${n} straight lines are drawn on a page. ${g1} of them are parallel to each other, another ${g2} are parallel to each other, and no other two lines are parallel. No three lines pass through the same point. How many points of intersection are there?`, numMcq(c.r, ans, [(n * (n - 1)) / 2, ans + g2, ans - g1, ans + 1]), sol(`If no two lines were parallel, every pair of lines would meet once: ${n} × ${n - 1} ÷ 2 = ${(n * (n - 1)) / 2} points.`, `Parallel lines never meet, so take away the pairs inside each parallel group:`, [`Group of ${g1}: ${g1} × ${g1 - 1} ÷ 2 = ${(g1 * (g1 - 1)) / 2} pairs`, `Group of ${g2}: ${g2} × ${g2 - 1} ÷ 2 = ${(g2 * (g2 - 1)) / 2} pairs`], `Points = ${(n * (n - 1)) / 2} − ${(g1 * (g1 - 1)) / 2} − ${(g2 * (g2 - 1)) / 2} = ${ans}.`, `So, there are ${ans} points where the lines meet.`));
     }
     const m = int(c.r, 3, 6), k = int(c.r, 3, 6);
     const ans = ((m * (m - 1)) / 2) * ((k * (k - 1)) / 2);
-    return item(d, ["ABSTRACT", "DECOMPOSITION"], `${m} parallel lines are crossed by ${k} other parallel lines (the two sets are not parallel to each other). How many parallelograms of ALL sizes are formed in the figure?`, numMcq(c.r, ans, [(m - 1) * (k - 1), ans + m, m * k, ans - k]), `Each parallelogram uses 2 lines from each set. Ways to choose 2 of ${m}: ${(m * (m - 1)) / 2}; 2 of ${k}: ${(k * (k - 1)) / 2}. Total = ${(m * (m - 1)) / 2} × ${(k * (k - 1)) / 2} = ${ans}.`);
+    return item(d, ["ABSTRACT", "DECOMPOSITION"], `${m} parallel lines are crossed by ${k} other parallel lines (the two sets are not parallel to each other). How many parallelograms of ALL sizes are formed in the figure?`, numMcq(c.r, ans, [(m - 1) * (k - 1), ans + m, m * k, ans - k]), sol(`Each parallelogram is made by choosing 2 lines from the first set and 2 lines from the second set.`, [`Ways to choose 2 of ${m}: ${m} × ${m - 1} ÷ 2 = ${(m * (m - 1)) / 2}`, `Ways to choose 2 of ${k}: ${k} × ${k - 1} ÷ 2 = ${(k * (k - 1)) / 2}`], `Total = ${(m * (m - 1)) / 2} × ${(k * (k - 1)) / 2} = ${ans}.`, `So, there are ${ans} parallelograms.`));
   },
 };
 
@@ -142,7 +142,7 @@ export const triangleCount: Family = {
     for (let a = 1; a <= P; a++) for (let b = a; b <= P; b++) { const cc = P - a - b; if (cc < b) continue; if (a + b <= cc) continue; if (kind === "scalene" && (a === b || b === cc)) continue; if (kind === "isosceles" && !(a === b || b === cc)) continue; list.push([a, b, cc]); }
     if (list.length < 2) return null;
     const ans = list.length;
-    return item(d, ["DECOMPOSITION", "ABSTRACT"], `How many different ${kind === "any" ? "" : `${kind} `}triangles can be made with a perimeter of ${P} cm, if every side is a whole number of centimetres? (Triangles with the same three side lengths count once.)`, numMcq(c.r, ans, [ans + 1, ans - 1, ans + 2, Math.floor(P / 3)]), `List the sides in order a ≤ b ≤ c with a + b + c = ${P}, keeping only those where a + b > c (two sides together must be longer than the third)${kind !== "any" ? ` and that are ${kind}` : ""}: ${list.map((x) => x.join("-")).join(", ")}. That is ${ans}.`);
+    return item(d, ["DECOMPOSITION", "ABSTRACT"], `How many different ${kind === "any" ? "" : `${kind} `}triangles can be made with a perimeter of ${P} cm, if every side is a whole number of centimetres? (Triangles with the same three side lengths count once.)`, numMcq(c.r, ans, [ans + 1, ans - 1, ans + 2, Math.floor(P / 3)]), sol(`List the sides in order a ≤ b ≤ c with a + b + c = ${P}. A triangle is possible only if the two shorter sides together are longer than the third (a + b > c)${kind !== "any" ? `, and it must also be ${kind}` : ""}.`, `The triangles that work are:`, list.map((x) => x.join(" cm, ") + " cm"), `Count them: ${ans}.`, `So, the answer is ${ans}.`));
   },
 };
 
@@ -158,7 +158,7 @@ export const angleRatio: Family = {
     const extra = d === 3 ? ` One side of the triangle is then extended, making an exterior angle next to the ${ask} angle.` : "";
     const q = d === 3 ? `What is that exterior angle?` : `What is the ${ask} angle?`;
     const value = d === 3 ? 180 - ans : ans;
-    return item(d, ["ALGORITHMIC", "ABSTRACT"], `The angles of a triangle are in the ratio ${parts.join(" : ")}.${extra} ${q}`, numMcq(c.r, value, [ans, 180 - value, value + unit, unit * parts[1]].filter((x) => x > 0 && x < 360), (n) => `${n}°`), `The parts add to ${parts.join(" + ")} = ${sum}, and the angles add to 180°, so one part is ${unit}°. The angles are ${parts.map((p) => p * unit).join("°, ")}°. The ${ask} angle is ${ans}°${d === 3 ? `, and the exterior angle next to it is 180° − ${ans}° = ${value}°` : ""}.`);
+    return item(d, ["ALGORITHMIC", "ABSTRACT"], `The angles of a triangle are in the ratio ${parts.join(" : ")}.${extra} ${q}`, numMcq(c.r, value, [ans, 180 - value, value + unit, unit * parts[1]].filter((x) => x > 0 && x < 360), (n) => `${n}°`), sol(`The angles are in the ratio ${parts.join(" : ")}, so they are ${parts.join(" + ")} = ${sum} equal parts. The angles of a triangle add up to 180°.`, [`One part = 180° ÷ ${sum} = ${unit}°`, `Angles: ${parts.map((p2) => `${p2} × ${unit}° = ${p2 * unit}°`).join(", ")}`], `The ${ask} angle is ${ans}°.`, d === 3 ? `The exterior angle next to it is 180° − ${ans}° = ${value}°.` : false, `So, the answer is ${d === 3 ? value : ans}°.`));
   },
 };
 
@@ -170,7 +170,7 @@ export const paintedCube: Family = {
     const faces = pick(c.r, d === 2 ? [3, 0] : [2, 1, 0]);
     const val = { 3: 8, 2: 12 * (n - 2), 1: 6 * (n - 2) ** 2, 0: (n - 2) ** 3 }[faces] as number;
     const others = [8, 12 * (n - 2), 6 * (n - 2) ** 2, (n - 2) ** 3, n ** 3 - (n - 2) ** 3].filter((v) => v !== val);
-    return item(d, ["ABSTRACT", "DECOMPOSITION"], `A solid cube of side ${n} cm is painted on all its faces and then cut into ${n ** 3} small cubes of side 1 cm. How many small cubes have ${faces === 0 ? "NO face painted" : `exactly ${faces} face${faces === 1 ? "" : "s"} painted`}?`, numMcq(c.r, val, others), `${faces === 3 ? "Only the 8 corner cubes have 3 painted faces." : faces === 2 ? `Cubes with 2 painted faces lie along the 12 edges, leaving out the 2 corners of each edge: 12 × (${n} − 2) = ${val}.` : faces === 1 ? `Cubes with 1 painted face are in the middle of each of the 6 faces: 6 × (${n} − 2)² = ${val}.` : `The unpainted cubes form an inner cube of side ${n} − 2 = ${n - 2}: ${n - 2}³ = ${val}.`}`);
+    return item(d, ["ABSTRACT", "DECOMPOSITION"], `A solid cube of side ${n} cm is painted on all its faces and then cut into ${n ** 3} small cubes of side 1 cm. How many small cubes have ${faces === 0 ? "NO face painted" : `exactly ${faces} face${faces === 1 ? "" : "s"} painted`}?`, numMcq(c.r, val, others), sol(`The big cube is ${n} × ${n} × ${n} small cubes, painted on the outside.`, faces === 3 ? `Only the 8 corner cubes have 3 painted faces.` : faces === 2 ? `Cubes with 2 painted faces lie along the 12 edges, but not at the corners. Each edge has ${n} − 2 = ${n - 2} such cubes: 12 × ${n - 2} = ${val}.` : faces === 1 ? `Cubes with 1 painted face are in the middle part of each of the 6 faces. Each face has (${n} − 2) × (${n} − 2) = ${(n - 2) ** 2} such cubes: 6 × ${(n - 2) ** 2} = ${val}.` : `The unpainted cubes form a hidden cube inside, of side ${n} − 2 = ${n - 2}: ${n - 2} × ${n - 2} × ${n - 2} = ${val}.`, `So, the answer is ${val}.`));
   },
 };
 
@@ -183,7 +183,7 @@ export const lastDigit: Family = {
     const l1 = ld(a, b), l2 = ld(x, y);
     const ans = op === "+" ? (l1 + l2) % 10 : (l1 * l2) % 10;
     const cyc = (base: number) => { const s: number[] = []; let r = base % 10; while (!s.includes(r)) { s.push(r); r = (r * (base % 10)) % 10; } return s; };
-    return item(d, ["PATTERN", "ALGORITHMIC"], `What is the last digit of ${a}^${b} ${op} ${x}^${y}? (Only the last digits of the powers matter.)`, numMcq(c.r, ans, [(ans + 1) % 10, (ans + 3) % 10, l1, l2, (ans + 5) % 10]), `Last digits of powers repeat in a cycle. Powers of ${a % 10} end in ${cyc(a).join(", ")} (repeating); ${b} leaves remainder ${b % cyc(a).length || cyc(a).length} in that cycle, so ${a}^${b} ends in ${l1}. Powers of ${x % 10} end in ${cyc(x).join(", ")}; ${x}^${y} ends in ${l2}. ${l1} ${op} ${l2} ends in ${ans}.`);
+    return item(d, ["PATTERN", "ALGORITHMIC"], `What is the last digit of ${a}^${b} ${op} ${x}^${y}? (Only the last digits of the powers matter.)`, numMcq(c.r, ans, [(ans + 1) % 10, (ans + 3) % 10, l1, l2, (ans + 5) % 10]), sol(`The last digits of powers repeat in a cycle, so we only need the remainder of the power.`, [`Powers of ${a % 10} end in ${cyc(a).join(", ")}, … (cycle of ${cyc(a).length}). ${b} leaves remainder ${b % cyc(a).length || cyc(a).length}, so ${a}^${b} ends in ${l1}.`, `Powers of ${x % 10} end in ${cyc(x).join(", ")}, … (cycle of ${cyc(x).length}). ${y} leaves remainder ${y % cyc(x).length || cyc(x).length}, so ${x}^${y} ends in ${l2}.`], `${l1} ${op} ${l2} ends in ${ans}.`, `So, the last digit is ${ans}.`));
   },
 };
 
@@ -196,7 +196,7 @@ export const powerOrder: Family = {
     const sorted = [...terms].sort((p, q) => p[0] ** p[1] - q[0] ** q[1]);
     const stay = terms.filter((t, i) => sorted[i] === t).length;
     const sup = (n: number) => String(n).split("").map((x) => "⁰¹²³⁴⁵⁶⁷⁸⁹"[Number(x)]).join("");
-    return item(d, ["PATTERN", "DECOMPOSITION"], `Each term is written in exponent form:\n\n${terms.map(([b, e]) => `${b}${sup(e)}`).join(", ")}\n\nThe terms are rearranged in ascending order of their values, from left to right. How many terms stay in the SAME position as in the original arrangement?`, numMcq(c.r, stay, [stay + 1, stay - 1, stay + 2, 0, 6]), `Values: ${terms.map(([b, e]) => `${b}${sup(e)} = ${b ** e}`).join(", ")}. In ascending order: ${sorted.map(([b, e]) => `${b}${sup(e)}`).join(", ")}. Comparing position by position, ${stay} term${stay === 1 ? "" : "s"} stay${stay === 1 ? "s" : ""} in place.`);
+    return item(d, ["PATTERN", "DECOMPOSITION"], `Each term is written in exponent form:\n\n${terms.map(([b, e]) => `${b}${sup(e)}`).join(", ")}\n\nThe terms are rearranged in ascending order of their values, from left to right. How many terms stay in the SAME position as in the original arrangement?`, numMcq(c.r, stay, [stay + 1, stay - 1, stay + 2, 0, 6]), sol(`Work out the value of each term:`, terms.map(([b2, e]) => `${b2}${sup(e)} = ${b2 ** e}`), `In ascending order: ${sorted.map(([b2, e]) => `${b2}${sup(e)}`).join(", ")}.`, `Compare with the given order, position by position: ${stay} term${stay === 1 ? "" : "s"} stay${stay === 1 ? "s" : ""} in the same place.`, `So, the answer is ${stay}.`));
   },
 };
 
@@ -211,7 +211,7 @@ export const squareCubeFactor: Family = {
     const k = primes.reduce((s, p, i) => s * p ** ((cube ? 3 - (ex[i] % 3) : 2 - (ex[i] % 2)) % (cube ? 3 : 2)), 1);
     if (k === 1) return null;
     const fac = primes.map((p, i) => `${p}${ex[i] > 1 ? `^${ex[i]}` : ""}`).join(" × ");
-    return item(d, ["DECOMPOSITION", "ABSTRACT"], `${fmt(n)} × k is a perfect ${cube ? "cube" : "square"}, where k is a natural number. What is the smallest possible value of k?`, numMcq(c.r, k, [k * primes[0], primes[0], k * 2, Math.max(1, k / primes[1])].filter(Number.isInteger)), `Split ${fmt(n)} into primes: ${fac}. In a perfect ${cube ? "cube" : "square"} every prime appears a multiple of ${cube ? 3 : 2} times, so multiply by the missing factors: k = ${k}.`);
+    return item(d, ["DECOMPOSITION", "ABSTRACT"], `${fmt(n)} × k is a perfect ${cube ? "cube" : "square"}, where k is a natural number. What is the smallest possible value of k?`, numMcq(c.r, k, [k * primes[0], primes[0], k * 2, Math.max(1, k / primes[1])].filter(Number.isInteger)), sol(`Write ${fmt(n)} as a product of primes: ${fac}.`, `In a perfect ${cube ? "cube" : "square"}, every prime appears a multiple of ${cube ? 3 : 2} times. Multiply by the primes that are missing to complete the groups.`, `This gives k = ${k}.`, `So, the smallest k is ${k}.`));
   },
 };
 
@@ -224,13 +224,13 @@ export const baseConvert: Family = {
       const val = (b + x) * y; // "1x" in base b times y
       const digits = val.toString(b);
       if (digits.length > 3) return null;
-      return item(d, ["ALGORITHMIC", "ABSTRACT"], `In which base is the statement 1${x} × ${y} = ${digits} true?`, mcq(`Base ${b}`, [b - 1, b + 1, 10, b + 2].filter((v) => v > Math.max(x, y) && v !== b).map((v) => `Base ${v}`)), `In base b, 1${x} means b + ${x}. Try the bases: in base ${b}, 1${x} = ${b + x}, and ${b + x} × ${y} = ${val}, which is written ${digits} in base ${b}.`);
+      return item(d, ["ALGORITHMIC", "ABSTRACT"], `In which base is the statement 1${x} × ${y} = ${digits} true?`, mcq(`Base ${b}`, [b - 1, b + 1, 10, b + 2].filter((v) => v > Math.max(x, y) && v !== b).map((v) => `Base ${v}`)), sol(`In base b, the number 1${x} means 1 × b + ${x} = b + ${x}.`, `Try the bases one by one. In base ${b}: 1${x} = ${b} + ${x} = ${b + x}, and ${b + x} × ${y} = ${val}, which is written ${digits} in base ${b}. This matches.`, `So, the base is ${b}.`));
     }
     const base = d === 2 ? 2 : 3;
     const n = int(c.r, 20, base === 2 ? 120 : 200);
     const s = n.toString(base);
     const near = [n + 1, n - 1, n + base, n * 1 + 2].map((v) => v.toString(base));
-    return item(d, ["ALGORITHMIC", "PATTERN"], `Pipes of lengths ${base === 2 ? "1, 2, 4, 8, 16, 32, 64 inches (one of each)" : "1, 3, 9, 27, 81 inches (up to two of each)"} are used to measure heights, so a height is written in base ${base}. How is a height of ${n} inches written in base ${base}?`, mcq(s, near), `Divide by ${base} again and again and read the remainders from the bottom up, or take the biggest pipe that fits each time. ${n} = ${s.split("").map((dg, i) => `${dg} × ${base ** (s.length - 1 - i)}`).join(" + ")}, so it is written ${s}.`);
+    return item(d, ["ALGORITHMIC", "PATTERN"], `Pipes of lengths ${base === 2 ? "1, 2, 4, 8, 16, 32, 64 inches (one of each)" : "1, 3, 9, 27, 81 inches (up to two of each)"} are used to measure heights, so a height is written in base ${base}. How is a height of ${n} inches written in base ${base}?`, mcq(s, near), sol(`Write ${n} using powers of ${base}, taking the biggest power that fits each time:`, s.split("").map((dg, i) => `${dg} × ${base ** (s.length - 1 - i)} = ${Number(dg) * base ** (s.length - 1 - i)}`), `Check: ${s.split("").map((dg, i) => Number(dg) * base ** (s.length - 1 - i)).join(" + ")} = ${n}.`, `So, ${n} is written ${s} in base ${base}.`));
   },
 };
 
@@ -250,7 +250,7 @@ export const romanCompare: Family = {
       return { text: `${roman(n)} ${op} ${m}`, ok };
     });
     const ans = items.filter((x) => x.ok).length;
-    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `How many of these comparisons are correct?\n\n${items.map((x, i) => `${"abcd"[i]}) ${x.text}`).join("\n")}`, numMcq(c.r, ans, [0, 1, 2, 3, 4]), `Change each Roman numeral into a number (a smaller symbol before a bigger one is subtracted, e.g. XC = 90). ${items.map((x, i) => `${"abcd"[i]}) ${x.ok ? "correct" : "wrong"}`).join("; ")}. So ${ans} ${ans === 1 ? "is" : "are"} correct.`);
+    return item(d, ["ALGORITHMIC", "DECOMPOSITION"], `How many of these comparisons are correct?\n\n${items.map((x, i) => `${"abcd"[i]}) ${x.text}`).join("\n")}`, numMcq(c.r, ans, [0, 1, 2, 3, 4]), sol(`Change each Roman numeral into a number. A smaller symbol before a bigger one is subtracted (for example, XC = 90 and IV = 4).`, items.map((x, i) => `${"abcd"[i]}) ${x.ok ? "correct" : "wrong"}`), `So, ${ans} ${ans === 1 ? "is" : "are"} correct.`));
   },
 };
 
@@ -260,7 +260,7 @@ export const rectCount: Family = {
   make(c, d) {
     const r = int(c.r, 1, 4), k = int(c.r, 2, 6);
     const ans = ((r + 1) * r / 2) * ((k + 1) * k / 2);
-    return item(d, ["ABSTRACT", "DECOMPOSITION"], `A rectangle is divided by straight lines into a grid of ${r} row${r > 1 ? "s" : ""} and ${k} columns of equal small squares. How many rectangles of ALL sizes (squares included) are there in the figure?`, numMcq(c.r, ans, [r * k, ans - r * k, (r + 1) * (k + 1), ans + k]), `A rectangle is fixed by choosing 2 of the ${r + 1} horizontal lines and 2 of the ${k + 1} vertical lines: ${(r + 1) * r / 2} × ${(k + 1) * k / 2} = ${ans}.`);
+    return item(d, ["ABSTRACT", "DECOMPOSITION"], `A rectangle is divided by straight lines into a grid of ${r} row${r > 1 ? "s" : ""} and ${k} columns of equal small squares. How many rectangles of ALL sizes (squares included) are there in the figure?`, numMcq(c.r, ans, [r * k, ans - r * k, (r + 1) * (k + 1), ans + k]), sol(`Every rectangle is fixed by choosing 2 of the ${r + 1} horizontal lines and 2 of the ${k + 1} vertical lines.`, [`Ways to choose 2 horizontal lines: ${r + 1} × ${r} ÷ 2 = ${((r + 1) * r) / 2}`, `Ways to choose 2 vertical lines: ${k + 1} × ${k} ÷ 2 = ${((k + 1) * k) / 2}`], `Total = ${((r + 1) * r) / 2} × ${((k + 1) * k) / 2} = ${ans}.`, `So, there are ${ans} rectangles.`));
   },
 };
 
@@ -269,10 +269,10 @@ export const quadAngles: Family = {
   make(c, d) {
     const kind = pick(c.r, ["trapezium", "parallelogram", "rhombus"] as const);
     const a = int(c.r, 40, 80);
-    if (kind === "trapezium") return item(d, ["ABSTRACT", "ALGORITHMIC"], `In trapezium ABCD, side AB is parallel to side DC and angle A = ${a}°. Angle C is ${int(c.r, 2, 6) * 10}° more than angle A. What is angle D?`, numMcq(c.r, 180 - a, [a, 360 - 2 * a, 90 + a / 2, 180 - a + 10], (n) => `${n}°`), `AD crosses the two parallel sides, so angles A and D are co-interior and add up to 180°: angle D = 180° − ${a}° = ${180 - a}°. (Angle C is extra information.)`);
-    if (kind === "parallelogram") { const b = 180 - a; return item(d, ["ABSTRACT", "ALGORITHMIC"], `In parallelogram PQRS, angle P is ${b - a}° less than angle Q. What is angle R?`, numMcq(c.r, a, [b, 180 - a + 10, 90, a + 10], (n) => `${n}°`), `Neighbouring angles of a parallelogram add up to 180°, so P + Q = 180° and Q − P = ${b - a}°: P = ${a}°, Q = ${b}°. Opposite angles are equal, so angle R = angle P = ${a}°.`); }
+    if (kind === "trapezium") return item(d, ["ABSTRACT", "ALGORITHMIC"], `In trapezium ABCD, side AB is parallel to side DC and angle A = ${a}°. Angle C is ${int(c.r, 2, 6) * 10}° more than angle A. What is angle D?`, numMcq(c.r, 180 - a, [a, 360 - 2 * a, 90 + a / 2, 180 - a + 10], (n) => `${n}°`), sol(`AB and DC are parallel, and AD crosses both of them. So angles A and D are co-interior angles, which add up to 180°.`, [`Angle D = 180° − ${a}° = ${180 - a}°`], `(Angle C is not needed.)`, `So, angle D is ${180 - a}°.`));
+    if (kind === "parallelogram") { const b = 180 - a; return item(d, ["ABSTRACT", "ALGORITHMIC"], `In parallelogram PQRS, angle P is ${b - a}° less than angle Q. What is angle R?`, numMcq(c.r, a, [b, 180 - a + 10, 90, a + 10], (n) => `${n}°`), sol(`In a parallelogram, neighbouring angles add up to 180° and opposite angles are equal.`, [`P + Q = 180° and Q − P = ${b - a}°`, `So P = (180° − ${b - a}°) ÷ 2 = ${a}° and Q = ${b}°`, `Angle R is opposite angle P, so R = ${a}°`], `So, angle R is ${a}°.`)); }
     const ang = 2 * int(c.r, 25, 70);
-    return item(d, ["ABSTRACT", "ALGORITHMIC"], `One angle of a rhombus is ${ang}°. The diagonal drawn from that corner makes what angle with each side of the rhombus?`, numMcq(c.r, ang / 2, [ang, 90 - ang / 2, 180 - ang, 90], (n) => `${n}°`), `A diagonal of a rhombus bisects the angles at the corners it joins, so it makes ${ang}° ÷ 2 = ${ang / 2}° with each side.`);
+    return item(d, ["ABSTRACT", "ALGORITHMIC"], `One angle of a rhombus is ${ang}°. The diagonal drawn from that corner makes what angle with each side of the rhombus?`, numMcq(c.r, ang / 2, [ang, 90 - ang / 2, 180 - ang, 90], (n) => `${n}°`), sol(`In a rhombus, a diagonal cuts the angles at the corners it joins into two equal parts.`, [`Angle made with each side = ${ang}° ÷ 2 = ${ang / 2}°`], `So, the answer is ${ang / 2}°.`));
   },
 };
 
@@ -283,7 +283,7 @@ export const quickProduct: Family = {
     const base = pick(c.r, [20, 30, 40, 50, 60, 70, 80, 100]), e = int(c.r, 1, 9);
     if (d === 2) {
       const a = base - e, b = base + e;
-      return item(d, ["ALGORITHMIC", "PATTERN"], `Using (x − y)(x + y) = x² − y², find ${a} × ${b} quickly. (Think of both numbers as being the same distance from ${base}.)`, numMcq(c.r, a * b, [base * base, a * b + e * e * 2, base * base + e * e, a * b - 10]), `${a} × ${b} = (${base} − ${e})(${base} + ${e}) = ${base}² − ${e}² = ${base * base} − ${e * e} = ${a * b}.`);
+      return item(d, ["ALGORITHMIC", "PATTERN"], `Using (x − y)(x + y) = x² − y², find ${a} × ${b} quickly. (Think of both numbers as being the same distance from ${base}.)`, numMcq(c.r, a * b, [base * base, a * b + e * e * 2, base * base + e * e, a * b - 10]), sol(`Write both numbers using ${base}: ${a} = ${base} − ${e} and ${b} = ${base} + ${e}.`, `Use (x − y)(x + y) = x² − y²:`, [`${a} × ${b} = ${base}² − ${e}²`, `= ${base * base} − ${e * e}`, `= ${a * b}`], `So, the product is ${a * b}.`));
     }
     const [p] = who(c.r, 1);
     const m = int(c.r, 3, 9), ap = int(c.r, 2, 8);
@@ -291,7 +291,7 @@ export const quickProduct: Family = {
     const b1 = m * x + ap * y, b2 = ap * x + m * y;
     const k = (m + ap) / 2;
     if (!Number.isInteger(k)) return null;
-    return item(d, ["ALGORITHMIC", "ABSTRACT"], `At a fruit stall, ${m} mangoes and ${ap} apples cost ₹${b1}, while ${ap} mangoes and ${m} apples cost ₹${b2}. ${p} wants to buy ${k} mangoes and ${k} apples. How much will ${p} pay?`, numMcq(c.r, (b1 + b2) / 2, [b1, b2, b1 + b2, (b1 + b2) / 2 + k], (n) => `₹${n}`), `Add the two bills: ${m + ap} mangoes and ${m + ap} apples cost ₹${b1} + ₹${b2} = ₹${b1 + b2}. Half of that is ${k} mangoes and ${k} apples: ₹${(b1 + b2) / 2}. No need to find each price.`);
+    return item(d, ["ALGORITHMIC", "ABSTRACT"], `At a fruit stall, ${m} mangoes and ${ap} apples cost ₹${b1}, while ${ap} mangoes and ${m} apples cost ₹${b2}. ${p} wants to buy ${k} mangoes and ${k} apples. How much will ${p} pay?`, numMcq(c.r, (b1 + b2) / 2, [b1, b2, b1 + b2, (b1 + b2) / 2 + k], (n) => `₹${n}`), sol(`Add the two bills: together they are ${m + ap} mangoes and ${m + ap} apples for ₹${b1} + ₹${b2} = ₹${b1 + b2}.`, `${k} mangoes and ${k} apples is half of that: ₹${b1 + b2} ÷ 2 = ₹${(b1 + b2) / 2}.`, `(We do not need the price of each fruit.)`, `So, the answer is ₹${(b1 + b2) / 2}.`));
   },
 };
 
@@ -306,12 +306,12 @@ export const ratioMix: Family = {
       const [na, nb] = pick(c.r, [[1, 1], [3, 2], [2, 1]] as [number, number][]);
       const needWater = (milk * nb) / na - water;
       if (!Number.isInteger(needWater) || needWater <= 0) return null;
-      return item(d, ["DECOMPOSITION", "ALGORITHMIC"], `A ${t}-litre mixture contains milk and water in the ratio ${a} : ${b}. How many litres of water must be added so that the ratio of milk to water becomes ${na} : ${nb}?`, numMcq(c.r, needWater, [water, milk - water, needWater + b, t / (a + b)]), `Milk = ${a}/${a + b} × ${t} = ${milk} L and water = ${water} L. Adding water does not change the milk. For ${na} : ${nb}, water must be ${milk} × ${nb}/${na} = ${(milk * nb) / na} L, so add ${(milk * nb) / na} − ${water} = ${needWater} L.`);
+      return item(d, ["DECOMPOSITION", "ALGORITHMIC"], `A ${t}-litre mixture contains milk and water in the ratio ${a} : ${b}. How many litres of water must be added so that the ratio of milk to water becomes ${na} : ${nb}?`, numMcq(c.r, needWater, [water, milk - water, needWater + b, t / (a + b)]), sol(`Find the milk and the water in the mixture first.`, [`Milk = ${a}/${a + b} × ${t} = ${milk} L`, `Water = ${t} − ${milk} = ${water} L`], `Adding water does not change the milk. For the ratio ${na} : ${nb}, the water must be ${milk} × ${nb}/${na} = ${(milk * nb) / na} L.`, `Water to add = ${(milk * nb) / na} − ${water} = ${needWater} L.`, `So, ${needWater} L of water must be added.`));
     }
     if (kind === "share") {
       const [p, q] = who(c.r, 2); const a = int(c.r, 2, 5), b = int(c.r, a + 1, 9), unit = pick(c.r, [25, 50, 100, 120]);
       const diff = (b - a) * unit;
-      return item(d, ["DECOMPOSITION"], `${p} and ${q} share their prize money in the ratio ${a} : ${b}. ${q} gets ₹${diff} more than ${p}. How much prize money was there altogether?`, numMcq(c.r, (a + b) * unit, [b * unit, diff * 2, (a + b) * unit + unit, a * unit], (n) => `₹${n}`), `The difference ${b} − ${a} = ${b - a} parts is ₹${diff}, so one part is ₹${unit}. Altogether ${a + b} parts = ₹${(a + b) * unit}.`);
+      return item(d, ["DECOMPOSITION"], `${p} and ${q} share their prize money in the ratio ${a} : ${b}. ${q} gets ₹${diff} more than ${p}. How much prize money was there altogether?`, numMcq(c.r, (a + b) * unit, [b * unit, diff * 2, (a + b) * unit + unit, a * unit], (n) => `₹${n}`), sol(`The amounts are in the ratio ${a} : ${b}. The difference is ${b} − ${a} = ${b - a} parts.`, [`${b - a} parts = ₹${diff}`, `1 part = ₹${diff} ÷ ${b - a} = ₹${unit}`, `Total = ${a + b} parts = ${a + b} × ₹${unit} = ₹${(a + b) * unit}`], `So, the total is ₹${(a + b) * unit}.`));
     }
     if (kind === "pipes") {
       const a = pick(c.r, [6, 10, 12, 15]), b = pick(c.r, [3, 4, 5, 20, 30]); if (a === b) return null;
@@ -320,11 +320,11 @@ export const ratioMix: Family = {
       const time = 1 / rate;
       if (!Number.isInteger(Math.round(time * 100) / 100) && Math.abs(time - Math.round(time)) > 1e-9) return null;
       const t = Math.round(time);
-      return item(d, ["ALGORITHMIC", "DECOMPOSITION"], empt ? `A tank is filled by pipe A in ${Math.min(a, b)} minutes. Pipe B can empty the full tank in ${Math.max(a, b)} minutes. If both pipes are opened together on an empty tank, how many minutes will it take to fill the tank?` : `A tank can be filled by pipe A alone in ${a} hours and by pipe B alone in ${b} hours. If both pipes are opened together, how many hours will they take to fill the empty tank?`, numMcq(c.r, t, [a + b, Math.abs(a - b), (a + b) / 2, t + 1].filter(Number.isInteger)), empt ? `Pipe A fills 1/${Math.min(a, b)} of the tank per minute and pipe B empties 1/${Math.max(a, b)}. Net gain: 1/${Math.min(a, b)} − 1/${Math.max(a, b)} = 1/${t} per minute, so it takes ${t} minutes.` : `Pipe A fills 1/${a} of the tank each hour and pipe B fills 1/${b}. Together 1/${a} + 1/${b} = 1/${t} each hour, so ${t} hours.`);
+      return item(d, ["ALGORITHMIC", "DECOMPOSITION"], empt ? `A tank is filled by pipe A in ${Math.min(a, b)} minutes. Pipe B can empty the full tank in ${Math.max(a, b)} minutes. If both pipes are opened together on an empty tank, how many minutes will it take to fill the tank?` : `A tank can be filled by pipe A alone in ${a} hours and by pipe B alone in ${b} hours. If both pipes are opened together, how many hours will they take to fill the empty tank?`, numMcq(c.r, t, [a + b, Math.abs(a - b), (a + b) / 2, t + 1].filter(Number.isInteger)), empt ? sol(`Pipe A fills 1/${Math.min(a, b)} of the tank every minute, and pipe B empties 1/${Math.max(a, b)} of it every minute.`, [`Net filling each minute = 1/${Math.min(a, b)} − 1/${Math.max(a, b)} = 1/${t}`], `So, the tank fills in ${t} minutes.`) : sol(`Pipe A fills 1/${a} of the tank each hour and pipe B fills 1/${b} of it each hour.`, [`Together each hour = 1/${a} + 1/${b} = 1/${t}`], `So, together they fill the tank in ${t} hours.`));
     }
     const w1 = int(c.r, 4, 12), d1 = int(c.r, 6, 20), w2 = int(c.r, 2, 15);
     if ((w1 * d1) % w2) return null;
-    return item(d, ["DECOMPOSITION", "ALGORITHMIC"], `${w1} workers can finish a job in ${d1} days. How many days would ${w2} workers take to finish the same job, working at the same speed?`, numMcq(c.r, (w1 * d1) / w2, [(d1 * w2) / w1, d1, d1 + (w1 - w2), (w1 * d1) / w2 + 2].filter((v) => Number.isInteger(v) && v > 0)), `The job needs ${w1} × ${d1} = ${w1 * d1} worker-days. With ${w2} workers: ${w1 * d1} ÷ ${w2} = ${(w1 * d1) / w2} days (fewer workers take more days).`);
+    return item(d, ["DECOMPOSITION", "ALGORITHMIC"], `${w1} workers can finish a job in ${d1} days. How many days would ${w2} workers take to finish the same job, working at the same speed?`, numMcq(c.r, (w1 * d1) / w2, [(d1 * w2) / w1, d1, d1 + (w1 - w2), (w1 * d1) / w2 + 2].filter((v) => Number.isInteger(v) && v > 0)), sol(`First find the total work in worker-days: ${w1} workers × ${d1} days = ${w1 * d1} worker-days.`, `The same work with ${w2} workers takes ${w1 * d1} ÷ ${w2} = ${(w1 * d1) / w2} days. (Fewer workers take more days.)`, `So, the answer is ${(w1 * d1) / w2} days.`));
   },
 };
 
@@ -334,14 +334,14 @@ export const multiplesCount: Family = {
     if (d === 3 && c.r() < 0.5) {
       const N = int(c.r, 12, 120);
       const ans = Math.floor(Math.sqrt(N));
-      return item(d, ["PATTERN", "ABSTRACT"], `There are ${N} lamps in a row, numbered 1 to ${N}, all switched OFF. Person 1 flips every lamp, person 2 flips every 2nd lamp, person 3 flips every 3rd lamp, and so on up to person ${N}. (Flipping turns ON to OFF and OFF to ON.) How many lamps are ON at the end?`, numMcq(c.r, ans, [Math.floor(N / 2), ans + 1, ans - 1, Math.floor(N / 3)]), `Lamp n is flipped once for each divisor of n. It ends ON only if it has an odd number of divisors, which happens only for perfect squares. Squares up to ${N}: 1, 4, 9, …, ${ans * ans}, so ${ans} lamps.`);
+      return item(d, ["PATTERN", "ABSTRACT"], `There are ${N} lamps in a row, numbered 1 to ${N}, all switched OFF. Person 1 flips every lamp, person 2 flips every 2nd lamp, person 3 flips every 3rd lamp, and so on up to person ${N}. (Flipping turns ON to OFF and OFF to ON.) How many lamps are ON at the end?`, numMcq(c.r, ans, [Math.floor(N / 2), ans + 1, ans - 1, Math.floor(N / 3)]), sol(`Lamp n is switched once for every divisor of n. It ends ON only if it is switched an odd number of times, that is, if n has an odd number of divisors.`, `Divisors come in pairs (like 2 × 6 = 12), except when a number is a perfect square (like 3 × 3 = 9). So only the perfect squares have an odd number of divisors.`, `Perfect squares up to ${N}: 1, 4, 9, …, ${ans * ans} — there are ${ans} of them.`, `So, ${ans} lamps are ON.`));
     }
     const a = int(c.r, 3, 9), b = int(c.r, a + 1, 12), N = int(c.r, 60, 200);
     const l = (a * b) / gcd(a, b);
     const both = Math.floor(N / l), or = Math.floor(N / a) + Math.floor(N / b) - both;
     const ask = pick(c.r, ["or", "neither"] as const);
     const ans = ask === "or" ? or : N - or;
-    return item(d, ["DECOMPOSITION", "PATTERN"], `The numbers 1 to ${N} are written on cards. Cards with multiples of ${a} go in Box A and cards with multiples of ${b} go in Box B (a card may go in both boxes). How many cards go in ${ask === "or" ? "at least one box" : "NEITHER box"}?`, numMcq(c.r, ans, [Math.floor(N / a) + Math.floor(N / b), N - ans, ans + both, ans - 1]), `Multiples of ${a}: ${Math.floor(N / a)}. Multiples of ${b}: ${Math.floor(N / b)}. Multiples of both (multiples of ${l}): ${both}, counted twice. In at least one box: ${Math.floor(N / a)} + ${Math.floor(N / b)} − ${both} = ${or}.${ask === "neither" ? ` In neither: ${N} − ${or} = ${ans}.` : ""}`);
+    return item(d, ["DECOMPOSITION", "PATTERN"], `The numbers 1 to ${N} are written on cards. Cards with multiples of ${a} go in Box A and cards with multiples of ${b} go in Box B (a card may go in both boxes). How many cards go in ${ask === "or" ? "at least one box" : "NEITHER box"}?`, numMcq(c.r, ans, [Math.floor(N / a) + Math.floor(N / b), N - ans, ans + both, ans - 1]), sol(`Count the numbers in each box and remove those counted twice.`, [`Multiples of ${a} up to ${N}: ${Math.floor(N / a)}`, `Multiples of ${b} up to ${N}: ${Math.floor(N / b)}`, `Multiples of both (multiples of ${l}): ${both} — counted twice`], `In at least one box: ${Math.floor(N / a)} + ${Math.floor(N / b)} − ${both} = ${or}.`, ask === "neither" ? `In neither box: ${N} − ${or} = ${ans}.` : false, `So, the answer is ${ans}.`));
   },
 };
 

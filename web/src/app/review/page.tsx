@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SolutionView } from "@/components/SolutionView";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { QUESTION_TYPES, DIFFICULTY } from "@/lib/constants";
@@ -117,7 +118,7 @@ export default async function ReviewQueue({ searchParams }: { searchParams: Prom
                   {q.type === "ORDER" && <p className="mt-2 text-sm text-muted">Items: {opts.join(" · ")}</p>}
                   <div className="mt-3 rounded-xl bg-good-soft p-3 text-sm">
                     <div><strong>Answer:</strong> {formatAnswer(q.type, opts, JSON.parse(q.answer))}</div>
-                    <div className="mt-1 text-ink-2"><strong>Solution:</strong> <Markdown text={q.solution} className="inline" /></div>
+                    <div className="mt-1 text-ink-2"><strong>Solution:</strong> <SolutionView text={q.solution} figuresJson={q.solutionFigures} className="mt-1" /></div>
                     {q.hint && <div className="mt-1 text-ink-2"><strong>Hint:</strong> {q.hint}</div>}
                   </div>
                   {q.reviewNote && <p className="mt-2 text-sm text-bad">Reason: {q.reviewNote}</p>}

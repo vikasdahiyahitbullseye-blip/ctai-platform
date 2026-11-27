@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SolutionView } from "@/components/SolutionView";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { requireTestAccess, teacherSections, itemAnalysis } from "@/lib/teacher";
@@ -165,7 +166,7 @@ export default async function TestDetail({ params, searchParams }: { params: Pro
                 <OptionList options={opts} figuresJson={q.optionFigures} />
                 <details className="mt-3 text-sm">
                   <summary className="cursor-pointer font-medium text-brand">Answer: {formatAnswer(q.type, opts, JSON.parse(q.answer))}</summary>
-                  <div className="mt-2 text-ink-2"><Markdown text={q.solution} /></div>
+                  <div className="mt-2 text-ink-2"><SolutionView text={q.solution} figuresJson={q.solutionFigures} /></div>
                 </details>
                 {!started && (
                   <div className="mt-3 flex gap-2">

@@ -20,6 +20,7 @@ import { ANIMALS, BACKGROUNDS } from "../src/lib/avatar";
 import { saveTaskResponse, markWork } from "../src/lib/attempts";
 import type { SeedQuestion } from "./content/types";
 import { balanceOptions } from "./content/balance";
+import { finishSolution } from "./content/solution";
 import { generateBank, generateCbseLevel, generateScenario } from "./content/gen";
 import { generateBalanced, type ChapterStats } from "./content/gen/v3";
 import { generateBookSets } from "./content/gen/v3/book";
@@ -79,7 +80,8 @@ async function main() {
           stem: q.stem,
           options: JSON.stringify(q.options ?? []),
           answer: JSON.stringify(q.answer),
-          solution: q.solution,
+          solution: finishSolution(q),
+          solutionFigures: q.solutionFigures?.length ? JSON.stringify(q.solutionFigures) : null,
           hint: q.hint,
           marks: q.d === 3 ? 2 : 1,
           timeSec: 45 + q.d * 30,

@@ -13,11 +13,19 @@ export type PaperItem = {
   options: string[]; // in printed order
   answerText: string; // in terms of printed order
   solution: string;
+  solutionFigures: (Fig | null)[] | null;
   figure: Fig | null;
   optionFigures: (Fig | null)[] | null; // in printed order
 };
 
 export const VERSION_NAMES = ["A", "B", "C"];
+
+/** When a version prints the options in another order, "option c" in the solution must follow the new letters. */
+function relabel(solution: string, perm: number[]) {
+  if (perm.every((p, i) => p === i)) return solution;
+  const newLetter = (old: string) => String.fromCharCode(97 + perm.indexOf(old.toLowerCase().charCodeAt(0) - 97));
+  return solution.replace(/\b(option|options)\s+\(?([a-d])\)?(?=[\s.,;:)]|$)/gi, (m, word: string, l: string) => m.replace(new RegExp(`\\(?${l}\\)?$`), m.includes("(") ? `(${newLetter(l)})` : newLetter(l)));
+}
 
 export async function buildPaper(testId: string, version: number) {
   const test = await prisma.assessment.findUniqueOrThrow({
@@ -42,11 +50,11 @@ export async function buildPaper(testId: string, version: number) {
       // Print ORDER items in a fixed scrambled order; answer key lists the correct sequence by text.
       perm = shuffle(perm, rng(version * 7 + n + 11));
       if (perm.every((p, i) => p === key[i])) perm.reverse();
-      return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options: perm.map((p) => original[p]), answerText: formatAnswer("ORDER", original, key), solution: q.solution, figure: parseFig(q.figure), optionFigures: null };
+      return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options: perm.map((p) => original[p]), answerText: formatAnswer("ORDER", original, key), solution: q.solution, solutionFigures: parseFigs(q.solutionFigures), figure: parseFig(q.figure), optionFigures: null };
     }
     const options = perm.map((p) => original[p]);
     const figs = parseFigs(q.optionFigures);
-    return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options, answerText: formatAnswer(q.type, options, key), solution: q.solution, figure: parseFig(q.figure), optionFigures: figs ? perm.map((p) => figs[p] ?? null) : null };
+    return { no: n + 1, section: it.section, marks: it.marks, type: q.type, stem: q.stem, options, answerText: formatAnswer(q.type, options, key), solution: relabel(q.solution, perm), solutionFigures: parseFigs(q.solutionFigures), figure: parseFig(q.figure), optionFigures: figs ? perm.map((p) => figs[p] ?? null) : null };
   });
   return {
     test,

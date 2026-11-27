@@ -157,7 +157,8 @@ model Question {
   figure        String? // JSON picture spec (src/lib/figures.ts)
   optionFigures String? // JSON (spec|null)[] parallel to options, for picture answers
   answer        String // JSON: index | index[] | string | number | string[] (order)
-  solution      String
+  solution      String // worked solution in the CBSE Teacher Handbook style; "[fig:1]" places solutionFigures[0]
+  solutionFigures String? // JSON picture specs shown inside the solution
   hint          String?
   marks         Int              @default(1)
   timeSec       Int              @default(60)

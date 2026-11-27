@@ -34,7 +34,7 @@ describe("balanced bank (v3)", () => {
         expect(new Set(q.options).size, q.stem).toBe(4);
         expect(isCorrect("MCQ", q.answer as number, q.answer as number)).toBe(true);
       }
-      if (q.type === "TRUE_FALSE") { expect(typeof q.answer).toBe("boolean"); expect(q.solution.startsWith(q.answer ? "True" : "False")).toBe(true); }
+      if (q.type === "TRUE_FALSE") { expect(typeof q.answer).toBe("boolean"); expect(q.solution).toContain(q.answer ? "which matches" : "The statement says"); }
       if (q.type === "NUMERIC") expect(Number.isFinite(q.answer as number)).toBe(true);
       if (q.type === "FILL_BLANK") { expect(q.stem).toContain("____"); expect(isCorrect("FILL_BLANK", q.answer as string[], (q.answer as string[])[0])).toBe(true); }
     }

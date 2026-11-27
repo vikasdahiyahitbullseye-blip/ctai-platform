@@ -1,7 +1,7 @@
 // Scenario-level question families for the AI chapters (Classes 6–8) and the EVS themes (Classes 3–5).
 // Each question sets up a real-life situation (30–60 words) and needs two or more steps of reasoning, at the level of
 // the CBSE CT handbook questions. Answers are computed or come from hand-checked fact tables.
-import { type Family, type D, type Item, int, pick, sample, fmt, NAMES, MONTHS } from "./util";
+import { type Family, type D, type Item, int, pick, sample, fmt, NAMES, MONTHS, sol } from "./util";
 
 function mcq(answer: string, wrong: (string | number)[]) {
   const w = [...new Set(wrong.map(String).filter((x) => x !== answer))];
@@ -47,7 +47,7 @@ export const aiDomainLearning: Family = {
     const school = pick(c.r, ["A school in Pune", "A student club in Jaipur", "A team in Kochi", "A company in Lucknow"]);
     const ans = `${dom}; ${lt.toLowerCase()}`;
     const wrong = [...new Set(["Computer Vision", "Natural Language Processing", "Data Science"].flatMap((x) => Object.keys(LEARN).map((y) => `${x}; ${y.toLowerCase()}`)))];
-    return item(d, ["AI_CONCEPT", "DECOMPOSITION"], `${school} builds an AI system that ${text}. ${LEARN[lt][0]}\n\nWhich AI domain does the system belong to, and which type of machine learning did it use?`, mcq(ans, sample(c.r, wrong.filter((w) => w !== ans), 3)), `Break the description into two parts. What the system works with: it ${text}, so the domain is ${dom}${dom === "Computer Vision" ? " (images and video)" : dom === "Natural Language Processing" ? " (human language)" : " (records and numbers)"}. How it learned: it ${LEARN[lt][1]}, which is ${lt.toLowerCase()}.`, "Answer two questions: what kind of data, and were there labels?");
+    return item(d, ["AI_CONCEPT", "DECOMPOSITION"], `${school} builds an AI system that ${text}. ${LEARN[lt][0]}\n\nWhich AI domain does the system belong to, and which type of machine learning did it use?`, mcq(ans, sample(c.r, wrong.filter((w) => w !== ans), 3)), sol(`Break the description into two parts.`, [`What the system works with: it ${text}. ${dom === "Computer Vision" ? "This is images and video" : dom === "Natural Language Processing" ? "This is human language" : "This is records and numbers"}, so the domain is ${dom}.`, `How it learned: it ${LEARN[lt][1]}, which is ${lt.toLowerCase()}.`], `So, the system is ${dom}, using ${lt.toLowerCase()}.`), "Answer two questions: what kind of data, and were there labels?");
   },
 };
 
@@ -63,9 +63,9 @@ export const aiAccuracy: Family = {
     const acc = (correct / N) * 100;
     if (d === 2 || !Number.isInteger(acc * 10)) {
       if (!Number.isInteger(acc)) return null;
-      return item(d, ["DATA", "AI_CONCEPT"], `A ${thing[0]} is tested on ${N} ${thing[1]}. Of these, ${pos} are really ${thing[2]} and ${neg} are really ${thing[3]}. It correctly labels ${tp} of the ${thing[2]} ${thing[1]}, but it also wrongly labels ${fp} ${thing[3]} ${thing[1]} as ${thing[2]}. What is the accuracy of the ${thing[0]}?`, numMcq(c.r, acc, [(tp / pos) * 100, ((tp + fp) / N) * 100, ((N - fp) / N) * 100, acc + 5].filter((x) => Number.isInteger(x) && x <= 100), (n) => `${n}%`), `Correct results: ${tp} ${thing[2]} found + ${tn} ${thing[3]} left alone (${neg} − ${fp}) = ${correct}. Accuracy = ${correct} ÷ ${N} × 100 = ${acc}%.`, "Accuracy = correct results ÷ total tested.");
+      return item(d, ["DATA", "AI_CONCEPT"], `A ${thing[0]} is tested on ${N} ${thing[1]}. Of these, ${pos} are really ${thing[2]} and ${neg} are really ${thing[3]}. It correctly labels ${tp} of the ${thing[2]} ${thing[1]}, but it also wrongly labels ${fp} ${thing[3]} ${thing[1]} as ${thing[2]}. What is the accuracy of the ${thing[0]}?`, numMcq(c.r, acc, [(tp / pos) * 100, ((tp + fp) / N) * 100, ((N - fp) / N) * 100, acc + 5].filter((x) => Number.isInteger(x) && x <= 100), (n) => `${n}%`), sol(`A result is correct when the model finds a ${thing[2]} item that really is one, or leaves a ${thing[3]} item alone.`, [`${thing[2]} items found correctly: ${tp}`, `${thing[3]} items left alone correctly: ${neg} − ${fp} = ${tn}`, `Correct results = ${tp} + ${tn} = ${correct}`], `Accuracy = correct ÷ total × 100 = ${correct} ÷ ${N} × 100 = ${acc}%.`, `So, the accuracy is ${acc}%.`), "Accuracy = correct results ÷ total tested.");
     }
-    return item(d, ["DATA", "AI_CONCEPT"], `A ${thing[0]} is tested on ${N} ${thing[1]}: ${pos} are really ${thing[2]} and the rest are really ${thing[3]}. It misses ${fn} of the ${thing[2]} ${thing[1]}, and wrongly labels ${fp} of the ${thing[3]} ${thing[1]} as ${thing[2]}. How many ${thing[1]} did it classify wrongly, and what is its accuracy?`, mcq(`${fn + fp} wrong; accuracy ${pct(acc)}`, [`${fn} wrong; accuracy ${pct(((N - fn) / N) * 100)}`, `${fp} wrong; accuracy ${pct(((N - fp) / N) * 100)}`, `${fn + fp} wrong; accuracy ${pct((tp / pos) * 100)}`]), `Wrong results: ${fn} missed + ${fp} false alarms = ${fn + fp}. Correct: ${N} − ${fn + fp} = ${correct}. Accuracy = ${correct} ÷ ${N} × 100 = ${pct(acc)}.`);
+    return item(d, ["DATA", "AI_CONCEPT"], `A ${thing[0]} is tested on ${N} ${thing[1]}: ${pos} are really ${thing[2]} and the rest are really ${thing[3]}. It misses ${fn} of the ${thing[2]} ${thing[1]}, and wrongly labels ${fp} of the ${thing[3]} ${thing[1]} as ${thing[2]}. How many ${thing[1]} did it classify wrongly, and what is its accuracy?`, mcq(`${fn + fp} wrong; accuracy ${pct(acc)}`, [`${fn} wrong; accuracy ${pct(((N - fn) / N) * 100)}`, `${fp} wrong; accuracy ${pct(((N - fp) / N) * 100)}`, `${fn + fp} wrong; accuracy ${pct((tp / pos) * 100)}`]), sol(`Count the wrong results first.`, [`Missed: ${fn}`, `False alarms: ${fp}`, `Wrong = ${fn} + ${fp} = ${fn + fp}`, `Correct = ${N} − ${fn + fp} = ${correct}`], `Accuracy = ${correct} ÷ ${N} × 100 = ${pct(acc)}.`, `So, the accuracy is ${pct(acc)}.`));
   },
 };
 
@@ -81,7 +81,7 @@ export const aiSplit: Family = {
     const share = { training: tr, validation: va, test: te }[ask];
     const ans = (total * share) / 100;
     if (!Number.isInteger(ans)) return null;
-    return item(d, ["DATA", "AI_CONCEPT"], `A team collects ${fmt(N)} labelled photos of birds to train an AI model.${removed ? ` While cleaning the data they remove ${removed} blurry or duplicate photos.` : ""} The remaining photos are split into training, validation and test sets in the ratio ${tr} : ${va} : ${te}. How many photos are in the ${ask} set?`, numMcq(c.r, ans, [(N * share) / 100, (total * tr) / 100, (total * te) / 100, (total * va) / 100, ans + removed]), `${removed ? `After cleaning there are ${fmt(N)} − ${removed} = ${fmt(total)} photos. ` : ""}The ${ask} set gets ${share}% of them: ${fmt(total)} × ${share} ÷ 100 = ${fmt(ans)}.`);
+    return item(d, ["DATA", "AI_CONCEPT"], `A team collects ${fmt(N)} labelled photos of birds to train an AI model.${removed ? ` While cleaning the data they remove ${removed} blurry or duplicate photos.` : ""} The remaining photos are split into training, validation and test sets in the ratio ${tr} : ${va} : ${te}. How many photos are in the ${ask} set?`, numMcq(c.r, ans, [(N * share) / 100, (total * tr) / 100, (total * te) / 100, (total * va) / 100, ans + removed]), sol(removed ? `First remove the unusable photos: ${fmt(N)} − ${removed} = ${fmt(total)} photos are left.` : `There are ${fmt(total)} photos.`, `The ${ask} set gets ${share}% of them:`, [`${share}% of ${fmt(total)} = ${fmt(total)} × ${share} ÷ 100 = ${fmt(ans)}`], `So, the ${ask} set has ${fmt(ans)} photos.`));
   },
 };
 
@@ -93,10 +93,10 @@ export const aiBias: Family = {
     if (d === 2) {
       const share = (b / (a + b)) * 100;
       if (!Number.isInteger(share * 10)) return null;
-      return item(d, ["ETHICS", "DATA"], `An AI model is trained with ${a} examples of ${groups[0]} and only ${b} examples of ${groups[1]}. When it is used, it makes many more mistakes with ${groups[1]}. What percentage of the training data was ${groups[1]}, and what is the best way to reduce this bias?`, mcq(`${pct(share)}; add more examples of ${groups[1]}`, [`${pct(share)}; remove all examples of ${groups[1]}`, `${pct((a / (a + b)) * 100)}; add more examples of ${groups[0]}`, `${pct(share)}; train the model for a longer time on the same data`]), `${groups[1]} were ${b} of ${a + b} examples = ${pct(share)}. The model saw too few of them (under-representation), so the fix is to collect more, varied examples of ${groups[1]} until the groups are balanced.`);
+      return item(d, ["ETHICS", "DATA"], `An AI model is trained with ${a} examples of ${groups[0]} and only ${b} examples of ${groups[1]}. When it is used, it makes many more mistakes with ${groups[1]}. What percentage of the training data was ${groups[1]}, and what is the best way to reduce this bias?`, mcq(`${pct(share)}; add more examples of ${groups[1]}`, [`${pct(share)}; remove all examples of ${groups[1]}`, `${pct((a / (a + b)) * 100)}; add more examples of ${groups[0]}`, `${pct(share)}; train the model for a longer time on the same data`]), sol(`Find the share of each group in the training data.`, [`${groups[1]}: ${b} of ${a + b} examples = ${pct(share)}`], `The model saw too few ${groups[1]} examples (under-representation), so it makes more mistakes for them.`, `The fix is to collect more, varied examples of ${groups[1]} until the groups are balanced.`));
     }
     const need = a - b;
-    return item(d, ["ETHICS", "DATA"], `A model trained with ${a} examples of ${groups[0]} and ${b} examples of ${groups[1]} works badly for ${groups[1]}. The team decides to add new examples of ${groups[1]} only, until both groups have the same number of examples. How many examples must they add, and what will the total size of the dataset then be?`, mcq(`${need} examples; ${fmt(2 * a)} in total`, [`${need} examples; ${fmt(a + b)} in total`, `${a} examples; ${fmt(2 * a + b)} in total`, `${b} examples; ${fmt(a + 2 * b)} in total`]), `To balance, ${groups[1]} must also have ${a} examples: add ${a} − ${b} = ${need}. The dataset then has ${a} + ${a} = ${fmt(2 * a)} examples.`);
+    return item(d, ["ETHICS", "DATA"], `A model trained with ${a} examples of ${groups[0]} and ${b} examples of ${groups[1]} works badly for ${groups[1]}. The team decides to add new examples of ${groups[1]} only, until both groups have the same number of examples. How many examples must they add, and what will the total size of the dataset then be?`, mcq(`${need} examples; ${fmt(2 * a)} in total`, [`${need} examples; ${fmt(a + b)} in total`, `${a} examples; ${fmt(2 * a + b)} in total`, `${b} examples; ${fmt(a + 2 * b)} in total`]), sol(`To balance the dataset, ${groups[1]} must have as many examples as ${groups[0]}, that is ${a}.`, [`Examples to add = ${a} − ${b} = ${need}`, `New size of the dataset = ${a} + ${a} = ${fmt(2 * a)}`], `So, ${need} examples must be added.`));
   },
 };
 
@@ -113,10 +113,10 @@ export const aiRules: Family = {
     const s = sets[0];
     const m = int(c.r, 5, 90), rain = c.r() < 0.5;
     const ans = s.rules(m, rain);
-    if (d === 2) return item(d, ["ALGORITHMIC", "AI_CONCEPT"], `${p} sets up ${s.what}. It follows these rules:\n${s.text.map((t) => `- ${t}`).join("\n")}\n\nToday the soil moisture is ${m}% and rain ${rain ? "IS" : "is NOT"} expected tomorrow. What does the system do?`, mcq(ans, s.outs.filter((o) => o !== ans)), `${m}% is ${m < 30 ? "below 30%" : m < 60 ? "between 30% and 59%" : "60% or more"}, and rain ${rain ? "is" : "is not"} expected, so the rule gives: ${ans}.`);
+    if (d === 2) return item(d, ["ALGORITHMIC", "AI_CONCEPT"], `${p} sets up ${s.what}. It follows these rules:\n${s.text.map((t) => `- ${t}`).join("\n")}\n\nToday the soil moisture is ${m}% and rain ${rain ? "IS" : "is NOT"} expected tomorrow. What does the system do?`, mcq(ans, s.outs.filter((o) => o !== ans)), sol(`Check the reading against each rule:`, [`Soil moisture ${m}% is ${m < 30 ? "below 30%" : m < 60 ? "between 30% and 59%" : "60% or more"}.`, `Rain ${rain ? "is" : "is not"} expected.`], `The rule that fits both gives: ${ans}.`, `So, the system decides: ${ans}.`));
     const days = [...Array(4)].map(() => [int(c.r, 5, 90), c.r() < 0.5] as [number, boolean]);
     const count = days.filter(([mm, rr]) => s.rules(mm, rr) === "Do not water").length;
-    return item(d, ["ALGORITHMIC", "AI_CONCEPT"], `${p} sets up ${s.what}. It follows these rules:\n${s.text.map((t) => `- ${t}`).join("\n")}\n\nOn four days the readings were: ${days.map(([mm, rr], i) => `Day ${i + 1}: ${mm}%, rain ${rr ? "expected" : "not expected"}`).join("; ")}. On how many of these days did the system NOT water the garden?`, numMcq(c.r, count, [0, 1, 2, 3, 4]), `Apply the rules day by day: ${days.map(([mm, rr], i) => `Day ${i + 1} → ${s.rules(mm, rr)}`).join("; ")}. "Do not water" happens on ${count} day${count === 1 ? "" : "s"}.`);
+    return item(d, ["ALGORITHMIC", "AI_CONCEPT"], `${p} sets up ${s.what}. It follows these rules:\n${s.text.map((t) => `- ${t}`).join("\n")}\n\nOn four days the readings were: ${days.map(([mm, rr], i) => `Day ${i + 1}: ${mm}%, rain ${rr ? "expected" : "not expected"}`).join("; ")}. On how many of these days did the system NOT water the garden?`, numMcq(c.r, count, [0, 1, 2, 3, 4]), sol(`Apply the rules to each day, one at a time:`, days.map(([mm, rr], i) => `Day ${i + 1}: ${s.rules(mm, rr)}`), `"Do not water" appears on ${count} day${count === 1 ? "" : "s"}.`, `So, the answer is ${count}.`));
   },
 };
 
@@ -135,12 +135,12 @@ export const aiEthics: Family = {
   make(c, d) {
     if (d === 2) {
       const [txt, ans] = pick(c.r, ETHICS_CASES);
-      return item(d, ["ETHICS"], `Read the situation carefully.\n\n${txt}\n\nWhich principle of responsible AI is MOST clearly not being followed?`, mcq(ans, ["Privacy", "Transparency", "Fairness", "Human oversight (accountability)"].filter((x) => x !== ans)), `Ask what went wrong: ${ans === "Privacy" ? "personal data was shared or exposed without permission" : ans === "Transparency" ? "people cannot find out how or why the AI decided" : ans === "Fairness" ? "the system treats one group of people worse than another" : "no human checks or takes responsibility for the AI's decision"}. That is the principle of ${ans}.`);
+      return item(d, ["ETHICS"], `Read the situation carefully.\n\n${txt}\n\nWhich principle of responsible AI is MOST clearly not being followed?`, mcq(ans, ["Privacy", "Transparency", "Fairness", "Human oversight (accountability)"].filter((x) => x !== ans)), sol(`Ask what went wrong in the situation and match it with a principle of responsible AI.`, `${ans === "Privacy" ? "Personal data was shared or exposed without permission" : ans === "Transparency" ? "People cannot find out how or why the AI decided" : ans === "Fairness" ? "The system treats one group of people worse than another" : "No human checks the AI's decision or takes responsibility for it"}.`, `So, the principle that is not followed is ${ans}.`));
     }
     const picks = sample(c.r, ETHICS_CASES, 3);
     const target = pick(c.r, [...new Set(picks.map((p) => p[1]))]);
     const n = picks.filter((p) => p[1] === target).length;
-    return item(d, ["ETHICS", "DECOMPOSITION"], `Here are three situations:\n${picks.map((p, i) => `${i + 1}. ${p[0]}`).join("\n")}\n\nIn how many of these situations is the main problem a lack of ${target === "Human oversight (accountability)" ? "human oversight and accountability" : target.toLowerCase()}?`, numMcq(c.r, n, [0, 1, 2, 3]), `Classify each situation: ${picks.map((p, i) => `${i + 1} → ${p[1]}`).join("; ")}. ${n} of them ${n === 1 ? "is" : "are"} about ${target}.`);
+    return item(d, ["ETHICS", "DECOMPOSITION"], `Here are three situations:\n${picks.map((p, i) => `${i + 1}. ${p[0]}`).join("\n")}\n\nIn how many of these situations is the main problem a lack of ${target === "Human oversight (accountability)" ? "human oversight and accountability" : target.toLowerCase()}?`, numMcq(c.r, n, [0, 1, 2, 3]), sol(`Find the main problem in each situation:`, picks.map((p2, i) => `Situation ${i + 1}: ${p2[1]}`), `${n} of them ${n === 1 ? "is" : "are"} about ${target}.`, `So, the answer is ${n}.`));
   },
 };
 
@@ -157,7 +157,7 @@ export const aiChart: Family = {
   make(c, d) {
     const [p] = who(c.r, 1);
     const [txt, ans] = pick(c.r, CHART_CASES);
-    return item(d, ["DATA"], `${p} has collected data for a school project and wants to ${txt}. The chart must make the main idea clear at a glance. Which kind of chart should ${p} choose?`, mcq(ans, ["Line graph", "Bar graph", "Pie chart", "Table of numbers only"].filter((x) => x !== ans)), `${ans === "Line graph" ? "The data changes over time, and a line graph shows rises and falls clearly." : ans === "Bar graph" ? "The data compares separate groups, and bars of different heights make the comparison easy." : "The data shows parts of one whole, and a pie chart shows each part's share."} So: ${ans}.`);
+    return item(d, ["DATA"], `${p} has collected data for a school project and wants to ${txt}. The chart must make the main idea clear at a glance. Which kind of chart should ${p} choose?`, mcq(ans, ["Line graph", "Bar graph", "Pie chart", "Table of numbers only"].filter((x) => x !== ans)), sol(`Choose the chart by what the data shows:`, [`Change over time → line graph`, `Comparing separate groups → bar graph`, `Parts of one whole → pie chart`], `${ans === "Line graph" ? "Here the data changes over time." : ans === "Bar graph" ? "Here the data compares separate groups." : "Here the data shows parts of one whole."}`, `So, ${p} should choose a ${ans.toLowerCase()}.`));
   },
 };
 
@@ -170,11 +170,11 @@ export const dataMean: Family = {
     const sum = vals.reduce((a, b) => a + b, 0);
     if (sum % n) return null;
     const mean = sum / n;
-    if (d === 2) return item(d, ["DATA"], `${p} records the number of cars passing the school gate every 10 minutes: ${vals.join(", ")}. What are the mean (average) and the range of these readings?`, mcq(`Mean ${mean}, range ${Math.max(...vals) - Math.min(...vals)}`, [`Mean ${mean}, range ${Math.max(...vals)}`, `Mean ${mean + 1}, range ${Math.max(...vals) - Math.min(...vals)}`, `Mean ${Math.round(sum / (n - 1))}, range ${Math.max(...vals) - Math.min(...vals) + 2}`]), `Mean = total ÷ number of readings = ${sum} ÷ ${n} = ${mean}. Range = largest − smallest = ${Math.max(...vals)} − ${Math.min(...vals)} = ${Math.max(...vals) - Math.min(...vals)}.`);
+    if (d === 2) return item(d, ["DATA"], `${p} records the number of cars passing the school gate every 10 minutes: ${vals.join(", ")}. What are the mean (average) and the range of these readings?`, mcq(`Mean ${mean}, range ${Math.max(...vals) - Math.min(...vals)}`, [`Mean ${mean}, range ${Math.max(...vals)}`, `Mean ${mean + 1}, range ${Math.max(...vals) - Math.min(...vals)}`, `Mean ${Math.round(sum / (n - 1))}, range ${Math.max(...vals) - Math.min(...vals) + 2}`]), sol(`Mean = total ÷ number of readings, and range = largest − smallest.`, [`Total = ${vals.join(" + ")} = ${sum}`, `Mean = ${sum} ÷ ${n} = ${mean}`, `Range = ${Math.max(...vals)} − ${Math.min(...vals)} = ${Math.max(...vals) - Math.min(...vals)}`], `So, the mean is ${mean} and the range is ${Math.max(...vals) - Math.min(...vals)}.`));
     const newMean = mean + int(c.r, 1, 4);
     const x = newMean * (n + 1) - sum;
     if (x <= 0) return null;
-    return item(d, ["DATA", "ALGORITHMIC"], `${p} records the number of cars passing the school gate every 10 minutes: ${vals.join(", ")}. After one more reading, the mean of all the readings goes up to ${newMean}. What was the new reading?`, numMcq(c.r, x, [newMean, x - n, x + 1, newMean * n - sum]), `The old total is ${sum}, so the old mean is ${mean}. With ${n + 1} readings and a mean of ${newMean}, the total must be ${newMean} × ${n + 1} = ${newMean * (n + 1)}. The new reading is ${newMean * (n + 1)} − ${sum} = ${x}.`);
+    return item(d, ["DATA", "ALGORITHMIC"], `${p} records the number of cars passing the school gate every 10 minutes: ${vals.join(", ")}. After one more reading, the mean of all the readings goes up to ${newMean}. What was the new reading?`, numMcq(c.r, x, [newMean, x - n, x + 1, newMean * n - sum]), sol(`Work backwards from the new mean.`, [`Old total = ${vals.join(" + ")} = ${sum}`, `New total = new mean × number of readings = ${newMean} × ${n + 1} = ${newMean * (n + 1)}`, `New reading = ${newMean * (n + 1)} − ${sum} = ${x}`], `So, the new reading was ${x}.`));
   },
 };
 
@@ -188,7 +188,7 @@ export const safetyCase: Family = {
   id: "s-online-safety", ds: [2],
   make(c, d) {
     const [txt, ans, wrong] = pick(c.r, SAFETY_CASES);
-    return item(d, ["ETHICS"], `${txt}\n\nWhat is the most responsible thing to do?`, mcq(ans, wrong), `A responsible digital citizen protects personal information, respects other people's work and asks a trusted adult for help when something feels wrong. The best choice is: ${ans}.`);
+    return item(d, ["ETHICS"], `${txt}\n\nWhat is the most responsible thing to do?`, mcq(ans, wrong), sol(`A responsible digital citizen protects personal information, respects other people's work and asks a trusted adult for help when something feels wrong.`, `Check each choice against this. Only one choice keeps everyone safe and is honest and respectful.`, `So, the best choice is: ${ans}.`));
   },
 };
 
@@ -199,12 +199,12 @@ export const aiLifecycle: Family = {
     const project = pick(c.r, ["an app that warns farmers about crop disease from leaf photos", "a system that predicts which buses will be late", "a chatbot that answers students' questions about the timetable", "a model that sorts recyclable and non-recyclable waste from photos"]);
     if (d === 2) {
       const k = int(c.r, 1, 4);
-      return item(d, ["AI_CONCEPT", "ALGORITHMIC"], `A team is building ${project}. They have just finished "${STAGES[k]}". Following the AI project cycle, what should they do NEXT?`, mcq(STAGES[k + 1], STAGES.filter((_, i) => i !== k + 1 && i !== k)), `The AI project cycle goes: ${STAGES.join(" → ")}. After "${STAGES[k]}" comes "${STAGES[k + 1]}".`);
+      return item(d, ["AI_CONCEPT", "ALGORITHMIC"], `A team is building ${project}. They have just finished "${STAGES[k]}". Following the AI project cycle, what should they do NEXT?`, mcq(STAGES[k + 1], STAGES.filter((_, i) => i !== k + 1 && i !== k)), sol(`The AI project cycle has these stages, in order:`, STAGES.map((x2, i) => `${i + 1}. ${x2}`), `After "${STAGES[k]}" comes "${STAGES[k + 1]}".`, `So, the next stage is ${STAGES[k + 1]}.`));
     }
     const order = sample(c.r, [...Array(6).keys()], 6);
     const pos = int(c.r, 2, 5);
     const label = "PQRSTU";
-    return item(d, ["AI_CONCEPT", "ALGORITHMIC"], `A team building ${project} wrote their steps on cards in a jumbled order:\n${order.map((s, i) => `${label[i]}: ${STAGES[s]}`).join("\n")}\n\nWhen the cards are put in the correct order of the AI project cycle, which card is ${["", "1st", "2nd", "3rd", "4th", "5th", "6th"][pos]}?`, mcq(`Card ${label[order.indexOf(pos - 1)]}`, [...label].filter((x) => x !== label[order.indexOf(pos - 1)]).map((x) => `Card ${x}`)), `The correct order is: ${STAGES.join(" → ")}. The ${["", "1st", "2nd", "3rd", "4th", "5th", "6th"][pos]} step is "${STAGES[pos - 1]}", which is on card ${label[order.indexOf(pos - 1)]}.`);
+    return item(d, ["AI_CONCEPT", "ALGORITHMIC"], `A team building ${project} wrote their steps on cards in a jumbled order:\n${order.map((s, i) => `${label[i]}: ${STAGES[s]}`).join("\n")}\n\nWhen the cards are put in the correct order of the AI project cycle, which card is ${["", "1st", "2nd", "3rd", "4th", "5th", "6th"][pos]}?`, mcq(`Card ${label[order.indexOf(pos - 1)]}`, [...label].filter((x) => x !== label[order.indexOf(pos - 1)]).map((x) => `Card ${x}`)), sol(`The AI project cycle has these stages, in order:`, STAGES.map((x2, i) => `${i + 1}. ${x2}`), `The ${["", "1st", "2nd", "3rd", "4th", "5th", "6th"][pos]} step is "${STAGES[pos - 1]}", which is on card ${label[order.indexOf(pos - 1)]}.`, `So, the answer is card ${label[order.indexOf(pos - 1)]}.`));
   },
 };
 

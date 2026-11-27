@@ -16,4 +16,5 @@ export type SeedQuestion = {
   ref?: string; // where the question appears in print, e.g. the help book
   figure?: Fig;
   optionFigures?: (Fig | null)[];
+  solutionFigures?: Fig[]; // pictures in the worked solution, placed with "[fig:1]", "[fig:2]", …
 };

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { SolutionView } from "@/components/SolutionView";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { formatAnswer } from "@/lib/scoring";
@@ -42,7 +43,7 @@ export default async function Worksheet({ params, searchParams }: { params: Prom
                   {q.type === "ORDER" && <div className="mt-2 flex flex-wrap gap-2">{[...opts].reverse().map((o) => <span key={o} className="rounded border border-black/40 px-2 py-0.5">{o}</span>)}</div>}
                   {!isKey && ["NUMERIC", "FILL_BLANK", "ORDER"].includes(q.type) && <div className="mt-3 border-b border-dotted border-black/60 pb-4">Answer:</div>}
                   {!isKey && q.type === "SHORT" && <div className="mt-3 space-y-5"><div className="border-b border-dotted border-black/60" /><div className="border-b border-dotted border-black/60" /><div className="border-b border-dotted border-black/60" /></div>}
-                  {isKey && <div className="mt-2 rounded border border-black/20 p-2 text-[13px]"><strong>Answer:</strong> {formatAnswer(q.type, opts, JSON.parse(q.answer))}<div className="mt-1 whitespace-pre-line text-black/80">{q.solution}</div></div>}
+                  {isKey && <div className="mt-2 rounded border border-black/20 p-2 text-[13px]"><strong>Answer:</strong> {formatAnswer(q.type, opts, JSON.parse(q.answer))}<SolutionView text={q.solution} figuresJson={q.solutionFigures} className="mt-1 text-black/80" /></div>}
                 </div>
                 {!cbse && <span className="text-xs">{"⭐".repeat(q.difficulty)}</span>}
               </div>

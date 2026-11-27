@@ -35,7 +35,7 @@ export async function saveAnswer(
   const existing = await db.response.findUnique({ where: { attemptId_questionId: { attemptId, questionId } } });
   // An instant answer is final, except a skipped practice question, which can be answered later in the round.
   const wasSkipped = existing && existing.answer === null && existing.correct === null && attempt.assessment.kind === "PRACTICE";
-  if (existing && instant && !wasSkipped) return { correct: existing.correct, solution: q.solution, answer: JSON.parse(q.answer) };
+  if (existing && instant && !wasSkipped) return { correct: existing.correct, solution: q.solution, solutionFigures: q.solutionFigures, answer: JSON.parse(q.answer) };
 
   const data = {
     answer: skip || blank ? null : JSON.stringify(answer),
@@ -59,7 +59,7 @@ export async function saveAnswer(
     await db.attempt.update({ where: { id: attemptId }, data: { submittedAt: at, score: marks, maxScore: q.marks } });
     await evaluateBadges(db, attempt.userId, attemptId, at);
   }
-  return instant ? { correct: skip ? null : correct, solution: q.solution, answer: JSON.parse(q.answer) } : { saved: true };
+  return instant ? { correct: skip ? null : correct, solution: q.solution, solutionFigures: q.solutionFigures, answer: JSON.parse(q.answer) } : { saved: true };
 }
 
 /** Grades all responses and closes the attempt. Written answers and activity tasks are left for the teacher. */

@@ -3,13 +3,14 @@ import { useState, useTransition } from "react";
 import type { ClientQuestion } from "@/lib/questions";
 import type { AnswerValue } from "@/lib/scoring";
 import { QuestionInput, hasAnswer, finalAnswer } from "./QuestionInput";
+import { SolutionView } from "./SolutionView";
 import { Markdown } from "./Markdown";
 import { btn, Progress } from "./ui";
 import { Confetti, Mascot } from "./kid";
 import { answerInstant, skipInstant, nextQuestion, skippedQuestion, finishAttempt } from "@/app/actions/student";
 import { DIFFICULTY } from "@/lib/constants";
 
-type Feedback = { correct: boolean; solution: string; correctText: string; xp: number };
+type Feedback = { correct: boolean; solution: string; solutionFigures?: string | null; correctText: string; xp: number };
 
 /**
  * Instant-feedback player for practice rounds and Puzzle of the Day.
@@ -155,7 +156,7 @@ export function PracticePlayer({ attemptId, initial, answered, total, mode, big,
               {fb.correct ? ["Brilliant! 🎉", "You got it! 🌟", "Super thinking! 🚀"][party % 3] : "Not quite — let's see why 💡"} {fb.xp > 0 && <span className="text-sm font-semibold">+{fb.xp} XP</span>}
             </div>
             {!fb.correct && <div className="mt-1 text-sm">Correct answer: <strong>{fb.correctText}</strong></div>}
-            <div className="mt-3 text-sm text-ink-2"><div className="mb-1 font-semibold text-ink">How to think about it</div><Markdown text={fb.solution} /></div>
+            <div className="mt-3 text-sm text-ink-2"><div className="mb-1 font-semibold text-ink">How to think about it</div><SolutionView text={fb.solution} figuresJson={fb.solutionFigures} /></div>
             </div>
           </div>
         )}

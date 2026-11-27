@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { plainSolution } from "@/lib/solution";
 import { AlignmentType, Document, HeadingLevel, Packer, PageBreak, Paragraph, TextRun } from "docx";
 import { getSessionUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
@@ -44,7 +45,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     ...header(`${test.title} — Answer Key`),
     ...items.flatMap((it) => [
       new Paragraph({ children: [new TextRun({ text: `Q${it.no}. `, bold: true }), new TextRun({ text: it.answerText, bold: true })], spacing: { before: 160 } }),
-      ...lines(it.solution),
+      ...lines(plainSolution(it.solution)),
     ]),
   ];
 

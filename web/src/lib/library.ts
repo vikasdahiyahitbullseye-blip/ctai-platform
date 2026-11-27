@@ -3,6 +3,7 @@
 // assessments, term papers, full-length practice papers, activity kits and the period-by-period plan.
 // Idempotent: items are upserted by code, so uploaded videos and teachers' progress are kept on a rebuild.
 import type { PrismaClient } from "@prisma/client";
+import { plainSolution } from "./solution";
 import { MODULES, type ModuleData } from "../../prisma/content/library";
 import { generatePaper, type PoolItem } from "./generator";
 import { apportion, budget, defaultPeriods, schedule, MONTHLY_MONTHS, KIND_LABEL, type PlanChapter, type Slot, type Part } from "./plan";
@@ -61,9 +62,9 @@ export function videoScenes(kind: "concept" | "examples", c: { title: string; mo
     return [
       { title: "Hook", seconds: 30, onScreen: `Title card: "${c.title}". Then show the hook as a short animated question.`, narration: m.hook },
       { title: "Big idea", seconds: 60, onScreen: "Animate each key idea as a card with a simple picture.", narration: m.ideas.join(" ") },
-      { title: "Worked example", seconds: 60, onScreen: `Show the question: ${ex[0]?.stem.replace(/\*\*/g, "") ?? "a chapter example"}. Reveal each step.`, narration: ex[0]?.solution ?? "Solve a chapter example step by step." },
+      { title: "Worked example", seconds: 60, onScreen: `Show the question: ${ex[0]?.stem.replace(/\*\*/g, "") ?? "a chapter example"}. Reveal each step.`, narration: (ex[0] ? plainSolution(ex[0].solution) : undefined) ?? "Solve a chapter example step by step." },
       { title: "Your turn", seconds: 25, onScreen: `Pause card: "Pause the video and try this!" ${ex[1]?.stem.replace(/\*\*/g, "") ?? ""}`, narration: "Pause the video and try this one yourself. Then press play to check." },
-      { title: "Check", seconds: 25, onScreen: "Show the answer with one highlighted step.", narration: ex[1]?.solution ?? "Check your answer step by step." },
+      { title: "Check", seconds: 25, onScreen: "Show the answer with one highlighted step.", narration: (ex[1] ? plainSolution(ex[1].solution) : undefined) ?? "Check your answer step by step." },
       { title: "Recap", seconds: 20, onScreen: `Key words: ${m.terms.map(([t]) => t).join(", ")}. Watch out: ${m.mistake}`, narration: `Remember the key words: ${m.terms.map(([t, d]) => `${t}, ${d.toLowerCase()}`).join("; ")}.` },
     ];
   }
@@ -71,7 +72,7 @@ export function videoScenes(kind: "concept" | "examples", c: { title: string; mo
     { title: "Introduction", seconds: 20, onScreen: `Title card: "${c.title}: worked examples".`, narration: `In this video we solve problems from ${c.title} step by step.` },
     ...ex.slice(0, 2).flatMap((q, i) => [
       { title: `Example ${i + 1}`, seconds: 50, onScreen: `Show: ${q.stem.replace(/\*\*/g, "")}`, narration: "Read the question carefully. What do we know? What do we need to find?" },
-      { title: `Solution ${i + 1}`, seconds: 50, onScreen: "Reveal the working one step at a time.", narration: q.solution },
+      { title: `Solution ${i + 1}`, seconds: 50, onScreen: "Reveal the working one step at a time.", narration: plainSolution(q.solution) },
     ]),
     { title: "Common mistake", seconds: 30, onScreen: "Show a wrong answer with a red cross, then the fix.", narration: m.mistake },
     { title: "Recap", seconds: 20, onScreen: `Checklist: ${m.o.join(" / ")}`, narration: "Practise with the worksheet to make these steps automatic." },

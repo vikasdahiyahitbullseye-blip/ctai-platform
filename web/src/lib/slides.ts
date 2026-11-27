@@ -1,6 +1,7 @@
 // Classroom slide deck (.pptx) for one chapter, built from the learning module, the year plan and the
 // question bank. Pictures are rendered to PNG (colour emoji included) so slides look the same everywhere.
 import PptxGenJS from "pptxgenjs";
+import { plainSolution } from "./solution";
 import type { PrismaClient, Question } from "@prisma/client";
 import { MODULES } from "../../prisma/content/library";
 import { THEORY } from "../../prisma/content/theory";
@@ -149,7 +150,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
     const fig = parseFig(q.figure);
     const ofigs = parseFigs(q.optionFigures);
     const answer = formatAnswer(q.type, opts, JSON.parse(q.answer));
-    const s = content(label, label === "Worked example" ? "Let's solve it together" : q.type === "MULTI" ? "Choose all that are right" : "Your turn", `Answer: ${plain(answer)}\n${plain(q.solution)}${q.hint ? `\nHint: ${q.hint}` : ""}`);
+    const s = content(label, label === "Worked example" ? "Let's solve it together" : q.type === "MULTI" ? "Choose all that are right" : "Your turn", `Answer: ${plain(answer)}\n${plain(plainSolution(q.solution))}${q.hint ? `\nHint: ${q.hint}` : ""}`);
     let y = 1.5;
     for (const b of stemBlocks(q.stem)) {
       if (b.t === "text") {
@@ -204,7 +205,7 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
       }
     }
     // Answer slide
-    const a = content(label, "Answer", `Answer: ${plain(answer)}\n${plain(q.solution)}`);
+    const a = content(label, "Answer", `Answer: ${plain(answer)}\n${plain(plainSolution(q.solution))}`);
     a.addText(`✓  ${plain(answer)}`, { x: M, y: 1.55, w: W - 2 * M, h: 0.9, fontFace: FONT, fontSize: fs.q + 2, bold: true, color: C.good, fill: { color: C.goodSoft }, shape: pptx.ShapeType.roundRect, rectRadius: 0.12, margin: 10, valign: "middle" });
     let ay = 2.65;
     const correctFig = ofigs?.[Number(JSON.parse(q.answer))] ?? null;
@@ -212,9 +213,9 @@ export async function buildChapterDeck(db: PrismaClient, chapterId: string) {
       const img = await figurePng(correctFig);
       const sc = Math.min(3 / (img.w / 96), 2.4 / (img.h / 96), 1.9);
       a.addImage({ data: img.data, x: M, y: ay, w: (img.w / 96) * sc, h: (img.h / 96) * sc });
-      a.addText(runs(q.solution), { x: M + 3.4, y: ay, w: W - 2 * M - 3.4, h: H - ay - 0.8, fontFace: FONT, fontSize: fs.body - 2, color: C.body, valign: "top" });
+      a.addText(runs(plainSolution(q.solution)), { x: M + 3.4, y: ay, w: W - 2 * M - 3.4, h: H - ay - 0.8, fontFace: FONT, fontSize: fs.body - 2, color: C.body, valign: "top" });
     } else {
-      a.addText(runs(q.solution), { x: M, y: ay, w: W - 2 * M, h: H - ay - 0.8, fontFace: FONT, fontSize: fs.body - 2, color: C.body, valign: "top" });
+      a.addText(runs(plainSolution(q.solution)), { x: M, y: ay, w: W - 2 * M, h: H - ay - 0.8, fontFace: FONT, fontSize: fs.body - 2, color: C.body, valign: "top" });
       ay += 0;
     }
   };

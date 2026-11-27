@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SolutionView } from "@/components/SolutionView";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { formatAnswer } from "@/lib/scoring";
@@ -105,7 +106,7 @@ export default async function QuestionBank({ searchParams }: { searchParams: Pro
                 <OptionList options={opts} figuresJson={q.optionFigures} />
                 <details className="mt-3 text-sm">
                   <summary className="cursor-pointer font-medium text-brand">Answer: {formatAnswer(q.type, opts, JSON.parse(q.answer))}</summary>
-                  <div className="mt-2 text-ink-2"><Markdown text={q.solution} /></div>
+                  <div className="mt-2 text-ink-2"><SolutionView text={q.solution} figuresJson={q.solutionFigures} /></div>
                   {q.hint && <div className="mt-2 text-muted">Hint: {q.hint}</div>}
                 </details>
               </li>

@@ -9,7 +9,7 @@ import type { Fig } from "../../../../src/lib/figures";
 import type { SeedQuestion } from "../../types";
 import { type D, fmt, sample } from "../util";
 export type { D } from "../util";
-export { int, pick, sample, fmt, NAMES, DAYS, MONTHS } from "../util";
+export { int, pick, sample, fmt, NAMES, DAYS, MONTHS, sol } from "../util";
 
 export type QType = "MCQ" | "TRUE_FALSE" | "FILL_BLANK" | "NUMERIC";
 export type Val = number | string;
@@ -38,6 +38,8 @@ export type Problem = {
   fill?: boolean;
   /** Pictures as the answer options (multiple choice only). */
   optionFigures?: Fig[];
+  /** Pictures in the worked solution, placed in the text with "[fig:1]", "[fig:2]", … */
+  solutionFigures?: Fig[];
 };
 
 export type Theme = {
@@ -89,7 +91,7 @@ export function render(p: Problem, t: QType): Omit<SeedQuestion, "ch" | "part"> 
   const show = p.show ?? plain;
   const ansShown = show(p.answer);
   const wrong = [...new Map(p.wrong.filter((w) => show(w) !== ansShown && String(w) !== String(p.answer)).map((w) => [show(w), w])).values()];
-  const base = { skills: p.skills, d: p.d, solution: p.solution, ...(p.hint ? { hint: p.hint } : {}), ...(p.figure ? { figure: p.figure } : {}) };
+  const base = { skills: p.skills, d: p.d, solution: p.solution, ...(p.hint ? { hint: p.hint } : {}), ...(p.figure ? { figure: p.figure } : {}), ...(p.solutionFigures?.length ? { solutionFigures: p.solutionFigures } : {}) };
   const ctx = p.ctx.trim();
   if (t === "FILL_BLANK" || t === "TRUE_FALSE") {
     // The question line is not shown in these formats, so everything it mentions must be in the story or the sentence.
@@ -122,7 +124,8 @@ export function render(p: Problem, t: QType): Omit<SeedQuestion, "ch" | "part"> 
     ...base, type: "TRUE_FALSE",
     stem: `${ctx}\n\nTrue or false? ${p.say.replace("____", `**${plain(shown)}**`)}`,
     answer: truth,
-    solution: truth ? `True. ${p.solution}` : p.fill === false ? `False. ${p.solution}` : `False — it is ${plain(p.answer)}, not ${plain(shown)}. ${p.solution}`,
+    // Handbook style: work out the right answer first, then compare it with the statement.
+    solution: `${p.solution}\n\nThe statement says **${plain(shown)}**${truth ? ", which matches." : p.fill === false ? ", which is not the right one." : `, but the correct answer is **${plain(p.answer)}**.`}`,
   };
 }
 
@@ -147,3 +150,4 @@ export const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : Math.a
 export const hm = (mins: number) => { const m = ((mins % 720) + 720) % 720; const h = Math.floor(m / 60); return `${h === 0 ? 12 : h}:${String(m % 60).padStart(2, "0")}`; };
 export const timeAccept = (mins: number) => { const t = hm(mins); return [t, t.replace(":", "."), `0${t}`.slice(-5), `${t} am`, `${t} pm`]; };
 export const dur = (m: number) => (m < 60 ? `${m} minutes` : `${Math.floor(m / 60)} hour${m >= 120 ? "s" : ""}${m % 60 ? ` ${m % 60} minutes` : ""}`);
+

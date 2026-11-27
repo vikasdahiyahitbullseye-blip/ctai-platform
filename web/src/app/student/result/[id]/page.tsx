@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SolutionView } from "@/components/SolutionView";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
@@ -98,7 +99,7 @@ export default async function ResultPage({ params, searchParams }: { params: Pro
                   </div>
                   <details className="mt-3 text-sm" open={!r?.correct && (q.type !== "SHORT" || !!r?.markedAt)} hidden={q.type === "SHORT" && !r?.markedAt}>
                     <summary className="cursor-pointer font-medium text-brand">Solution</summary>
-                    <div className="mt-2 text-ink-2"><Markdown text={q.solution} /></div>
+                    <div className="mt-2 text-ink-2"><SolutionView text={q.solution} figuresJson={q.solutionFigures} /></div>
                   </details>
                 </li>
               );
