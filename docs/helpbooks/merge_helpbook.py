@@ -2,7 +2,9 @@
 
 Inserts each chapter's theory PDF (made by web/scripts/theory-pages.ts) before that chapter's first page.
 With a practice folder (made by web/scripts/practice-pages.ts), each chapter's 20 "More practice" questions go
-just before the chapter's own "Answer key" page, and their answer key right after it. Every page is renumbered
+just before the chapter's answer key; the old one-line answer key is replaced by worked solutions in the CBSE
+Teacher Handbook style (Answer, Solution, "Hence, option … is the correct answer.", CT competency), followed by the
+worked answer key of the "More practice" questions. Every page is renumbered
 in the book's own footer style, the new pages get the footer, and the cover gets a small "New" badge.
 
 Usage:
@@ -224,7 +226,8 @@ if practice_dir:
 ends = {ch: (starts[ch + 1] - 1 if ch + 1 in starts else n) for ch in starts}
 writer = PdfWriter()
 page_no = 0
-inserted = {"theory": 0, "practice": 0, "answers": 0, "corrections": 0, "ai": 0}
+inserted = {"theory": 0, "practice": 0, "keys": 0, "answers": 0, "corrections": 0, "ai": 0}
+replaced = 0
 
 
 def add_new(path, kind, footer=None):
@@ -244,6 +247,15 @@ for i, page in enumerate(orig.pages, start=1):
     key_of = next((ch for ch, p in keys.items() if p == i), None)
     if key_of:
         add_new(f"{practice_dir}/c{cls}-ch{key_of:02d}-practice.pdf", "practice")
+        # The chapter's answer key, now with worked solutions in the CBSE Teacher Handbook style, replaces the old key.
+        add_new(f"{practice_dir}/c{cls}-ch{key_of:02d}-key.pdf", "keys")
+    in_old_key = practice_dir and any(p <= i <= ends[ch] for ch, p in keys.items())
+    end_of = next((ch for ch, p in ends.items() if p == i), None)
+    if in_old_key:
+        replaced += 1
+        if end_of:
+            add_new(f"{practice_dir}/c{cls}-ch{end_of:02d}-answers.pdf", "answers")
+        continue
     page_no += 1
     w, h = float(page.mediabox.width), float(page.mediabox.height)
     clean = student_overlay(src, i, w, h) if practice_dir else None
@@ -255,7 +267,6 @@ for i, page in enumerate(orig.pages, start=1):
         inserted["corrections"] += nfix
     page.merge_page(overlay(w, h, page_no, with_footer_text=False, badge=(i == 1)))
     writer.add_page(page)
-    end_of = next((ch for ch, p in ends.items() if p == i), None)
     if practice_dir and end_of:
         add_new(f"{practice_dir}/c{cls}-ch{end_of:02d}-answers.pdf", "answers")
 
@@ -275,4 +286,4 @@ writer.compress_identical_objects(remove_duplicates=True, remove_unreferenced=Tr
 writer.add_metadata({"/Title": f"Think, Play & Solve · Help Book · Class {cls} ({'new edition: Learn it theory and More practice' if practice_dir else 'with Learn it theory'})"})
 with open(out, "wb") as f:
     writer.write(f)
-print(f"Class {cls}: {n} original + {inserted['theory']} theory + {inserted['practice']} practice + {inserted['answers']} answer-key pages + {inserted['ai']} AI-part pages = {page_no} pages ({inserted['corrections']} corrected lines) -> {out}")
+print(f"Class {cls}: {n - replaced} original (old answer keys replaced: {replaced}) + {inserted['theory']} theory + {inserted['practice']} practice + {inserted['keys']} worked-solution key + {inserted['answers']} answer-key pages + {inserted['ai']} AI-part pages = {page_no} pages ({inserted['corrections']} corrected lines) -> {out}")

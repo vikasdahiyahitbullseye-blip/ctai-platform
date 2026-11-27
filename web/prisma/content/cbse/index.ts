@@ -20,12 +20,35 @@ export type CbseQuestion = {
   answer: unknown;
   solution: string;
   figure: { kind: "image"; src: string; w: number; h: number; alt: string } | null;
+  /** Pictures from the worked solution in the Teacher Handbook; "[fig:n]" in the solution places picture n. */
+  solutionFigures?: { kind: "image"; src: string; w: number; h: number; alt: string }[];
   sourceRef: string;
 };
 
-type CtRow = { c: number; ch: number; seq: number; num: number | string; page: number; stem: string; options: string[]; answer: number; solution: string; skills: string[]; fig: [string, number, number] | null };
+type CtRow = { c: number; ch: number; seq: number; num: number | string; page: number; stem: string; options: string[]; answer: number; solution: string; skills: string[]; fig: [string, number, number] | null; sfig?: [string, number, number][] };
 const pad = (n: number) => String(n).padStart(2, "0");
 const book = (c: number) => `CBSE CT & AI Student Handbook, Class ${c} (2026-27)`;
+
+/** Puts "[fig:n]" markers in a handbook solution: after the lines that point to a picture ("as shown below", "…:"),
+ * and any left over before the closing "Hence/Thus …" line. */
+export function placeFigures(solution: string, n: number): string {
+  if (!n) return solution;
+  const lines = solution.split("\n");
+  const out: string[] = [];
+  let k = 0;
+  for (const l of lines) {
+    out.push(l);
+    if (k < n && (/\bbelow\b|:\s*$/i.test(l))) out.push(`[fig:${++k}]`);
+  }
+  const rest: string[] = [];
+  while (k < n) rest.push(`[fig:${++k}]`);
+  if (rest.length) {
+    const last = out.length - 1;
+    if (last > 0 && /^(Hence|Thus|Therefore|So)\b/.test(out[last])) out.splice(last, 0, ...rest);
+    else out.push(...rest);
+  }
+  return out.join("\n");
+}
 
 export function cbseQuestions(): CbseQuestion[] {
   const out: CbseQuestion[] = [];
@@ -41,7 +64,8 @@ export function cbseQuestions(): CbseQuestion[] {
       stem: r.stem,
       options: r.options,
       answer: r.answer,
-      solution: r.solution || "See the CBSE Teacher Handbook.",
+      solution: placeFigures((r.solution || "See the CBSE Teacher Handbook.").split("\n").filter((l) => !/^\s*[●•▪◦]\s*$/.test(l)).join("\n"), r.sfig?.length ?? 0),
+      solutionFigures: r.sfig?.map(([src, w, h], i) => ({ kind: "image" as const, src, w, h, alt: `Worked solution, picture ${i + 1}` })),
       figure: r.fig ? { kind: "image", src: r.fig[0], w: r.fig[1], h: r.fig[2], alt: `Figure for: ${r.stem.slice(0, 120)}` } : null,
       sourceRef: `${book(r.c)} · CT Chapter ${r.ch} · ${label}`,
     });

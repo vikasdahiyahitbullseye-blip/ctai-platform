@@ -24,7 +24,7 @@ export function finishSolution(q: Pick<SeedQuestion, "type" | "options" | "answe
   // A fill-in or numeric answer already stated by the working ("So, …") needs no second closing line.
   if ((q.type === "FILL_BLANK" || q.type === "NUMERIC") && /^So,/.test(last)) return body;
   // Multiple choice always ends by naming the option, as the handbook does ("Hence, option c is the correct answer.").
-  if ((q.type === "MCQ" || q.type === "MULTI") && /\boptions? \(?[a-d]\)? (is|are) (the )?correct/i.test(last)) return body;
+  if ((q.type === "MCQ" || q.type === "MULTI") && /\boptions? \(?[a-d]\)? (is|are) (the )?correct|correct (answer|option) is (option )?\(?[a-d]\)?/i.test(last)) return body;
   if (q.type === "TRUE_FALSE" && /statement is (true|false)/i.test(last)) return body;
   if (q.type !== "MCQ" && q.type !== "MULTI" && q.type !== "TRUE_FALSE" && ENDS.test(body) && /^(Hence|Therefore|So)/m.test(last)) return body;
   const end = conclusion(q);

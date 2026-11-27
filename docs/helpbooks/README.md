@@ -12,7 +12,9 @@ For each CT chapter, the new edition has:
 3. **More practice**: 20 new questions — 7 Easy, 7 Medium, 6 Hard (Easy first; no difficulty marks are printed); 5 for each CBSE skill (Abstraction, Pattern
    Recognition, Decomposition, Algorithmic Thinking); 12 multiple choice, 3 true/false, 3 fill in the blank and
    2 number answers; at least 10 with a picture;
-4. the chapter's original answer key, then the answer key (with solutions) for More practice.
+4. the chapter's **answer key with worked solutions in the CBSE Teacher Handbook style** (Answer, Solution in
+   steps, "Hence, option … is the correct answer." and the CT competency) — it replaces the book's old one-line
+   key — then the answer key for More practice in the same style, with the solution pictures.
 
 The More practice questions come from `web/prisma/content/gen/v3/book.ts`. They are also in the platform bank
 (source "Think, Play & Solve Help Book (new edition) · More practice Qn"), so `npm run bank:check` audits them

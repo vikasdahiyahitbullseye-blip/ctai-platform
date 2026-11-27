@@ -109,7 +109,7 @@ Multi-tenant: each school is a tenant. Users belong to one school. A teacher is 
 | `difficulty` | 1 Easy, 2 Medium, 3 Hard (calibrated later from pilot data) |
 | `stem`, `media` | Markdown text; images/diagrams |
 | `options`, `answer` | JSON per type; accepted variants for FILL_BLANK / NUMERIC |
-| `solution` | Required. Step-wise reasoning, not just the key |
+| `solution` | Required. Step-wise reasoning in the CBSE Teacher Handbook style (steps, pictures where needed via `solutionFigures` and "[fig:n]", closing "Hence, option … is the correct answer."), not just the key |
 | `hint` | Optional; used in practice mode only |
 | `marks`, `timeSec` | Default marks and expected time |
 | `language` | `en` (Hindi variant planned) |

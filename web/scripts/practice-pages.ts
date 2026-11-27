@@ -12,6 +12,8 @@ import { CURRICULUM, SKILLS } from "../src/lib/constants";
 import { figureSvg } from "../src/lib/figureImage";
 import type { Fig } from "../src/lib/figures";
 import EMOJI from "../src/lib/emojiImages.json";
+import { HELPBOOK, workedSolution, solutionWithAnswer } from "../prisma/content/helpbook";
+import { finishSolution } from "../prisma/content/solution";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { chromium } = require("playwright");
 
@@ -23,7 +25,7 @@ if (!out) throw new Error("Usage: practice-pages.ts <outDir> [class...]");
 fs.mkdirSync(out, { recursive: true });
 const db = new PrismaClient();
 
-type Q = { code: string; stem: string; type: string; difficulty: number; skills: string[]; options: string[]; answer: unknown; solution: string; figure: Fig | null; optionFigures: (Fig | null)[] | null; family: string };
+type Q = { code: string; stem: string; type: string; difficulty: number; skills: string[]; options: string[]; answer: unknown; solution: string; solutionFigures: (Fig | null)[] | null; figure: Fig | null; optionFigures: (Fig | null)[] | null; family: string };
 
 
 // ---------- HTML ----------
@@ -55,7 +57,7 @@ function questionHtml(q: Q, n: number) {
 }
 
 function answerText(q: Q) {
-  if (q.type === "MCQ") return `${letter(Number(q.answer))}`;
+  if (q.type === "MCQ") return `${letter(Number(q.answer))}${q.options[Number(q.answer)] && !q.optionFigures?.some(Boolean) ? ` &nbsp;(${md(q.options[Number(q.answer)])})` : ""}`;
   if (q.type === "TRUE_FALSE") return q.answer ? "True" : "False";
   if (q.type === "FILL_BLANK") return esc(String((q.answer as string[])[0]));
   return esc(String(q.answer));
@@ -91,6 +93,13 @@ function style(cls: number) {
   .emo { height: 1.15em; vertical-align: -0.2em; } code { font-family: ui-monospace, monospace; background: #f1f5f9; padding: 0 3px; border-radius: 3px; }
   table { border-collapse: collapse; width: 100%; font-size: ${size - 1.5}px; } th, td { border-bottom: 1px solid #e2e8f0; padding: 4px 6px; text-align: left; vertical-align: top; }
   th { color: #26237a; font-weight: 800; border-bottom: 2px solid #c7d2fe; } td.n { font-weight: 800; width: 26px; } td.a { font-weight: 800; color: #f97316; width: 74px; } tr { break-inside: avoid; }
+  .sol { border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px 14px 9px; margin: 0 0 8px; break-inside: avoid; }
+  .shead { display: flex; gap: 10px; align-items: center; margin-bottom: 3px; } .shead b { color: #f97316; }
+  .shead .qn { min-width: 26px; }
+  .slabel { font-weight: 800; color: #26237a; margin-bottom: 2px; }
+  .stext ul { margin: 2px 0 4px 18px; padding: 0; } .stext li { margin: 0 0 1px; }
+  .stext p.hence { font-weight: 700; color: #26237a; }
+  .comp { margin-top: 4px; font-size: 10px; color: #64748b; } .comp b { color: #64748b; }
   </style>`;
 }
 
@@ -100,10 +109,53 @@ function practiceHtml(cls: number, n: number, title: string, qs: Q[], part: "CT"
   ${qs.map((q, i) => questionHtml(q, i + 1)).join("")}</body></html>`;
 }
 
-function answersHtml(cls: number, n: number, title: string, qs: Q[], part: "CT" | "AI") {
+/** A worked solution as HTML: paragraphs, "- " lists and "[fig:n]" pictures, as in the CBSE Teacher Handbooks. */
+function workedHtml(text: string, figs: (Fig | null)[] | null) {
+  return text.split(/\n\s*\n/).map((para) => {
+    const lines = para.split("\n");
+    const out: string[] = [];
+    let list: string[] = [];
+    const flush = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${md(l)}</li>`).join("")}</ul>`); list = []; } };
+    for (const l of lines) {
+      const f = /^\s*\[fig:(\d+)\]\s*$/.exec(l);
+      if (f) { flush(); const fig = figs?.[Number(f[1]) - 1]; if (fig) out.push(`<div class="figrow">${svg(fig, 230)}</div>`); continue; }
+      if (/^\s*- /.test(l)) { list.push(l.replace(/^\s*- /, "")); continue; }
+      flush();
+      if (l.trim()) out.push(`<p class="${/^Hence, /.test(l) ? "hence" : ""}">${md(l.trim())}</p>`);
+    }
+    flush();
+    return out.join("");
+  }).join("");
+}
+
+type Key = { label: string; answer: string; solution: string; figs: (Fig | null)[] | null; skills: string[] };
+const SK = (k: string) => SKILLS[k as keyof typeof SKILLS] ?? k;
+function keyItem(k: Key) {
+  return `<section class="sol"><div class="shead"><span class="qn">${esc(k.label)}</span><span><b>Answer:</b> ${k.answer}</span></div>
+  <div class="stext"><div class="slabel">Solution:</div>${workedHtml(k.solution, k.figs)}<div class="comp"><b>CT competency:</b> ${k.skills.map(SK).join(", ")}</div></div></section>`;
+}
+
+function keyHtml(cls: number, n: number, title: string, items: Key[], part: "CT" | "AI", kicker: string) {
   return `<!doctype html><html><head>${style(cls)}</head><body>
-  <div class="band"><div class="chip"><small>${part === "AI" ? "AI CHAPTER" : "CHAPTER"}</small><b>${n}</b></div><div><div class="kicker">Answer key · ${part === "AI" ? "Practice" : "More practice"}</div><h1>${esc(title)}</h1></div></div>
-  <table><tr><th>Q</th><th>Answer</th><th>Solution</th></tr>${qs.map((q, i) => `<tr><td class="n">${i + 1}</td><td class="a">${answerText(q)}</td><td>${md(q.solution.replace(/\n+/g, " "))}</td></tr>`).join("")}</table></body></html>`;
+  <div class="band"><div class="chip"><small>${part === "AI" ? "AI CHAPTER" : "CHAPTER"}</small><b>${n}</b></div><div><div class="kicker">${kicker}</div><h1>${esc(title)}</h1></div></div>
+  ${items.map(keyItem).join("")}</body></html>`;
+}
+
+function answersHtml(cls: number, n: number, title: string, qs: Q[], part: "CT" | "AI") {
+  const items = qs.map((q, i): Key => ({ label: String(i + 1), answer: answerText(q), solution: q.solution, figs: q.solutionFigures, skills: q.skills }));
+  return keyHtml(cls, n, title, items, part, `Answer key · ${part === "AI" ? "Practice" : "More practice"}`);
+}
+
+/** The chapter's own answer key (the help-book questions), in the Teacher Handbook style. Replaces the old one-line key. */
+function bookKeyHtml(cls: number, n: number, title: string) {
+  const rows = HELPBOOK.filter((r) => r.c === cls && r.ch === n);
+  const items = rows.map((r): Key => ({
+    label: r.label.startsWith("P") ? `Thinking Spot ${r.label.slice(1)}` : r.label,
+    answer: `${letter(r.answer)}${r.options[r.answer] ? ` &nbsp;(${md(String(r.options[r.answer]))})` : ""}`,
+    solution: finishSolution({ type: "MCQ", options: r.options, answer: r.answer, solution: workedSolution(r) ?? solutionWithAnswer(r) }),
+    figs: null, skills: r.skills,
+  }));
+  return keyHtml(cls, n, title, items, "CT", `Answer key: Chapter ${n}`);
 }
 
 (async () => {
@@ -117,13 +169,15 @@ function answersHtml(cls: number, n: number, title: string, qs: Q[], part: "CT" 
       const label = part === "AI" ? `AI Chapter ${n} · Practice Q` : `Chapter ${n} · More practice Q`;
       const rows = (await db.question.findMany({ where: { classLevel: cls, status: "PUBLISHED", sourceRef: { contains: `Class ${cls} · ${label}` } } }))
         .sort((x, y) => Number(x.sourceRef!.split("Q").pop()) - Number(y.sourceRef!.split("Q").pop()));
-      const cands: Q[] = rows.map((r) => ({ code: r.code, stem: r.stem, type: r.type, difficulty: r.difficulty, skills: r.skills.split(","), options: JSON.parse(r.options), answer: JSON.parse(r.answer), solution: r.solution, figure: r.figure ? JSON.parse(r.figure) : null, optionFigures: r.optionFigures ? JSON.parse(r.optionFigures) : null, family: r.family! }));
+      const cands: Q[] = rows.map((r) => ({ code: r.code, stem: r.stem, type: r.type, difficulty: r.difficulty, skills: r.skills.split(","), options: JSON.parse(r.options), answer: JSON.parse(r.answer), solution: r.solution, solutionFigures: r.solutionFigures ? JSON.parse(r.solutionFigures) : null, figure: r.figure ? JSON.parse(r.figure) : null, optionFigures: r.optionFigures ? JSON.parse(r.optionFigures) : null, family: r.family! }));
       const qs = cands;
       if (qs.length !== PER_CHAPTER) throw new Error(`Class ${cls} ${part} chapter ${n}: only ${qs.length} questions`);
       chosen[`${cls}-${part}-${n}`] = qs.map((q) => q.code);
       const tag = `c${cls}-${part === "AI" ? "ai" : "ch"}${String(n).padStart(2, "0")}`;
       const pages: Record<string, number> = {};
-      for (const [kind, html] of [["practice", practiceHtml(cls, n, title, qs, part)], ["answers", answersHtml(cls, n, title, qs, part)]] as const) {
+      const kinds: [string, string][] = [["practice", practiceHtml(cls, n, title, qs, part)], ["answers", answersHtml(cls, n, title, qs, part)]];
+      if (part === "CT") kinds.push(["key", bookKeyHtml(cls, n, title)]);
+      for (const [kind, html] of kinds) {
         await page.setContent(html, { waitUntil: "networkidle" });
         await page.evaluate(() => document.fonts.ready);
         const file = path.join(out, `${tag}-${kind}.pdf`);
