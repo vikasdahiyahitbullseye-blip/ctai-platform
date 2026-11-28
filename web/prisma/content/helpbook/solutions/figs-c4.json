@@ -1,0 +1,1395 @@
+{
+"1-3": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+".T..",
+"PQRS",
+".U.."
+],
+"colour": "blue",
+"alt": "The net: P–R, Q–S and T–U are opposite"
+}
+],
+"after": "Look at the row"
+},
+"1-4": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+".1..",
+"2364",
+".5.."
+],
+"colour": "orange",
+"alt": "The net: 2–6, 3–4 and 1–5 are opposite"
+}
+],
+"after": "In the row of four"
+},
+"2-9": {
+"figs": [
+{
+"kind": "bars",
+"title": "Arrows pointing at",
+"labels": [
+"A",
+"B",
+"C",
+"D"
+],
+"values": [
+2,
+2,
+3,
+1
+],
+"step": 1,
+"showValues": true,
+"alt": "Arrows pointing at"
+}
+],
+"after": "Count the arrows"
+},
+"2-10": {
+"figs": [
+{
+"kind": "bars",
+"title": "Arrows pointing at",
+"labels": [
+"P",
+"Q",
+"R",
+"S"
+],
+"values": [
+2,
+3,
+1,
+0
+],
+"step": 1,
+"showValues": true,
+"alt": "Arrows pointing at"
+}
+],
+"after": "Count the arrows"
+},
+"2-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Colours seen",
+"labels": [
+"Front",
+"Right",
+"Top"
+],
+"values": [
+3,
+3,
+4
+],
+"step": 1,
+"showValues": true,
+"alt": "Colours seen"
+}
+],
+"after": "Count the colours"
+},
+"2-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Colours seen",
+"labels": [
+"Front",
+"Right",
+"Top"
+],
+"values": [
+2,
+2,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Colours seen"
+}
+],
+"after": "Count the colours"
+},
+"2-P2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"CEDAB"
+],
+"colour": "teal",
+"alt": "The line: C, E, D, A, B"
+}
+],
+"after": "Use the clues"
+},
+"3-5": {
+"figs": [
+{
+"kind": "numberline",
+"min": 6,
+"max": 18,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 7,
+"label": "7",
+"colour": "green"
+},
+{
+"v": 9,
+"label": "9",
+"colour": "green"
+},
+{
+"v": 11,
+"label": "11",
+"colour": "green"
+},
+{
+"v": 13,
+"label": "13",
+"colour": "green"
+},
+{
+"v": 15,
+"label": "15",
+"colour": "green"
+},
+{
+"v": 17,
+"label": "17",
+"colour": "green"
+}
+],
+"alt": "7, 9, 11, 13, 15, 17"
+}
+],
+"after": "Consecutive odd"
+},
+"3-6": {
+"figs": [
+{
+"kind": "numberline",
+"min": 18,
+"max": 32,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 20,
+"label": "20",
+"colour": "blue"
+},
+{
+"v": 22,
+"label": "22",
+"colour": "blue"
+},
+{
+"v": 24,
+"label": "24",
+"colour": "blue"
+},
+{
+"v": 26,
+"label": "26",
+"colour": "blue"
+},
+{
+"v": 28,
+"label": "28",
+"colour": "blue"
+},
+{
+"v": 30,
+"label": "30",
+"colour": "blue"
+}
+],
+"alt": "20, 22, 24, 26, 28, 30"
+}
+],
+"after": "Consecutive even"
+},
+"3-17": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"QSRP",
+"1234"
+],
+"colour": "purple",
+"alt": "The queue: Q, S, R, P"
+}
+],
+"after": "Try the places"
+},
+"3-18": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"DACB",
+"CDAB"
+],
+"colour": "orange",
+"alt": "Both possible queues end with B"
+}
+],
+"after": "Try the places"
+},
+"3-A7": {
+"figs": [
+{
+"kind": "pixels",
+"n": 6,
+"cells": [
+[
+5,
+0,
+"orange"
+],
+[
+5,
+1,
+"orange"
+],
+[
+5,
+2,
+"orange"
+],
+[
+5,
+3,
+"orange"
+],
+[
+5,
+4,
+"orange"
+],
+[
+5,
+5,
+"orange"
+],
+[
+0,
+5,
+"orange"
+],
+[
+1,
+5,
+"orange"
+],
+[
+2,
+5,
+"orange"
+],
+[
+3,
+5,
+"orange"
+],
+[
+4,
+5,
+"orange"
+]
+],
+"alt": "The new row and column: 11 coins"
+}
+],
+"after": "The new grid is 6"
+},
+"3-A8": {
+"figs": [
+{
+"kind": "pixels",
+"n": 8,
+"cells": [
+[
+7,
+0,
+"orange"
+],
+[
+7,
+1,
+"orange"
+],
+[
+7,
+2,
+"orange"
+],
+[
+7,
+3,
+"orange"
+],
+[
+7,
+4,
+"orange"
+],
+[
+7,
+5,
+"orange"
+],
+[
+7,
+6,
+"orange"
+],
+[
+7,
+7,
+"orange"
+],
+[
+0,
+7,
+"orange"
+],
+[
+1,
+7,
+"orange"
+],
+[
+2,
+7,
+"orange"
+],
+[
+3,
+7,
+"orange"
+],
+[
+4,
+7,
+"orange"
+],
+[
+5,
+7,
+"orange"
+],
+[
+6,
+7,
+"orange"
+]
+],
+"alt": "The new row and column: 15 coins"
+}
+],
+"after": "The new grid is 8"
+},
+"4-7": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"9765",
+"2045"
+],
+"colour": "blue",
+"alt": "Largest 9765, smallest 2045: 5 is in both"
+}
+],
+"after": "Make both numbers"
+},
+"4-8": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"9864",
+"1234"
+],
+"colour": "green",
+"alt": "Largest 9864, smallest 1234: 4 is in both"
+}
+],
+"after": "Make both numbers"
+},
+"4-11": {
+"figs": [
+{
+"kind": "numberline",
+"min": 3500,
+"max": 4300,
+"step": 50,
+"labelEvery": 2,
+"marks": [
+{
+"v": 3569,
+"label": "3569",
+"colour": "red"
+},
+{
+"v": 3777,
+"label": "3777",
+"colour": "green"
+},
+{
+"v": 4208,
+"label": "4208",
+"colour": "red"
+}
+],
+"alt": "3777 lies between 3569 and 4208"
+}
+],
+"after": "From the expression"
+},
+"4-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 7200,
+"max": 7900,
+"step": 50,
+"labelEvery": 2,
+"marks": [
+{
+"v": 7281,
+"label": "7281",
+"colour": "red"
+},
+{
+"v": 7365,
+"label": "7365",
+"colour": "green"
+},
+{
+"v": 7829,
+"label": "7829",
+"colour": "red"
+}
+],
+"alt": "7365 lies between 7281 and 7829"
+}
+],
+"after": "From the expression"
+},
+"5-7": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 7,
+"colour": "orange",
+"alt": "7/8 shaded"
+}
+],
+"after": "The shaded part grows"
+},
+"5-8": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 12,
+"shaded": 8,
+"colour": "blue",
+"alt": "8/12 shaded"
+}
+],
+"after": "The shaded part doubles"
+},
+"5-9": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 12,
+"shaded": 10,
+"colour": "teal",
+"alt": "50 minutes = 10 of the 12 five-minute parts of an hour"
+}
+],
+"after": "- Total = 30 + 20"
+},
+"5-10": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 12,
+"shaded": 7,
+"colour": "teal",
+"alt": "35 minutes = 7 of the 12 five-minute parts of an hour"
+}
+],
+"after": "- Total = 20 + 15"
+},
+"5-13": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 6,
+"shaded": 3,
+"colour": "orange",
+"alt": "3/6"
+},
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 4,
+"shaded": 2,
+"colour": "orange",
+"alt": "2/4"
+}
+],
+"after": "Write the shaded part"
+},
+"5-14": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 5,
+"shaded": 3,
+"colour": "blue",
+"alt": "3/5"
+},
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 4,
+"shaded": 3,
+"colour": "blue",
+"alt": "3/4"
+}
+],
+"after": "Write the shaded part"
+},
+"5-19": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 8,
+"shaded": 6,
+"colour": "green",
+"alt": "6 of 8 parts shaded"
+}
+],
+"after": "Find the rule"
+},
+"6-15": {
+"figs": [
+{
+"kind": "bars",
+"title": "Path length (squares)",
+"labels": [
+"Dog A",
+"Dog B",
+"Dog C"
+],
+"values": [
+8,
+7,
+9
+],
+"step": 1,
+"showValues": true,
+"alt": "Path length (squares)"
+}
+],
+"after": "Count the squares"
+},
+"6-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Path length (squares)",
+"labels": [
+"P",
+"Q",
+"R"
+],
+"values": [
+7,
+11,
+9
+],
+"step": 1,
+"showValues": true,
+"alt": "Path length (squares)"
+}
+],
+"after": "Count the squares"
+},
+"6-20": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 2,
+"shaded": 0,
+"colour": "blue",
+"alt": "The 8 cm × 4 cm sheet cut into two 4 cm squares"
+}
+],
+"after": "Cutting the 8 cm"
+},
+"7-5": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sweets at the end",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+300,
+300,
+450
+],
+"step": 50,
+"showValues": true,
+"alt": "Sweets at the end"
+}
+],
+"after": "Follow the changes"
+},
+"7-6": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sweets at the end",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+475,
+350,
+350
+],
+"step": 50,
+"showValues": true,
+"alt": "Sweets at the end"
+}
+],
+"after": "Follow the changes"
+},
+"8-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"Chetan",
+"Bela",
+"Anil"
+],
+"values": [
+52,
+38,
+47
+],
+"step": 10,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "Start from the weight"
+},
+"8-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"Uma",
+"Tina",
+"Sonu",
+"Mohan"
+],
+"values": [
+41,
+47,
+27,
+34
+],
+"step": 10,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "Start from the weight"
+},
+"8-15": {
+"figs": [
+{
+"kind": "bars",
+"title": "Cost (Rs.)",
+"labels": [
+"On the list",
+"Bought"
+],
+"values": [
+250,
+360
+],
+"step": 50,
+"showValues": true,
+"alt": "Cost (Rs.)"
+}
+],
+"after": "- Extra ="
+},
+"8-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Cost (Rs.)",
+"labels": [
+"On the list",
+"Bought"
+],
+"values": [
+140,
+225
+],
+"step": 50,
+"showValues": true,
+"alt": "Cost (Rs.)"
+}
+],
+"after": "- Extra ="
+},
+"9-5": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 60,
+"step": 6,
+"labelEvery": 2,
+"marks": [
+{
+"v": 24,
+"label": "Hari",
+"colour": "blue"
+},
+{
+"v": 48,
+"label": "Ishaan",
+"colour": "green"
+}
+],
+"alt": "Multiples of 12: Hari 24, Ishaan 48"
+}
+],
+"after": "List the multiples"
+},
+"9-6": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 80,
+"step": 8,
+"labelEvery": 2,
+"marks": [
+{
+"v": 32,
+"label": "Tina",
+"colour": "blue"
+},
+{
+"v": 64,
+"label": "Uma",
+"colour": "green"
+}
+],
+"alt": "Multiples of 16: Tina 32, Uma 64"
+}
+],
+"after": "List the multiples"
+},
+"9-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value",
+"labels": [
+"2B−Z",
+"3Z+A",
+"Y+Z−A",
+"B+Y−Z"
+],
+"values": [
+45,
+50,
+25,
+30
+],
+"step": 10,
+"showValues": true,
+"alt": "Value"
+}
+],
+"after": "Now work out"
+},
+"9-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value",
+"labels": [
+"Q+R+S",
+"2S−Q",
+"S+R+P",
+"3R+P"
+],
+"values": [
+34,
+20,
+26,
+22
+],
+"step": 5,
+"showValues": true,
+"alt": "Value"
+}
+],
+"after": "Now work out"
+},
+"9-19": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 9,
+"shaded": 9,
+"colour": "blue",
+"alt": "9 equal squares: 3 rows of 3",
+"rows": 3
+}
+],
+"after": "Equal squares fill"
+},
+"9-20": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 16,
+"colour": "green",
+"alt": "16 equal squares: 4 rows of 4",
+"rows": 4
+}
+],
+"after": "Equal squares fill"
+},
+"10-3": {
+"figs": [
+{
+"kind": "bars",
+"title": "Price (Rs.)",
+"labels": [
+"Notebook",
+"Compass box",
+"Bottle"
+],
+"values": [
+150,
+120,
+210
+],
+"step": 50,
+"showValues": true,
+"alt": "Price (Rs.)"
+}
+],
+"after": "Find each price"
+},
+"10-4": {
+"figs": [
+{
+"kind": "bars",
+"title": "Price (Rs.)",
+"labels": [
+"Book",
+"Pen",
+"Bag"
+],
+"values": [
+95,
+80,
+140
+],
+"step": 20,
+"showValues": true,
+"alt": "Price (Rs.)"
+}
+],
+"after": "Find each price"
+},
+"12-1": {
+"figs": [
+{
+"kind": "clock",
+"h": 3,
+"m": 25,
+"alt": "A clock showing 3:25"
+}
+],
+"after": "Read the times"
+},
+"12-2": {
+"figs": [
+{
+"kind": "clock",
+"h": 5,
+"m": 0,
+"alt": "A clock showing 5:00"
+}
+],
+"after": "Read the times"
+},
+"12-5": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 63,
+"cols": 7,
+"marks": [
+{
+"v": 6,
+"colour": "blue"
+},
+{
+"v": 12,
+"colour": "blue"
+},
+{
+"v": 18,
+"colour": "blue"
+},
+{
+"v": 24,
+"colour": "blue"
+},
+{
+"v": 30,
+"colour": "blue"
+},
+{
+"v": 36,
+"colour": "blue"
+},
+{
+"v": 42,
+"colour": "blue"
+},
+{
+"v": 48,
+"colour": "blue"
+},
+{
+"v": 54,
+"colour": "blue"
+},
+{
+"v": 60,
+"colour": "red"
+}
+],
+"alt": "Rest days every 6th day; the 10th is day 60"
+}
+],
+"after": "One cycle"
+},
+"12-6": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 28,
+"cols": 7,
+"marks": [
+{
+"v": 4,
+"colour": "blue"
+},
+{
+"v": 8,
+"colour": "blue"
+},
+{
+"v": 12,
+"colour": "blue"
+},
+{
+"v": 16,
+"colour": "blue"
+},
+{
+"v": 20,
+"colour": "blue"
+},
+{
+"v": 24,
+"colour": "blue"
+},
+{
+"v": 28,
+"colour": "red"
+}
+],
+"alt": "Rest days every 4th day; the 7th is day 28"
+}
+],
+"after": "One cycle"
+},
+"12-11": {
+"figs": [
+{
+"kind": "calendar",
+"month": "February",
+"start": 3,
+"days": 28,
+"marks": [
+{
+"d": 5,
+"colour": "red"
+},
+{
+"d": 12,
+"colour": "blue"
+},
+{
+"d": 19,
+"colour": "blue"
+},
+{
+"d": 26,
+"colour": "blue"
+}
+],
+"alt": "Sundays: 5, 12, 19, 26"
+}
+],
+"after": "1st February is a Wednesday"
+},
+"12-12": {
+"figs": [
+{
+"kind": "calendar",
+"month": "April",
+"start": 5,
+"days": 30,
+"marks": [
+{
+"d": 6,
+"colour": "red"
+},
+{
+"d": 13,
+"colour": "blue"
+},
+{
+"d": 20,
+"colour": "blue"
+},
+{
+"d": 27,
+"colour": "blue"
+}
+],
+"alt": "Wednesdays: 6, 13, 20, 27"
+}
+],
+"after": "1st April is a Friday"
+},
+"12-15": {
+"figs": [
+{
+"kind": "clock",
+"h": 2,
+"m": 0,
+"alt": "The real time: 2:00 PM"
+}
+],
+"after": "- Real hours"
+},
+"12-16": {
+"figs": [
+{
+"kind": "clock",
+"h": 6,
+"m": 0,
+"alt": "The real time: 6:00 PM"
+}
+],
+"after": "- Real hours"
+},
+"12-19": {
+"figs": [
+{
+"kind": "bars",
+"title": "Length (minutes)",
+"labels": [
+"1",
+"2",
+"3",
+"4"
+],
+"values": [
+145,
+145,
+145,
+145
+],
+"step": 50,
+"showValues": true,
+"alt": "Length (minutes)"
+}
+],
+"after": "Find the length"
+},
+"12-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Length (minutes)",
+"labels": [
+"1",
+"2",
+"3",
+"4"
+],
+"values": [
+90,
+120,
+150,
+180
+],
+"step": 30,
+"showValues": true,
+"alt": "Length (minutes)"
+}
+],
+"after": "Find the length"
+},
+"13-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Products bought",
+"labels": [
+"Sameer",
+"Friend"
+],
+"values": [
+16,
+4
+],
+"step": 4,
+"showValues": true,
+"alt": "Products bought"
+}
+],
+"after": "Count the products"
+},
+"13-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Products bought",
+"labels": [
+"Tina",
+"Friend"
+],
+"values": [
+15,
+6
+],
+"step": 5,
+"showValues": true,
+"alt": "Products bought"
+}
+],
+"after": "Count the products"
+},
+"13-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Mangoes bought in 4 rounds",
+"labels": [
+"A",
+"D",
+"C",
+"B",
+"E"
+],
+"values": [
+4,
+8,
+12,
+16,
+20
+],
+"step": 4,
+"showValues": true,
+"alt": "Mangoes bought in 4 rounds"
+}
+],
+"after": "In each round"
+},
+"13-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Mangoes bought in 6 rounds",
+"labels": [
+"Y",
+"Z",
+"X",
+"V",
+"W"
+],
+"values": [
+6,
+12,
+18,
+24,
+30
+],
+"step": 6,
+"showValues": true,
+"alt": "Mangoes bought in 6 rounds"
+}
+],
+"after": "In each round"
+},
+"14-1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Questions attempted",
+"labels": [
+"Maths",
+"Science",
+"English"
+],
+"values": [
+14,
+11,
+16
+],
+"step": 4,
+"showValues": true,
+"alt": "Questions attempted"
+}
+],
+"after": "Use: total = 5"
+},
+"14-2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Questions attempted",
+"labels": [
+"Maths",
+"Science",
+"English"
+],
+"values": [
+14,
+8,
+9
+],
+"step": 4,
+"showValues": true,
+"alt": "Questions attempted"
+}
+],
+"after": "Use: total = 3"
+},
+"14-15": {
+"figs": [
+{
+"kind": "venn",
+"left": "Football",
+"right": "Chess",
+"a": "20",
+"both": "8",
+"b": "16",
+"alt": "Boys: 8 like both",
+"outside": "6"
+},
+{
+"kind": "venn",
+"left": "Football",
+"right": "Chess",
+"a": "6",
+"both": "14",
+"b": "21",
+"alt": "Girls: 14 like both",
+"outside": "9"
+}
+],
+"after": "People who like both"
+},
+"14-16": {
+"figs": [
+{
+"kind": "venn",
+"left": "Tea",
+"right": "Coffee",
+"a": "20",
+"both": "20",
+"b": "15",
+"alt": "Men: 20 like both",
+"outside": "5"
+},
+{
+"kind": "venn",
+"left": "Tea",
+"right": "Coffee",
+"a": "18",
+"both": "20",
+"b": "12",
+"alt": "Women: 20 like both",
+"outside": "10"
+}
+],
+"after": "People who like both"
+}
+}

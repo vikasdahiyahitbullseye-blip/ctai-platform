@@ -1,0 +1,2356 @@
+{
+"1-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "How many E's",
+"labels": [
+"ONE",
+"TWO",
+"THREE",
+"FOUR",
+"FIVE",
+"SIX",
+"SEVEN",
+"EIGHT",
+"NINE",
+"TEN"
+],
+"values": [
+1,
+0,
+2,
+0,
+1,
+0,
+2,
+1,
+1,
+1
+],
+"step": 1,
+"showValues": true,
+"alt": "How many E's"
+}
+],
+"after": "- ONE 1"
+},
+"1-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Names with the letter",
+"labels": [
+"E",
+"N",
+"T",
+"O"
+],
+"values": [
+7,
+4,
+4,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Names with the letter"
+}
+],
+"after": "- E:"
+},
+"1-24": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"SSENT"
+],
+"colour": "teal",
+"alt": "First letters S, S, E, N, T"
+}
+],
+"after": "- SIX"
+},
+"1-25": {
+"figs": [
+{
+"kind": "bars",
+"title": "Letter totals",
+"labels": [
+"ONE",
+"TEN",
+"SIX",
+"TWO"
+],
+"values": [
+34,
+39,
+52,
+58
+],
+"step": 10,
+"showValues": true,
+"alt": "Letter totals"
+}
+],
+"after": "- ONE ="
+},
+"1-26": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"NINE.",
+"FIVE.",
+"SIX..",
+"EIGHT"
+],
+"colour": "pink",
+"alt": "I fills every blank"
+}
+],
+"after": "- N I N E"
+},
+"1-A1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"DEFG",
+"0123"
+],
+"colour": "blue",
+"alt": "D moves 3 places to G"
+}
+],
+"after": "- D →"
+},
+"1-A2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"ELUG",
+"BIRD"
+],
+"colour": "green",
+"alt": "Code ELUG back to BIRD"
+}
+],
+"after": "- E →"
+},
+"1-A3": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"UFO",
+"TEN"
+],
+"colour": "green",
+"alt": "UFO back to TEN"
+}
+],
+"after": "- U →"
+},
+"1-A4": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"SIX",
+"TJY"
+],
+"colour": "orange",
+"alt": "SIX coded as TJY"
+}
+],
+"after": "- S →"
+},
+"1-A5": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"XYZABC",
+"012345"
+],
+"colour": "purple",
+"alt": "X to C is 5 moves"
+}
+],
+"after": "- X →"
+},
+"1-A6": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"DOG",
+"FQI",
+" ",
+"CAT",
+"ECV"
+],
+"colour": "blue",
+"alt": "Shift 2: DOG→FQI, CAT→ECV"
+}
+],
+"after": "- C →"
+},
+"1-P1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" 378",
+"T✗✗✓",
+"S✓✗✗",
+"E✗✓✗"
+],
+"colour": "blue",
+"alt": "Tina 8, Sam 3, Esha 7"
+}
+],
+"after": "- Tina"
+},
+"1-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Letters in the day names",
+"labels": [
+"MON",
+"TUE",
+"WED",
+"THU"
+],
+"values": [
+6,
+7,
+9,
+8
+],
+"step": 1,
+"showValues": true,
+"alt": "Letters in the day names"
+}
+],
+"after": "Count the letters"
+},
+"2-4": {
+"figs": [
+{
+"kind": "cubes",
+"heights": [
+3,
+2,
+1
+],
+"colour": "orange",
+"alt": "3 + 2 + 1 cubes"
+}
+],
+"after": "Count the cubes"
+},
+"2-7": {
+"figs": [
+{
+"kind": "cubes",
+"heights": [
+1,
+3,
+1
+],
+"colour": "blue",
+"alt": "Columns of 1, 3 and 1 cubes"
+}
+],
+"after": "- First column"
+},
+"2-11": {
+"figs": [
+{
+"kind": "venn",
+"left": "Flat faces",
+"right": "Curved surface",
+"a": "Cube",
+"both": "Cylinder",
+"b": "Ball",
+"alt": "Venn diagram"
+}
+],
+"after": "One circle"
+},
+"2-12": {
+"figs": [
+{
+"kind": "venn",
+"left": "Flat faces",
+"right": "Curved surface",
+"a": "Cube",
+"both": "Cylinder",
+"b": "Ball",
+"alt": "Venn diagram"
+}
+],
+"after": "A cube has"
+},
+"2-17": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+".1..",
+"2323",
+".1.."
+],
+"colour": "green",
+"alt": "Opposite faces share a colour"
+}
+],
+"after": "- Top and bottom"
+},
+"2-P2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" ◯▲■",
+"R✓✗✗",
+"M✗✓✗",
+"J✗✗✓"
+],
+"colour": "orange",
+"alt": "Ravi sphere, Mini cone, Joy cube"
+}
+],
+"after": "- Ravi"
+},
+"3-1": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"H",
+"T",
+"O"
+],
+"beads": [
+1,
+6,
+5
+],
+"alt": "The abacus after the move: 165"
+}
+],
+"after": "Move 2 beads"
+},
+"3-3": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"H",
+"T",
+"O"
+],
+"beads": [
+2,
+1,
+1
+],
+"alt": "2 + 1 + 1 beads show 211"
+}
+],
+"after": "One bead is left"
+},
+"3-4": {
+"figs": [
+{
+"kind": "numberline",
+"min": 100,
+"max": 220,
+"step": 10,
+"labelEvery": 3,
+"marks": [
+{
+"v": 170,
+"label": "170",
+"colour": "red"
+}
+],
+"alt": "Jumps of 30 from 100",
+"jumps": {
+"from": 100,
+"size": 30,
+"count": 4,
+"colour": "orange",
+"icon": "🐸"
+}
+}
+],
+"after": "The frog starts"
+},
+"3-6": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 141,
+"to": 160,
+"cols": 10,
+"marks": [
+{
+"v": 143,
+"colour": "blue"
+},
+{
+"v": 153,
+"colour": "orange"
+},
+{
+"v": 154,
+"colour": "green"
+}
+],
+"alt": "143 → 153 → 154"
+}
+],
+"after": "- Start at 143"
+},
+"3-7": {
+"figs": [
+{
+"kind": "money",
+"items": [
+100,
+50,
+20,
+5
+],
+"alt": "Raju has ₹175"
+}
+],
+"after": "First add"
+},
+"3-8": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 200,
+"step": 10,
+"labelEvery": 5,
+"marks": [],
+"alt": "Counting in fifties to 200",
+"jumps": {
+"from": 0,
+"size": 50,
+"count": 4,
+"colour": "blue",
+"icon": "🐇"
+}
+}
+],
+"after": "Write the numbers"
+},
+"3-10": {
+"figs": [
+{
+"kind": "numberline",
+"min": 100,
+"max": 200,
+"step": 10,
+"labelEvery": 5,
+"marks": [
+{
+"v": 108,
+"label": "108",
+"colour": "blue"
+},
+{
+"v": 150,
+"label": "150",
+"colour": "red"
+},
+{
+"v": 180,
+"label": "180",
+"colour": "green"
+}
+],
+"alt": "108, 150 and 180"
+}
+],
+"after": "Find how far"
+},
+"3-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Beads in each row",
+"labels": [
+"Row 1",
+"Row 2",
+"Row 3",
+"Row 4",
+"Row 5"
+],
+"values": [
+40,
+70,
+100,
+130,
+160
+],
+"step": 20,
+"showValues": true,
+"alt": "Beads in each row"
+}
+],
+"after": "Row 1 has 40"
+},
+"4-5": {
+"figs": [
+{
+"kind": "pictograph",
+"title": "Bananas eaten",
+"labels": [
+"Mon",
+"Tue",
+"Wed",
+"Thu"
+],
+"counts": [
+3,
+5,
+2,
+4
+],
+"icon": "🍌",
+"per": 2,
+"alt": "Bananas eaten"
+}
+],
+"after": "Read the key"
+},
+"4-6": {
+"figs": [
+{
+"kind": "pictograph",
+"title": "Bananas eaten",
+"labels": [
+"Mon",
+"Tue",
+"Wed",
+"Thu"
+],
+"counts": [
+3,
+5,
+2,
+4
+],
+"icon": "🍌",
+"per": 2,
+"alt": "Bananas eaten"
+}
+],
+"after": "Count the pictures"
+},
+"4-11": {
+"figs": [
+{
+"kind": "icons",
+"items": [
+{
+"icon": "🚂"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃",
+"mark": "tick"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃",
+"mark": "tick"
+},
+{
+"icon": "🚃"
+},
+{
+"icon": "🚃"
+}
+],
+"cols": 13,
+"alt": "Coaches 5 and 10, with 6 to 9 between"
+}
+],
+"after": "The coaches between"
+},
+"4-12": {
+"figs": [
+{
+"kind": "beads",
+"colours": [
+"red",
+"blue",
+"blue",
+"yellow"
+],
+"alt": "One group: red, blue, blue, yellow"
+}
+],
+"after": "Find the repeating group"
+},
+"4-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Height after each pull (m)",
+"labels": [
+"Pull 1",
+"Pull 2",
+"Pull 3",
+"Pull 4"
+],
+"values": [
+4,
+7,
+10,
+13
+],
+"step": 2,
+"showValues": true,
+"alt": "Height after each pull (m)"
+}
+],
+"after": "Track the height"
+},
+"4-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Mangoes on each tree",
+"labels": [
+"Tree A",
+"Tree B",
+"Tree C"
+],
+"values": [
+40,
+30,
+25
+],
+"step": 10,
+"showValues": true,
+"alt": "Mangoes on each tree"
+}
+],
+"after": "Find the mangoes"
+},
+"4-20": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 90,
+"step": 5,
+"labelEvery": 2,
+"marks": [
+{
+"v": 38,
+"label": "38",
+"colour": "orange"
+},
+{
+"v": 85,
+"label": "85",
+"colour": "green"
+}
+],
+"alt": "38 km gone, 85 km in all"
+}
+],
+"after": "Distance still"
+},
+"4-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Eggs laid",
+"labels": [
+"Hen A",
+"Hen B",
+"Hen C",
+"Hen D"
+],
+"values": [
+4,
+2,
+6,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Eggs laid"
+}
+],
+"after": "Hen A laid 2 more"
+},
+"5-8": {
+"figs": [
+{
+"kind": "matchsticks",
+"squares": 5,
+"alt": "5 squares in a row"
+}
+],
+"after": "One square needs"
+},
+"5-17": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 4,
+"shaded": 1,
+"colour": "orange",
+"alt": "2 cuts through the centre: 4 pieces"
+}
+],
+"after": "- The first cut"
+},
+"5-18": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 6,
+"shaded": 1,
+"colour": "orange",
+"alt": "3 cuts through the centre: 6 pieces"
+}
+],
+"after": "Every cut through"
+},
+"5-20": {
+"figs": [
+{
+"kind": "pixels",
+"n": 4,
+"cells": [
+[
+0,
+0,
+"blue"
+],
+[
+0,
+1,
+"blue"
+],
+[
+0,
+2,
+"blue"
+],
+[
+0,
+3,
+"blue"
+],
+[
+1,
+0,
+"blue"
+],
+[
+2,
+0,
+"blue"
+],
+[
+3,
+0,
+"blue"
+]
+],
+"alt": "Top row and left column coloured: 7 boxes"
+}
+],
+"after": "Count the coloured"
+},
+"5-P1": {
+"figs": [
+{
+"kind": "shapes",
+"cols": 4,
+"rows": 1,
+"items": [
+{
+"r": 0,
+"c": 0,
+"shape": "square",
+"colour": "blue"
+},
+{
+"r": 0,
+"c": 1,
+"shape": "triangle",
+"colour": "orange"
+},
+{
+"r": 0,
+"c": 2,
+"shape": "circle",
+"colour": "green"
+},
+{
+"r": 0,
+"c": 3,
+"shape": "star",
+"colour": "yellow"
+}
+],
+"alt": "Square, triangle, circle, star"
+}
+],
+"after": "Use the clues"
+},
+"6-1": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"H",
+"T",
+"O"
+],
+"beads": [
+1,
+0,
+9
+],
+"alt": "After the move: 109"
+}
+],
+"after": "Move 2 beads"
+},
+"6-8": {
+"figs": [
+{
+"kind": "numberline",
+"min": 400,
+"max": 460,
+"step": 5,
+"labelEvery": 2,
+"marks": [
+{
+"v": 455,
+"label": "6th",
+"colour": "green"
+}
+],
+"alt": "405 to 455 in steps of 10",
+"jumps": {
+"from": 405,
+"size": 10,
+"count": 5,
+"colour": "orange",
+"icon": "🚪"
+}
+}
+],
+"after": "The door numbers"
+},
+"6-14": {
+"figs": [
+{
+"kind": "numberline",
+"min": 300,
+"max": 400,
+"step": 10,
+"labelEvery": 5,
+"marks": [
+{
+"v": 318,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 341,
+"label": "D",
+"colour": "green"
+},
+{
+"v": 350,
+"label": "350",
+"colour": "red"
+},
+{
+"v": 362,
+"label": "B",
+"colour": "blue"
+},
+{
+"v": 389,
+"label": "C",
+"colour": "blue"
+}
+],
+"alt": "D is nearest to 350"
+}
+],
+"after": "Find how far"
+},
+"6-18": {
+"figs": [
+{
+"kind": "numberline",
+"min": 390,
+"max": 410,
+"step": 1,
+"labelEvery": 5,
+"marks": [
+{
+"v": 405,
+"label": "405",
+"colour": "green"
+}
+],
+"alt": "395 + 10 = 405",
+"jumps": {
+"from": 395,
+"size": 10,
+"count": 1,
+"colour": "orange",
+"icon": null
+}
+}
+],
+"after": "10 more than 395"
+},
+"6-20": {
+"figs": [
+{
+"kind": "numberline",
+"min": 248,
+"max": 262,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 251,
+"label": "",
+"colour": "green"
+},
+{
+"v": 252,
+"label": "",
+"colour": "green"
+},
+{
+"v": 253,
+"label": "",
+"colour": "green"
+},
+{
+"v": 254,
+"label": "",
+"colour": "green"
+},
+{
+"v": 255,
+"label": "",
+"colour": "green"
+},
+{
+"v": 256,
+"label": "",
+"colour": "green"
+},
+{
+"v": 257,
+"label": "",
+"colour": "green"
+},
+{
+"v": 258,
+"label": "",
+"colour": "green"
+},
+{
+"v": 259,
+"label": "",
+"colour": "green"
+}
+],
+"alt": "251 to 259 are between 250 and 260"
+}
+],
+"after": "The numbers between"
+},
+"7-1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"●●●●●●",
+"●●●●●●",
+"●●●●●●",
+"●●●●●●"
+],
+"colour": "pink",
+"alt": "4 rows of 6 rakhis"
+}
+],
+"after": "Meena has 4 rows"
+},
+"7-2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"●●●●.●●●●",
+"●●●●.●●●●",
+"●●●●.●●●●"
+],
+"colour": "orange",
+"alt": "Two boxes of 3 rows of 4"
+}
+],
+"after": "One box has"
+},
+"7-3": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 32,
+"step": 1,
+"labelEvery": 4,
+"marks": [
+{
+"v": 24,
+"label": "24",
+"colour": "green"
+}
+],
+"alt": "Jumps of 4 from 0",
+"jumps": {
+"from": 0,
+"size": 4,
+"count": 6,
+"colour": "green",
+"icon": "🦗"
+}
+}
+],
+"after": "The grasshopper lands"
+},
+"7-6": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 75,
+"step": 5,
+"labelEvery": 3,
+"marks": [
+{
+"v": 70,
+"label": "70 cm",
+"colour": "red"
+}
+],
+"alt": "4 lengths of 15 cm fit in 70 cm",
+"jumps": {
+"from": 0,
+"size": 15,
+"count": 4,
+"colour": "orange",
+"icon": null
+}
+}
+],
+"after": "Each rakhi needs 15"
+},
+"7-7": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"●●●●●●",
+"●●●●●●",
+"●●●●●●",
+"●●●●●●",
+"●●●●●●",
+"●●●●●●",
+"●●●●  "
+],
+"colour": "orange",
+"alt": "6 packs of 6 and 4 left over"
+}
+],
+"after": "Count how many packs"
+},
+"7-15": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"●●●●●●●",
+"●●●●●●●",
+"●●●●●●●",
+"●●●●●●●",
+"●●●●●●●",
+"●●●    "
+],
+"colour": "blue",
+"alt": "5 rows of 7 and 3 extra"
+}
+],
+"after": "Count the chairs"
+},
+"7-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Flowers each day",
+"labels": [
+"Day 1",
+"Day 2",
+"Day 3",
+"Day 4",
+"Day 5"
+],
+"values": [
+2,
+4,
+8,
+16,
+32
+],
+"step": 4,
+"showValues": true,
+"alt": "Flowers each day"
+}
+],
+"after": "The number of flowers"
+},
+"7-P1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" RBG",
+"A✗✗✓",
+"B✗✓✗",
+"C✓✗✗"
+],
+"colour": "teal",
+"alt": "Asha green, Bina blue, Chinu red"
+}
+],
+"after": "Use the clues"
+},
+"7-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sweets in each box",
+"labels": [
+"A",
+"B",
+"C",
+"D"
+],
+"values": [
+12,
+6,
+8,
+15
+],
+"step": 3,
+"showValues": true,
+"alt": "Sweets in each box"
+}
+],
+"after": "Use the clues"
+},
+"8-2": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 4,
+"colour": "orange",
+"alt": "After Riya: 4 pieces left"
+},
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 2,
+"colour": "orange",
+"alt": "After Tinu: 2 pieces left"
+}
+],
+"after": "The chocolate has"
+},
+"8-3": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 8,
+"shaded": 6,
+"colour": "orange",
+"alt": "6 of 8 slices left"
+}
+],
+"after": "The pizza has 8"
+},
+"8-6": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 8,
+"colour": "blue",
+"alt": "8 of 16 boxes",
+"rows": 4
+}
+],
+"after": "Count the boxes"
+},
+"8-8": {
+"figs": [
+{
+"kind": "jug",
+"max": 1000,
+"step": 250,
+"labelEvery": 1,
+"level": 750,
+"unit": "mL",
+"alt": "Three quarters of a litre in the jug"
+}
+],
+"after": "- Half + a quarter"
+},
+"8-9": {
+"figs": [
+{
+"kind": "bars",
+"title": "Halving 64",
+"labels": [
+"Start",
+"Half",
+"Half again",
+"Half again"
+],
+"values": [
+64,
+32,
+16,
+8
+],
+"step": 8,
+"showValues": true,
+"alt": "Halving 64"
+}
+],
+"after": "Take half three times"
+},
+"8-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Bananas",
+"labels": [
+"Riya",
+"Tinu",
+"Mona"
+],
+"values": [
+6,
+3,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Bananas"
+}
+],
+"after": "Share the 12"
+},
+"8-19": {
+"figs": [
+{
+"kind": "clock",
+"h": 2,
+"m": 45,
+"alt": "A clock showing 2:45"
+}
+],
+"after": "- 2:15"
+},
+"8-20": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 4,
+"shaded": 3,
+"colour": "pink",
+"alt": "3 of 4 quarters eaten"
+}
+],
+"after": "Find the part"
+},
+"8-P1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Share of the cake (in quarters)",
+"labels": [
+"Asha",
+"Bina",
+"Chetan"
+],
+"values": [
+2,
+1,
+1
+],
+"step": 1,
+"showValues": true,
+"alt": "Share of the cake (in quarters)"
+}
+],
+"after": "Work out each share"
+},
+"9-6": {
+"figs": [
+{
+"kind": "numberline",
+"min": 200,
+"max": 460,
+"step": 10,
+"labelEvery": 5,
+"marks": [
+{
+"v": 250,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": 350,
+"label": "+100",
+"colour": "orange"
+},
+{
+"v": 450,
+"label": "+100",
+"colour": "orange"
+},
+{
+"v": 420,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "250 → 350 → 450 → 420"
+}
+],
+"after": "Follow the jumps"
+},
+"9-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Scores",
+"labels": [
+"Aman",
+"Bina",
+"Chetan"
+],
+"values": [
+356,
+386,
+341
+],
+"step": 50,
+"showValues": true,
+"alt": "Scores"
+}
+],
+"after": "Work out the scores"
+},
+"9-13": {
+"figs": [
+{
+"kind": "money",
+"items": [
+50,
+50,
+50,
+50,
+50,
+50,
+50
+],
+"alt": "Seven ₹50 notes"
+}
+],
+"after": "Count in fifties"
+},
+"9-16": {
+"figs": [
+{
+"kind": "numberline",
+"min": 550,
+"max": 1000,
+"step": 10,
+"labelEvery": 5,
+"marks": [
+{
+"v": 999,
+"label": "999",
+"colour": "blue"
+},
+{
+"v": 890,
+"label": "890",
+"colour": "blue"
+},
+{
+"v": 781,
+"label": "781",
+"colour": "blue"
+},
+{
+"v": 672,
+"label": "672",
+"colour": "blue"
+},
+{
+"v": 563,
+"label": "563",
+"colour": "green"
+}
+],
+"alt": "Going down by 109"
+}
+],
+"after": "Each number is 109"
+},
+"9-P1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Marbles",
+"labels": [
+"Box A",
+"Box B",
+"Box C"
+],
+"values": [
+200,
+100,
+300
+],
+"step": 50,
+"showValues": true,
+"alt": "Marbles"
+}
+],
+"after": "Box A has 100"
+},
+"10-1": {
+"figs": [
+{
+"kind": "ruler",
+"cm": 10,
+"start": 2,
+"length": 7,
+"colour": "orange",
+"alt": "The pencil from 2 to 9: 7 cm"
+}
+],
+"after": "Read the scale"
+},
+"10-11": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 150,
+"step": 10,
+"labelEvery": 3,
+"marks": [
+{
+"v": 0,
+"label": "🚩",
+"colour": "red"
+},
+{
+"v": 30,
+"label": "🚩",
+"colour": "red"
+},
+{
+"v": 60,
+"label": "🚩",
+"colour": "red"
+},
+{
+"v": 90,
+"label": "🚩",
+"colour": "red"
+},
+{
+"v": 120,
+"label": "🚩",
+"colour": "red"
+},
+{
+"v": 150,
+"label": "🚩",
+"colour": "red"
+}
+],
+"alt": "Flags at 0, 30, 60, 90, 120, 150"
+}
+],
+"after": "- Number of gaps"
+},
+"10-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 60,
+"step": 6,
+"labelEvery": 2,
+"marks": [
+{
+"v": 12,
+"label": "cut",
+"colour": "red"
+},
+{
+"v": 24,
+"label": "cut",
+"colour": "red"
+},
+{
+"v": 36,
+"label": "cut",
+"colour": "red"
+},
+{
+"v": 48,
+"label": "cut",
+"colour": "red"
+}
+],
+"alt": "4 cuts make 5 pieces"
+}
+],
+"after": "First find the number"
+},
+"10-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Height (cm)",
+"labels": [
+"Vase top",
+"Riya"
+],
+"values": [
+105,
+120
+],
+"step": 20,
+"showValues": true,
+"alt": "Height (cm)"
+}
+],
+"after": "Find the height"
+},
+"10-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Jumps (cm)",
+"labels": [
+"Asha",
+"Bina",
+"Chinu",
+"Dev"
+],
+"values": [
+210,
+195,
+205,
+200
+],
+"step": 50,
+"showValues": true,
+"alt": "Jumps (cm)"
+}
+],
+"after": "Change each jump"
+},
+"10-19": {
+"figs": [
+{
+"kind": "icons",
+"items": [
+{
+"icon": "🧒"
+},
+{
+"icon": "🧒"
+},
+{
+"icon": "🧒"
+},
+{
+"icon": "🧒",
+"mark": "tick"
+},
+{
+"icon": "🧒"
+},
+{
+"icon": "🧒"
+}
+],
+"cols": 6,
+"alt": "Aman is 4th from the left and 3rd from the right"
+}
+],
+"after": "Aman is 3rd from the right"
+},
+"10-P1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" RBGY",
+"R✗✗✗✓",
+"M✗✗✓✗",
+"T✗✓✗✗",
+"S✓✗✗✗"
+],
+"colour": "purple",
+"alt": "Riya yellow, Mona green, Tinu blue, Sam red"
+}
+],
+"after": "Use the clues"
+},
+"10-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Ribbon pieces (cm)",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+40,
+20,
+40
+],
+"step": 10,
+"showValues": true,
+"alt": "Ribbon pieces (cm)"
+}
+],
+"after": "1 m = 100 cm"
+},
+"11-1": {
+"figs": [
+{
+"kind": "balance",
+"left": {
+"icon": "🍎",
+"n": 2
+},
+"right": [
+150,
+150
+],
+"unit": "g",
+"alt": "2 apples balance 300 g, 150 g each"
+}
+],
+"after": "- Right pan"
+},
+"11-4": {
+"figs": [
+{
+"kind": "jug",
+"max": 1000,
+"step": 250,
+"labelEvery": 1,
+"level": 750,
+"unit": "mL",
+"alt": "Bucket B now three quarters full, like C"
+}
+],
+"after": "- C is three quarters"
+},
+"11-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Capacity (mL)",
+"labels": [
+"Cup",
+"Glass",
+"Mug",
+"Bottle"
+],
+"values": [
+200,
+300,
+400,
+1000
+],
+"step": 200,
+"showValues": true,
+"alt": "Capacity (mL)"
+}
+],
+"after": "Write the capacities"
+},
+"11-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Bag weights (kg)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6"
+],
+"values": [
+1,
+2,
+4,
+7,
+11,
+16
+],
+"step": 2,
+"showValues": true,
+"alt": "Bag weights (kg)"
+}
+],
+"after": "Find the change"
+},
+"11-15": {
+"figs": [
+{
+"kind": "jug",
+"max": 300,
+"step": 50,
+"labelEvery": 2,
+"level": 200,
+"unit": "mL",
+"alt": "200 mL in each glass"
+}
+],
+"after": "Share it equally"
+},
+"11-19": {
+"figs": [
+{
+"kind": "balance",
+"left": {
+"icon": "📦",
+"n": 1
+},
+"right": [
+150
+],
+"unit": "g",
+"alt": "The box weighs 150 g"
+}
+],
+"after": "- Box = 300"
+},
+"11-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Bag weights (kg)",
+"labels": [
+"P",
+"Q",
+"R",
+"S"
+],
+"values": [
+6,
+2,
+3,
+5
+],
+"step": 1,
+"showValues": true,
+"alt": "Bag weights (kg)"
+}
+],
+"after": "Use the clues"
+},
+"12-1": {
+"figs": [
+{
+"kind": "money",
+"items": [
+50,
+20,
+10,
+5
+],
+"alt": "₹50 + ₹20 + ₹10 + ₹5 = ₹85"
+}
+],
+"after": "Add the money in each"
+},
+"12-6": {
+"figs": [
+{
+"kind": "money",
+"items": [
+20,
+10,
+5
+],
+"alt": "₹35 change"
+}
+],
+"after": "Then find the change"
+},
+"12-10": {
+"figs": [
+{
+"kind": "money",
+"items": [
+5,
+5
+],
+"alt": "₹5 + ₹5"
+},
+{
+"kind": "money",
+"items": [
+2,
+2,
+2,
+2,
+2
+],
+"alt": "Five ₹2 coins"
+}
+],
+"after": "Try each number"
+},
+"12-13": {
+"figs": [
+{
+"kind": "money",
+"items": [
+5,
+5,
+5,
+2,
+2,
+2
+],
+"alt": "3 coins of ₹5 and 3 coins of ₹2 = ₹21"
+}
+],
+"after": "Try numbers of ₹5"
+},
+"12-19": {
+"figs": [
+{
+"kind": "bars",
+"title": "Savings (₹)",
+"labels": [
+"Day 1",
+"Day 2",
+"Day 3",
+"Day 4"
+],
+"values": [
+5,
+10,
+15,
+20
+],
+"step": 5,
+"showValues": true,
+"alt": "Savings (₹)"
+}
+],
+"after": "She saves ₹5 more"
+},
+"12-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Share (₹)",
+"labels": [
+"Chetan",
+"Bina",
+"Asha"
+],
+"values": [
+10,
+20,
+40
+],
+"step": 10,
+"showValues": true,
+"alt": "Share (₹)"
+}
+],
+"after": "Think in parts"
+},
+"12-P1": {
+"figs": [
+{
+"kind": "money",
+"items": [
+10,
+10,
+5
+],
+"alt": "₹10 + ₹10 + ₹5 = ₹25"
+}
+],
+"after": "Use the biggest coins"
+},
+"13-1": {
+"figs": [
+{
+"kind": "clock",
+"h": 5,
+"m": 30,
+"alt": "A clock showing 5:30"
+}
+],
+"after": "Add the time"
+},
+"13-2": {
+"figs": [
+{
+"kind": "clock",
+"h": 7,
+"m": 15,
+"alt": "A clock showing 7:15"
+}
+],
+"after": "- 30 minutes before"
+},
+"13-3": {
+"figs": [
+{
+"kind": "calendar",
+"month": "March",
+"start": 3,
+"days": 31,
+"marks": [
+{
+"d": 20,
+"colour": "red"
+}
+],
+"alt": "20th March is a Monday"
+}
+],
+"after": "Find the date 20"
+},
+"13-4": {
+"figs": [
+{
+"kind": "calendar",
+"month": "March",
+"start": 3,
+"days": 31,
+"marks": [
+{
+"d": 5,
+"colour": "green"
+},
+{
+"d": 12,
+"colour": "green"
+},
+{
+"d": 19,
+"colour": "green"
+},
+{
+"d": 26,
+"colour": "green"
+}
+],
+"alt": "Sundays: 5, 12, 19, 26"
+}
+],
+"after": "Find the first Sunday"
+},
+"13-5": {
+"figs": [
+{
+"kind": "calendar",
+"month": "March",
+"start": 3,
+"days": 31,
+"marks": [
+{
+"d": 3,
+"colour": "blue"
+},
+{
+"d": 10,
+"colour": "blue"
+},
+{
+"d": 17,
+"colour": "red"
+}
+],
+"alt": "Fridays 3, 10 and 17"
+}
+],
+"after": "Find the Fridays"
+},
+"13-12": {
+"figs": [
+{
+"kind": "clock",
+"h": 6,
+"m": 15,
+"alt": "A clock showing 6:15"
+}
+],
+"after": "Quarter past 6"
+},
+"13-15": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 14,
+"cols": 7,
+"marks": [
+{
+"v": 1,
+"colour": "blue"
+},
+{
+"v": 4,
+"colour": "blue"
+},
+{
+"v": 7,
+"colour": "blue"
+},
+{
+"v": 10,
+"colour": "blue"
+},
+{
+"v": 13,
+"colour": "blue"
+},
+{
+"v": 9,
+"colour": "red"
+}
+],
+"alt": "Swimming days 1, 4, 7, 10, 13"
+}
+],
+"after": "He swims every 3rd"
+},
+"13-18": {
+"figs": [
+{
+"kind": "clock",
+"h": 8,
+"m": 30,
+"alt": "8:30 at night"
+}
+],
+"after": "Count back 10 hours"
+},
+"13-20": {
+"figs": [
+{
+"kind": "clock",
+"h": 6,
+"m": 0,
+"alt": "A clock showing 6:00"
+}
+],
+"after": "Opposite directions"
+},
+"14-1": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 4,
+"cols": 4,
+"items": [
+{
+"r": 3,
+"c": 0,
+"icon": "🚪"
+},
+{
+"r": 0,
+"c": 2,
+"icon": "🍔"
+}
+],
+"alt": "Gate A1 → up 3 → right 2 → C4",
+"path": [
+[
+3,
+0
+],
+[
+0,
+0
+],
+[
+0,
+2
+]
+]
+}
+],
+"after": "Start at the Gate"
+},
+"14-3": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 4,
+"cols": 4,
+"items": [
+{
+"r": 1,
+"c": 1,
+"icon": "🧸"
+},
+{
+"r": 3,
+"c": 3,
+"icon": "⛵"
+}
+],
+"alt": "B3 → D3 → D1: 4 boxes",
+"path": [
+[
+1,
+1
+],
+[
+1,
+3
+],
+[
+3,
+3
+]
+]
+}
+],
+"after": "Count the moves"
+},
+"14-5": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+}
+],
+"alt": "North → East → South"
+}
+],
+"after": "Turn right one step"
+},
+"14-11": {
+"figs": [
+{
+"kind": "icons",
+"items": [
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "👧",
+"mark": "tick"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+},
+{
+"icon": "🧑"
+}
+],
+"cols": 11,
+"alt": "6 in front, Riya, 4 behind"
+}
+],
+"after": "Riya is 5th from the back"
+},
+"14-12": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 4,
+"cols": 4,
+"items": [
+{
+"r": 3,
+"c": 0,
+"icon": "🚪"
+},
+{
+"r": 0,
+"c": 2,
+"icon": "🍔"
+}
+],
+"alt": "2 boxes right and 3 boxes up",
+"path": [
+[
+3,
+0
+],
+[
+3,
+2
+],
+[
+0,
+2
+]
+]
+}
+],
+"after": "From A1 to C4"
+},
+"14-16": {
+"figs": [
+{
+"kind": "beads",
+"colours": [
+"red",
+"red",
+"blue"
+],
+"alt": "The repeat: red, red, blue"
+}
+],
+"after": "The pattern red"
+},
+"14-P2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" WBT",
+"R✗✓✗",
+"T✓✗✗",
+"M✗✗✓"
+],
+"colour": "green",
+"alt": "Riya boat, Tinu wheel, Mona train"
+}
+],
+"after": "Use the clues"
+}
+}

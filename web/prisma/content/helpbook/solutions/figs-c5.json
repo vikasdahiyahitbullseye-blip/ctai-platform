@@ -1,0 +1,2595 @@
+{
+"2-1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Chocolates before each customer (working back)",
+"labels": [
+"After 3rd",
+"Before 3rd",
+"Before 2nd",
+"Before 1st"
+],
+"values": [
+2,
+6,
+14,
+30
+],
+"step": 5,
+"showValues": true,
+"alt": "Chocolates before each customer (working back)"
+}
+],
+"after": "Work backwards"
+},
+"2-2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Oranges (working back)",
+"labels": [
+"After Omi",
+"Before Omi",
+"Before Neha",
+"Before Meena"
+],
+"values": [
+3,
+10,
+24,
+52
+],
+"step": 10,
+"showValues": true,
+"alt": "Oranges (working back)"
+}
+],
+"after": "Work backwards"
+},
+"2-3": {
+"figs": [
+{
+"kind": "bars",
+"title": "Members",
+"labels": [
+"Dance",
+"Art",
+"Music",
+"Drama"
+],
+"values": [
+3,
+2,
+4,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Members"
+}
+],
+"after": "The number of members must"
+},
+"2-4": {
+"figs": [
+{
+"kind": "bars",
+"title": "Students",
+"labels": [
+"Cricket",
+"Football",
+"Chess",
+"Hockey"
+],
+"values": [
+12,
+10,
+5,
+3
+],
+"step": 2,
+"showValues": true,
+"alt": "Students"
+}
+],
+"after": "The number of students must"
+},
+"2-7": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 6,
+"colour": "orange",
+"alt": "6 squares' worth of 16 shaded",
+"rows": 4
+}
+],
+"after": "Count the shaded parts"
+},
+"2-8": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 7,
+"colour": "orange",
+"alt": "7 squares' worth of 16 shaded",
+"rows": 4
+}
+],
+"after": "Count the shaded parts"
+},
+"2-9": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 3,
+"colour": "green",
+"alt": "3/8 of the field is not owned"
+}
+],
+"after": "Work out each share"
+},
+"2-10": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 6,
+"shaded": 1,
+"colour": "green",
+"alt": "1/6 of the garden is empty"
+}
+],
+"after": "Work out each share"
+},
+"2-11": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 25,
+"step": 1,
+"labelEvery": 5,
+"marks": [
+{
+"v": 9,
+"label": "Anil",
+"colour": "blue"
+},
+{
+"v": 18,
+"label": "Bela",
+"colour": "green"
+}
+],
+"alt": "Anil 9th, Bela 18th from the left"
+}
+],
+"after": "Change Bela's place"
+},
+"2-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 30,
+"step": 1,
+"labelEvery": 5,
+"marks": [
+{
+"v": 12,
+"label": "Dev",
+"colour": "blue"
+},
+{
+"v": 20,
+"label": "Esha",
+"colour": "green"
+}
+],
+"alt": "Dev 12th, Esha 20th from the front"
+}
+],
+"after": "Change Esha's place"
+},
+"2-19": {
+"figs": [
+{
+"kind": "bars",
+"title": "Chocolates (working back)",
+"labels": [
+"End",
+"Before 4th",
+"Before 3rd",
+"Before 2nd",
+"Start"
+],
+"values": [
+1,
+2,
+4,
+8,
+16
+],
+"step": 2,
+"showValues": true,
+"alt": "Chocolates (working back)"
+}
+],
+"after": "Each customer takes half"
+},
+"2-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Cookies (working back)",
+"labels": [
+"End",
+"Before 3rd",
+"Before 2nd",
+"Start"
+],
+"values": [
+3,
+6,
+12,
+24
+],
+"step": 4,
+"showValues": true,
+"alt": "Cookies (working back)"
+}
+],
+"after": "Each friend takes half"
+},
+"3-1": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+}
+],
+"alt": "N → E → S → E → W → N"
+}
+],
+"after": "Count in quarter turns"
+},
+"3-2": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+}
+],
+"alt": "E → N → S → W → S → E"
+}
+],
+"after": "Count in quarter turns"
+},
+"3-3": {
+"figs": [
+{
+"kind": "clock",
+"h": 12,
+"m": 15,
+"alt": "The minute hand ends at 3"
+}
+],
+"after": "- Total = +1"
+},
+"3-5": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+}
+],
+"alt": "E → N → W → N → W → S → W"
+}
+],
+"after": "Count the turns"
+},
+"3-6": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+}
+],
+"alt": "S → W → N → E → N → E"
+}
+],
+"after": "Count the turns"
+},
+"3-11": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+}
+],
+"alt": "W → E → S → N"
+}
+],
+"after": "Count in quarter turns"
+},
+"3-12": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+}
+],
+"alt": "N → W → E → N"
+}
+],
+"after": "Count in quarter turns"
+},
+"3-15": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+}
+],
+"alt": "Rohan: N → E → S → W"
+},
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 1,
+"colour": "blue",
+"alt": "Right"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+}
+],
+"alt": "Kamini: E → N → W"
+}
+],
+"after": "Work out each final"
+},
+"3-16": {
+"figs": [
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+}
+],
+"alt": "Meena: S → W"
+},
+{
+"kind": "sequence",
+"frames": [
+{
+"kind": "arrow",
+"dir": 3,
+"colour": "blue",
+"alt": "Left"
+},
+{
+"kind": "arrow",
+"dir": 2,
+"colour": "blue",
+"alt": "Down"
+},
+{
+"kind": "arrow",
+"dir": 0,
+"colour": "blue",
+"alt": "Up"
+}
+],
+"alt": "Naveen: W → S → N"
+}
+],
+"after": "Work out each final"
+},
+"4-19": {
+"figs": [
+{
+"kind": "numberline",
+"min": -3,
+"max": 5,
+"step": 1,
+"labelEvery": 1,
+"marks": [
+{
+"v": 0,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": 4,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 1,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 3,
+"label": "",
+"colour": "orange"
+},
+{
+"v": -2,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "+4, −3, +2, −5 ends at −2 (2 km south)"
+}
+],
+"after": "Take north as"
+},
+"4-20": {
+"figs": [
+{
+"kind": "numberline",
+"min": -4,
+"max": 8,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 0,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": 6,
+"label": "",
+"colour": "orange"
+},
+{
+"v": -3,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 2,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 5,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "+6, −9, +5, +3 ends at +5 (5 m east)"
+}
+],
+"after": "Take east as"
+},
+"5-1": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 14,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 5,
+"label": "🥣",
+"colour": "green"
+},
+{
+"v": 8,
+"label": "🥣 rope end",
+"colour": "green"
+},
+{
+"v": 9,
+"label": "🥣",
+"colour": "red"
+},
+{
+"v": 12,
+"label": "🥣",
+"colour": "red"
+}
+],
+"alt": "Bowls at 5 m and 8 m are in reach"
+}
+],
+"after": "The dog can reach"
+},
+"5-3": {
+"figs": [
+{
+"kind": "bars",
+"title": "Throw (m)",
+"labels": [
+"Deepa",
+"Bina",
+"Arun",
+"Chetan"
+],
+"values": [
+58,
+44,
+36,
+29
+],
+"step": 10,
+"showValues": true,
+"alt": "Throw (m)"
+}
+],
+"after": "Longest to shortest"
+},
+"5-4": {
+"figs": [
+{
+"kind": "bars",
+"title": "Jump (cm)",
+"labels": [
+"Uma",
+"Sia",
+"Ria",
+"Tia"
+],
+"values": [
+90,
+105,
+120,
+130
+],
+"step": 20,
+"showValues": true,
+"alt": "Jump (cm)"
+}
+],
+"after": "Lowest to highest"
+},
+"5-9": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 90,
+"step": 10,
+"labelEvery": 3,
+"marks": [
+{
+"v": 0,
+"label": "Fast",
+"colour": "orange"
+},
+{
+"v": 60,
+"label": "Meet",
+"colour": "green"
+},
+{
+"v": 90,
+"label": "Slow",
+"colour": "blue"
+}
+],
+"alt": "They meet 60 m from the faster cyclist"
+}
+],
+"after": "- Split 90 m"
+},
+"5-10": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 100,
+"step": 10,
+"labelEvery": 2,
+"marks": [
+{
+"v": 0,
+"label": "Slow",
+"colour": "blue"
+},
+{
+"v": 40,
+"label": "Meet",
+"colour": "green"
+},
+{
+"v": 100,
+"label": "Fast",
+"colour": "orange"
+}
+],
+"alt": "They meet 40 m from the slower walker"
+}
+],
+"after": "- Split 100 m"
+},
+"5-13": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 100,
+"step": 10,
+"labelEvery": 2,
+"marks": [
+{
+"v": 40,
+"label": "Hut",
+"colour": "blue"
+},
+{
+"v": 70,
+"label": "Sunil",
+"colour": "green"
+},
+{
+"v": 100,
+"label": "Tree",
+"colour": "blue"
+}
+],
+"alt": "Sunil is 70 m east of the beach"
+}
+],
+"after": "Find the middle point"
+},
+"5-14": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 100,
+"step": 10,
+"labelEvery": 2,
+"marks": [
+{
+"v": 30,
+"label": "Temple",
+"colour": "blue"
+},
+{
+"v": 60,
+"label": "Boy",
+"colour": "green"
+},
+{
+"v": 90,
+"label": "School",
+"colour": "blue"
+}
+],
+"alt": "The boy is 60 m west of the river"
+}
+],
+"after": "Find the middle point"
+},
+"5-15": {
+"figs": [
+{
+"kind": "bars",
+"title": "Tree heights (m)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8"
+],
+"values": [
+4,
+7,
+3,
+5,
+6,
+2,
+8,
+9
+],
+"step": 1,
+"showValues": true,
+"alt": "Tree heights (m)"
+}
+],
+"after": "The heights are"
+},
+"5-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Tree heights (m)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9"
+],
+"values": [
+5,
+2,
+6,
+8,
+4,
+7,
+9,
+3,
+1
+],
+"step": 1,
+"showValues": true,
+"alt": "Tree heights (m)"
+}
+],
+"after": "The heights are"
+},
+"5-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Height (units)",
+"labels": [
+"Cup",
+"Lamp",
+"Vase"
+],
+"values": [
+5,
+8,
+10
+],
+"step": 2,
+"showValues": true,
+"alt": "Height (units)"
+}
+],
+"after": "Start with the cup"
+},
+"5-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Height (units)",
+"labels": [
+"Pencil",
+"Book",
+"Box"
+],
+"values": [
+5,
+9,
+11
+],
+"step": 2,
+"showValues": true,
+"alt": "Height (units)"
+}
+],
+"after": "Start with the book"
+},
+"6-11": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" 12345",
+"A●●○●○",
+"B●●○●○",
+"C○○○○○",
+"D●●○●○",
+"E●●○●○",
+"F●●○●○"
+],
+"colour": "blue",
+"alt": "Taken seats ●: 5 rows × 3 columns"
+}
+],
+"after": "A seat is taken"
+},
+"6-12": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" 123456",
+"A●○●●○●",
+"B●○●●○●",
+"C○○○○○○",
+"D●○●●○●",
+"E●○●●○●",
+"F○○○○○○",
+"G●○●●○●",
+"H●○●●○●"
+],
+"colour": "green",
+"alt": "Taken seats ●: 6 rows × 4 columns"
+}
+],
+"after": "A seat is taken"
+},
+"6-17": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪"
+],
+"colour": "orange",
+"alt": "4 rows of 7 desks"
+}
+],
+"after": "After the changes"
+},
+"6-18": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"▪▪▪▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪▪▪▪",
+"▪▪▪▪▪▪▪▪▪▪"
+],
+"colour": "orange",
+"alt": "5 rows of 10 chairs"
+}
+],
+"after": "After the changes"
+},
+"8-5": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"Sam",
+"Bob",
+"John"
+],
+"values": [
+27,
+30,
+35
+],
+"step": 5,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "Sam is 3 kg lighter"
+},
+"8-6": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"Tina",
+"Uma",
+"Vera"
+],
+"values": [
+31,
+35,
+41
+],
+"step": 5,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "Compare Tina"
+},
+"8-11": {
+"figs": [
+{
+"kind": "jug",
+"max": 4,
+"step": 1,
+"labelEvery": 1,
+"level": 3,
+"unit": "L",
+"alt": "3 L of water, 1 L empty"
+}
+],
+"after": "Share the water"
+},
+"8-12": {
+"figs": [
+{
+"kind": "jug",
+"max": 6,
+"step": 1,
+"labelEvery": 1,
+"level": 4,
+"unit": "L",
+"alt": "4 L of juice, 2 L empty"
+}
+],
+"after": "Share the juice"
+},
+"8-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"P",
+"Q",
+"R"
+],
+"values": [
+16,
+16,
+22
+],
+"step": 4,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "P and Q weigh"
+},
+"8-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weight (kg)",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+10,
+15,
+15
+],
+"step": 5,
+"showValues": true,
+"alt": "Weight (kg)"
+}
+],
+"after": "B and C weigh"
+},
+"8-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Weights in the series (kg)",
+"labels": [
+"1st",
+"2nd",
+"3rd",
+"4th",
+"5th"
+],
+"values": [
+2,
+5,
+10,
+17,
+26
+],
+"step": 5,
+"showValues": true,
+"alt": "Weights in the series (kg)"
+}
+],
+"after": "Find the differences"
+},
+"8-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Capacities in the series (L)",
+"labels": [
+"1st",
+"2nd",
+"3rd",
+"4th",
+"5th",
+"6th"
+],
+"values": [
+1,
+2,
+4,
+7,
+11,
+16
+],
+"step": 2,
+"showValues": true,
+"alt": "Capacities in the series (L)"
+}
+],
+"after": "Find the differences"
+},
+"9-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Values",
+"labels": [
+"A",
+"B",
+"C",
+"D",
+"E",
+"F"
+],
+"values": [
+7,
+6,
+9,
+12,
+14,
+17
+],
+"step": 3,
+"showValues": true,
+"alt": "Values"
+}
+],
+"after": "Work out the values"
+},
+"9-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Values",
+"labels": [
+"P",
+"Q",
+"R",
+"S",
+"T",
+"U"
+],
+"values": [
+15,
+11,
+12,
+16,
+17,
+24
+],
+"step": 4,
+"showValues": true,
+"alt": "Values"
+}
+],
+"after": "Work out the values"
+},
+"11-7": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 8,
+"colour": "blue",
+"alt": "8 of 16 squares: half",
+"rows": 4
+}
+],
+"after": "A 4 × 4 grid has 16"
+},
+"11-8": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 4,
+"colour": "blue",
+"alt": "4 of 16 squares: one quarter",
+"rows": 4
+}
+],
+"after": "A 4 × 4 grid has 16"
+},
+"11-17": {
+"figs": [
+{
+"kind": "pixels",
+"n": 6,
+"cells": [
+[
+0,
+0,
+"red"
+],
+[
+0,
+1,
+"red"
+],
+[
+0,
+2,
+"red"
+],
+[
+0,
+3,
+"red"
+],
+[
+0,
+4,
+"red"
+],
+[
+0,
+5,
+"red"
+],
+[
+1,
+0,
+"red"
+],
+[
+1,
+5,
+"red"
+],
+[
+2,
+0,
+"red"
+],
+[
+2,
+5,
+"red"
+],
+[
+3,
+0,
+"red"
+],
+[
+3,
+5,
+"red"
+],
+[
+4,
+0,
+"red"
+],
+[
+4,
+5,
+"red"
+],
+[
+5,
+0,
+"red"
+],
+[
+5,
+1,
+"red"
+],
+[
+5,
+2,
+"red"
+],
+[
+5,
+3,
+"red"
+],
+[
+5,
+4,
+"red"
+],
+[
+5,
+5,
+"red"
+],
+[
+1,
+1,
+"yellow"
+],
+[
+1,
+2,
+"yellow"
+],
+[
+1,
+3,
+"yellow"
+],
+[
+1,
+4,
+"yellow"
+],
+[
+2,
+1,
+"yellow"
+],
+[
+2,
+2,
+"yellow"
+],
+[
+2,
+3,
+"yellow"
+],
+[
+2,
+4,
+"yellow"
+],
+[
+3,
+1,
+"yellow"
+],
+[
+3,
+2,
+"yellow"
+],
+[
+3,
+3,
+"yellow"
+],
+[
+3,
+4,
+"yellow"
+],
+[
+4,
+1,
+"yellow"
+],
+[
+4,
+2,
+"yellow"
+],
+[
+4,
+3,
+"yellow"
+],
+[
+4,
+4,
+"yellow"
+]
+],
+"alt": "Red border, 4 × 4 = 16 yellow inside"
+}
+],
+"after": "The border takes 1"
+},
+"11-18": {
+"figs": [
+{
+"kind": "pixels",
+"n": 8,
+"cells": [
+[
+0,
+0,
+"red"
+],
+[
+0,
+1,
+"red"
+],
+[
+0,
+2,
+"red"
+],
+[
+0,
+3,
+"red"
+],
+[
+0,
+4,
+"red"
+],
+[
+0,
+5,
+"red"
+],
+[
+0,
+6,
+"red"
+],
+[
+0,
+7,
+"red"
+],
+[
+1,
+0,
+"red"
+],
+[
+1,
+1,
+"red"
+],
+[
+1,
+2,
+"red"
+],
+[
+1,
+3,
+"red"
+],
+[
+1,
+4,
+"red"
+],
+[
+1,
+5,
+"red"
+],
+[
+1,
+6,
+"red"
+],
+[
+1,
+7,
+"red"
+],
+[
+2,
+0,
+"red"
+],
+[
+2,
+1,
+"red"
+],
+[
+2,
+6,
+"red"
+],
+[
+2,
+7,
+"red"
+],
+[
+3,
+0,
+"red"
+],
+[
+3,
+1,
+"red"
+],
+[
+3,
+6,
+"red"
+],
+[
+3,
+7,
+"red"
+],
+[
+4,
+0,
+"red"
+],
+[
+4,
+1,
+"red"
+],
+[
+4,
+6,
+"red"
+],
+[
+4,
+7,
+"red"
+],
+[
+5,
+0,
+"red"
+],
+[
+5,
+1,
+"red"
+],
+[
+5,
+6,
+"red"
+],
+[
+5,
+7,
+"red"
+],
+[
+6,
+0,
+"red"
+],
+[
+6,
+1,
+"red"
+],
+[
+6,
+2,
+"red"
+],
+[
+6,
+3,
+"red"
+],
+[
+6,
+4,
+"red"
+],
+[
+6,
+5,
+"red"
+],
+[
+6,
+6,
+"red"
+],
+[
+6,
+7,
+"red"
+],
+[
+7,
+0,
+"red"
+],
+[
+7,
+1,
+"red"
+],
+[
+7,
+2,
+"red"
+],
+[
+7,
+3,
+"red"
+],
+[
+7,
+4,
+"red"
+],
+[
+7,
+5,
+"red"
+],
+[
+7,
+6,
+"red"
+],
+[
+7,
+7,
+"red"
+],
+[
+2,
+2,
+"yellow"
+],
+[
+2,
+3,
+"yellow"
+],
+[
+2,
+4,
+"yellow"
+],
+[
+2,
+5,
+"yellow"
+],
+[
+3,
+2,
+"yellow"
+],
+[
+3,
+3,
+"yellow"
+],
+[
+3,
+4,
+"yellow"
+],
+[
+3,
+5,
+"yellow"
+],
+[
+4,
+2,
+"yellow"
+],
+[
+4,
+3,
+"yellow"
+],
+[
+4,
+4,
+"yellow"
+],
+[
+4,
+5,
+"yellow"
+],
+[
+5,
+2,
+"yellow"
+],
+[
+5,
+3,
+"yellow"
+],
+[
+5,
+4,
+"yellow"
+],
+[
+5,
+5,
+"yellow"
+]
+],
+"alt": "Red border 2 wide; 4 × 4 = 16 yellow inside"
+}
+],
+"after": "The border is 2 tiles"
+},
+"12-1": {
+"figs": [
+{
+"kind": "clock",
+"h": 12,
+"m": 15,
+"alt": "The lunch break ends at 12:15"
+}
+],
+"after": "Add the times"
+},
+"12-2": {
+"figs": [
+{
+"kind": "clock",
+"h": 4,
+"m": 45,
+"alt": "The snack break ends at 4:45"
+}
+],
+"after": "Add the times"
+},
+"12-3": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 42,
+"step": 7,
+"labelEvery": 2,
+"marks": [
+{
+"v": 0,
+"label": "1st ON",
+"colour": "green"
+},
+{
+"v": 14,
+"label": "2nd",
+"colour": "green"
+},
+{
+"v": 28,
+"label": "3rd",
+"colour": "green"
+},
+{
+"v": 42,
+"label": "4th",
+"colour": "green"
+}
+],
+"alt": "ON every 14 minutes after 6:00"
+}
+],
+"after": "One ON–OFF cycle"
+},
+"12-4": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 32,
+"step": 4,
+"labelEvery": 2,
+"marks": [
+{
+"v": 0,
+"label": "1",
+"colour": "green"
+},
+{
+"v": 8,
+"label": "2",
+"colour": "green"
+},
+{
+"v": 16,
+"label": "3",
+"colour": "green"
+},
+{
+"v": 24,
+"label": "4",
+"colour": "green"
+},
+{
+"v": 32,
+"label": "5",
+"colour": "green"
+}
+],
+"alt": "ON every 8 minutes after 7:30"
+}
+],
+"after": "One ON–OFF cycle"
+},
+"12-9": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 50,
+"step": 5,
+"labelEvery": 2,
+"marks": [
+{
+"v": 10,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 15,
+"label": "C",
+"colour": "blue"
+},
+{
+"v": 30,
+"label": "B",
+"colour": "blue"
+},
+{
+"v": 50,
+"label": "D",
+"colour": "green"
+}
+],
+"alt": "Minutes after 5:00: D comes last"
+}
+],
+"after": "Work out each arrival"
+},
+"12-10": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 45,
+"step": 5,
+"labelEvery": 3,
+"marks": [
+{
+"v": 0,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 15,
+"label": "D",
+"colour": "green"
+},
+{
+"v": 20,
+"label": "C",
+"colour": "blue"
+},
+{
+"v": 45,
+"label": "B",
+"colour": "blue"
+}
+],
+"alt": "Minutes after 4:00: D comes second"
+}
+],
+"after": "Work out each arrival"
+},
+"12-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Pages in 1 hour",
+"labels": [
+"Raj",
+"Sia",
+"Tom",
+"Uma"
+],
+"values": [
+12,
+10,
+15,
+10
+],
+"step": 3,
+"showValues": true,
+"alt": "Pages in 1 hour"
+}
+],
+"after": "Find the pages"
+},
+"12-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Pictures in 1 hour",
+"labels": [
+"Ann",
+"Ben",
+"Cy",
+"Dee"
+],
+"values": [
+15,
+10,
+15,
+20
+],
+"step": 5,
+"showValues": true,
+"alt": "Pictures in 1 hour"
+}
+],
+"after": "Find the pictures"
+},
+"12-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Finishing time (seconds)",
+"labels": [
+"Anil",
+"Bina"
+],
+"values": [
+60,
+54
+],
+"step": 10,
+"showValues": true,
+"alt": "Finishing time (seconds)"
+}
+],
+"after": "Find when each one"
+},
+"12-19": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 60,
+"step": 5,
+"labelEvery": 3,
+"marks": [
+{
+"v": 15,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 30,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 45,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 20,
+"label": "B",
+"colour": "orange"
+},
+{
+"v": 40,
+"label": "B",
+"colour": "orange"
+},
+{
+"v": 60,
+"label": "A + B",
+"colour": "green"
+}
+],
+"alt": "Minutes after 6:00: both at 60"
+}
+],
+"after": "List the times"
+},
+"12-20": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 36,
+"step": 2,
+"labelEvery": 3,
+"marks": [
+{
+"v": 12,
+"label": "P",
+"colour": "blue"
+},
+{
+"v": 24,
+"label": "P",
+"colour": "blue"
+},
+{
+"v": 18,
+"label": "Q",
+"colour": "orange"
+},
+{
+"v": 36,
+"label": "P + Q",
+"colour": "green"
+}
+],
+"alt": "Minutes after 8:00: both at 36"
+}
+],
+"after": "List the times"
+},
+"14-3": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 6,
+"cols": 7,
+"items": [
+{
+"r": 3,
+"c": 2,
+"icon": "🏠"
+},
+{
+"r": 5,
+"c": 0,
+"icon": "⭐"
+}
+],
+"alt": "Q → P → R → S → T: T is south-west of Q",
+"path": [
+[
+3,
+2
+],
+[
+3,
+6
+],
+[
+0,
+6
+],
+[
+0,
+0
+],
+[
+5,
+0
+]
+]
+}
+],
+"after": "Put Q at (0, 0)"
+},
+"14-4": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 6,
+"cols": 8,
+"items": [
+{
+"r": 5,
+"c": 3,
+"icon": "🏠"
+},
+{
+"r": 3,
+"c": 7,
+"icon": "⭐"
+}
+],
+"alt": "A → B → C → D → E: E is north-east of A",
+"path": [
+[
+5,
+3
+],
+[
+0,
+3
+],
+[
+0,
+0
+],
+[
+3,
+0
+],
+[
+3,
+7
+]
+]
+}
+],
+"after": "Put A at (0, 0)"
+},
+"14-13": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 6,
+"cols": 8,
+"items": [
+{
+"r": 5,
+"c": 0,
+"icon": "🧒"
+},
+{
+"r": 2,
+"c": 7,
+"icon": "⭐"
+}
+],
+"alt": "5 N, 3 E, 2 S, 4 E: 7 steps east",
+"path": [
+[
+5,
+0
+],
+[
+0,
+0
+],
+[
+0,
+3
+],
+[
+2,
+3
+],
+[
+2,
+7
+]
+],
+"compass": true
+}
+],
+"after": "Follow his walk"
+},
+"14-14": {
+"figs": [
+{
+"kind": "gridmap",
+"rows": 10,
+"cols": 7,
+"items": [
+{
+"r": 9,
+"c": 0,
+"icon": "🧒"
+},
+{
+"r": 0,
+"c": 4,
+"icon": "⭐"
+}
+],
+"alt": "6 E, 4 N, 2 W, 5 N: 9 steps north",
+"path": [
+[
+9,
+0
+],
+[
+9,
+6
+],
+[
+5,
+6
+],
+[
+5,
+4
+],
+[
+0,
+4
+]
+],
+"compass": true
+}
+],
+"after": "Follow his walk"
+},
+"15-3": {
+"figs": [
+{
+"kind": "bars",
+"title": "Trees planted",
+"labels": [
+"Team A",
+"Team B"
+],
+"values": [
+35,
+25
+],
+"step": 5,
+"showValues": true,
+"alt": "Trees planted"
+}
+],
+"after": "Use the key"
+},
+"15-4": {
+"figs": [
+{
+"kind": "bars",
+"title": "Trees planted",
+"labels": [
+"Team X",
+"Team Y",
+"Team Z"
+],
+"values": [
+25,
+15,
+30
+],
+"step": 5,
+"showValues": true,
+"alt": "Trees planted"
+}
+],
+"after": "Use the key"
+},
+"15-5": {
+"figs": [
+{
+"kind": "bars",
+"title": "Items packed",
+"labels": [
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri"
+],
+"values": [
+35,
+33,
+34,
+39,
+29
+],
+"step": 5,
+"showValues": true,
+"alt": "Items packed"
+}
+],
+"after": "Add the bags"
+},
+"15-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Tower heights (leaders: 3, 5, 6, 7, 8)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8"
+],
+"values": [
+3,
+5,
+2,
+6,
+4,
+7,
+7,
+8
+],
+"step": 1,
+"showValues": true,
+"alt": "Tower heights (leaders: 3, 5, 6, 7, 8)"
+}
+],
+"after": "Go from left to right"
+},
+"15-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Tower heights (leaders: 4, 6, 9, 10)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9"
+],
+"values": [
+4,
+2,
+6,
+5,
+9,
+3,
+7,
+10,
+8
+],
+"step": 2,
+"showValues": true,
+"alt": "Tower heights (leaders: 4, 6, 9, 10)"
+}
+],
+"after": "Go from left to right"
+},
+"15-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Blocks",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+6,
+9,
+12
+],
+"step": 3,
+"showValues": true,
+"alt": "Blocks"
+}
+],
+"after": "Think of A as 1 part"
+},
+"15-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Coins",
+"labels": [
+"P",
+"Q",
+"R"
+],
+"values": [
+7,
+9,
+14
+],
+"step": 2,
+"showValues": true,
+"alt": "Coins"
+}
+],
+"after": "Think of P as 1 part"
+},
+"15-19": {
+"figs": [
+{
+"kind": "venn",
+"left": "Football",
+"right": "Chess",
+"a": "14",
+"both": "8",
+"b": "10",
+"alt": "8 play neither",
+"outside": "8"
+}
+],
+"after": "The 8 who play both"
+},
+"15-P2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Squares in each stack",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6"
+],
+"values": [
+1,
+2,
+4,
+7,
+11,
+16
+],
+"step": 2,
+"showValues": true,
+"alt": "Squares in each stack"
+}
+],
+"after": "Find the differences"
+}
+}

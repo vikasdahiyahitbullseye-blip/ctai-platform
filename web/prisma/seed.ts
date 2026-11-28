@@ -26,7 +26,7 @@ import { generateBalanced, type ChapterStats } from "./content/gen/v3";
 import { generateBookSets } from "./content/gen/v3/book";
 import { buildClassLibrary } from "../src/lib/library";
 import { cbseQuestions } from "./content/cbse";
-import { HELPBOOK, helpbookRef, solutionWithAnswer, workedSolution } from "./content/helpbook";
+import { HELPBOOK, helpbookRef, solutionWithAnswer, workedSolution, workedFigures } from "./content/helpbook";
 
 const db = new PrismaClient();
 const rand = rng(2026);
@@ -124,6 +124,7 @@ async function main() {
       data: {
         code: `HB-${r.c}-CT-${String(r.ch).padStart(2, "0")}-${r.label}`, classLevel: r.c, chapterId: chapterId[key], skills: r.skills.join(","), type: "MCQ",
         difficulty: r.d, stem: r.stem, options: JSON.stringify(r.options), answer: JSON.stringify(r.answer), solution: finishSolution({ type: "MCQ", options: r.options, answer: r.answer, solution: workedSolution(r) ?? solutionWithAnswer(r) }),
+        solutionFigures: workedFigures(r)?.length ? JSON.stringify(workedFigures(r)) : null,
         marks: r.d === 3 ? 2 : 1, timeSec: 60 + r.d * 30, isPuzzle: r.label.startsWith("P"),
         figure: r.fig ? JSON.stringify({ kind: "image", src: r.fig[0], w: r.fig[1], h: r.fig[2], alt: `Figure for: ${r.stem.slice(0, 120)}` }) : null,
         source: "AUTHORED", family: "HELPBOOK", sourceRef: helpbookRef(r), approval: "APPROVED", approvedAt: new Date(),

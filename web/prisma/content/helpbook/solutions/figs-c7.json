@@ -1,0 +1,793 @@
+{
+"1-19": {
+"figs": [
+{
+"kind": "numberline",
+"min": 99250,
+"max": 100250,
+"step": 125,
+"labelEvery": 2,
+"marks": [
+{
+"v": 100000,
+"label": "1 lakh",
+"colour": "red"
+},
+{
+"v": 100125,
+"label": "first above",
+"colour": "green"
+}
+],
+"alt": "99,250 + 6 × 125 = 1,00,000; one more step 1,00,125"
+}
+],
+"after": "Find how much more"
+},
+"1-P1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Column sums",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+9,
+10,
+10
+],
+"step": 2,
+"showValues": true,
+"alt": "Column sums"
+}
+],
+"after": "Column A has three"
+},
+"2-5": {
+"figs": [
+{
+"kind": "bars",
+"title": "Passengers (working back)",
+"labels": [
+"End",
+"Before stop 3",
+"At the start"
+],
+"values": [
+30,
+60,
+54
+],
+"step": 10,
+"showValues": true,
+"alt": "Passengers (working back)"
+}
+],
+"after": "Work backwards"
+},
+"2-6": {
+"figs": [
+{
+"kind": "bars",
+"title": "Passengers (working back)",
+"labels": [
+"End",
+"Before stop 3",
+"At the start"
+],
+"values": [
+20,
+30,
+29
+],
+"step": 5,
+"showValues": true,
+"alt": "Passengers (working back)"
+}
+],
+"after": "Work backwards"
+},
+"2-9": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value after the swap",
+"labels": [
+"× and +",
+"+ and −",
+"− and ×",
+"No change"
+],
+"values": [
+2,
+19,
+5,
+23
+],
+"step": 5,
+"showValues": true,
+"alt": "Value after the swap"
+}
+],
+"after": "Try every swap"
+},
+"2-10": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value after the swap",
+"labels": [
+"× and +",
+"+ and −",
+"− and ×",
+"No change"
+],
+"values": [
+80,
+146,
+72,
+140
+],
+"step": 20,
+"showValues": true,
+"alt": "Value after the swap"
+}
+],
+"after": "Try every swap"
+},
+"2-15": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value at END",
+"labels": [
+"Hole 1",
+"Hole 2",
+"Hole 3",
+"Hole 4",
+"Hole 5"
+],
+"values": [
+22,
+62,
+39,
+30,
+10
+],
+"step": 10,
+"showValues": true,
+"alt": "Value at END"
+}
+],
+"after": "Follow the stone"
+},
+"2-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Value at END",
+"labels": [
+"Hole 1",
+"Hole 2",
+"Hole 3",
+"Hole 4",
+"Hole 5"
+],
+"values": [
+15,
+72,
+76,
+25,
+34
+],
+"step": 10,
+"showValues": true,
+"alt": "Value at END"
+}
+],
+"after": "Follow the stone"
+},
+"3-11": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 1,
+"step": 0.1,
+"labelEvery": 1,
+"marks": [
+{
+"v": 0,
+"label": "P",
+"colour": "blue"
+},
+{
+"v": 0.3,
+"label": "Q",
+"colour": "blue"
+},
+{
+"v": 0.5,
+"label": "R",
+"colour": "blue"
+},
+{
+"v": 0.7,
+"label": "S",
+"colour": "blue"
+}
+],
+"alt": "P 0, Q 0.3, R 0.5, S 0.7",
+"decimals": 1
+}
+],
+"after": "To keep the sum small"
+},
+"3-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 1,
+"step": 0.1,
+"labelEvery": 1,
+"marks": [
+{
+"v": 0.4,
+"label": "A",
+"colour": "blue"
+},
+{
+"v": 0.6,
+"label": "C",
+"colour": "blue"
+},
+{
+"v": 0.8,
+"label": "D",
+"colour": "blue"
+},
+{
+"v": 1,
+"label": "B",
+"colour": "blue"
+}
+],
+"alt": "A 0.4, C 0.6, D 0.8, B 1.0",
+"decimals": 1
+}
+],
+"after": "To make the sum large"
+},
+"3-A1": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+0,
+1,
+1,
+0
+],
+"alt": "Binary cards 10110"
+}
+]
+},
+"3-A2": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+1,
+0,
+1,
+1
+],
+"alt": "Binary cards 11011"
+}
+]
+},
+"3-A5": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+0,
+1,
+1,
+0,
+1
+],
+"alt": "Binary cards 01101"
+}
+]
+},
+"3-A6": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+1,
+0,
+0,
+0
+],
+"alt": "Binary cards 11000"
+}
+]
+},
+"3-A7": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+0,
+1,
+0,
+1,
+1
+],
+"alt": "Binary cards 01011"
+}
+]
+},
+"3-A8": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+0,
+1,
+1,
+1
+],
+"alt": "Binary cards 10111"
+}
+]
+},
+"4-P1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"397",
+"514",
+"862"
+],
+"colour": "blue",
+"alt": "No neighbours differ by 1"
+}
+],
+"after": "No two cells"
+},
+"5-1": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 0,
+"colour": "blue",
+"alt": "A 4 × 4 grid",
+"rows": 4
+}
+],
+"after": "The lines make a 4"
+},
+"5-2": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 25,
+"shaded": 0,
+"colour": "blue",
+"alt": "A 5 × 5 grid",
+"rows": 5
+}
+],
+"after": "The lines make a 5"
+},
+"5-13": {
+"figs": [
+{
+"kind": "angle",
+"deg": 70,
+"colour": "blue",
+"alt": "70° angle"
+},
+{
+"kind": "angle",
+"deg": 110,
+"colour": "orange",
+"alt": "110° angle"
+}
+],
+"after": "Vertically opposite angles"
+},
+"5-14": {
+"figs": [
+{
+"kind": "angle",
+"deg": 95,
+"colour": "blue",
+"alt": "95° angle"
+},
+{
+"kind": "angle",
+"deg": 85,
+"colour": "orange",
+"alt": "85° angle"
+}
+],
+"after": "Adjacent angles on a straight"
+},
+"5-15": {
+"figs": [
+{
+"kind": "angle",
+"deg": 125,
+"colour": "green",
+"alt": "125° angle"
+},
+{
+"kind": "angle",
+"deg": 100,
+"colour": "red",
+"alt": "100° angle"
+}
+],
+"after": "Angles next to each other"
+},
+"5-16": {
+"figs": [
+{
+"kind": "angle",
+"deg": 145,
+"colour": "green",
+"alt": "145° angle"
+},
+{
+"kind": "angle",
+"deg": 115,
+"colour": "red",
+"alt": "115° angle"
+}
+],
+"after": "Angles next to each other"
+},
+"6-19": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"963",
+"147",
+"852"
+],
+"colour": "green",
+"alt": "Rows 3, 6, 9 / 1, 4, 7 / 2, 5, 8"
+}
+],
+"after": "In a row, neighbours"
+},
+"6-20": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"147",
+"369",
+"258"
+],
+"colour": "green",
+"alt": "Rows 1, 4, 7 / 3, 6, 9 / 2, 5, 8"
+}
+],
+"after": "Each row is 1, 4, 7"
+},
+"7-11": {
+"figs": [
+{
+"kind": "angle",
+"deg": 30,
+"colour": "blue",
+"alt": "30° angle"
+},
+{
+"kind": "angle",
+"deg": 60,
+"colour": "orange",
+"alt": "60° angle"
+},
+{
+"kind": "angle",
+"deg": 90,
+"colour": "green",
+"alt": "90° angle"
+}
+],
+"after": "The angles of a triangle"
+},
+"7-12": {
+"figs": [
+{
+"kind": "angle",
+"deg": 100,
+"colour": "red",
+"alt": "100° angle"
+},
+{
+"kind": "angle",
+"deg": 40,
+"colour": "blue",
+"alt": "40° angle"
+}
+],
+"after": "Two angles of an isosceles"
+},
+"7-P1": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"●●○",
+"●○●",
+"○●●"
+],
+"colour": "blue",
+"alt": "6 circles, no three in a line"
+}
+],
+"after": "Each row of 3 can hold"
+},
+"8-1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sweets",
+"labels": [
+"Maya",
+"Neha",
+"Omar"
+],
+"values": [
+18,
+9,
+18
+],
+"step": 3,
+"showValues": true,
+"alt": "Sweets"
+}
+],
+"after": "Work with fractions"
+},
+"8-2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sweets",
+"labels": [
+"Kabir",
+"Tara",
+"Dev"
+],
+"values": [
+15,
+18,
+27
+],
+"step": 5,
+"showValues": true,
+"alt": "Sweets"
+}
+],
+"after": "Work with fractions"
+},
+"8-3": {
+"figs": [
+{
+"kind": "bars",
+"title": "Passengers (working back)",
+"labels": [
+"After Jaipur",
+"Before Jaipur",
+"Before the 24",
+"At Delhi"
+],
+"values": [
+52,
+104,
+80,
+120
+],
+"step": 20,
+"showValues": true,
+"alt": "Passengers (working back)"
+}
+],
+"after": "Work backwards"
+},
+"8-4": {
+"figs": [
+{
+"kind": "bars",
+"title": "Passengers (working back)",
+"labels": [
+"After Jaipur",
+"Before Jaipur",
+"Before the 30",
+"At Delhi"
+],
+"values": [
+60,
+90,
+60,
+75
+],
+"step": 15,
+"showValues": true,
+"alt": "Passengers (working back)"
+}
+],
+"after": "Work backwards"
+},
+"8-7": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 4,
+"colour": "green",
+"alt": "4 of 16 squares: 1/4",
+"rows": 4
+}
+],
+"after": "Count the small squares"
+},
+"8-8": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "grid",
+"parts": 16,
+"shaded": 12,
+"colour": "green",
+"alt": "12 of 16 squares: 3/4",
+"rows": 4
+}
+],
+"after": "Count the small squares"
+},
+"8-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Days from each batch",
+"labels": [
+"150 chalks",
+"25 new",
+"4 new"
+],
+"values": [
+150,
+25,
+4
+],
+"step": 25,
+"showValues": true,
+"alt": "Days from each batch"
+}
+],
+"after": "Each used chalk"
+},
+"8-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Days from each batch",
+"labels": [
+"64",
+"16 new",
+"4 new",
+"1 new"
+],
+"values": [
+64,
+16,
+4,
+1
+],
+"step": 8,
+"showValues": true,
+"alt": "Days from each batch"
+}
+],
+"after": "Each used chalk"
+},
+"8-15": {
+"figs": [
+{
+"kind": "bars",
+"title": "Flowers under the frame",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6"
+],
+"values": [
+1,
+1,
+2,
+4,
+3,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Flowers under the frame"
+}
+],
+"after": "One-third of 9 cells"
+},
+"8-16": {
+"figs": [
+{
+"kind": "bars",
+"title": "Flowers under the frame",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9"
+],
+"values": [
+1,
+1,
+2,
+1,
+1,
+3,
+3,
+3,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Flowers under the frame"
+}
+],
+"after": "One-third of 9 cells"
+},
+"8-19": {
+"figs": [
+{
+"kind": "jug",
+"max": 150,
+"step": 30,
+"labelEvery": 1,
+"level": 120,
+"unit": "L",
+"alt": "3/5 full (90 L) + 30 L = 4/5 full"
+}
+],
+"after": "The 30 litres fill"
+}
+}

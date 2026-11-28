@@ -1,0 +1,888 @@
+{
+"1-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Outputs",
+"labels": [
+"3",
+"4",
+"5"
+],
+"values": [
+16,
+121,
+400
+],
+"step": 50,
+"showValues": true,
+"alt": "Outputs"
+}
+],
+"after": "Put each input"
+},
+"1-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Outputs",
+"labels": [
+"1",
+"7"
+],
+"values": [
+64,
+512
+],
+"step": 100,
+"showValues": true,
+"alt": "Outputs"
+}
+],
+"after": "Put each input"
+},
+"3-5": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"L",
+"TTh",
+"Th",
+"H",
+"T",
+"O"
+],
+"beads": [
+4,
+6,
+2,
+0,
+4,
+5
+],
+"alt": "4,62,045"
+}
+],
+"after": "- New number"
+},
+"3-6": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"L",
+"TTh",
+"Th",
+"H",
+"T",
+"O"
+],
+"beads": [
+4,
+2,
+7,
+0,
+3,
+9
+],
+"alt": "4,27,039"
+}
+],
+"after": "- New number"
+},
+"3-11": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"T",
+"O"
+],
+"beads": [
+5,
+7
+],
+"alt": "57"
+},
+{
+"kind": "abacus",
+"labels": [
+"T",
+"O"
+],
+"beads": [
+5,
+3
+],
+"alt": "53"
+}
+],
+"after": "- Moving a ball"
+},
+"3-12": {
+"figs": [
+{
+"kind": "abacus",
+"labels": [
+"T",
+"O"
+],
+"beads": [
+4,
+8
+],
+"alt": "48"
+},
+{
+"kind": "abacus",
+"labels": [
+"T",
+"O"
+],
+"beads": [
+3,
+6
+],
+"alt": "36"
+}
+],
+"after": "- Moving a ball"
+},
+"3-A3": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+0,
+1,
+1,
+0,
+1
+],
+"alt": "Binary cards 101101"
+}
+]
+},
+"3-A4": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+0,
+1,
+1,
+0,
+1,
+0
+],
+"alt": "Binary cards 1011010"
+}
+]
+},
+"3-A5": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+1,
+0,
+1
+],
+"alt": "Binary cards 1101"
+}
+]
+},
+"3-A6": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+1,
+0,
+0,
+1
+],
+"alt": "Binary cards 11001"
+}
+]
+},
+"3-A7": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+0,
+1,
+1,
+0,
+1
+],
+"alt": "Binary cards 101101"
+}
+]
+},
+"3-A8": {
+"figs": [
+{
+"kind": "binary",
+"bits": [
+1,
+1,
+0,
+0,
+1,
+1
+],
+"alt": "Binary cards 110011"
+}
+]
+},
+"3-P1": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 400,
+"step": 25,
+"labelEvery": 2,
+"marks": [
+{
+"v": 50,
+"label": "A start",
+"colour": "blue"
+},
+{
+"v": 150,
+"label": "B start",
+"colour": "orange"
+},
+{
+"v": 250,
+"label": "A, B",
+"colour": "green"
+}
+],
+"alt": "A runs 200 m and B runs 100 m: both at 250 m"
+}
+],
+"after": "C runs one round"
+},
+"3-P2": {
+"figs": [
+{
+"kind": "numberline",
+"min": 0,
+"max": 360,
+"step": 20,
+"labelEvery": 2,
+"marks": [
+{
+"v": 40,
+"label": "A start",
+"colour": "blue"
+},
+{
+"v": 160,
+"label": "A",
+"colour": "green"
+},
+{
+"v": 200,
+"label": "B start",
+"colour": "orange"
+},
+{
+"v": 240,
+"label": "B",
+"colour": "green"
+}
+],
+"alt": "A at 160 m, B at 240 m"
+}
+],
+"after": "C runs one round"
+},
+"4-13": {
+"figs": [
+{
+"kind": "angle",
+"deg": 65,
+"colour": "blue",
+"alt": "65° angle"
+},
+{
+"kind": "angle",
+"deg": 115,
+"colour": "orange",
+"alt": "115° angle"
+}
+],
+"after": "AB is parallel to DC"
+},
+"5-3": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 30,
+"cols": 10,
+"marks": [
+{
+"v": 1,
+"colour": "green"
+},
+{
+"v": 4,
+"colour": "green"
+},
+{
+"v": 9,
+"colour": "green"
+},
+{
+"v": 16,
+"colour": "green"
+},
+{
+"v": 25,
+"colour": "green"
+}
+],
+"alt": "Perfect squares are ON"
+}
+],
+"after": "Bulb b is flipped"
+},
+"5-4": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 50,
+"cols": 10,
+"marks": [
+{
+"v": 1,
+"colour": "green"
+},
+{
+"v": 4,
+"colour": "green"
+},
+{
+"v": 9,
+"colour": "green"
+},
+{
+"v": 16,
+"colour": "green"
+},
+{
+"v": 25,
+"colour": "green"
+},
+{
+"v": 36,
+"colour": "green"
+},
+{
+"v": 49,
+"colour": "green"
+}
+],
+"alt": "Perfect squares up to 50"
+}
+],
+"after": "Only bulbs with"
+},
+"5-5": {
+"figs": [
+{
+"kind": "venn",
+"left": "× of 4",
+"right": "× of 6",
+"a": "10",
+"both": "5",
+"b": "5",
+"alt": "20 cards in a box, 40 in neither",
+"outside": "40"
+}
+],
+"after": "Count the cards"
+},
+"5-6": {
+"figs": [
+{
+"kind": "venn",
+"left": "× of 6",
+"right": "× of 8",
+"a": "12",
+"both": "4",
+"b": "8",
+"alt": "24 numbers are multiples of 6 or 8",
+"outside": "76"
+}
+],
+"after": "Count each kind"
+},
+"5-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 18,
+"max": 34,
+"step": 2,
+"labelEvery": 1,
+"marks": [
+{
+"v": 22,
+"label": "22",
+"colour": "blue"
+},
+{
+"v": 24,
+"label": "24",
+"colour": "blue"
+},
+{
+"v": 26,
+"label": "26",
+"colour": "blue"
+},
+{
+"v": 28,
+"label": "28",
+"colour": "blue"
+},
+{
+"v": 30,
+"label": "30",
+"colour": "blue"
+}
+],
+"alt": "22, 24, 26, 28, 30"
+}
+],
+"after": "In five consecutive even"
+},
+"5-13": {
+"figs": [
+{
+"kind": "numberline",
+"min": 35,
+"max": 47,
+"step": 2,
+"labelEvery": 1,
+"marks": [
+{
+"v": 37,
+"label": "37",
+"colour": "blue"
+},
+{
+"v": 39,
+"label": "39",
+"colour": "blue"
+},
+{
+"v": 41,
+"label": "41",
+"colour": "blue"
+},
+{
+"v": 43,
+"label": "43",
+"colour": "blue"
+},
+{
+"v": 45,
+"label": "45",
+"colour": "blue"
+}
+],
+"alt": "37, 39, 41, 43, 45"
+}
+],
+"after": "In five consecutive odd"
+},
+"5-P1": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 12,
+"cols": 6,
+"marks": [
+{
+"v": 1,
+"colour": "green"
+},
+{
+"v": 4,
+"colour": "green"
+},
+{
+"v": 9,
+"colour": "green"
+}
+],
+"alt": "Lamps 1, 4 and 9 stay ON"
+}
+],
+"after": "A lamp is flipped once"
+},
+"5-P2": {
+"figs": [
+{
+"kind": "numgrid",
+"from": 1,
+"to": 30,
+"cols": 10,
+"marks": [
+{
+"v": 2,
+"colour": "green"
+},
+{
+"v": 3,
+"colour": "green"
+},
+{
+"v": 4,
+"colour": "green"
+},
+{
+"v": 8,
+"colour": "green"
+},
+{
+"v": 9,
+"colour": "green"
+},
+{
+"v": 10,
+"colour": "green"
+},
+{
+"v": 14,
+"colour": "green"
+},
+{
+"v": 15,
+"colour": "green"
+},
+{
+"v": 16,
+"colour": "green"
+},
+{
+"v": 20,
+"colour": "green"
+},
+{
+"v": 21,
+"colour": "green"
+},
+{
+"v": 22,
+"colour": "green"
+},
+{
+"v": 26,
+"colour": "green"
+},
+{
+"v": 27,
+"colour": "green"
+},
+{
+"v": 28,
+"colour": "green"
+},
+{
+"v": 6,
+"colour": "red"
+},
+{
+"v": 12,
+"colour": "red"
+},
+{
+"v": 18,
+"colour": "red"
+},
+{
+"v": 24,
+"colour": "red"
+},
+{
+"v": 30,
+"colour": "red"
+}
+],
+"alt": "Green: flipped once (ON); red: multiples of 6 (OFF)"
+}
+],
+"after": "A lamp ends ON"
+},
+"6-6": {
+"figs": [
+{
+"kind": "areamodel",
+"height": 12,
+"widths": [
+15,
+3
+],
+"labels": [
+"15",
+"3"
+],
+"hLabel": "12",
+"alt": "(15 + 3) × (15 − 3) = 18 × 12"
+}
+],
+"after": "The new garden"
+},
+"7-1": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 5,
+"colour": "orange",
+"alt": "Oranges: 5 of 8 parts"
+}
+],
+"after": "The ratio 3 : 5"
+},
+"7-2": {
+"figs": [
+{
+"kind": "bars",
+"title": "Marbles at the start",
+"labels": [
+"Red",
+"Blue"
+],
+"values": [
+18,
+24
+],
+"step": 6,
+"showValues": true,
+"alt": "Marbles at the start"
+}
+],
+"after": "Red = 3 parts"
+},
+"7-5": {
+"figs": [
+{
+"kind": "bars",
+"title": "Share (₹)",
+"labels": [
+"2 parts",
+"3 parts",
+"5 parts"
+],
+"values": [
+400,
+600,
+1000
+],
+"step": 200,
+"showValues": true,
+"alt": "Share (₹)"
+}
+],
+"after": "The ratio 2 : 3 : 5"
+},
+"7-6": {
+"figs": [
+{
+"kind": "bars",
+"title": "Age (years)",
+"labels": [
+"Youngest",
+"Middle",
+"Eldest"
+],
+"values": [
+16,
+24,
+32
+],
+"step": 8,
+"showValues": true,
+"alt": "Age (years)"
+}
+],
+"after": "The ratio 2 : 3 : 4"
+},
+"7-7": {
+"figs": [
+{
+"kind": "bars",
+"title": "Pocket money (₹)",
+"labels": [
+"Asha",
+"Ben"
+],
+"values": [
+300,
+500
+],
+"step": 100,
+"showValues": true,
+"alt": "Pocket money (₹)"
+}
+],
+"after": "Ben has 5 − 3"
+},
+"7-10": {
+"figs": [
+{
+"kind": "bars",
+"title": "Boxes used",
+"labels": [
+"Boxes of 12",
+"Boxes of 8"
+],
+"values": [
+7,
+2
+],
+"step": 1,
+"showValues": true,
+"alt": "Boxes used"
+}
+],
+"after": "Use as many boxes"
+},
+"7-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Price per 100 g (₹)",
+"labels": [
+"A",
+"B",
+"C",
+"D"
+],
+"values": [
+24,
+23,
+24,
+24
+],
+"step": 4,
+"showValues": true,
+"alt": "Price per 100 g (₹)"
+}
+],
+"after": "Find the price"
+},
+"7-16": {
+"figs": [
+{
+"kind": "areamodel",
+"height": 10,
+"widths": [
+15
+],
+"labels": [
+"15 cm"
+],
+"hLabel": "10 cm",
+"alt": "15 cm × 10 cm = 150 cm²"
+}
+],
+"after": "The perimeter = 2"
+},
+"7-17": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 5,
+"shaded": 3,
+"colour": "yellow",
+"alt": "Stars: 3 of 5 parts"
+}
+],
+"after": "The ratio 3 : 2"
+},
+"7-19": {
+"figs": [
+{
+"kind": "bars",
+"title": "A : B : C = 8 : 12 : 15, doubled",
+"labels": [
+"A",
+"B",
+"C"
+],
+"values": [
+16,
+24,
+30
+],
+"step": 6,
+"showValues": true,
+"alt": "A : B : C = 8 : 12 : 15, doubled"
+}
+],
+"after": "Make B the same"
+},
+"7-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Ages after 5 years",
+"labels": [
+"Father",
+"Son"
+],
+"values": [
+45,
+15
+],
+"step": 5,
+"showValues": true,
+"alt": "Ages after 5 years"
+}
+],
+"after": "Try the options"
+},
+"7-P1": {
+"figs": [
+{
+"kind": "bars",
+"title": "Sixths of the tank per hour",
+"labels": [
+"Pipe A",
+"Pipe B",
+"Together"
+],
+"values": [
+1,
+2,
+3
+],
+"step": 1,
+"showValues": true,
+"alt": "Sixths of the tank per hour"
+}
+],
+"after": "Find how much each pipe"
+}
+}

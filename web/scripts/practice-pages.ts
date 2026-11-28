@@ -12,7 +12,7 @@ import { CURRICULUM, SKILLS } from "../src/lib/constants";
 import { figureSvg } from "../src/lib/figureImage";
 import type { Fig } from "../src/lib/figures";
 import EMOJI from "../src/lib/emojiImages.json";
-import { HELPBOOK, workedSolution, solutionWithAnswer } from "../prisma/content/helpbook";
+import { HELPBOOK, workedSolution, workedFigures, solutionWithAnswer } from "../prisma/content/helpbook";
 import { finishSolution } from "../prisma/content/solution";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { chromium } = require("playwright");
@@ -153,7 +153,7 @@ function bookKeyHtml(cls: number, n: number, title: string) {
     label: r.label.startsWith("P") ? `Thinking Spot ${r.label.slice(1)}` : r.label,
     answer: `${letter(r.answer)}${r.options[r.answer] ? ` &nbsp;(${md(String(r.options[r.answer]))})` : ""}`,
     solution: finishSolution({ type: "MCQ", options: r.options, answer: r.answer, solution: workedSolution(r) ?? solutionWithAnswer(r) }),
-    figs: null, skills: r.skills,
+    figs: workedFigures(r) ?? null, skills: r.skills,
   }));
   return keyHtml(cls, n, title, items, "CT", `Answer key: Chapter ${n}`);
 }

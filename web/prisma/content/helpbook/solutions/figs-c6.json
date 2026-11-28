@@ -1,0 +1,1038 @@
+{
+"1-7": {
+"figs": [
+{
+"kind": "bars",
+"title": "Blocks in each term",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8"
+],
+"values": [
+1,
+3,
+6,
+10,
+15,
+21,
+28,
+36
+],
+"step": 5,
+"showValues": true,
+"alt": "Blocks in each term"
+}
+],
+"after": "Term k has columns"
+},
+"1-8": {
+"figs": [
+{
+"kind": "bars",
+"title": "Blocks in each term",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10"
+],
+"values": [
+5,
+9,
+13,
+17,
+21,
+25,
+29,
+33,
+37,
+41
+],
+"step": 5,
+"showValues": true,
+"alt": "Blocks in each term"
+}
+],
+"after": "Count the blocks"
+},
+"1-19": {
+"figs": [
+{
+"kind": "bars",
+"title": "Cubes in each level (top first)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7"
+],
+"values": [
+1,
+3,
+5,
+7,
+9,
+11,
+13
+],
+"step": 2,
+"showValues": true,
+"alt": "Cubes in each level (top first)"
+}
+],
+"after": "For the most levels"
+},
+"1-20": {
+"figs": [
+{
+"kind": "bars",
+"title": "Cubes in each level (top first)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5"
+],
+"values": [
+1,
+4,
+7,
+10,
+13
+],
+"step": 2,
+"showValues": true,
+"alt": "Cubes in each level (top first)"
+}
+],
+"after": "For the most levels"
+},
+"2-3": {
+"figs": [
+{
+"kind": "clock",
+"h": 3,
+"m": 0,
+"alt": "At 3:00 the hands make 90°"
+}
+],
+"after": "The hands are at 90°"
+},
+"2-4": {
+"figs": [
+{
+"kind": "clock",
+"h": 5,
+"m": 0,
+"alt": "At 5:00 the hands make 150°"
+}
+],
+"after": "The hands are at 150°"
+},
+"2-5": {
+"figs": [
+{
+"kind": "angle",
+"deg": 60,
+"colour": "blue",
+"alt": "60° angle"
+}
+],
+"after": "A regular hexagon has"
+},
+"2-6": {
+"figs": [
+{
+"kind": "angle",
+"deg": 72,
+"colour": "blue",
+"alt": "72° angle"
+}
+],
+"after": "A regular pentagon has"
+},
+"2-7": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 10,
+"shaded": 1,
+"colour": "orange",
+"alt": "10 parts: 36° each"
+}
+],
+"after": "The angle of one part"
+},
+"2-8": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 15,
+"shaded": 1,
+"colour": "orange",
+"alt": "15 parts: 24° each"
+}
+],
+"after": "The angle of one part"
+},
+"2-9": {
+"figs": [
+{
+"kind": "clock",
+"h": 8,
+"m": 30,
+"alt": "Priya: 8:30"
+},
+{
+"kind": "clock",
+"h": 8,
+"m": 0,
+"alt": "Rohit: 8:00"
+}
+],
+"after": "- Rohit"
+},
+"2-10": {
+"figs": [
+{
+"kind": "clock",
+"h": 4,
+"m": 30,
+"alt": "Meera: 4:30"
+},
+{
+"kind": "clock",
+"h": 7,
+"m": 0,
+"alt": "Karan: 7:00"
+}
+],
+"after": "- Karan"
+},
+"2-11": {
+"figs": [
+{
+"kind": "clock",
+"h": 10,
+"m": 0,
+"alt": "At 10:00 the smaller angle is 60°"
+}
+],
+"after": "At an exact hour"
+},
+"2-12": {
+"figs": [
+{
+"kind": "clock",
+"h": 11,
+"m": 0,
+"alt": "At 11:00 the smaller angle is 30°"
+}
+],
+"after": "At an exact hour"
+},
+"2-15": {
+"figs": [
+{
+"kind": "angle",
+"deg": 110,
+"colour": "green",
+"alt": "110° angle"
+}
+],
+"after": "B, P and D are on one"
+},
+"2-19": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"ADFCEB",
+"012345"
+],
+"colour": "blue",
+"alt": "A, D, F, C, E, B: DE = 3 gaps"
+}
+],
+"after": "There are 6 equally"
+},
+"2-20": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"AEDFCGB",
+"0123456"
+],
+"colour": "blue",
+"alt": "A, E, D, F, C, G, B: GE = 4 gaps"
+}
+],
+"after": "There are 7 equally"
+},
+"2-P2": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+" BRGY",
+"A✓✗✗✗",
+"B✗✗✓✗",
+"C✗✗✗✓",
+"D✗✓✗✗"
+],
+"colour": "teal",
+"alt": "Order C, A, D, B: A is Blue"
+}
+],
+"after": "Use the clues"
+},
+"3-15": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"10701"
+],
+"colour": "orange",
+"alt": "10701: digit sum 9"
+}
+],
+"after": "A 5-digit palindrome"
+},
+"3-16": {
+"figs": [
+{
+"kind": "lettergrid",
+"rows": [
+"189981"
+],
+"colour": "orange",
+"alt": "189981: digit sum 36"
+}
+],
+"after": "A 6-digit palindrome"
+},
+"4-9": {
+"figs": [
+{
+"kind": "bars",
+"title": "Marbles",
+"labels": [
+"Ravi",
+"Neil",
+"Mia",
+"Pav",
+"Ola"
+],
+"values": [
+6,
+12,
+26,
+32,
+34
+],
+"step": 5,
+"showValues": true,
+"alt": "Marbles"
+}
+],
+"after": "Pav = Mia + Ravi"
+},
+"4-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Students in each row (after adding)",
+"labels": [
+"1",
+"2",
+"3",
+"4",
+"5"
+],
+"values": [
+600,
+1100,
+1600,
+2100,
+2600
+],
+"step": 500,
+"showValues": true,
+"alt": "Students in each row (after adding)"
+}
+],
+"after": "The rows must go up"
+},
+"4-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Books in each row (after adding)",
+"labels": [
+"Jan",
+"Mar",
+"May",
+"Jul"
+],
+"values": [
+40,
+70,
+100,
+130
+],
+"step": 20,
+"showValues": true,
+"alt": "Books in each row (after adding)"
+}
+],
+"after": "The rows must go up"
+},
+"5-7": {
+"figs": [
+{
+"kind": "numberline",
+"min": 10,
+"max": 100,
+"step": 5,
+"labelEvery": 2,
+"marks": [
+{
+"v": 12,
+"label": "12",
+"colour": "green"
+},
+{
+"v": 97,
+"label": "97",
+"colour": "green"
+}
+],
+"alt": "12, 17, 22, …, 97: 18 numbers",
+"jumps": {
+"from": 12,
+"size": 5,
+"count": 17,
+"colour": "orange",
+"icon": null
+}
+}
+],
+"after": "The numbers are 2 more"
+},
+"5-8": {
+"figs": [
+{
+"kind": "numberline",
+"min": 10,
+"max": 100,
+"step": 4,
+"labelEvery": 5,
+"marks": [
+{
+"v": 13,
+"label": "13",
+"colour": "green"
+},
+{
+"v": 97,
+"label": "97",
+"colour": "green"
+}
+],
+"alt": "13, 17, 21, …, 97: 22 numbers",
+"jumps": {
+"from": 13,
+"size": 4,
+"count": 21,
+"colour": "orange",
+"icon": null
+}
+}
+],
+"after": "The numbers are 1 more"
+},
+"5-11": {
+"figs": [
+{
+"kind": "numberline",
+"min": 1,
+"max": 8,
+"step": 1,
+"labelEvery": 1,
+"marks": [
+{
+"v": 2,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 3,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 5,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 7,
+"label": "P",
+"colour": "green"
+}
+],
+"alt": "2 to 7: primes 2, 3, 5, 7"
+}
+],
+"after": "- 2 to 7"
+},
+"5-12": {
+"figs": [
+{
+"kind": "numberline",
+"min": 1,
+"max": 9,
+"step": 1,
+"labelEvery": 1,
+"marks": [
+{
+"v": 2,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 3,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 5,
+"label": "P",
+"colour": "green"
+},
+{
+"v": 7,
+"label": "P",
+"colour": "green"
+}
+],
+"alt": "2 to 8: primes 2, 3, 5, 7"
+}
+],
+"after": "- 2 to 8"
+},
+"5-19": {
+"figs": [
+{
+"kind": "calendar",
+"month": "The month",
+"start": 2,
+"days": 30,
+"marks": [
+{
+"d": 11,
+"colour": "blue"
+},
+{
+"d": 19,
+"colour": "orange"
+},
+{
+"d": 7,
+"colour": "green"
+}
+],
+"alt": "Sam 11th (Fri), Jai 19th, Asha 7th (Mon)"
+}
+],
+"after": "The month starts on Tuesday"
+},
+"5-20": {
+"figs": [
+{
+"kind": "calendar",
+"month": "The month",
+"start": 6,
+"days": 31,
+"marks": [
+{
+"d": 13,
+"colour": "blue"
+},
+{
+"d": 31,
+"colour": "orange"
+},
+{
+"d": 7,
+"colour": "green"
+}
+],
+"alt": "Sam 13th (Thu), Jai 31st, Asha 7th (Fri)"
+}
+],
+"after": "The month starts on Saturday"
+},
+"6-7": {
+"figs": [
+{
+"kind": "bars",
+"title": "Perimeter (cm)",
+"labels": [
+"Start 24×12",
+"1 fold 12×12",
+"2 folds 12×6"
+],
+"values": [
+72,
+48,
+36
+],
+"step": 12,
+"showValues": true,
+"alt": "Perimeter (cm)"
+}
+],
+"after": "Fold one step"
+},
+"6-8": {
+"figs": [
+{
+"kind": "bars",
+"title": "Perimeter (cm)",
+"labels": [
+"Start",
+"1 fold",
+"2 folds",
+"3 folds"
+],
+"values": [
+96,
+64,
+48,
+32
+],
+"step": 16,
+"showValues": true,
+"alt": "Perimeter (cm)"
+}
+],
+"after": "Fold one step"
+},
+"6-13": {
+"figs": [
+{
+"kind": "bars",
+"title": "Area (square units)",
+"labels": [
+"Triangle",
+"Parallelogram",
+"Trapezium"
+],
+"values": [
+24,
+24,
+24
+],
+"step": 6,
+"showValues": true,
+"alt": "Area (square units)"
+}
+],
+"after": "Each rectangle is 8"
+},
+"6-14": {
+"figs": [
+{
+"kind": "bars",
+"title": "Area (square units)",
+"labels": [
+"Triangle",
+"Parallelogram",
+"Trapezium"
+],
+"values": [
+24,
+24,
+27
+],
+"step": 6,
+"showValues": true,
+"alt": "Area (square units)"
+}
+],
+"after": "Each rectangle is 8"
+},
+"6-17": {
+"figs": [
+{
+"kind": "bars",
+"title": "Squares owned (fair share 10)",
+"labels": [
+"House 1",
+"House 2",
+"House 3"
+],
+"values": [
+14,
+9,
+7
+],
+"step": 2,
+"showValues": true,
+"alt": "Squares owned (fair share 10)"
+}
+],
+"after": "Count the squares"
+},
+"6-18": {
+"figs": [
+{
+"kind": "bars",
+"title": "Squares owned (fair share 8)",
+"labels": [
+"House 1",
+"House 2",
+"House 3"
+],
+"values": [
+13,
+6,
+5
+],
+"step": 2,
+"showValues": true,
+"alt": "Squares owned (fair share 8)"
+}
+],
+"after": "Count the squares"
+},
+"7-3": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 9,
+"shaded": 5,
+"colour": "purple",
+"alt": "5/9 shaded"
+}
+],
+"after": "Find the rule"
+},
+"7-4": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "circle",
+"parts": 5,
+"shaded": 4,
+"colour": "purple",
+"alt": "4/5 shaded"
+}
+],
+"after": "Find the rule"
+},
+"7-9": {
+"figs": [
+{
+"kind": "venn",
+"left": "Singing",
+"right": "Dancing",
+"a": "6",
+"both": "12",
+"b": "12",
+"alt": "Girls: 12 like both",
+"outside": "6"
+}
+],
+"after": "- 18 + 24 + 6"
+},
+"7-10": {
+"figs": [
+{
+"kind": "venn",
+"left": "Singing",
+"right": "Dancing",
+"a": "8",
+"both": "4",
+"b": "14",
+"alt": "Girls: 4 like both",
+"outside": "4"
+}
+],
+"after": "- 12 + 18 + 4"
+},
+"7-11": {
+"figs": [
+{
+"kind": "bars",
+"title": "Tim's children",
+"labels": [
+"Sons",
+"Daughters"
+],
+"values": [
+6,
+9
+],
+"step": 3,
+"showValues": true,
+"alt": "Tim's children"
+}
+],
+"after": "Think of Tim"
+},
+"7-12": {
+"figs": [
+{
+"kind": "bars",
+"title": "Meena's children",
+"labels": [
+"Sons",
+"Daughters"
+],
+"values": [
+5,
+15
+],
+"step": 5,
+"showValues": true,
+"alt": "Meena's children"
+}
+],
+"after": "Think of Meena"
+},
+"7-19": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 2,
+"shaded": 1,
+"colour": "orange",
+"alt": "1 piece of A = 1/2"
+},
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 8,
+"shaded": 4,
+"colour": "orange",
+"alt": "4 pieces of C = 4/8"
+}
+],
+"after": "Each brick is 1 whole"
+},
+"7-20": {
+"figs": [
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 3,
+"shaded": 1,
+"colour": "blue",
+"alt": "1 piece of A = 1/3"
+},
+{
+"kind": "fraction",
+"shape": "bar",
+"parts": 6,
+"shaded": 2,
+"colour": "blue",
+"alt": "2 pieces of B = 2/6"
+}
+],
+"after": "Each brick is 1 whole"
+},
+"10-5": {
+"figs": [
+{
+"kind": "numberline",
+"min": -22,
+"max": 6,
+"step": 2,
+"labelEvery": 2,
+"marks": [
+{
+"v": -20,
+"label": "",
+"colour": "blue"
+},
+{
+"v": -15,
+"label": "",
+"colour": "blue"
+},
+{
+"v": -10,
+"label": "",
+"colour": "blue"
+},
+{
+"v": -5,
+"label": "",
+"colour": "blue"
+},
+{
+"v": 5,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 3,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 1,
+"label": "",
+"colour": "orange"
+},
+{
+"v": -1,
+"label": "?",
+"colour": "green"
+}
+],
+"alt": "Two series: −20, −15, −10, −5 and 5, 3, 1, −1"
+}
+],
+"after": "Split the series"
+},
+"10-13": {
+"figs": [
+{
+"kind": "numberline",
+"min": -9,
+"max": 21,
+"step": 3,
+"labelEvery": 2,
+"marks": [
+{
+"v": -8,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": 19,
+"label": "",
+"colour": "orange"
+},
+{
+"v": -2,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "−8 → 19 → −2"
+}
+],
+"after": "Two neighbouring values"
+},
+"10-14": {
+"figs": [
+{
+"kind": "numberline",
+"min": 1,
+"max": 45,
+"step": 4,
+"labelEvery": 2,
+"marks": [
+{
+"v": 5,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": 41,
+"label": "",
+"colour": "orange"
+},
+{
+"v": 17,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "5 → 41 → 17"
+}
+],
+"after": "Two neighbouring values"
+},
+"10-19": {
+"figs": [
+{
+"kind": "numberline",
+"min": -8,
+"max": 6,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": -7,
+"label": "6 a.m.",
+"colour": "blue"
+},
+{
+"v": 5,
+"label": "",
+"colour": "orange"
+},
+{
+"v": -2,
+"label": "End",
+"colour": "green"
+}
+],
+"alt": "−7 → 5 → −7 → −2 °C"
+}
+],
+"after": "Follow the changes"
+},
+"10-20": {
+"figs": [
+{
+"kind": "numberline",
+"min": -10,
+"max": 4,
+"step": 1,
+"labelEvery": 2,
+"marks": [
+{
+"v": 3,
+"label": "Start",
+"colour": "blue"
+},
+{
+"v": -9,
+"label": "Lowest",
+"colour": "red"
+}
+],
+"alt": "3 → −2 → −6 → 0 → −8 → −6 → −9"
+}
+],
+"after": "Write the floor"
+}
+}

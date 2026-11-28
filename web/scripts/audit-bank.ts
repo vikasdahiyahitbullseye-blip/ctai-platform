@@ -43,6 +43,13 @@ async function main() {
     try { options = JSON.parse(q.options); } catch { add("ERROR", "options are not valid JSON"); }
     try { answer = JSON.parse(q.answer); } catch { add("ERROR", "answer is not valid JSON"); }
     try { figure = q.figure ? JSON.parse(q.figure) : null; optFigs = q.optionFigures ? JSON.parse(q.optionFigures) : null; } catch { add("ERROR", "figure is not valid JSON"); }
+    try {
+      const solFigs = q.solutionFigures ? JSON.parse(q.solutionFigures) : [];
+      solFigs.forEach((f: unknown, i: number) => checkFig(f, `solution picture ${i + 1}`, issues, q.code));
+      const marks = [...q.solution.matchAll(/\[fig:(\d+)\]/g)].map((m) => Number(m[1]));
+      if (marks.some((n) => n < 1 || n > solFigs.length)) add("ERROR", "solution places a picture that does not exist");
+      if (solFigs.length && !marks.length) add("WARN", "solution pictures are not placed in the text");
+    } catch { add("ERROR", "solution pictures are not valid JSON"); }
     const text = [q.stem, q.solution, q.hint ?? "", ...options].join("\n");
     if (/undefined|NaN|\[object |\$\{|Infinity/.test(text)) add(q.source === "CBSE" ? "WARN" : "ERROR", "template text left in question");
     if ((q.stem.match(/\*\*/g) ?? []).length % 2) add("WARN", "unbalanced bold markers in stem");
