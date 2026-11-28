@@ -12,7 +12,11 @@ _figs = {}
 def figs(c):
     if c not in _figs: _figs[c] = json.load(open(f"{W}/prisma/content/helpbook/solutions/figs-c{c}.json"))
     return _figs[c]
+EXTRA = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra.json"))) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra.json")) else {}
 def mark(c, key, ops, alt, after=None):
+    ops = [tuple(o) if not isinstance(o, tuple) else o for o in EXTRA.get(f"{c} {key}", [])] + list(ops)
+    if os.environ.get("LOGTEXT") and all(o[0] == "text" for o in ops):
+        open(os.environ["LOGTEXT"], "a").write(f"{c} {key}\n")
     r = ROW[(c, key)]
     sol = json.load(open(f"{W}/prisma/content/helpbook/solutions/c{c}.json"))[key]
     if after: assert after in sol, (c, key, after)
