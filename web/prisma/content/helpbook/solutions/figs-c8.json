@@ -41,6 +41,94 @@
 ],
 "after": "Put each input"
 },
+"1-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch01-15-sol.webp",
+"w": 606,
+"h": 396,
+"alt": "n = 5: bottom = 125 + 5 = 130"
+}
+]
+},
+"1-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch01-16-sol.webp",
+"w": 606,
+"h": 398,
+"alt": "top = 6: bottom = 216 − 36 = 180"
+}
+]
+},
+"1-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch01-P1-sol.webp",
+"w": 688,
+"h": 503,
+"alt": "3 2 3 2 / 1 1 1 1 / 2 3 2 3 → shaded: 3, 3, 3"
+}
+]
+},
+"1-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch01-P2-sol.webp",
+"w": 688,
+"h": 503,
+"alt": "shaded boxes hold 3, 2, 2 → 2"
+}
+]
+},
+"2-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch02-9-sol.webp",
+"w": 764,
+"h": 414,
+"alt": "243 + 4096 + 49 = 4388"
+}
+]
+},
+"2-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch02-10-sol.webp",
+"w": 764,
+"h": 414,
+"alt": "81 + 36 + 16807 = 16924"
+}
+]
+},
+"2-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch02-P1-sol.webp",
+"w": 450,
+"h": 340,
+"alt": "A 4 H / 3 M 2 → ? = M"
+}
+]
+},
+"2-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch02-P2-sol.webp",
+"w": 450,
+"h": 340,
+"alt": "5 A 4 / H 3 E → ? = 4"
+}
+]
+},
 "3-5": {
 "figs": [
 {
@@ -148,6 +236,50 @@
 }
 ],
 "after": "- Moving a ball"
+},
+"3-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch03-13-sol.webp",
+"w": 900,
+"h": 255,
+"alt": "2346, 2348, 3469 → 3 passwords"
+}
+]
+},
+"3-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch03-14-sol.webp",
+"w": 900,
+"h": 256,
+"alt": "124, 125, 126, 127, 129 → 5 passwords"
+}
+]
+},
+"3-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch03-15-sol.webp",
+"w": 682,
+"h": 186,
+"alt": "4 swaps put every block in order"
+}
+]
+},
+"3-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch03-16-sol.webp",
+"w": 682,
+"h": 186,
+"alt": "5 swaps put every block in order"
+}
+]
 },
 "3-A3": {
 "figs": [
@@ -308,6 +440,72 @@
 ],
 "after": "C runs one round"
 },
+"4-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-3-sol.webp",
+"w": 454,
+"h": 280,
+"alt": "3 × 10 = 30 rectangles"
+}
+]
+},
+"4-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-4-sol.webp",
+"w": 498,
+"h": 349,
+"alt": "15 + 8 + 3 = 26 squares"
+}
+]
+},
+"4-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-5-sol.webp",
+"w": 344,
+"h": 419,
+"alt": "6 + 6 = 12 quadrilaterals"
+}
+]
+},
+"4-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-6-sol.webp",
+"w": 530,
+"h": 413,
+"alt": "choose 2 of 4 = 6 trapeziums"
+}
+]
+},
+"4-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-7-sol.webp",
+"w": 380,
+"h": 409,
+"alt": "9 + 8 = 17 quadrilaterals"
+}
+]
+},
+"4-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-8-sol.webp",
+"w": 376,
+"h": 387,
+"alt": "5 + 10 + 5 = 20 quadrilaterals"
+}
+]
+},
 "4-13": {
 "figs": [
 {
@@ -326,6 +524,28 @@
 }
 ],
 "after": "AB is parallel to DC"
+},
+"4-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-P1-sol.webp",
+"w": 346,
+"h": 375,
+"alt": "3 presses switch every light OFF"
+}
+]
+},
+"4-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch04-P2-sol.webp",
+"w": 346,
+"h": 375,
+"alt": "3 presses switch every light OFF"
+}
+]
 },
 "5-3": {
 "figs": [
@@ -651,6 +871,28 @@
 }
 ],
 "after": "The new garden"
+},
+"6-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch06-P1-sol.webp",
+"w": 378,
+"h": 407,
+"alt": "16 × 9 ÷ 2 = 72 ways"
+}
+]
+},
+"6-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-8-ch06-P2-sol.webp",
+"w": 378,
+"h": 407,
+"alt": "120 − 42 = 78 ways"
+}
+]
 },
 "7-1": {
 "figs": [

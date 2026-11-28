@@ -1,0 +1,23 @@
+from draw import *
+C=4
+mark(C,"10-13",opt("c",52,99)+[("text",50,1,"one more side, colour flips")],"Option c: black pentagon")
+mark(C,"10-14",opt("b",52,99)+[("text",50,1,"circle → square, dots double: 4 → 8")],"Option b")
+mark(C,"10-15",opt("d",70,99)+[("text",70,35,"missing: square, red")],"Option d: red square")
+mark(C,"10-16",opt("c",70,99)+[("text",70,35,"missing: star, yellow")],"Option c: yellow star")
+mark(C,"10-19",[("text",50,1,"(1st + 2nd) × 2:  (3 + 6) × 2 = 18"),("text",80,99,"? = 18","red")],"18")
+mark(C,"10-20",[("text",50,1,"1st × 2nd − 1st:  4 × 5 − 4 = 16"),("text",80,99,"? = 16","red")],"16")
+mark(C,"10-P1",opt("c",60,98)+[("text",50,1,"only one choice gives 6 different shapes")],"Circle and pentagon")
+mark(C,"10-P2",opt("c",60,98)+[("text",50,1,"only one choice gives 6 different shapes")],"Circle and star")
+for k,o in [("11-1","b"),("11-2","d"),("11-3","c"),("11-4","a"),("11-5","d"),("11-6","b"),("11-9","a"),("11-10","c"),("11-17","c"),("11-18","d")]:
+    mark(C,k,opt(o,48,99),f"Option {o}")
+mark(C,"11-11",[("text",50,99,"square 4, pentagon 5, hexagon 6")],"6 lines")
+mark(C,"11-12",[("text",50,99,"2, then 1, then 0")],"0 lines")
+mark(C,"11-13",[("path",[(50,2),(50,98)],"green"),("text",50,99,"vertical line only")],"Only vertical symmetry")
+mark(C,"11-14",[("path",[(50,2),(50,98)],"red"),("path",[(2,50),(98,50)],"red"),("text",50,99,"no matching halves")],"No line symmetry")
+mark(C,"11-19",[("text",50,99,"both mirrors vertical → A = C")],"Same as each other")
+mark(C,"11-20",[("text",50,99,"PQ vertical, ST horizontal → A and C differ")],"Different from each other")
+mark(C,"12-13",[("text",50,99,"A 9:00 → B 9:30 → C 11:30 → D 12:30")],"A-B-C-D works")
+mark(C,"12-14",[("text",50,99,"B 9:00 → D 10:00 → A 11:30 → C 12:30")],"B-D-A-C works")
+mark(C,"12-P1",[("text",50,99,"open the right 3 boxes")],"3 boxes")
+mark(C,"12-P2",[("text",50,99,"open the right 2 boxes")],"2 boxes")
+save()

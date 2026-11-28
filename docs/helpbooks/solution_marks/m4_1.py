@@ -1,0 +1,23 @@
+from draw import *
+C=4
+def opt(x,y,r=8): return [("ring",x,y,r,"green")]
+mark(C,"1-1",opt(91,72)+[("text",50,99,"left over in each stack: 2, 1, 1, 1")],"Figure d")
+mark(C,"1-2",opt(91,72)+[("text",50,99,"left over: 2, 1, 1, 1, 1, 0")],"Figure d")
+mark(C,"1-5",[("ring",6,55,5,"red"),("ring",52,5,5,"red"),("text",50,99,"3 old + 2 new = 5 corners")],"The cut makes 2 new corners")
+mark(C,"1-6",[("ring",30,50,4,"red"),("ring",77,70,4,"red"),("text",50,99,"triangle + 4-sided piece")],"One cut adds at most 2 corners")
+mark(C,"1-7",[("text",50,99,"3 small + 2 double + 1 big = 6")],"6 triangles")
+mark(C,"1-8",[("text",50,99,"4 small + 4 halves of the square = 8")],"8 triangles")
+mark(C,"1-9",[("ring",64,50,10,"red"),("text",50,99,"hexagon has 6 sides, not 7")],"Figure c is the odd one out")
+mark(C,"1-10",[("ring",36,50,10,"red"),("text",50,99,"3 of 4 coloured, not a half")],"Figure b is the odd one out")
+mark(C,"1-11",[("text",40,10,"3 + 4 = 7"),("text",40,30,"4 + 4 = 8"),("text",40,50,"3 + 3 = 6"),("text",40,70,"5 + 4 = 9"),("ring",10,89,7,"green")],"Add the sides")
+mark(C,"1-12",[("text",50,10,"3 → 4"),("text",50,30,"4 → 5"),("text",50,50,"5 → 6"),("text",50,70,"6 → 7","red"),("ring",91,89,7,"green")],"One more side and orange")
+mark(C,"1-13",[("text",50,1,"4 side faces: 2 colours take turns"),("text",50,99,"base touches all 4 → 3rd colour")],"3 colours")
+mark(C,"1-14",[("text",50,99,"each face touches the other 3 → 4 colours")],"4 colours")
+mark(C,"1-15",[("ring",81,70,10,"green"),("tick",95,62)],"Option b")
+mark(C,"1-16",[("ring",12,70,10,"green"),("tick",26,62)],"Option a")
+mark(C,"1-17",[("text",50,99,"36 faces − 12 seen = 24")],"6 × 6 = 36 faces")
+mark(C,"1-18",[("text",50,99,"36 faces − 11 seen = 25")],"6 × 6 = 36 faces")
+mark(C,"1-19",[("path",[(15,88),(52,20)],"green"),("path",[(52,20),(88,66)],"green"),("path",[(52,20),(37,68)],"green"),("path",[(15,88),(37,68)],"green"),("path",[(37,68),(88,66)],"green"),("text",50,99,"EA, EC, ED, AD, DC = 5 edges")],"5 edges")
+mark(C,"1-20",[("path",[(52,13),(65,88)],"green"),("path",[(52,13),(90,63)],"green"),("path",[(65,88),(90,63)],"green"),("text",50,99,"EB, EC, BC = 3 edges")],"3 edges")
+mark(C,"1-P2",[("text",50,99,"1 green △, 2 red ○, 3 yellow △, 4 blue ○")],"Blue circle in Square 4")
+save()

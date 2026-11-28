@@ -1,0 +1,21 @@
+from draw import *
+C=6
+for k,o,t in [("8-1","d","the empty part has exactly this shape"),("8-2","b","the empty part has exactly this shape"),("8-3","d","the 4 empty squares have this shape"),("8-4","d","the 4 empty squares have this shape")]:
+    mark(C,k,opt(o,52,99)+[("text",50,1,t)],f"Option {o}")
+mark(C,"8-5",[("cross",15,95),("text",50,99,"B + C + D make the 3 × 3 square")],"A is not used")
+mark(C,"8-6",[("cross",40,99),("text",50,99,"A + C + D make the 3 × 3 square")],"B is not used")
+mark(C,"8-7",[("text",50,99,"9 small + 4 of 2 × 2 + 1 big = 14")],"14 squares")
+mark(C,"8-8",[("text",50,99,"8 + 3 + 4 + 1 = 16")],"16 squares")
+mark(C,"8-9",[("path",[(65,5),(65,95)],"green"),("text",50,99,"3 small + 2 middle + 1 big = 6 > 5")],"1 line")
+mark(C,"8-10",[("text",50,99,"1 line gives at most 8; 2 lines give more")],"2 lines")
+mark(C,"8-11",[("text",50,99,"4 × 4 + 5 × 3 = 16 + 15 = 31")],"31 matchsticks")
+mark(C,"8-12",[("text",50,99,"remove 4 shared inner sticks")],"4 matchsticks")
+mark(C,"8-13",[("ring",20,59,4,"green"),("ring",73,59,4,"green"),("ring",12,83,4,"green"),("ring",65,83,4,"green"),("ring",28,59,4,"blue"),("ring",81,59,4,"blue"),("text",50,99,"4 matches in 2 cells, 1 in only 1")],"4")
+mark(C,"8-14",[("text",50,99,"matching digits 1, 3, 2, 2, 3 → sum 11")],"11")
+mark(C,"8-17",[("text",50,99,"after filling: 3 triangles")],"3 triangles")
+mark(C,"8-18",[("text",50,99,"after filling: 6 circles")],"6 circles")
+mark(C,"8-19",[("text",50,99,"4 × 4, 4 × 8, 4 × 12 work; 4 × 6 does not")],"4 × 6")
+mark(C,"8-20",[("text",50,99,"3 × 5 cannot be split into 2 × 3 blocks")],"3 × 5")
+mark(C,"8-P1",[("text",50,88,"1","green"),("text",80,88,"2","green"),("text",50,99,"A = 1, B = 2")],"A = 1, B = 2")
+mark(C,"8-P2",[("text",50,99,"6 cells are shaded")],"6 shaded")
+save()

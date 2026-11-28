@@ -1,4 +1,92 @@
 {
+"1-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-1-sol.webp",
+"w": 525,
+"h": 87,
+"alt": "SIX and TEN use all six tiles"
+}
+]
+},
+"1-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-2-sol.webp",
+"w": 528,
+"h": 528,
+"alt": "ONE, TWO across; TEN, SIX down"
+}
+]
+},
+"1-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-3-sol.webp",
+"w": 900,
+"h": 582,
+"alt": "A = TWO, B = THREE, C = FOUR, D = SIX"
+}
+]
+},
+"1-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-4-sol.webp",
+"w": 596,
+"h": 137,
+"alt": "■ = T, ◆ = W, ★ = O: TWO"
+}
+]
+},
+"1-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-5-sol.webp",
+"w": 900,
+"h": 139,
+"alt": "T = ■, E = ▲, N = ●"
+}
+]
+},
+"1-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-6-sol.webp",
+"w": 900,
+"h": 211,
+"alt": "THREE has 5 letters; the others have 4"
+}
+]
+},
+"1-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-10-sol.webp",
+"w": 772,
+"h": 129,
+"alt": "Take away the red T and O: F, I, V, E"
+}
+]
+},
+"1-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-12-sol.webp",
+"w": 829,
+"h": 107,
+"alt": "THREE, EIGHT, TWO"
+}
+]
+},
 "1-13": {
 "figs": [
 {
@@ -58,6 +146,61 @@
 }
 ],
 "after": "- E:"
+},
+"1-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-17-sol.webp",
+"w": 900,
+"h": 183,
+"alt": "ELEVEN fits every clue"
+}
+]
+},
+"1-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-18-sol.webp",
+"w": 856,
+"h": 197,
+"alt": "FOUR fits every clue"
+}
+]
+},
+"1-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-19-sol.webp",
+"w": 870,
+"h": 103,
+"alt": "S, V, E (circles), N (triangle), E (square)"
+}
+]
+},
+"1-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-20-sol.webp",
+"w": 525,
+"h": 87,
+"alt": "Cross out S, I, X: T, E, N are left"
+}
+]
+},
+"1-21": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch01-21-sol.webp",
+"w": 525,
+"h": 88,
+"alt": "Cross out O, N, E: T, W, O are left"
+}
+]
 },
 "1-24": {
 "figs": [
@@ -239,6 +382,28 @@
 ],
 "after": "Count the letters"
 },
+"2-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-1-sol.webp",
+"w": 446,
+"h": 622,
+"alt": "2 arms and 2 legs are cylinders"
+}
+]
+},
+"2-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-3-sol.webp",
+"w": 900,
+"h": 226,
+"alt": "The ball has no flat face"
+}
+]
+},
 "2-4": {
 "figs": [
 {
@@ -254,6 +419,28 @@
 ],
 "after": "Count the cubes"
 },
+"2-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-5-sol.webp",
+"w": 400,
+"h": 456,
+"alt": "One cube of the 2 × 2 × 2 cube is missing"
+}
+]
+},
+"2-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-6-sol.webp",
+"w": 900,
+"h": 438,
+"alt": "From the top: 3 squares in an L"
+}
+]
+},
 "2-7": {
 "figs": [
 {
@@ -268,6 +455,28 @@
 }
 ],
 "after": "- First column"
+},
+"2-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-8-sol.webp",
+"w": 282,
+"h": 216,
+"alt": "3 faces can be seen; the back triangle and the bottom are hidden: 5 faces"
+}
+]
+},
+"2-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-9-sol.webp",
+"w": 260,
+"h": 244,
+"alt": "4 base corners and 1 top corner"
+}
+]
 },
 "2-11": {
 "figs": [
@@ -297,6 +506,28 @@
 ],
 "after": "A cube has"
 },
+"2-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-14-sol.webp",
+"w": 208,
+"h": 270,
+"alt": "From the side the cone looks like a triangle"
+}
+]
+},
+"2-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-16-sol.webp",
+"w": 352,
+"h": 402,
+"alt": "Opposite faces add up to 7"
+}
+]
+},
 "2-17": {
 "figs": [
 {
@@ -311,6 +542,39 @@
 }
 ],
 "after": "- Top and bottom"
+},
+"2-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-18-sol.webp",
+"w": 322,
+"h": 414,
+"alt": "4 + 4 = 8 faces can be seen"
+}
+]
+},
+"2-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-19-sol.webp",
+"w": 900,
+"h": 219,
+"alt": "The cylinder has a curved surface"
+}
+]
+},
+"2-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch02-P1-sol.webp",
+"w": 674,
+"h": 254,
+"alt": "The cylinder is at the right end"
+}
+]
 },
 "2-P2": {
 "figs": [
@@ -346,6 +610,17 @@
 }
 ],
 "after": "Move 2 beads"
+},
+"3-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-2-sol.webp",
+"w": 656,
+"h": 361,
+"alt": "100 + 30 + 12 = 142"
+}
+]
 },
 "3-3": {
 "figs": [
@@ -392,6 +667,17 @@
 }
 ],
 "after": "The frog starts"
+},
+"3-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-5-sol.webp",
+"w": 748,
+"h": 518,
+"alt": "161, 162, 163, 164, 165"
+}
+]
 },
 "3-6": {
 "figs": [
@@ -455,6 +741,17 @@
 ],
 "after": "Write the numbers"
 },
+"3-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-9-sol.webp",
+"w": 524,
+"h": 215,
+"alt": "With 1 in front: 108 and 180"
+}
+]
+},
 "3-10": {
 "figs": [
 {
@@ -485,6 +782,61 @@
 ],
 "after": "Find how far"
 },
+"3-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-11-sol.webp",
+"w": 696,
+"h": 98,
+"alt": "120 + 6 = 126"
+}
+]
+},
+"3-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-12-sol.webp",
+"w": 659,
+"h": 257,
+"alt": "Each house number is 11 more: 133 + 11 = 144"
+}
+]
+},
+"3-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-13-sol.webp",
+"w": 894,
+"h": 271,
+"alt": "Hundreds 1, ones 5, tens 7: 175"
+}
+]
+},
+"3-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-14-sol.webp",
+"w": 537,
+"h": 159,
+"alt": "198 is highest; 191 is next"
+}
+]
+},
+"3-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch03-18-sol.webp",
+"w": 574,
+"h": 574,
+"alt": "50 + 30 + 60 + 40 + 50 = 230"
+}
+]
+},
 "3-20": {
 "figs": [
 {
@@ -510,6 +862,39 @@
 }
 ],
 "after": "Row 1 has 40"
+},
+"4-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-1-sol.webp",
+"w": 538,
+"h": 354,
+"alt": "Home → A → B → Village is the shortest route"
+}
+]
+},
+"4-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-3-sol.webp",
+"w": 548,
+"h": 386,
+"alt": "2 adults and 2 children"
+}
+]
+},
+"4-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-4-sol.webp",
+"w": 547,
+"h": 215,
+"alt": "Share 57 mangoes equally"
+}
+]
 },
 "4-5": {
 "figs": [
@@ -558,6 +943,39 @@
 }
 ],
 "after": "Count the pictures"
+},
+"4-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-7-sol.webp",
+"w": 500,
+"h": 640,
+"alt": "Tinu's seat is behind Mummy"
+}
+]
+},
+"4-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-8-sol.webp",
+"w": 618,
+"h": 205,
+"alt": "Undo each step from OUT to IN"
+}
+]
+},
+"4-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-9-sol.webp",
+"w": 736,
+"h": 356,
+"alt": "The bottom row has 5 grandchildren"
+}
+]
 },
 "4-11": {
 "figs": [
@@ -626,6 +1044,17 @@
 }
 ],
 "after": "Find the repeating group"
+},
+"4-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch04-14-sol.webp",
+"w": 766,
+"h": 476,
+"alt": "2 cones and 1 kulfi"
+}
+]
 },
 "4-16": {
 "figs": [
@@ -722,6 +1151,83 @@
 ],
 "after": "Hen A laid 2 more"
 },
+"5-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-1-sol.webp",
+"w": 776,
+"h": 161,
+"alt": "Square, rectangle, rhombus and trapezium"
+}
+]
+},
+"5-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-2-sol.webp",
+"w": 592,
+"h": 502,
+"alt": "3 + 3 = 6 triangles"
+}
+]
+},
+"5-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-3-sol.webp",
+"w": 462,
+"h": 352,
+"alt": "Two 2-by-2 squares overlap in the middle"
+}
+]
+},
+"5-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-4-sol.webp",
+"w": 506,
+"h": 269,
+"alt": "The two square corners end up opposite each other"
+}
+]
+},
+"5-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-5-sol.webp",
+"w": 448,
+"h": 366,
+"alt": "6 straight sides"
+}
+]
+},
+"5-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-6-sol.webp",
+"w": 900,
+"h": 335,
+"alt": "Upside down: picture b"
+}
+]
+},
+"5-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-7-sol.webp",
+"w": 900,
+"h": 208,
+"alt": "Only the first fold gives two matching halves"
+}
+]
+},
 "5-8": {
 "figs": [
 {
@@ -731,6 +1237,72 @@
 }
 ],
 "after": "One square needs"
+},
+"5-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-9-sol.webp",
+"w": 380,
+"h": 473,
+"alt": "3 rectangles"
+}
+]
+},
+"5-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-10-sol.webp",
+"w": 900,
+"h": 258,
+"alt": "Circles cannot cover a floor"
+}
+]
+},
+"5-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-12-sol.webp",
+"w": 900,
+"h": 487,
+"alt": "Row 3 and column 3 need a square"
+}
+]
+},
+"5-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-13-sol.webp",
+"w": 900,
+"h": 368,
+"alt": "3, 4, 5, then 6 sides"
+}
+]
+},
+"5-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-14-sol.webp",
+"w": 900,
+"h": 257,
+"alt": "Picture c is the odd one out"
+}
+]
+},
+"5-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-15-sol.webp",
+"w": 486,
+"h": 342,
+"alt": "Square only, both, circle only"
+}
+]
 },
 "5-17": {
 "figs": [
@@ -757,6 +1329,17 @@
 }
 ],
 "after": "Every cut through"
+},
+"5-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-19-sol.webp",
+"w": 310,
+"h": 436,
+"alt": "Nose and two fins: 3 triangles"
+}
+]
 },
 "5-20": {
 "figs": [
@@ -804,6 +1387,17 @@
 }
 ],
 "after": "Count the coloured"
+},
+"5-22": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch05-22-sol.webp",
+"w": 897,
+"h": 262,
+"alt": "The hexagon has 6 corners"
+}
+]
 },
 "5-P1": {
 "figs": [
@@ -861,6 +1455,39 @@
 ],
 "after": "Move 2 beads"
 },
+"6-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-2-sol.webp",
+"w": 700,
+"h": 228,
+"alt": "Biggest digits first, even digit last"
+}
+]
+},
+"6-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-4-sol.webp",
+"w": 865,
+"h": 263,
+"alt": "538 fits all three clues"
+}
+]
+},
+"6-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-5-sol.webp",
+"w": 524,
+"h": 258,
+"alt": "Hundreds up 2, ones up 3"
+}
+]
+},
 "6-8": {
 "figs": [
 {
@@ -887,6 +1514,39 @@
 }
 ],
 "after": "The door numbers"
+},
+"6-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-9-sol.webp",
+"w": 527,
+"h": 237,
+"alt": "712 − 100 = 612"
+}
+]
+},
+"6-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-10-sol.webp",
+"w": 638,
+"h": 155,
+"alt": "2 numbers are less than 200"
+}
+]
+},
+"6-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-12-sol.webp",
+"w": 900,
+"h": 272,
+"alt": "Hundreds 1, tens 2, ones 3"
+}
+]
 },
 "6-14": {
 "figs": [
@@ -927,6 +1587,17 @@
 }
 ],
 "after": "Find how far"
+},
+"6-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-16-sol.webp",
+"w": 524,
+"h": 215,
+"alt": "Put the 2 in each place in turn"
+}
+]
 },
 "6-18": {
 "figs": [
@@ -1015,6 +1686,17 @@
 ],
 "after": "The numbers between"
 },
+"6-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch06-P2-sol.webp",
+"w": 694,
+"h": 432,
+"alt": "Work up from the bottom row"
+}
+]
+},
 "7-1": {
 "figs": [
 {
@@ -1073,6 +1755,17 @@
 ],
 "after": "The grasshopper lands"
 },
+"7-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch07-4-sol.webp",
+"w": 664,
+"h": 715,
+"alt": "Row 4, column 3"
+}
+]
+},
 "7-6": {
 "figs": [
 {
@@ -1119,6 +1812,39 @@
 ],
 "after": "Count how many packs"
 },
+"7-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch07-9-sol.webp",
+"w": 644,
+"h": 361,
+"alt": "Find the star first, then the circle"
+}
+]
+},
+"7-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch07-11-sol.webp",
+"w": 686,
+"h": 656,
+"alt": "20 − 8 = 12 under the cloth"
+}
+]
+},
+"7-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch07-14-sol.webp",
+"w": 524,
+"h": 217,
+"alt": "Multiply the two biggest numbers"
+}
+]
+},
 "7-15": {
 "figs": [
 {
@@ -1163,6 +1889,17 @@
 ],
 "after": "The number of flowers"
 },
+"7-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch07-19-sol.webp",
+"w": 462,
+"h": 652,
+"alt": "3 layers of 6 boxes"
+}
+]
+},
 "7-P1": {
 "figs": [
 {
@@ -1203,6 +1940,17 @@
 ],
 "after": "Use the clues"
 },
+"8-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch08-1-sol.webp",
+"w": 900,
+"h": 273,
+"alt": "Picture c shows a quarter"
+}
+]
+},
 "8-2": {
 "figs": [
 {
@@ -1236,6 +1984,17 @@
 }
 ],
 "after": "The pizza has 8"
+},
+"8-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch08-4-sol.webp",
+"w": 900,
+"h": 460,
+"alt": "Picture a"
+}
+]
 },
 "8-6": {
 "figs": [
@@ -1289,6 +2048,17 @@
 ],
 "after": "Take half three times"
 },
+"8-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch08-10-sol.webp",
+"w": 784,
+"h": 171,
+"alt": "9 × 2 = 18, half = 9, 9 + 5 = 14"
+}
+]
+},
 "8-11": {
 "figs": [
 {
@@ -1310,6 +2080,28 @@
 }
 ],
 "after": "Share the 12"
+},
+"8-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch08-13-sol.webp",
+"w": 900,
+"h": 380,
+"alt": "Each time the shaded part halves"
+}
+]
+},
+"8-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch08-17-sol.webp",
+"w": 900,
+"h": 496,
+"alt": "Picture b mirrors the left half"
+}
+]
 },
 "8-19": {
 "figs": [
@@ -1357,6 +2149,39 @@
 ],
 "after": "Work out each share"
 },
+"9-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-1-sol.webp",
+"w": 900,
+"h": 277,
+"alt": "She needs ₹25 more"
+}
+]
+},
+"9-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-2-sol.webp",
+"w": 525,
+"h": 128,
+"alt": "Biggest digits in the hundreds place"
+}
+]
+},
+"9-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-3-sol.webp",
+"w": 524,
+"h": 217,
+"alt": "Largest 752, smallest 257"
+}
+]
+},
 "9-6": {
 "figs": [
 {
@@ -1391,6 +2216,39 @@
 }
 ],
 "after": "Follow the jumps"
+},
+"9-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-7-sol.webp",
+"w": 578,
+"h": 204,
+"alt": "150 + 250 = 400"
+}
+]
+},
+"9-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-10-sol.webp",
+"w": 700,
+"h": 500,
+"alt": "English and Maths"
+}
+]
+},
+"9-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-11-sol.webp",
+"w": 694,
+"h": 430,
+"alt": "125 + 250 = 375, 250 + 175 = 425, 375 + 425 = 800"
+}
+]
 },
 "9-12": {
 "figs": [
@@ -1472,6 +2330,28 @@
 ],
 "after": "Each number is 109"
 },
+"9-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-19-sol.webp",
+"w": 571,
+"h": 173,
+"alt": "3rd and 4th coaches"
+}
+]
+},
+"9-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch09-20-sol.webp",
+"w": 784,
+"h": 170,
+"alt": "500 − 125 = 375, + 60 = 435, − 200 = 235"
+}
+]
+},
 "9-P1": {
 "figs": [
 {
@@ -1506,6 +2386,50 @@
 }
 ],
 "after": "Read the scale"
+},
+"10-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch10-2-sol.webp",
+"w": 802,
+"h": 513,
+"alt": "Ribbons A and D"
+}
+]
+},
+"10-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch10-3-sol.webp",
+"w": 517,
+"h": 292,
+"alt": "Aman is 112 cm tall"
+}
+]
+},
+"10-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch10-8-sol.webp",
+"w": 744,
+"h": 734,
+"alt": "Path B is 4 units shorter"
+}
+]
+},
+"10-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch10-9-sol.webp",
+"w": 816,
+"h": 465,
+"alt": "P and S are the same length"
+}
+]
 },
 "10-11": {
 "figs": [
@@ -1606,6 +2530,17 @@
 }
 ],
 "after": "Find the height"
+},
+"10-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch10-14-sol.webp",
+"w": 766,
+"h": 394,
+"alt": "Measure everything in clips"
+}
+]
 },
 "10-17": {
 "figs": [
@@ -1719,6 +2654,17 @@
 ],
 "after": "- Right pan"
 },
+"11-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch11-2-sol.webp",
+"w": 900,
+"h": 329,
+"alt": "Use both scales"
+}
+]
+},
 "11-4": {
 "figs": [
 {
@@ -1784,6 +2730,17 @@
 }
 ],
 "after": "Find the change"
+},
+"11-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch11-14-sol.webp",
+"w": 760,
+"h": 470,
+"alt": "Mona and Riya balance Tinu"
+}
+]
 },
 "11-15": {
 "figs": [
@@ -1855,6 +2812,28 @@
 ],
 "after": "Add the money in each"
 },
+"12-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch12-3-sol.webp",
+"w": 766,
+"h": 562,
+"alt": "Pencil, eraser and scale"
+}
+]
+},
+"12-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch12-5-sol.webp",
+"w": 598,
+"h": 646,
+"alt": "She gives 2 and gets 2"
+}
+]
+},
 "12-6": {
 "figs": [
 {
@@ -1868,6 +2847,17 @@
 }
 ],
 "after": "Then find the change"
+},
+"12-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch12-7-sol.webp",
+"w": 540,
+"h": 204,
+"alt": "Move 3 marbles from A to B"
+}
+]
 },
 "12-10": {
 "figs": [
@@ -1893,6 +2883,17 @@
 ],
 "after": "Try each number"
 },
+"12-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch12-11-sol.webp",
+"w": 702,
+"h": 358,
+"alt": "7 − 5 = 2"
+}
+]
+},
 "12-13": {
 "figs": [
 {
@@ -1909,6 +2910,17 @@
 }
 ],
 "after": "Try numbers of ₹5"
+},
+"12-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch12-18-sol.webp",
+"w": 766,
+"h": 478,
+"alt": "2 kg potatoes and 1 kg onions"
+}
+]
 },
 "12-19": {
 "figs": [
@@ -2065,6 +3077,17 @@
 }
 ],
 "after": "Find the Fridays"
+},
+"13-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch13-7-sol.webp",
+"w": 700,
+"h": 654,
+"alt": "EVS starts at 10:40, just after the break"
+}
+]
 },
 "13-12": {
 "figs": [
@@ -2240,6 +3263,39 @@
 ],
 "after": "Turn right one step"
 },
+"14-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-6-sol.webp",
+"w": 900,
+"h": 327,
+"alt": "Picture a"
+}
+]
+},
+"14-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-8-sol.webp",
+"w": 778,
+"h": 486,
+"alt": "Mirror the 5 coloured squares"
+}
+]
+},
+"14-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-10-sol.webp",
+"w": 524,
+"h": 567,
+"alt": "Opposite is 4 cabins away"
+}
+]
+},
 "14-11": {
 "figs": [
 {
@@ -2323,6 +3379,28 @@
 ],
 "after": "From A1 to C4"
 },
+"14-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-13-sol.webp",
+"w": 628,
+"h": 527,
+"alt": "up, up, right, right, down, down, right, up"
+}
+]
+},
+"14-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-15-sol.webp",
+"w": 200,
+"h": 311,
+"alt": "The holes are copied across the fold"
+}
+]
+},
 "14-16": {
 "figs": [
 {
@@ -2336,6 +3414,17 @@
 }
 ],
 "after": "The pattern red"
+},
+"14-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-3-ch14-18-sol.webp",
+"w": 898,
+"h": 334,
+"alt": "Picture b"
+}
+]
 },
 "14-P2": {
 "figs": [

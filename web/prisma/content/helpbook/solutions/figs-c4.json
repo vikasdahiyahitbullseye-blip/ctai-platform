@@ -1,4 +1,26 @@
 {
+"1-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-1-sol.webp",
+"w": 900,
+"h": 301,
+"alt": "Figure d"
+}
+]
+},
+"1-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-2-sol.webp",
+"w": 900,
+"h": 296,
+"alt": "Figure d"
+}
+]
+},
 "1-3": {
 "figs": [
 {
@@ -28,6 +50,281 @@
 }
 ],
 "after": "In the row of four"
+},
+"1-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-5-sol.webp",
+"w": 230,
+"h": 257,
+"alt": "The cut makes 2 new corners"
+}
+]
+},
+"1-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-6-sol.webp",
+"w": 308,
+"h": 271,
+"alt": "One cut adds at most 2 corners"
+}
+]
+},
+"1-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-7-sol.webp",
+"w": 406,
+"h": 325,
+"alt": "6 triangles"
+}
+]
+},
+"1-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-8-sol.webp",
+"w": 342,
+"h": 371,
+"alt": "8 triangles"
+}
+]
+},
+"1-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-9-sol.webp",
+"w": 900,
+"h": 185,
+"alt": "Figure c is the odd one out"
+}
+]
+},
+"1-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-10-sol.webp",
+"w": 900,
+"h": 188,
+"alt": "Figure b is the odd one out"
+}
+]
+},
+"1-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-11-sol.webp",
+"w": 900,
+"h": 490,
+"alt": "Add the sides"
+}
+]
+},
+"1-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-12-sol.webp",
+"w": 900,
+"h": 467,
+"alt": "One more side and orange"
+}
+]
+},
+"1-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-13-sol.webp",
+"w": 438,
+"h": 388,
+"alt": "3 colours"
+}
+]
+},
+"1-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-14-sol.webp",
+"w": 406,
+"h": 335,
+"alt": "4 colours"
+}
+]
+},
+"1-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-15-sol.webp",
+"w": 793,
+"h": 397,
+"alt": "Option b"
+}
+]
+},
+"1-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-16-sol.webp",
+"w": 793,
+"h": 396,
+"alt": "Option a"
+}
+]
+},
+"1-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-17-sol.webp",
+"w": 218,
+"h": 357,
+"alt": "6 × 6 = 36 faces"
+}
+]
+},
+"1-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-18-sol.webp",
+"w": 254,
+"h": 281,
+"alt": "6 × 6 = 36 faces"
+}
+]
+},
+"1-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-19-sol.webp",
+"w": 550,
+"h": 430,
+"alt": "5 edges"
+}
+]
+},
+"1-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-20-sol.webp",
+"w": 518,
+"h": 397,
+"alt": "3 edges"
+}
+]
+},
+"1-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch01-P2-sol.webp",
+"w": 742,
+"h": 166,
+"alt": "Blue circle in Square 4"
+}
+]
+},
+"2-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-1-sol.webp",
+"w": 794,
+"h": 135,
+"alt": "7 flowers"
+}
+]
+},
+"2-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-2-sol.webp",
+"w": 732,
+"h": 130,
+"alt": "3 shells"
+}
+]
+},
+"2-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-3-sol.webp",
+"w": 812,
+"h": 419,
+"alt": "3 paths"
+}
+]
+},
+"2-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-4-sol.webp",
+"w": 812,
+"h": 451,
+"alt": "4 paths"
+}
+]
+},
+"2-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-5-sol.webp",
+"w": 640,
+"h": 611,
+"alt": "A takes the fewest turns"
+}
+]
+},
+"2-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-6-sol.webp",
+"w": 586,
+"h": 402,
+"alt": "2 right turns"
+}
+]
+},
+"2-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-7-sol.webp",
+"w": 900,
+"h": 493,
+"alt": "Piece d"
+}
+]
+},
+"2-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-8-sol.webp",
+"w": 900,
+"h": 503,
+"alt": "Piece c"
+}
+]
 },
 "2-9": {
 "figs": [
@@ -77,6 +374,28 @@
 ],
 "after": "Count the arrows"
 },
+"2-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-11-sol.webp",
+"w": 900,
+"h": 214,
+"alt": "Picture d is the top view"
+}
+]
+},
+"2-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-12-sol.webp",
+"w": 900,
+"h": 236,
+"alt": "Picture a is the top view"
+}
+]
+},
 "2-13": {
 "figs": [
 {
@@ -121,6 +440,72 @@
 ],
 "after": "Count the colours"
 },
+"2-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-15-sol.webp",
+"w": 900,
+"h": 180,
+"alt": "Tower b matches from the front"
+}
+]
+},
+"2-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-16-sol.webp",
+"w": 900,
+"h": 243,
+"alt": "Tower c matches from the right"
+}
+]
+},
+"2-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-17-sol.webp",
+"w": 730,
+"h": 642,
+"alt": "Behind"
+}
+]
+},
+"2-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-18-sol.webp",
+"w": 698,
+"h": 628,
+"alt": "Left"
+}
+]
+},
+"2-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-19-sol.webp",
+"w": 900,
+"h": 276,
+"alt": "Figure a is the top view"
+}
+]
+},
+"2-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch02-20-sol.webp",
+"w": 900,
+"h": 258,
+"alt": "Figure d is the front view"
+}
+]
+},
 "2-P2": {
 "figs": [
 {
@@ -133,6 +518,28 @@
 }
 ],
 "after": "Use the clues"
+},
+"3-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-1-sol.webp",
+"w": 358,
+"h": 481,
+"alt": "3 can never be a result"
+}
+]
+},
+"3-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-2-sol.webp",
+"w": 358,
+"h": 481,
+"alt": "7 can never be a result"
+}
+]
 },
 "3-5": {
 "figs": [
@@ -224,6 +631,72 @@
 ],
 "after": "Consecutive even"
 },
+"3-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-7-sol.webp",
+"w": 900,
+"h": 236,
+"alt": "Option d: 6 dots"
+}
+]
+},
+"3-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-8-sol.webp",
+"w": 900,
+"h": 249,
+"alt": "Option c: 1 dot"
+}
+]
+},
+"3-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-9-sol.webp",
+"w": 900,
+"h": 338,
+"alt": "Option b"
+}
+]
+},
+"3-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-10-sol.webp",
+"w": 900,
+"h": 338,
+"alt": "Option d"
+}
+]
+},
+"3-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-11-sol.webp",
+"w": 521,
+"h": 241,
+"alt": "Even steps only"
+}
+]
+},
+"3-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-12-sol.webp",
+"w": 593,
+"h": 245,
+"alt": "Multiples of 3 only"
+}
+]
+},
 "3-17": {
 "figs": [
 {
@@ -251,6 +724,72 @@
 }
 ],
 "after": "Try the places"
+},
+"3-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-19-sol.webp",
+"w": 900,
+"h": 341,
+"alt": "Figure c cannot be made"
+}
+]
+},
+"3-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-20-sol.webp",
+"w": 900,
+"h": 341,
+"alt": "Figure b cannot be made"
+}
+]
+},
+"3-A3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-A3-sol.webp",
+"w": 450,
+"h": 464,
+"alt": "Row 2, Column 1"
+}
+]
+},
+"3-A4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-A4-sol.webp",
+"w": 420,
+"h": 452,
+"alt": "Row 3, Column 1"
+}
+]
+},
+"3-A5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-A5-sol.webp",
+"w": 900,
+"h": 335,
+"alt": "Pattern c"
+}
+]
+},
+"3-A6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-A6-sol.webp",
+"w": 900,
+"h": 335,
+"alt": "Pattern a"
+}
+]
 },
 "3-A7": {
 "figs": [
@@ -406,6 +945,72 @@
 ],
 "after": "The new grid is 8"
 },
+"3-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-P1-sol.webp",
+"w": 590,
+"h": 478,
+"alt": "Yellow"
+}
+]
+},
+"3-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch03-P2-sol.webp",
+"w": 620,
+"h": 448,
+"alt": "Green"
+}
+]
+},
+"4-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-3-sol.webp",
+"w": 688,
+"h": 179,
+"alt": "Black 1, 0, 4 and white 3"
+}
+]
+},
+"4-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-4-sol.webp",
+"w": 720,
+"h": 206,
+"alt": "White 5, 4, 2 and black 9"
+}
+]
+},
+"4-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-5-sol.webp",
+"w": 900,
+"h": 234,
+"alt": "5 values"
+}
+]
+},
+"4-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-6-sol.webp",
+"w": 900,
+"h": 261,
+"alt": "3 values"
+}
+]
+},
 "4-7": {
 "figs": [
 {
@@ -433,6 +1038,28 @@
 }
 ],
 "after": "Make both numbers"
+},
+"4-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-9-sol.webp",
+"w": 527,
+"h": 126,
+"alt": "Number 3 becomes 8304"
+}
+]
+},
+"4-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-10-sol.webp",
+"w": 527,
+"h": 126,
+"alt": "Number 4 becomes 6793"
+}
+]
 },
 "4-11": {
 "figs": [
@@ -494,6 +1121,182 @@
 ],
 "after": "From the expression"
 },
+"4-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-13-sol.webp",
+"w": 822,
+"h": 291,
+"alt": "7 and 9 work"
+}
+]
+},
+"4-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-14-sol.webp",
+"w": 790,
+"h": 259,
+"alt": "2 and 4 work"
+}
+]
+},
+"4-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-15-sol.webp",
+"w": 554,
+"h": 272,
+"alt": "Hundreds digits 8, 9, 7"
+}
+]
+},
+"4-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-16-sol.webp",
+"w": 554,
+"h": 270,
+"alt": "Hundreds digits 4, 6, 7"
+}
+]
+},
+"4-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-17-sol.webp",
+"w": 478,
+"h": 253,
+"alt": "4560 and 2187"
+}
+]
+},
+"4-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-18-sol.webp",
+"w": 510,
+"h": 375,
+"alt": "7430 and 8092"
+}
+]
+},
+"4-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-19-sol.webp",
+"w": 530,
+"h": 200,
+"alt": "3 numbers"
+}
+]
+},
+"4-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-20-sol.webp",
+"w": 530,
+"h": 200,
+"alt": "4 numbers"
+}
+]
+},
+"4-A1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-A1-sol.webp",
+"w": 531,
+"h": 234,
+"alt": "Smaller number goes up"
+}
+]
+},
+"4-A2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-A2-sol.webp",
+"w": 547,
+"h": 245,
+"alt": "Work level by level"
+}
+]
+},
+"4-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-P1-sol.webp",
+"w": 492,
+"h": 403,
+"alt": "2 boxes"
+}
+]
+},
+"4-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch04-P2-sol.webp",
+"w": 492,
+"h": 403,
+"alt": "1 box"
+}
+]
+},
+"5-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-1-sol.webp",
+"w": 550,
+"h": 554,
+"alt": "7 jars are less than half full"
+}
+]
+},
+"5-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-2-sol.webp",
+"w": 718,
+"h": 420,
+"alt": "7 glasses are half full or more"
+}
+]
+},
+"5-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-3-sol.webp",
+"w": 348,
+"h": 402,
+"alt": "Count in half-squares"
+}
+]
+},
+"5-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-4-sol.webp",
+"w": 454,
+"h": 314,
+"alt": "Count in half-squares"
+}
+]
+},
 "5-7": {
 "figs": [
 {
@@ -546,6 +1349,28 @@
 ],
 "after": "- Total = 20 + 15"
 },
+"5-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-11-sol.webp",
+"w": 900,
+"h": 184,
+"alt": "Pizza d"
+}
+]
+},
+"5-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-12-sol.webp",
+"w": 900,
+"h": 138,
+"alt": "Bar a"
+}
+]
+},
 "5-13": {
 "figs": [
 {
@@ -588,6 +1413,28 @@
 ],
 "after": "Write the shaded part"
 },
+"5-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-15-sol.webp",
+"w": 741,
+"h": 151,
+"alt": "4/6"
+}
+]
+},
+"5-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-16-sol.webp",
+"w": 735,
+"h": 150,
+"alt": "5/6"
+}
+]
+},
 "5-19": {
 "figs": [
 {
@@ -600,6 +1447,171 @@
 }
 ],
 "after": "Find the rule"
+},
+"5-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch05-20-sol.webp",
+"w": 900,
+"h": 489,
+"alt": "Option d: hexagon"
+}
+]
+},
+"6-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-1-sol.webp",
+"w": 900,
+"h": 181,
+"alt": "Green dotted line: 4 hidden"
+}
+]
+},
+"6-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-2-sol.webp",
+"w": 900,
+"h": 182,
+"alt": "Green dotted line: 4 hidden"
+}
+]
+},
+"6-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-3-sol.webp",
+"w": 560,
+"h": 390,
+"alt": "Removing P decreases the perimeter"
+}
+]
+},
+"6-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-4-sol.webp",
+"w": 454,
+"h": 384,
+"alt": "Removing E increases the perimeter"
+}
+]
+},
+"6-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-5-sol.webp",
+"w": 874,
+"h": 454,
+"alt": "15 km"
+}
+]
+},
+"6-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-6-sol.webp",
+"w": 894,
+"h": 456,
+"alt": "A and C"
+}
+]
+},
+"6-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-7-sol.webp",
+"w": 900,
+"h": 533,
+"alt": "3 blocks"
+}
+]
+},
+"6-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-8-sol.webp",
+"w": 878,
+"h": 508,
+"alt": "4 blocks"
+}
+]
+},
+"6-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-9-sol.webp",
+"w": 806,
+"h": 451,
+"alt": "Line F"
+}
+]
+},
+"6-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-10-sol.webp",
+"w": 806,
+"h": 449,
+"alt": "Line A"
+}
+]
+},
+"6-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-11-sol.webp",
+"w": 700,
+"h": 372,
+"alt": "Bar G"
+}
+]
+},
+"6-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-12-sol.webp",
+"w": 700,
+"h": 408,
+"alt": "Bar F"
+}
+]
+},
+"6-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-13-sol.webp",
+"w": 776,
+"h": 992,
+"alt": ">*<$"
+}
+]
+},
+"6-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-14-sol.webp",
+"w": 724,
+"h": 994,
+"alt": "rspq"
+}
+]
 },
 "6-15": {
 "figs": [
@@ -645,6 +1657,28 @@
 ],
 "after": "Count the squares"
 },
+"6-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-17-sol.webp",
+"w": 900,
+"h": 307,
+"alt": "Option c"
+}
+]
+},
+"6-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch06-18-sol.webp",
+"w": 900,
+"h": 308,
+"alt": "Option a"
+}
+]
+},
 "6-20": {
 "figs": [
 {
@@ -657,6 +1691,28 @@
 }
 ],
 "after": "Cutting the 8 cm"
+},
+"7-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-3-sol.webp",
+"w": 900,
+"h": 438,
+"alt": "Skip Step B"
+}
+]
+},
+"7-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-4-sol.webp",
+"w": 900,
+"h": 439,
+"alt": "Skip Step A"
+}
+]
 },
 "7-5": {
 "figs": [
@@ -701,6 +1757,182 @@
 }
 ],
 "after": "Follow the changes"
+},
+"7-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-7-sol.webp",
+"w": 484,
+"h": 416,
+"alt": "A = 3, B = 5, C = 4"
+}
+]
+},
+"7-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-8-sol.webp",
+"w": 516,
+"h": 440,
+"alt": "A = 7, B = 5, C = 3"
+}
+]
+},
+"7-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-9-sol.webp",
+"w": 738,
+"h": 358,
+"alt": "228"
+}
+]
+},
+"7-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-10-sol.webp",
+"w": 738,
+"h": 358,
+"alt": "318"
+}
+]
+},
+"7-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-11-sol.webp",
+"w": 900,
+"h": 397,
+"alt": "641"
+}
+]
+},
+"7-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-12-sol.webp",
+"w": 900,
+"h": 395,
+"alt": "902"
+}
+]
+},
+"7-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-15-sol.webp",
+"w": 528,
+"h": 351,
+"alt": "Largest 97, smallest 24"
+}
+]
+},
+"7-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-16-sol.webp",
+"w": 528,
+"h": 351,
+"alt": "Largest 86, smallest 30"
+}
+]
+},
+"7-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-P1-sol.webp",
+"w": 631,
+"h": 102,
+"alt": "Square"
+}
+]
+},
+"7-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch07-P2-sol.webp",
+"w": 637,
+"h": 102,
+"alt": "Circle"
+}
+]
+},
+"8-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-1-sol.webp",
+"w": 810,
+"h": 176,
+"alt": "The triangle is heavier than the circle"
+}
+]
+},
+"8-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-2-sol.webp",
+"w": 810,
+"h": 177,
+"alt": "The circle is heavier than the star"
+}
+]
+},
+"8-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-3-sol.webp",
+"w": 546,
+"h": 244,
+"alt": "9 circles"
+}
+]
+},
+"8-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-4-sol.webp",
+"w": 541,
+"h": 142,
+"alt": "12 circles"
+}
+]
+},
+"8-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-5-sol.webp",
+"w": 558,
+"h": 298,
+"alt": "CAPACITY"
+}
+]
+},
+"8-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch08-6-sol.webp",
+"w": 542,
+"h": 283,
+"alt": "TEMPERATURE"
+}
+]
 },
 "8-13": {
 "figs": [
@@ -914,6 +2146,28 @@
 ],
 "after": "Equal squares fill"
 },
+"9-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch09-P1-sol.webp",
+"w": 558,
+"h": 558,
+"alt": "5 safe cells"
+}
+]
+},
+"9-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch09-P2-sol.webp",
+"w": 558,
+"h": 598,
+"alt": "4 safe cells"
+}
+]
+},
 "10-3": {
 "figs": [
 {
@@ -957,6 +2211,270 @@
 }
 ],
 "after": "Find each price"
+},
+"10-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-13-sol.webp",
+"w": 900,
+"h": 246,
+"alt": "Option c: black pentagon"
+}
+]
+},
+"10-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-14-sol.webp",
+"w": 900,
+"h": 233,
+"alt": "Option b"
+}
+]
+},
+"10-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-15-sol.webp",
+"w": 900,
+"h": 300,
+"alt": "Option d: red square"
+}
+]
+},
+"10-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-16-sol.webp",
+"w": 900,
+"h": 298,
+"alt": "Option c: yellow star"
+}
+]
+},
+"10-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-19-sol.webp",
+"w": 292,
+"h": 382,
+"alt": "18"
+}
+]
+},
+"10-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-20-sol.webp",
+"w": 324,
+"h": 404,
+"alt": "16"
+}
+]
+},
+"10-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-P1-sol.webp",
+"w": 900,
+"h": 339,
+"alt": "Circle and pentagon"
+}
+]
+},
+"10-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch10-P2-sol.webp",
+"w": 900,
+"h": 338,
+"alt": "Circle and star"
+}
+]
+},
+"11-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-1-sol.webp",
+"w": 900,
+"h": 277,
+"alt": "Option b"
+}
+]
+},
+"11-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-2-sol.webp",
+"w": 900,
+"h": 280,
+"alt": "Option d"
+}
+]
+},
+"11-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-3-sol.webp",
+"w": 900,
+"h": 273,
+"alt": "Option c"
+}
+]
+},
+"11-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-4-sol.webp",
+"w": 900,
+"h": 216,
+"alt": "Option a"
+}
+]
+},
+"11-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-5-sol.webp",
+"w": 900,
+"h": 302,
+"alt": "Option d"
+}
+]
+},
+"11-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-6-sol.webp",
+"w": 900,
+"h": 223,
+"alt": "Option b"
+}
+]
+},
+"11-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-9-sol.webp",
+"w": 900,
+"h": 259,
+"alt": "Option a"
+}
+]
+},
+"11-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-10-sol.webp",
+"w": 900,
+"h": 265,
+"alt": "Option c"
+}
+]
+},
+"11-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-11-sol.webp",
+"w": 900,
+"h": 216,
+"alt": "6 lines"
+}
+]
+},
+"11-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-12-sol.webp",
+"w": 900,
+"h": 211,
+"alt": "0 lines"
+}
+]
+},
+"11-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-13-sol.webp",
+"w": 198,
+"h": 217,
+"alt": "Only vertical symmetry"
+}
+]
+},
+"11-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-14-sol.webp",
+"w": 198,
+"h": 199,
+"alt": "No line symmetry"
+}
+]
+},
+"11-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-17-sol.webp",
+"w": 900,
+"h": 300,
+"alt": "Option c"
+}
+]
+},
+"11-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-18-sol.webp",
+"w": 900,
+"h": 223,
+"alt": "Option d"
+}
+]
+},
+"11-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-19-sol.webp",
+"w": 742,
+"h": 324,
+"alt": "Same as each other"
+}
+]
+},
+"11-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch11-20-sol.webp",
+"w": 482,
+"h": 563,
+"alt": "Different from each other"
+}
+]
 },
 "12-1": {
 "figs": [
@@ -1136,6 +2654,28 @@
 ],
 "after": "1st April is a Friday"
 },
+"12-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch12-13-sol.webp",
+"w": 658,
+"h": 451,
+"alt": "A-B-C-D works"
+}
+]
+},
+"12-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch12-14-sol.webp",
+"w": 658,
+"h": 451,
+"alt": "B-D-A-C works"
+}
+]
+},
 "12-15": {
 "figs": [
 {
@@ -1206,6 +2746,28 @@
 ],
 "after": "Find the length"
 },
+"12-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch12-P1-sol.webp",
+"w": 666,
+"h": 201,
+"alt": "3 boxes"
+}
+]
+},
+"12-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch12-P2-sol.webp",
+"w": 798,
+"h": 211,
+"alt": "2 boxes"
+}
+]
+},
 "13-11": {
 "figs": [
 {
@@ -1245,6 +2807,28 @@
 }
 ],
 "after": "Count the products"
+},
+"13-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch13-13-sol.webp",
+"w": 420,
+"h": 388,
+"alt": "Triangle = 12"
+}
+]
+},
+"13-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch13-14-sol.webp",
+"w": 618,
+"h": 448,
+"alt": "Triangle = 13"
+}
+]
 },
 "13-17": {
 "figs": [
@@ -1298,6 +2882,28 @@
 ],
 "after": "In each round"
 },
+"13-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch13-P1-sol.webp",
+"w": 900,
+"h": 340,
+"alt": "Option b: diamond"
+}
+]
+},
+"13-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch13-P2-sol.webp",
+"w": 900,
+"h": 385,
+"alt": "Option c: diamond"
+}
+]
+},
 "14-1": {
 "figs": [
 {
@@ -1341,6 +2947,116 @@
 }
 ],
 "after": "Use: total = 3"
+},
+"14-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-3-sol.webp",
+"w": 842,
+"h": 391,
+"alt": "2 subjects"
+}
+]
+},
+"14-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-4-sol.webp",
+"w": 768,
+"h": 384,
+"alt": "1 subject"
+}
+]
+},
+"14-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-5-sol.webp",
+"w": 515,
+"h": 198,
+"alt": "Pears"
+}
+]
+},
+"14-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-6-sol.webp",
+"w": 502,
+"h": 198,
+"alt": "Kites"
+}
+]
+},
+"14-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-7-sol.webp",
+"w": 864,
+"h": 306,
+"alt": "522 notebooks"
+}
+]
+},
+"14-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-8-sol.webp",
+"w": 864,
+"h": 306,
+"alt": "672 umbrellas"
+}
+]
+},
+"14-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-9-sol.webp",
+"w": 626,
+"h": 522,
+"alt": "Mira and Nikhil"
+}
+]
+},
+"14-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-10-sol.webp",
+"w": 672,
+"h": 539,
+"alt": "Qadir and Sunil"
+}
+]
+},
+"14-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-11-sol.webp",
+"w": 874,
+"h": 480,
+"alt": "C"
+}
+]
+},
+"14-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-12-sol.webp",
+"w": 768,
+"h": 456,
+"alt": "C"
+}
+]
 },
 "14-15": {
 "figs": [
@@ -1391,5 +3107,49 @@
 }
 ],
 "after": "People who like both"
+},
+"14-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-17-sol.webp",
+"w": 568,
+"h": 402,
+"alt": "Building B"
+}
+]
+},
+"14-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-18-sol.webp",
+"w": 568,
+"h": 392,
+"alt": "Building C"
+}
+]
+},
+"14-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-P1-sol.webp",
+"w": 900,
+"h": 320,
+"alt": "Option c"
+}
+]
+},
+"14-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-4-ch14-P2-sol.webp",
+"w": 900,
+"h": 338,
+"alt": "Option a"
+}
+]
 }
 }

@@ -1,0 +1,18 @@
+from draw import *
+C=6
+mark(C,"6-1",[("text",50,99,"4 corners = ½ square, so 2 corners = ¼")],"1/4")
+mark(C,"6-2",[("text",50,99,"½ × side × side = ½ of the square")],"1/2")
+mark(C,"6-5",[("text",50,99,"every face: grey and white equal → 6 faces")],"6 faces")
+mark(C,"6-6",[("text",50,99,"top, bottom, left, right equal; front and back not → 4")],"4 faces")
+mark(C,"6-9",[("text",50,99,"3 notches where a hexagon touches 3 sides")],"3 hexagons")
+mark(C,"6-10",[("text",50,99,"4 notches where a hexagon touches 3 sides")],"4 hexagons")
+mark(C,"6-11",opt("b",5,97)+[("text",50,99,"pieces touch least → perimeter 20 units")],"Arrangement b")
+mark(C,"6-12",opt("d",5,97)+[("text",50,99,"pieces touch least → perimeter 22 units")],"Arrangement d")
+mark(C,"6-15",[("box",6,6,50,50,"green"),("text",28,28,"6 × 6"),("text",50,99,"largest empty square: 6 × 6 = 36 cm²")],"36 cm²")
+mark(C,"6-16",[("box",6,6,41,41,"green"),("text",24,24,"8 × 8"),("text",50,99,"largest empty square: 8 × 8 = 64 cm²")],"64 cm²")
+R=((3,47),(52,97))
+mark(C,"6-19",optg("c",*R[1],R),"Set c")
+mark(C,"6-20",optg("b",*R[0],R),"Set b")
+mark(C,"6-P1",[("text",70,40,"12","green"),("text",50,99,"1 and 12 neighbours, 10 and 5 neighbours → A = 12")],"A = 12")
+mark(C,"6-P2",[("text",82,64,"9","green"),("text",50,99,"2, 10, 1 / 7, 4, 9 → A = 9")],"A = 9")
+save()

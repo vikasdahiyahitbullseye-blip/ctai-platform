@@ -1,4 +1,92 @@
 {
+"1-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-5-sol.webp",
+"w": 826,
+"h": 460,
+"alt": "Option a"
+}
+]
+},
+"1-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-6-sol.webp",
+"w": 828,
+"h": 476,
+"alt": "Option a"
+}
+]
+},
+"1-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-7-sol.webp",
+"w": 654,
+"h": 506,
+"alt": "8848"
+}
+]
+},
+"1-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-8-sol.webp",
+"w": 654,
+"h": 506,
+"alt": "2899"
+}
+]
+},
+"1-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-9-sol.webp",
+"w": 900,
+"h": 280,
+"alt": "Option a"
+}
+]
+},
+"1-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-10-sol.webp",
+"w": 900,
+"h": 280,
+"alt": "Option a"
+}
+]
+},
+"1-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-P1-sol.webp",
+"w": 308,
+"h": 341,
+"alt": "Q has the pentagon"
+}
+]
+},
+"1-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch01-P2-sol.webp",
+"w": 300,
+"h": 317,
+"alt": "B has the diamond"
+}
+]
+},
 "2-1": {
 "figs": [
 {
@@ -249,6 +337,28 @@
 ],
 "after": "Each friend takes half"
 },
+"2-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch02-P1-sol.webp",
+"w": 208,
+"h": 807,
+"alt": "B = 5, C = 4"
+}
+]
+},
+"2-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch02-P2-sol.webp",
+"w": 208,
+"h": 713,
+"alt": "B = 2, C = 3"
+}
+]
+},
 "3-1": {
 "figs": [
 {
@@ -454,6 +564,50 @@
 ],
 "after": "Count the turns"
 },
+"3-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-7-sol.webp",
+"w": 900,
+"h": 325,
+"alt": "Picture b"
+}
+]
+},
+"3-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-8-sol.webp",
+"w": 900,
+"h": 325,
+"alt": "Picture c"
+}
+]
+},
+"3-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-9-sol.webp",
+"w": 578,
+"h": 356,
+"alt": "1/4 turn clockwise"
+}
+]
+},
+"3-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-10-sol.webp",
+"w": 578,
+"h": 356,
+"alt": "3/4 turn clockwise"
+}
+]
+},
 "3-11": {
 "figs": [
 {
@@ -630,6 +784,105 @@
 ],
 "after": "Work out each final"
 },
+"3-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-17-sol.webp",
+"w": 900,
+"h": 248,
+"alt": "Option c"
+}
+]
+},
+"3-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-18-sol.webp",
+"w": 900,
+"h": 246,
+"alt": "Option d"
+}
+]
+},
+"3-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-19-sol.webp",
+"w": 900,
+"h": 351,
+"alt": "Option b"
+}
+]
+},
+"3-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-20-sol.webp",
+"w": 900,
+"h": 351,
+"alt": "Option c"
+}
+]
+},
+"3-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch03-P1-sol.webp",
+"w": 424,
+"h": 456,
+"alt": "D"
+}
+]
+},
+"4-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-5-sol.webp",
+"w": 122,
+"h": 531,
+"alt": "20 ways"
+}
+]
+},
+"4-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-6-sol.webp",
+"w": 122,
+"h": 437,
+"alt": "21 ways"
+}
+]
+},
+"4-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-11-sol.webp",
+"w": 840,
+"h": 211,
+"alt": "B = 4"
+}
+]
+},
+"4-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-12-sol.webp",
+"w": 840,
+"h": 209,
+"alt": "B = 1"
+}
+]
+},
 "4-19": {
 "figs": [
 {
@@ -709,6 +962,28 @@
 }
 ],
 "after": "Take east as"
+},
+"4-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-P1-sol.webp",
+"w": 408,
+"h": 346,
+"alt": "24 rectangles"
+}
+]
+},
+"4-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch04-P2-sol.webp",
+"w": 410,
+"h": 442,
+"alt": "36 rectangles"
+}
+]
 },
 "5-1": {
 "figs": [
@@ -1023,6 +1298,28 @@
 ],
 "after": "Start with the book"
 },
+"5-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch05-P1-sol.webp",
+"w": 736,
+"h": 516,
+"alt": "Code 74927"
+}
+]
+},
+"5-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch05-P2-sol.webp",
+"w": 736,
+"h": 518,
+"alt": "Code 58813"
+}
+]
+},
 "6-11": {
 "figs": [
 {
@@ -1063,6 +1360,28 @@
 ],
 "after": "A seat is taken"
 },
+"6-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-13-sol.webp",
+"w": 398,
+"h": 413,
+"alt": "A = 7, B = 8, C = 9"
+}
+]
+},
+"6-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-14-sol.webp",
+"w": 398,
+"h": 413,
+"alt": "A = 5, B = 6, C = 7"
+}
+]
+},
 "6-17": {
 "figs": [
 {
@@ -1095,6 +1414,138 @@
 }
 ],
 "after": "After the changes"
+},
+"6-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-19-sol.webp",
+"w": 576,
+"h": 262,
+"alt": "25"
+}
+]
+},
+"6-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-20-sol.webp",
+"w": 576,
+"h": 266,
+"alt": "31"
+}
+]
+},
+"6-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-P1-sol.webp",
+"w": 590,
+"h": 112,
+"alt": "3 boxes"
+}
+]
+},
+"6-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch06-P2-sol.webp",
+"w": 590,
+"h": 112,
+"alt": "2 boxes"
+}
+]
+},
+"7-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-1-sol.webp",
+"w": 250,
+"h": 249,
+"alt": "13 triangles"
+}
+]
+},
+"7-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-2-sol.webp",
+"w": 354,
+"h": 325,
+"alt": "27 triangles"
+}
+]
+},
+"7-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-11-sol.webp",
+"w": 314,
+"h": 341,
+"alt": "ACB / CBA / BAC"
+}
+]
+},
+"7-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-12-sol.webp",
+"w": 314,
+"h": 339,
+"alt": "ACB / BAC / CBA"
+}
+]
+},
+"7-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-13-sol.webp",
+"w": 284,
+"h": 227,
+"alt": "17 matchsticks"
+}
+]
+},
+"7-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-14-sol.webp",
+"w": 368,
+"h": 315,
+"alt": "31 matchsticks"
+}
+]
+},
+"7-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-15-sol.webp",
+"w": 420,
+"h": 344,
+"alt": "F"
+}
+]
+},
+"7-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch07-16-sol.webp",
+"w": 388,
+"h": 331,
+"alt": "T"
+}
+]
 },
 "8-5": {
 "figs": [
@@ -1266,6 +1717,28 @@
 ],
 "after": "Find the differences"
 },
+"8-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch08-P1-sol.webp",
+"w": 562,
+"h": 376,
+"alt": "Bakery and Toy"
+}
+]
+},
+"8-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch08-P2-sol.webp",
+"w": 562,
+"h": 374,
+"alt": "Pizza and Fruit"
+}
+]
+},
 "9-11": {
 "figs": [
 {
@@ -1322,6 +1795,138 @@
 ],
 "after": "Work out the values"
 },
+"10-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-3-sol.webp",
+"w": 244,
+"h": 261,
+"alt": "5 lines of symmetry"
+}
+]
+},
+"10-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-4-sol.webp",
+"w": 298,
+"h": 325,
+"alt": "2 lines of symmetry"
+}
+]
+},
+"10-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-7-sol.webp",
+"w": 900,
+"h": 291,
+"alt": "Option b"
+}
+]
+},
+"10-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-8-sol.webp",
+"w": 900,
+"h": 230,
+"alt": "Option c"
+}
+]
+},
+"10-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-13-sol.webp",
+"w": 900,
+"h": 242,
+"alt": "Option d"
+}
+]
+},
+"10-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-14-sol.webp",
+"w": 900,
+"h": 231,
+"alt": "Option b"
+}
+]
+},
+"10-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-17-sol.webp",
+"w": 900,
+"h": 255,
+"alt": "Option c"
+}
+]
+},
+"10-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-18-sol.webp",
+"w": 900,
+"h": 254,
+"alt": "Option d"
+}
+]
+},
+"10-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-P1-sol.webp",
+"w": 300,
+"h": 425,
+"alt": "Floor 7"
+}
+]
+},
+"10-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch10-P2-sol.webp",
+"w": 300,
+"h": 425,
+"alt": "Floor 3"
+}
+]
+},
+"11-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch11-5-sol.webp",
+"w": 468,
+"h": 504,
+"alt": "18 square units"
+}
+]
+},
+"11-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch11-6-sol.webp",
+"w": 468,
+"h": 430,
+"alt": "15 square units"
+}
+]
+},
 "11-7": {
 "figs": [
 {
@@ -1349,6 +1954,28 @@
 }
 ],
 "after": "A 4 × 4 grid has 16"
+},
+"11-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch11-11-sol.webp",
+"w": 430,
+"h": 264,
+"alt": "Increases by 2 units"
+}
+]
+},
+"11-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch11-12-sol.webp",
+"w": 228,
+"h": 255,
+"alt": "Stays the same"
+}
+]
 },
 "11-17": {
 "figs": [
@@ -2109,6 +2736,28 @@
 ],
 "after": "Find when each one"
 },
+"12-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch12-17-sol.webp",
+"w": 806,
+"h": 155,
+"alt": "Yellow"
+}
+]
+},
+"12-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch12-18-sol.webp",
+"w": 806,
+"h": 157,
+"alt": "Pink"
+}
+]
+},
 "12-19": {
 "figs": [
 {
@@ -2188,6 +2837,72 @@
 }
 ],
 "after": "List the times"
+},
+"12-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch12-P1-sol.webp",
+"w": 314,
+"h": 381,
+"alt": "Column B"
+}
+]
+},
+"12-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch12-P2-sol.webp",
+"w": 410,
+"h": 388,
+"alt": "Column C"
+}
+]
+},
+"13-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch13-15-sol.webp",
+"w": 900,
+"h": 244,
+"alt": "Option b: 7 sides"
+}
+]
+},
+"13-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch13-16-sol.webp",
+"w": 900,
+"h": 242,
+"alt": "Option c: triangle"
+}
+]
+},
+"13-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch13-P1-sol.webp",
+"w": 684,
+"h": 395,
+"alt": "4 positions"
+}
+]
+},
+"13-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch13-P2-sol.webp",
+"w": 762,
+"h": 400,
+"alt": "2 positions"
+}
+]
 },
 "14-3": {
 "figs": [
@@ -2278,6 +2993,50 @@
 }
 ],
 "after": "Put A at (0, 0)"
+},
+"14-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-7-sol.webp",
+"w": 504,
+"h": 417,
+"alt": "2 right turns"
+}
+]
+},
+"14-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-8-sol.webp",
+"w": 396,
+"h": 621,
+"alt": "2 left turns"
+}
+]
+},
+"14-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-11-sol.webp",
+"w": 450,
+"h": 400,
+"alt": "2 squares"
+}
+]
+},
+"14-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-12-sol.webp",
+"w": 450,
+"h": 400,
+"alt": "6 squares"
+}
+]
 },
 "14-13": {
 "figs": [
@@ -2371,6 +3130,72 @@
 ],
 "after": "Follow his walk"
 },
+"14-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-19-sol.webp",
+"w": 490,
+"h": 457,
+"alt": "5 boxes"
+}
+]
+},
+"14-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-20-sol.webp",
+"w": 644,
+"h": 467,
+"alt": "9 boxes"
+}
+]
+},
+"14-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-P1-sol.webp",
+"w": 524,
+"h": 565,
+"alt": "2 points"
+}
+]
+},
+"14-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch14-P2-sol.webp",
+"w": 646,
+"h": 571,
+"alt": "3 points"
+}
+]
+},
+"15-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-1-sol.webp",
+"w": 364,
+"h": 283,
+"alt": "16"
+}
+]
+},
+"15-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-2-sol.webp",
+"w": 436,
+"h": 288,
+"alt": "Circle = 5"
+}
+]
+},
 "15-3": {
 "figs": [
 {
@@ -2438,6 +3263,39 @@
 }
 ],
 "after": "Add the bags"
+},
+"15-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-6-sol.webp",
+"w": 674,
+"h": 539,
+"alt": "59 caps"
+}
+]
+},
+"15-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-7-sol.webp",
+"w": 506,
+"h": 449,
+"alt": "Row 3"
+}
+]
+},
+"15-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-8-sol.webp",
+"w": 442,
+"h": 462,
+"alt": "Column 2"
+}
+]
 },
 "15-11": {
 "figs": [
@@ -2549,6 +3407,28 @@
 ],
 "after": "Think of P as 1 part"
 },
+"15-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-15-sol.webp",
+"w": 332,
+"h": 359,
+"alt": "34"
+}
+]
+},
+"15-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-16-sol.webp",
+"w": 332,
+"h": 359,
+"alt": "39"
+}
+]
+},
 "15-19": {
 "figs": [
 {
@@ -2563,6 +3443,28 @@
 }
 ],
 "after": "The 8 who play both"
+},
+"15-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-20-sol.webp",
+"w": 534,
+"h": 371,
+"alt": "14"
+}
+]
+},
+"15-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-5-ch15-P1-sol.webp",
+"w": 878,
+"h": 266,
+"alt": "15 dots"
+}
+]
 },
 "15-P2": {
 "figs": [

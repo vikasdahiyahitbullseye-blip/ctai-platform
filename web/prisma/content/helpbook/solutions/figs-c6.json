@@ -67,6 +67,94 @@
 ],
 "after": "Count the blocks"
 },
+"1-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-9-sol.webp",
+"w": 900,
+"h": 217,
+"alt": "Option d"
+}
+]
+},
+"1-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-10-sol.webp",
+"w": 900,
+"h": 204,
+"alt": "Option d"
+}
+]
+},
+"1-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-11-sol.webp",
+"w": 900,
+"h": 409,
+"alt": "Option a"
+}
+]
+},
+"1-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-12-sol.webp",
+"w": 900,
+"h": 401,
+"alt": "Option c"
+}
+]
+},
+"1-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-13-sol.webp",
+"w": 810,
+"h": 289,
+"alt": "196 circles"
+}
+]
+},
+"1-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-14-sol.webp",
+"w": 890,
+"h": 286,
+"alt": "55 diamonds"
+}
+]
+},
+"1-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-17-sol.webp",
+"w": 704,
+"h": 260,
+"alt": "202 circles"
+}
+]
+},
+"1-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-18-sol.webp",
+"w": 588,
+"h": 260,
+"alt": "123 circles"
+}
+]
+},
 "1-19": {
 "figs": [
 {
@@ -122,6 +210,50 @@
 }
 ],
 "after": "For the most levels"
+},
+"1-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-P1-sol.webp",
+"w": 542,
+"h": 165,
+"alt": "Maximum 5"
+}
+]
+},
+"1-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch01-P2-sol.webp",
+"w": 542,
+"h": 165,
+"alt": "Maximum 6"
+}
+]
+},
+"2-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch02-1-sol.webp",
+"w": 514,
+"h": 589,
+"alt": "135 degrees"
+}
+]
+},
+"2-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch02-2-sol.webp",
+"w": 534,
+"h": 591,
+"alt": "180 degrees"
+}
+]
 },
 "2-3": {
 "figs": [
@@ -263,6 +395,17 @@
 ],
 "after": "B, P and D are on one"
 },
+"2-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch02-16-sol.webp",
+"w": 840,
+"h": 536,
+"alt": "10°"
+}
+]
+},
 "2-19": {
 "figs": [
 {
@@ -308,6 +451,116 @@
 ],
 "after": "Use the clues"
 },
+"3-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-3-sol.webp",
+"w": 580,
+"h": 496,
+"alt": "6"
+}
+]
+},
+"3-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-4-sol.webp",
+"w": 580,
+"h": 496,
+"alt": "7"
+}
+]
+},
+"3-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-5-sol.webp",
+"w": 574,
+"h": 182,
+"alt": "21"
+}
+]
+},
+"3-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-6-sol.webp",
+"w": 558,
+"h": 171,
+"alt": "20"
+}
+]
+},
+"3-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-7-sol.webp",
+"w": 527,
+"h": 159,
+"alt": "83675"
+}
+]
+},
+"3-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-8-sol.webp",
+"w": 527,
+"h": 159,
+"alt": "67294"
+}
+]
+},
+"3-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-9-sol.webp",
+"w": 490,
+"h": 521,
+"alt": "8 triangles"
+}
+]
+},
+"3-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-10-sol.webp",
+"w": 508,
+"h": 589,
+"alt": "3 triangles"
+}
+]
+},
+"3-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-13-sol.webp",
+"w": 224,
+"h": 357,
+"alt": "692307"
+}
+]
+},
+"3-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-14-sol.webp",
+"w": 224,
+"h": 357,
+"alt": "751248"
+}
+]
+},
 "3-15": {
 "figs": [
 {
@@ -334,6 +587,138 @@
 ],
 "after": "A 6-digit palindrome"
 },
+"3-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-17-sol.webp",
+"w": 402,
+"h": 435,
+"alt": "4 blocks"
+}
+]
+},
+"3-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-18-sol.webp",
+"w": 528,
+"h": 443,
+"alt": "5 blocks"
+}
+]
+},
+"3-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-19-sol.webp",
+"w": 900,
+"h": 214,
+"alt": "Option b"
+}
+]
+},
+"3-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-20-sol.webp",
+"w": 900,
+"h": 214,
+"alt": "Option d"
+}
+]
+},
+"3-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-P1-sol.webp",
+"w": 564,
+"h": 196,
+"alt": "C chose the diamond"
+}
+]
+},
+"3-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch03-P2-sol.webp",
+"w": 564,
+"h": 196,
+"alt": "D chose the star"
+}
+]
+},
+"4-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-1-sol.webp",
+"w": 792,
+"h": 234,
+"alt": "ABNE"
+}
+]
+},
+"4-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-2-sol.webp",
+"w": 792,
+"h": 234,
+"alt": "MALP"
+}
+]
+},
+"4-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-3-sol.webp",
+"w": 900,
+"h": 291,
+"alt": "Option a"
+}
+]
+},
+"4-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-4-sol.webp",
+"w": 900,
+"h": 315,
+"alt": "Option c"
+}
+]
+},
+"4-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-7-sol.webp",
+"w": 694,
+"h": 468,
+"alt": "15 kg"
+}
+]
+},
+"4-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-8-sol.webp",
+"w": 694,
+"h": 414,
+"alt": "5 kg"
+}
+]
+},
 "4-9": {
 "figs": [
 {
@@ -359,6 +744,17 @@
 }
 ],
 "after": "Pav = Mia + Ravi"
+},
+"4-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-10-sol.webp",
+"w": 692,
+"h": 496,
+"alt": "Cannot be determined"
+}
+]
 },
 "4-13": {
 "figs": [
@@ -409,6 +805,94 @@
 }
 ],
 "after": "The rows must go up"
+},
+"4-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-15-sol.webp",
+"w": 720,
+"h": 408,
+"alt": "10"
+}
+]
+},
+"4-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-16-sol.webp",
+"w": 720,
+"h": 409,
+"alt": "16"
+}
+]
+},
+"4-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-17-sol.webp",
+"w": 810,
+"h": 520,
+"alt": "3 students"
+}
+]
+},
+"4-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-18-sol.webp",
+"w": 810,
+"h": 520,
+"alt": "4 students"
+}
+]
+},
+"4-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-19-sol.webp",
+"w": 794,
+"h": 482,
+"alt": "Rs. 3000"
+}
+]
+},
+"4-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-20-sol.webp",
+"w": 806,
+"h": 421,
+"alt": "Cannot be determined"
+}
+]
+},
+"4-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-P1-sol.webp",
+"w": 400,
+"h": 429,
+"alt": "2"
+}
+]
+},
+"4-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch04-P2-sol.webp",
+"w": 400,
+"h": 431,
+"alt": "3"
+}
+]
 },
 "5-7": {
 "figs": [
@@ -596,6 +1080,72 @@
 ],
 "after": "The month starts on Saturday"
 },
+"5-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch05-P1-sol.webp",
+"w": 452,
+"h": 488,
+"alt": "2 clicks"
+}
+]
+},
+"5-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch05-P2-sol.webp",
+"w": 452,
+"h": 488,
+"alt": "1 click"
+}
+]
+},
+"6-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-1-sol.webp",
+"w": 406,
+"h": 437,
+"alt": "1/4"
+}
+]
+},
+"6-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-2-sol.webp",
+"w": 406,
+"h": 435,
+"alt": "1/2"
+}
+]
+},
+"6-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-5-sol.webp",
+"w": 312,
+"h": 243,
+"alt": "6 faces"
+}
+]
+},
+"6-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-6-sol.webp",
+"w": 312,
+"h": 243,
+"alt": "4 faces"
+}
+]
+},
 "6-7": {
 "figs": [
 {
@@ -642,6 +1192,50 @@
 ],
 "after": "Fold one step"
 },
+"6-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-9-sol.webp",
+"w": 372,
+"h": 257,
+"alt": "3 hexagons"
+}
+]
+},
+"6-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-10-sol.webp",
+"w": 372,
+"h": 343,
+"alt": "4 hexagons"
+}
+]
+},
+"6-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-11-sol.webp",
+"w": 900,
+"h": 223,
+"alt": "Arrangement b"
+}
+]
+},
+"6-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-12-sol.webp",
+"w": 900,
+"h": 220,
+"alt": "Arrangement d"
+}
+]
+},
 "6-13": {
 "figs": [
 {
@@ -686,6 +1280,28 @@
 ],
 "after": "Each rectangle is 8"
 },
+"6-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-15-sol.webp",
+"w": 296,
+"h": 323,
+"alt": "36 cm²"
+}
+]
+},
+"6-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-16-sol.webp",
+"w": 470,
+"h": 508,
+"alt": "64 cm²"
+}
+]
+},
 "6-17": {
 "figs": [
 {
@@ -729,6 +1345,50 @@
 }
 ],
 "after": "Count the squares"
+},
+"6-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-19-sol.webp",
+"w": 856,
+"h": 196,
+"alt": "Set c"
+}
+]
+},
+"6-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-20-sol.webp",
+"w": 836,
+"h": 203,
+"alt": "Set b"
+}
+]
+},
+"6-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-P1-sol.webp",
+"w": 276,
+"h": 305,
+"alt": "A = 12"
+}
+]
+},
+"6-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch06-P2-sol.webp",
+"w": 402,
+"h": 309,
+"alt": "A = 9"
+}
+]
 },
 "7-3": {
 "figs": [
@@ -868,6 +1528,402 @@
 ],
 "after": "Each brick is 1 whole"
 },
+"8-1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-1-sol.webp",
+"w": 900,
+"h": 297,
+"alt": "Option d"
+}
+]
+},
+"8-2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-2-sol.webp",
+"w": 900,
+"h": 319,
+"alt": "Option b"
+}
+]
+},
+"8-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-3-sol.webp",
+"w": 900,
+"h": 296,
+"alt": "Option d"
+}
+]
+},
+"8-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-4-sol.webp",
+"w": 900,
+"h": 320,
+"alt": "Option d"
+}
+]
+},
+"8-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-5-sol.webp",
+"w": 598,
+"h": 278,
+"alt": "A is not used"
+}
+]
+},
+"8-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-6-sol.webp",
+"w": 598,
+"h": 280,
+"alt": "B is not used"
+}
+]
+},
+"8-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-7-sol.webp",
+"w": 254,
+"h": 283,
+"alt": "14 squares"
+}
+]
+},
+"8-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-8-sol.webp",
+"w": 330,
+"h": 357,
+"alt": "16 squares"
+}
+]
+},
+"8-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-9-sol.webp",
+"w": 254,
+"h": 281,
+"alt": "1 line"
+}
+]
+},
+"8-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-10-sol.webp",
+"w": 330,
+"h": 359,
+"alt": "2 lines"
+}
+]
+},
+"8-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-11-sol.webp",
+"w": 226,
+"h": 253,
+"alt": "31 matchsticks"
+}
+]
+},
+"8-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-12-sol.webp",
+"w": 322,
+"h": 255,
+"alt": "4 matchsticks"
+}
+]
+},
+"8-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-13-sol.webp",
+"w": 526,
+"h": 222,
+"alt": "4"
+}
+]
+},
+"8-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-14-sol.webp",
+"w": 526,
+"h": 221,
+"alt": "11"
+}
+]
+},
+"8-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-17-sol.webp",
+"w": 402,
+"h": 433,
+"alt": "3 triangles"
+}
+]
+},
+"8-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-18-sol.webp",
+"w": 498,
+"h": 535,
+"alt": "6 circles"
+}
+]
+},
+"8-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-19-sol.webp",
+"w": 234,
+"h": 193,
+"alt": "4 × 6"
+}
+]
+},
+"8-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-20-sol.webp",
+"w": 166,
+"h": 193,
+"alt": "3 × 5"
+}
+]
+},
+"8-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-P1-sol.webp",
+"w": 402,
+"h": 433,
+"alt": "A = 1, B = 2"
+}
+]
+},
+"8-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch08-P2-sol.webp",
+"w": 478,
+"h": 515,
+"alt": "6 shaded"
+}
+]
+},
+"9-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-3-sol.webp",
+"w": 900,
+"h": 392,
+"alt": "Option c"
+}
+]
+},
+"9-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-4-sol.webp",
+"w": 900,
+"h": 390,
+"alt": "Option d"
+}
+]
+},
+"9-5": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-5-sol.webp",
+"w": 222,
+"h": 247,
+"alt": "2 lines"
+}
+]
+},
+"9-6": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-6-sol.webp",
+"w": 222,
+"h": 249,
+"alt": "4 lines"
+}
+]
+},
+"9-7": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-7-sol.webp",
+"w": 549,
+"h": 127,
+"alt": "3 shapes"
+}
+]
+},
+"9-8": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-8-sol.webp",
+"w": 549,
+"h": 126,
+"alt": "4 shapes"
+}
+]
+},
+"9-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-9-sol.webp",
+"w": 390,
+"h": 339,
+"alt": "Line B"
+}
+]
+},
+"9-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-10-sol.webp",
+"w": 390,
+"h": 419,
+"alt": "Line D"
+}
+]
+},
+"9-11": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-11-sol.webp",
+"w": 498,
+"h": 535,
+"alt": "R"
+}
+]
+},
+"9-12": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-12-sol.webp",
+"w": 498,
+"h": 535,
+"alt": "Q"
+}
+]
+},
+"9-13": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-13-sol.webp",
+"w": 900,
+"h": 209,
+"alt": "3 shapes"
+}
+]
+},
+"9-14": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-14-sol.webp",
+"w": 511,
+"h": 117,
+"alt": "2 shapes"
+}
+]
+},
+"9-19": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-19-sol.webp",
+"w": 900,
+"h": 271,
+"alt": "Option c"
+}
+]
+},
+"9-20": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch09-20-sol.webp",
+"w": 900,
+"h": 263,
+"alt": "Option b"
+}
+]
+},
+"10-3": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-3-sol.webp",
+"w": 504,
+"h": 264,
+"alt": "Stacks B and C"
+}
+]
+},
+"10-4": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-4-sol.webp",
+"w": 504,
+"h": 264,
+"alt": "Stacks A and B"
+}
+]
+},
 "10-5": {
 "figs": [
 {
@@ -922,6 +1978,28 @@
 }
 ],
 "after": "Split the series"
+},
+"10-9": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-9-sol.webp",
+"w": 539,
+"h": 340,
+"alt": "1960"
+}
+]
+},
+"10-10": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-10-sol.webp",
+"w": 539,
+"h": 339,
+"alt": "385"
+}
+]
 },
 "10-13": {
 "figs": [
@@ -983,6 +2061,50 @@
 ],
 "after": "Two neighbouring values"
 },
+"10-15": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-15-sol.webp",
+"w": 748,
+"h": 332,
+"alt": "2 squares"
+}
+]
+},
+"10-16": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-16-sol.webp",
+"w": 748,
+"h": 332,
+"alt": "1 triangle"
+}
+]
+},
+"10-17": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-17-sol.webp",
+"w": 556,
+"h": 246,
+"alt": "13"
+}
+]
+},
+"10-18": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-18-sol.webp",
+"w": 556,
+"h": 245,
+"alt": "18"
+}
+]
+},
 "10-19": {
 "figs": [
 {
@@ -1037,5 +2159,27 @@
 }
 ],
 "after": "Write the floor"
+},
+"10-P1": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-P1-sol.webp",
+"w": 858,
+"h": 458,
+"alt": "D-E-F"
+}
+]
+},
+"10-P2": {
+"figs": [
+{
+"kind": "image",
+"src": "hb/sol/hb-6-ch10-P2-sol.webp",
+"w": 858,
+"h": 458,
+"alt": "H-I-J"
+}
+]
 }
 }

@@ -1,0 +1,26 @@
+from draw import *
+C=5
+mark(C,"13-15",opt("b",50,99)+[("text",50,1,"3, 4, 5, 6 sides → 7 sides")],"Option b: 7 sides")
+mark(C,"13-16",opt("c",50,99)+[("text",50,1,"9, 7, 5 sides → 3 sides")],"Option c: triangle")
+mark(C,"13-P1",[("text",50,99,"4 positions fit on white squares only")],"4 positions")
+mark(C,"13-P2",[("text",50,99,"2 positions fit on white squares only")],"2 positions")
+mark(C,"14-7",[("text",50,99,"N→E right, E→S right; other turns are left: 2")],"2 right turns")
+mark(C,"14-8",[("text",50,99,"E→N left, N→W left: 2 left turns")],"2 left turns")
+mark(C,"14-11",[("text",50,99,"2 white squares can never be reached")],"2 squares")
+mark(C,"14-12",[("text",50,99,"6 white squares can never be reached")],"6 squares")
+X=[17,50,83];Y=[18,52,85]
+mark(C,"14-19",[("ring",X[c],Y[r],10,"green") for r,c in [(0,0),(0,2),(1,1),(1,2),(2,1)]]+[("text",50,99,"5 boxes")],"5 boxes")
+X=[13,38,63,88];Y=[20,52,82]
+mark(C,"14-20",[("ring",X[c],Y[r],8,"green") for r,c in [(0,0),(0,2),(0,3),(1,1),(1,2),(1,3),(2,1),(2,2),(2,3)]]+[("text",50,99,"9 boxes")],"9 boxes")
+mark(C,"14-P1",[("text",50,99,"R moves 5 steps and lands on 2 stars")],"2 points")
+mark(C,"14-P2",[("text",50,99,"T moves 5 steps and lands on 3 stars")],"3 points")
+mark(C,"15-1",[("text",50,99,"star 9, circle 4, square 3:  9 + 4 + 3 = 16")],"16")
+mark(C,"15-2",[("text",50,99,"triangle 7, square 6, circle 5")],"Circle = 5")
+mark(C,"15-6",[("box",79,13,99,97,"green"),("text",50,99,"15 + 9 + 11 + 18 + 6 = 59")],"59 caps")
+mark(C,"15-7",[("box",2,51,98,74,"green"),("text",50,99,"circles per row: 2, 2, 3, 2")],"Row 3")
+mark(C,"15-8",[("box",28,4,52,97,"green"),("text",50,99,"triangles per column: 1, 3, 1, 1")],"Column 2")
+mark(C,"15-15",[("path",[(16,17),(49,17),(82,17),(82,50),(82,83),(49,83),(49,50)],"red"),("text",50,99,"5+2+8+1+6+3+9 = 34")],"34")
+mark(C,"15-16",[("path",[(16,83),(16,50),(16,17),(49,17),(49,50),(49,83),(82,83)],"red"),("text",50,99,"9+3+6+1+8+5+7 = 39")],"39")
+mark(C,"15-20",[("text",50,99,"art: 9 + 5 = 14")],"14")
+mark(C,"15-P1",[("text",50,99,"1, 3, 6, 10 → +5 → 15")],"15 dots")
+save()
