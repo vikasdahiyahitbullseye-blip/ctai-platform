@@ -151,6 +151,7 @@
 "kind": "angle",
 "deg": 60,
 "colour": "blue",
+"showDeg": true,
 "alt": "60° angle"
 }
 ],
@@ -162,6 +163,7 @@
 "kind": "angle",
 "deg": 72,
 "colour": "blue",
+"showDeg": true,
 "alt": "72° angle"
 }
 ],
@@ -255,6 +257,7 @@
 "kind": "angle",
 "deg": 110,
 "colour": "green",
+"showDeg": true,
 "alt": "110° angle"
 }
 ],

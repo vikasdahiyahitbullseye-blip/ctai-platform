@@ -58,7 +58,7 @@ def seq(frames, alt="Steps"): return {"kind": "sequence", "frames": frames, "alt
 def arrow(d, colour="blue"): return {"kind": "arrow", "dir": d, "colour": colour, "alt": ["Up", "Right", "Down", "Left"][d]}
 def dots(n, colour="blue", shape="circle"): return {"kind": "dots", "count": n, "colour": colour, "shape": shape, "alt": f"{n} dots"}
 def picto(title, labels, counts, icon, per, alt=None): return {"kind": "pictograph", "title": title, "labels": labels, "counts": counts, "icon": icon, "per": per, "alt": alt or title}
-def angle(deg, colour="blue"): return {"kind": "angle", "deg": deg, "colour": colour, "alt": f"{deg}° angle"}
+def angle(deg, colour="blue"): return {"kind": "angle", "deg": deg, "colour": colour, "showDeg": True, "alt": f"{deg}° angle"}
 def pix(n, cells, mirror=None, alt="Grid"):
     f = {"kind": "pixels", "n": n, "cells": [list(c) for c in cells], "alt": alt}
     if mirror: f["mirror"] = mirror

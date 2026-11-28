@@ -36,7 +36,7 @@ export type Fig =
   | { kind: "jug"; max: number; step: number; labelEvery: number; level: number; unit: string; alt: string }
   | { kind: "money"; items: number[]; alt: string }
   | { kind: "icons"; items: { icon: string; mark?: "tick" | "cross" }[]; cols: number; alt: string }
-  | { kind: "angle"; deg: number; colour: Colour; alt: string }
+  | { kind: "angle"; deg: number; colour: Colour; showDeg?: boolean; alt: string } // showDeg: print the size (for solutions, not for "estimate the angle" questions)
   | { kind: "lines"; segs: [number, number, number, number][]; colour: Colour; mono?: boolean; alt: string } // coordinates in a 0–100 box; mono: one colour, thinner (grids)
   | { kind: "calendar"; month: string; start: number; days: number; marks: { d: number; colour: Colour }[]; alt: string } // start: 0 = Sunday
   | { kind: "numgrid"; from: number; to: number; cols: number; marks: { v: number; colour: Colour }[]; alt: string }

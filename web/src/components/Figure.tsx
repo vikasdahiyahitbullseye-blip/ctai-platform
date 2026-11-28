@@ -534,6 +534,11 @@ function drawMore(fig: More): { w: number; h: number; body: React.ReactNode } {
             <line x1={vx} y1={vy} x2={vx + L} y2={vy} stroke={INK} strokeWidth={5} strokeLinecap="round" />
             <line x1={vx} y1={vy} x2={ex} y2={ey} stroke={col} strokeWidth={5} strokeLinecap="round" />
             <circle cx={vx} cy={vy} r={6} fill={INK} />
+            {fig.showDeg && (() => {
+              // The size of the angle, written just outside the arc on the line that halves it.
+              const mid = (-d * Math.PI) / 360, rr = d === 90 ? 44 : r + 24;
+              return <text x={vx + rr * Math.cos(mid)} y={vy + rr * Math.sin(mid) + 6} fontSize={18} fontWeight={900} textAnchor="middle" fill={shade(col, 0.6)} stroke="#fff" strokeWidth={4} paintOrder="stroke">{d}°</text>;
+            })()}
           </g>
         ),
       };

@@ -401,12 +401,14 @@
 "kind": "angle",
 "deg": 70,
 "colour": "blue",
+"showDeg": true,
 "alt": "70° angle"
 },
 {
 "kind": "angle",
 "deg": 110,
 "colour": "orange",
+"showDeg": true,
 "alt": "110° angle"
 }
 ],
@@ -418,12 +420,14 @@
 "kind": "angle",
 "deg": 95,
 "colour": "blue",
+"showDeg": true,
 "alt": "95° angle"
 },
 {
 "kind": "angle",
 "deg": 85,
 "colour": "orange",
+"showDeg": true,
 "alt": "85° angle"
 }
 ],
@@ -435,12 +439,14 @@
 "kind": "angle",
 "deg": 125,
 "colour": "green",
+"showDeg": true,
 "alt": "125° angle"
 },
 {
 "kind": "angle",
 "deg": 100,
 "colour": "red",
+"showDeg": true,
 "alt": "100° angle"
 }
 ],
@@ -452,12 +458,14 @@
 "kind": "angle",
 "deg": 145,
 "colour": "green",
+"showDeg": true,
 "alt": "145° angle"
 },
 {
 "kind": "angle",
 "deg": 115,
 "colour": "red",
+"showDeg": true,
 "alt": "115° angle"
 }
 ],
@@ -499,18 +507,21 @@
 "kind": "angle",
 "deg": 30,
 "colour": "blue",
+"showDeg": true,
 "alt": "30° angle"
 },
 {
 "kind": "angle",
 "deg": 60,
 "colour": "orange",
+"showDeg": true,
 "alt": "60° angle"
 },
 {
 "kind": "angle",
 "deg": 90,
 "colour": "green",
+"showDeg": true,
 "alt": "90° angle"
 }
 ],
@@ -522,12 +533,14 @@
 "kind": "angle",
 "deg": 100,
 "colour": "red",
+"showDeg": true,
 "alt": "100° angle"
 },
 {
 "kind": "angle",
 "deg": 40,
 "colour": "blue",
+"showDeg": true,
 "alt": "40° angle"
 }
 ],

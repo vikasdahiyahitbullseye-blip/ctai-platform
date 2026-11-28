@@ -314,12 +314,14 @@
 "kind": "angle",
 "deg": 65,
 "colour": "blue",
+"showDeg": true,
 "alt": "65° angle"
 },
 {
 "kind": "angle",
 "deg": 115,
 "colour": "orange",
+"showDeg": true,
 "alt": "115° angle"
 }
 ],
