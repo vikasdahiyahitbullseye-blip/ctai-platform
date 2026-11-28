@@ -7,8 +7,12 @@ Teacher Handbook style (Answer, Solution, "Hence, option … is the correct answ
 worked answer key of the "More practice" questions. Every page is renumbered
 in the book's own footer style, the new pages get the footer, and the cover gets a small "New" badge.
 
+CBSE edition (--cbse <dir>, made by web/scripts/cbse-edition-pages.ts): each chapter's original question pages and
+answer key are replaced by the chapter page, the CBSE Handbook questions, an equal number of matching help-book
+questions and worked solutions for both; "More practice" is left out; the front pages get the new question counts.
+
 Usage:
-  python3 merge_helpbook.py <class> <original.pdf> <theoryDir> <out.pdf> <InterRegular.ttf> <InterBold.ttf> [practiceDir]
+  python3 merge_helpbook.py <class> <original.pdf> <theoryDir> <out.pdf> <InterRegular.ttf> <InterBold.ttf> [practiceDir] [--cbse <cbseDir>]
 """
 import html
 import io
@@ -23,8 +27,14 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-cls, src, theory_dir, out, font_reg, font_bold = sys.argv[1:7]
-practice_dir = sys.argv[7] if len(sys.argv) > 7 else None
+args = sys.argv[1:]
+cbse_dir = None
+if "--cbse" in args:
+    k = args.index("--cbse")
+    cbse_dir = args[k + 1]
+    del args[k:k + 2]
+cls, src, theory_dir, out, font_reg, font_bold = args[:6]
+practice_dir = args[6] if len(args) > 6 else None
 cls = int(cls)
 pdfmetrics.registerFont(TTFont("InterR", font_reg))
 pdfmetrics.registerFont(TTFont("InterB", font_bold))
@@ -77,7 +87,8 @@ def overlay(w, h, number, with_footer_text, badge=False, footer=None):
     if with_footer_text:
         c.drawString(STYLE["footer_x"], baseline, footer or FOOTER)
     if badge:
-        text = (("NEW in this edition: 'Learn it' theory, 'More practice' questions and an Artificial Intelligence part" if cls >= 6
+        text = ("NEW in this edition: CBSE handbook questions with Teacher Handbook solutions in every chapter" if cbse_dir else
+                ("NEW in this edition: 'Learn it' theory, 'More practice' questions and an Artificial Intelligence part" if cls >= 6
                  else "NEW in this edition: 'Learn it' theory before every chapter and 'More practice' questions after it") if practice_dir
                 else "NEW in this edition: a 'Learn it' theory page before every chapter")
         tw = pdfmetrics.stringWidth(text, "InterB", 10)
@@ -216,11 +227,81 @@ def student_overlay(path, page_index, w, h):
     return PdfReader(buf).pages[0]
 
 
+def cbse_counts():
+    """Questions per chapter in the CBSE edition: the CBSE handbook questions plus as many help-book questions."""
+    import json
+    summary = json.load(open(f"{cbse_dir}/cbse-edition.json"))
+    return {int(k.split("-")[1]): v["cbse"] + v["helpbook"] for k, v in summary.items() if k.startswith(f"{cls}-")}
+
+
+def cbse_front_overlay(path, page_index, w, h, counts):
+    """CBSE edition: new question counts and wording on the cover and the "How to use" / contents page."""
+    blocks = page_blocks(path, page_index)
+    total = sum(counts.values())
+    cover = f"The CBSE handbook questions with Teacher Handbook solutions, and as many help-book questions on the same ideas ({total} in all)."
+    teachers = (f"For teachers: each chapter follows the matching chapter of the Class {cls} Maths book and the CBSE handbook. "
+                "It has the CBSE questions, then one help-book question on the same idea for each; worked solutions are at the end of each chapter.")
+    todo = []
+    for b in blocks:
+        if b[1].startswith("Twice as many questions"):
+            todo.append((b, cover, "centre"))
+        elif b[1].startswith("For teachers:"):
+            todo.append((b, teachers, "left"))
+    rows = sorted((b for b in blocks if re.fullmatch(r"\d+ questions", b[1])), key=lambda b: b[0][1]) if page_index <= 3 else []
+    for k, b in enumerate(rows, start=1):
+        if k in counts:
+            todo.append((b, f"{counts[k]} questions", "right"))
+    if not todo:
+        return None
+    png = subprocess.run(["pdftoppm", "-r", "72", "-f", str(page_index), "-l", str(page_index), "-png", path], capture_output=True).stdout
+    img = Image.open(io.BytesIO(png)).convert("RGB")
+    px = lambda x, y: img.getpixel((min(img.width - 1, max(0, int(x))), min(img.height - 1, max(0, int(y)))))
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=(w, h))
+    for ((x0, y0, x1, y1), text, words), new, align in todo:
+        lines = max(1, len({round(wd[1]) for wd in words}))
+        ref = max(words, key=lambda wd: wd[2] - wd[0])
+        size = (ref[2] - ref[0]) / pdfmetrics.stringWidth(ref[4], "InterR", 1)
+        ink = min((px(xx, yy) for xx in range(int(ref[0]), int(ref[2])) for yy in range(int(ref[1]), int(ref[3]))), key=sum)
+        bg = px(x0 - 3, y0 - 2) if align != "right" else px(x1 + 4, (y0 + y1) / 2)
+        c.setFillColorRGB(*[v / 255 for v in bg])
+        c.rect(x0 - 1.5, h - y1 - 1, x1 - x0 + 3, y1 - y0 + 2, stroke=0, fill=1)
+        c.setFillColorRGB(*[v / 255 for v in ink])
+        # Wrap into the block's width; shrink the type a little if the text needs more lines than the block has.
+        width = x1 - x0 if align != "right" else 200
+        while True:
+            out_lines, cur = [], ""
+            for word in new.split():
+                t = f"{cur} {word}".strip()
+                if pdfmetrics.stringWidth(t, "InterR", size) > width and cur:
+                    out_lines.append(cur)
+                    cur = word
+                else:
+                    cur = t
+            out_lines.append(cur)
+            if len(out_lines) <= lines or size < 5:
+                break
+            size *= 0.97
+        step = (y1 - y0) / lines
+        c.setFont("InterR", size)
+        for k, line in enumerate(out_lines):
+            yb = h - (y0 + step * k + step * 0.74)
+            if align == "centre":
+                c.drawCentredString((x0 + x1) / 2, yb, line)
+            elif align == "right":
+                c.drawRightString(x1, yb, line)
+            else:
+                c.drawString(x0, yb, line)
+    c.save()
+    buf.seek(0)
+    return PdfReader(buf).pages[0]
+
+
 orig = PdfReader(src)
 n, starts = chapter_starts(src)
 assert sorted(starts) == list(range(1, len(starts) + 1)), f"chapter starts not found cleanly: {starts}"
-keys = answer_key_pages(src, n) if practice_dir else {}
-if practice_dir:
+keys = answer_key_pages(src, n) if practice_dir and not cbse_dir else {}
+if practice_dir and not cbse_dir:
     assert sorted(keys) == sorted(starts), f"answer keys not found for every chapter: {keys}"
 # The last page of each chapter: the page before the next chapter starts (or the last page of the book).
 ends = {ch: (starts[ch + 1] - 1 if ch + 1 in starts else n) for ch in starts}
@@ -240,10 +321,29 @@ def add_new(path, kind, footer=None):
         writer.add_page(tp)
 
 
+counts = cbse_counts() if cbse_dir else {}
+if cbse_dir:
+    assert sorted(counts) == sorted(starts), f"CBSE pages missing for some chapters: {sorted(counts)}"
 for i, page in enumerate(orig.pages, start=1):
     chapter = next((ch for ch, p in starts.items() if p == i), None)
     if chapter:
         add_new(f"{theory_dir}/c{cls}-ch{chapter:02d}.pdf", "theory")
+    if cbse_dir:
+        # The chapter's original question pages and answer key make way for the CBSE edition pages.
+        if chapter:
+            add_new(f"{cbse_dir}/c{cls}-ch{chapter:02d}-cbse.pdf", "practice")
+            add_new(f"{cbse_dir}/c{cls}-ch{chapter:02d}-cbse-key.pdf", "keys")
+        if any(starts[ch] <= i <= ends[ch] for ch in starts):
+            replaced += 1
+            continue
+        page_no += 1
+        w, h = float(page.mediabox.width), float(page.mediabox.height)
+        front = cbse_front_overlay(src, i, w, h, counts)
+        if front:
+            page.merge_page(front)
+        page.merge_page(overlay(w, h, page_no, with_footer_text=False, badge=(i == 1)))
+        writer.add_page(page)
+        continue
     key_of = next((ch for ch, p in keys.items() if p == i), None)
     if key_of:
         add_new(f"{practice_dir}/c{cls}-ch{key_of:02d}-practice.pdf", "practice")
@@ -283,7 +383,10 @@ if practice_dir and cls >= 6:
 for pg in writer.pages:
     pg.compress_content_streams()
 writer.compress_identical_objects(remove_duplicates=True, remove_unreferenced=True)
-writer.add_metadata({"/Title": f"Think, Play & Solve · Help Book · Class {cls} ({'new edition: Learn it theory and More practice' if practice_dir else 'with Learn it theory'})"})
+writer.add_metadata({"/Title": f"Think, Play & Solve · Help Book · Class {cls} ({'CBSE edition: CBSE handbook questions and matching help-book questions' if cbse_dir else 'new edition: Learn it theory and More practice' if practice_dir else 'with Learn it theory'})"})
 with open(out, "wb") as f:
     writer.write(f)
+if cbse_dir:
+    print(f"Class {cls}: {n - replaced} front pages + {inserted['theory']} theory + {inserted['practice']} question pages + {inserted['keys']} worked-solution pages + {inserted['ai']} AI-part pages = {page_no} pages; {sum(counts.values())} chapter questions -> {out}")
+    sys.exit(0)
 print(f"Class {cls}: {n - replaced} original (old answer keys replaced: {replaced}) + {inserted['theory']} theory + {inserted['practice']} practice + {inserted['keys']} worked-solution key + {inserted['answers']} answer-key pages + {inserted['ai']} AI-part pages = {page_no} pages ({inserted['corrections']} corrected lines) -> {out}")

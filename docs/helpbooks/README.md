@@ -96,3 +96,18 @@ from the original help-book PDFs (not stored here). Needs `poppler-utils` and `p
    ```
 
    This writes `hb.json` and the WebP pictures (delete the old `web/public/hb/*.webp` first). Then run `npm run db:setup` in `web/`.
+
+
+## CBSE edition
+
+Each CT chapter: Learn it theory, a chapter page, the CBSE handbook questions (prisma/content/cbse), the same number of
+help-book questions on the same ideas, then worked solutions for both. "More practice" is left out; the AI part (Classes 6–8)
+is the same as in the new edition.
+
+```bash
+python3 docs/helpbooks/cbse_edition_select.py            # pairs each CBSE question with its closest help-book question
+python3 docs/helpbooks/chapter_heads.py <uploads> web/prisma/content/helpbook/chapter-heads.json   # chapter titles and lines
+cd web && NODE_PATH=$(npm root -g) npx tsx scripts/cbse-edition-pages.ts <cbseDir>
+python3 docs/helpbooks/merge_helpbook.py <class> <original.pdf> <theoryDir> <out.pdf> <Inter-Regular.ttf> <Inter-Bold.ttf> <practiceDir> --cbse <cbseDir>
+```
+The practice folder is still needed for the AI part. The cover, the "For teachers" note and the chapter list get the new counts.

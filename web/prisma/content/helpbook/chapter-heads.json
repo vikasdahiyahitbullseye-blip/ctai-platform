@@ -1,0 +1,274 @@
+{
+ "3-1": {
+  "title": "What's in a Name?",
+  "desc": "Number names, letter puzzles and secret codes."
+ },
+ "3-2": {
+  "title": "Toy Joy",
+  "desc": "Solid shapes, their faces, edges and corners, and how they look from different sides."
+ },
+ "3-3": {
+  "title": "Double Century",
+  "desc": "Numbers up to 200 and beyond: abacus, place value, number lines and patterns."
+ },
+ "3-4": {
+  "title": "Vacation with My Nani Maa",
+  "desc": "Adding and taking away in holiday stories: maps, money, family and pictographs."
+ },
+ "3-5": {
+  "title": "Fun with Shapes",
+  "desc": "Flat shapes: sides, corners, folding, turning, counting shapes and tiling."
+ },
+ "3-6": {
+  "title": "House of Hundreds – I",
+  "desc": "3-digit numbers: place value, making numbers and number clues."
+ },
+ "3-7": {
+  "title": "Raksha Bandhan",
+  "desc": "Equal groups, arrays, multiplication and sharing."
+ },
+ "3-8": {
+  "title": "Fair Share",
+  "desc": "Halves, quarters and fair sharing, with folding and symmetry."
+ },
+ "3-9": {
+  "title": "House of Hundreds – II",
+  "desc": "Adding and subtracting 3-digit numbers, estimating and number puzzles."
+ },
+ "3-10": {
+  "title": "Fun at Class Party!",
+  "desc": "Length and height: measuring, comparing and ordering."
+ },
+ "3-11": {
+  "title": "Filling and Lifting",
+  "desc": "Weight and capacity: balances, jugs and buckets."
+ },
+ "3-12": {
+  "title": "Give and Take",
+  "desc": "Money, exchanges and sharing."
+ },
+ "3-13": {
+  "title": "Time Goes On",
+  "desc": "Clocks, calendars, timetables and days of the week."
+ },
+ "3-14": {
+  "title": "The Surajkund Fair",
+  "desc": "Maps, directions, mirror images and symmetry."
+ },
+ "4-1": {
+  "title": "Shapes Around Us",
+  "desc": "Cubes, nets, folds, cuts and shape puzzles."
+ },
+ "4-2": {
+  "title": "Hide and Seek",
+  "desc": "Paths, turns, directions and views of block towers."
+ },
+ "4-3": {
+  "title": "Patterns Around Us",
+  "desc": "Odd and even numbers, parity tricks and number patterns."
+ },
+ "4-4": {
+  "title": "Thousands Around Us",
+  "desc": "Sorting networks, 4-digit numbers, place value and comparing."
+ },
+ "4-5": {
+  "title": "Sharing and Measuring",
+  "desc": "Fractions of shapes and quantities, halves, quarters and equal parts."
+ },
+ "4-6": {
+  "title": "Measuring Length",
+  "desc": "Lengths, heights, perimeter and shortest paths."
+ },
+ "4-7": {
+  "title": "The Cleanest Village",
+  "desc": "Money, collecting and removing, number puzzles and rules."
+ },
+ "4-8": {
+  "title": "Weigh It, Pour It",
+  "desc": "Weights, balances, litres, buckets and measuring puzzles."
+ },
+ "4-9": {
+  "title": "Equal Groups",
+  "desc": "Multiplying, dividing, doubling and sharing into equal parts."
+ },
+ "4-10": {
+  "title": "Elephants, Tigers, and Leopards",
+  "desc": "Digits, money, number puzzles, rules and logic."
+ },
+ "4-11": {
+  "title": "Fun with Symmetry",
+  "desc": "Folding, mirror images, line symmetry and completing pictures."
+ },
+ "4-12": {
+  "title": "Ticking Clocks and Turning Calendar",
+  "desc": "Clocks, durations, schedules, days of the week and the calendar."
+ },
+ "4-13": {
+  "title": "The Transport Museum",
+  "desc": "Comparing, sharing, ages, cubes, equations and clever reasoning."
+ },
+ "4-14": {
+  "title": "Data Handling",
+  "desc": "Tables, charts, surveys, patterns and logical deductions from data."
+ },
+ "5-1": {
+  "title": "We the Travellers - I",
+  "desc": "Digits, place value, number formation and arranging."
+ },
+ "5-2": {
+  "title": "Fractions",
+  "desc": "Parts of a whole, fractions of a group, and working backwards."
+ },
+ "5-3": {
+  "title": "Angles as Turns",
+  "desc": "Quarter turns, half turns, clockwise and anticlockwise rotations."
+ },
+ "5-4": {
+  "title": "We the Travellers - II",
+  "desc": "Odd and even numbers, exchanges, counting arrangements and distances."
+ },
+ "5-5": {
+  "title": "Far and Near",
+  "desc": "Distances, positions, lengths, speeds and meeting points."
+ },
+ "5-6": {
+  "title": "The Dairy Farm",
+  "desc": "Multiplication, division, grouping and counting in equal sets."
+ },
+ "5-7": {
+  "title": "Shapes and Patterns",
+  "desc": "Dividing shapes, folding paper, cube nets and painted cubes."
+ },
+ "5-8": {
+  "title": "Weight and Capacity",
+  "desc": "Weighing, balance puzzles, capacity and comparing quantities."
+ },
+ "5-9": {
+  "title": "Coconut Farm",
+  "desc": "Divisibility, remainders, rows and columns, and operations."
+ },
+ "5-10": {
+  "title": "Symmetrical Designs",
+  "desc": "Lines of symmetry, mirror images, folding, cutting and punching."
+ },
+ "5-11": {
+  "title": "Grandmother's Quilt",
+  "desc": "Area, perimeter, equal parts and combining shapes."
+ },
+ "5-12": {
+  "title": "Racing Seconds",
+  "desc": "Time, schedules, speed and repeating events."
+ },
+ "5-13": {
+  "title": "Animal Jumps",
+  "desc": "Factors, multiples, common divisors and number patterns."
+ },
+ "5-14": {
+  "title": "Maps and Locations",
+  "desc": "Directions, turns, routes and positions on a map."
+ },
+ "5-15": {
+  "title": "Data Through Pictures",
+  "desc": "Reading pictographs, tables, towers, grids and Venn diagrams."
+ },
+ "6-1": {
+  "title": "Patterns in Mathematics",
+  "desc": "Number series, symbol series, block and shape patterns, sets and pyramids."
+ },
+ "6-2": {
+  "title": "Lines and Angles",
+  "desc": "Directions and turns, clock angles, rotations, angles on lines and equal gaps."
+ },
+ "6-3": {
+  "title": "Number Play",
+  "desc": "Dice games, hidden coins, digit puzzles, palindromes and number grids."
+ },
+ "6-4": {
+  "title": "Data Handling and Presentation",
+  "desc": "Bar graphs, pictographs, tally marks, reading data and drawing conclusions."
+ },
+ "6-5": {
+  "title": "Prime Time",
+  "desc": "Factors, multiples, primes, circle-point activity and number logic."
+ },
+ "6-6": {
+  "title": "Perimeter and Area",
+  "desc": "Perimeter, area, folding, tiling, cutting and sharing land."
+ },
+ "6-7": {
+  "title": "Fractions",
+  "desc": "Comparing and ordering fractions, operations, fractional parts of a whole and reasoning."
+ },
+ "6-8": {
+  "title": "Playing with Constructions",
+  "desc": "Completing squares, tiling with pieces, counting squares, matchsticks and overlays."
+ },
+ "6-9": {
+  "title": "Symmetry",
+  "desc": "Lines of symmetry, mirror images, folding and cutting, rotational symmetry and symmetric grids."
+ },
+ "6-10": {
+  "title": "The Other Side of Zero",
+  "desc": "Negative numbers: series, comparing integers, operations with rules, number-line jumps and logic machines."
+ },
+ "7-1": {
+  "title": "Large Numbers Around Us",
+  "desc": "Place value, forming and ordering large numbers, lakhs and crores, clue puzzles and logic with digits."
+ },
+ "7-2": {
+  "title": "Arithmetic Expressions",
+  "desc": "Order of operations, swapping operators, coded numbers, flows and puzzles with operators."
+ },
+ "7-3": {
+  "title": "A Peek Beyond the Point",
+  "desc": "Binary punched cards, decimals, patterns in decimal series, measuring and comparing decimal numbers."
+ },
+ "7-4": {
+  "title": "Expressions using Letter-Numbers",
+  "desc": "Letters standing for numbers: inequalities, sums and ages, flows, pyramids and digit puzzles."
+ },
+ "7-5": {
+  "title": "Parallel and Intersecting Lines",
+  "desc": "Grids of squares, parallel edges and faces, clocks, crossing lines, angles and paths."
+ },
+ "7-6": {
+  "title": "Number Play",
+  "desc": "Punch-card logic with lights, then digit puzzles, grids, sums and number series."
+ },
+ "7-7": {
+  "title": "A Tale of Three Intersecting Lines",
+  "desc": "Triangles: sides and angles, similar triangles, counting triangles in figures and cutting shapes."
+ },
+ "7-8": {
+  "title": "Working with Fractions",
+  "desc": "Fractions of a whole, sharing and leftovers, shaded parts, sequences of fractions and fraction stories."
+ },
+ "8-1": {
+  "title": "A Square and a Cube",
+  "desc": "Perfect squares and cubes, factors, last digits, number machines and counting cubes."
+ },
+ "8-2": {
+  "title": "Power Play",
+  "desc": "Exponents and powers: ordering, series, choosing and counting, last digits and rule games."
+ },
+ "8-3": {
+  "title": "A Story of Numbers",
+  "desc": "Number systems: decimal, binary and ternary pipes, bases, Roman numerals, abacus moves and place value."
+ },
+ "8-4": {
+  "title": "Quadrilaterals",
+  "desc": "Properties of squares, rectangles, rhombuses, parallelograms, trapeziums and kites; counting shapes in figures; angles and diagonals; joining and cutting shapes."
+ },
+ "8-5": {
+  "title": "Number Play",
+  "desc": "Divisibility, multiples and remainders; digit puzzles; consecutive numbers; counting with dice; bulbs and switches."
+ },
+ "8-6": {
+  "title": "We Distribute Yet Things Multiply",
+  "desc": "The distributive law, expressions and identities; clever multiplication; digit sums and reversals; word problems written as expressions."
+ },
+ "8-7": {
+  "title": "Proportional Reasoning",
+  "desc": "Ratios and proportions: sharing, mixing, scaling, unit rates, clock times and rates of work."
+ }
+}
